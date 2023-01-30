@@ -9,8 +9,8 @@ class Game:
     
 
     def show_backg(self, surface):
-        for row in range(rows):
-            for col in range(cols):
+        for row in range(cb_rows):
+            for col in range(cb_cols):
                 if(row + col) %2 == 0:
                     color = (251,203,4) #(255,203,0,255)
                 else:

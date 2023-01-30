@@ -8,14 +8,17 @@ class Main:
 
     def __init__(self):
         pygame.init()
-        self.screenplay = pygame.display.set_mode((width, height))
-        pygame.display.set_caption('Zama FHE.Chess')
+        self.screenplay = pygame.display.set_mode((sp_width, sp_height))
+        pygame.display.set_caption('Zama FHE Chess')
         self.game = Game()
 
     def mainloop(self):
         
+        screenplay = self.screenplay
+        game = self.game
+
         while True:
-            self.game.show_backg(self.screenplay)
+            game.show_backg(screenplay)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
