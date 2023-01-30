@@ -6,4 +6,6 @@ class Square:
         self.row = row
         self.col = col
         self.piece = piece
-        
+    
+    def piece_presence(self):
+        return self.piece != None

@@ -15,9 +15,9 @@ class Piece:
         self.set_texture()
         self.texture_rect = texture_rect
 
-    def set_texture(self, size=128):
+    def set_texture(self, size=80):
         self.img_uri = os.path.join(
-            f'content/pieces_{size}px/{self.color}_{self.name}.png'
+            f'content/pieces/pieces_{size}px/{self.color}_{self.name}.png'
         )
 
     def add_move(self, move):

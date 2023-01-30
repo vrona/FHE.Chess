@@ -1,6 +1,6 @@
 # screen dimension
-sp_width = 400
-sp_height = 400
+sp_width = 800
+sp_height = 800
 
 # chess board
 cb_cols = 8
