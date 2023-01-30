@@ -1,4 +1,4 @@
-(Contribution to ZAMA.io)
+(Contribution to [ZAMA.ai]([https://zama-ai](https://www.zama.ai))<br>
 # Create an application "Play Chess" in FHE with Concrete-ML
 `Machine Learning`
 
