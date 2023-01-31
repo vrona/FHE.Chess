@@ -14,16 +14,14 @@ class Main:
         self.screenplay = pygame.display.set_mode((sp_width, sp_height))
         pygame.display.set_caption('Zama FHE Chess')
         self.game = Game()
-        self.dragger = Dragger()
-        self.board = Board()
 
 
     def mainloop(self):
         
         screenplay = self.screenplay
         game = self.game
-        dragger = self.dragger
-        board = self.board
+        board = self.game.board
+        dragger = self.game.dragger
 
         while True:
             # show chess board

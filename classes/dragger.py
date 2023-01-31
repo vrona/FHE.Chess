@@ -9,7 +9,7 @@ class Dragger:
         self.piece = None
         self.dragging = False
         self.mouseX = 0
-        self. mouseY = 0
+        self.mouseY = 0
         self.initial_row = 0
         self.initial_col = 0
 
@@ -22,7 +22,6 @@ class Dragger:
         img_centered = (self.mouseX, self.mouseY)
         self.piece.rectangle = img.get_rect(center=img_centered)
         surface.blit(img, self.piece.rectangle)                  
-
 
     def update_mouse(self, position):
         self.mouseX, self.mouseY = position

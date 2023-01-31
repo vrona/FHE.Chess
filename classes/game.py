@@ -29,7 +29,7 @@ class Game:
                     piece = self.board.squares[row][col].piece
 
                     if piece is not self.dragger.piece:
-                        #piece.set_texture(size=80)
+                        piece.set_texture(size=80)
                         # pygame specification
                         img = pygame.image.load(piece.img_uri)
                         img_center = col * sqsize + sqsize // 2, row * sqsize + sqsize // 2
