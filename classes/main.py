@@ -23,11 +23,20 @@ class Main:
         screenplay = self.screenplay
         game = self.game
         dragger = self.dragger
-        board = self.Board()
+        board = self.board
 
         while True:
-            game.show_backg(screenplay)
-            game.show_pieces(screenplay)
+            # show chess board
+            game.display_chessboard(screenplay)
+
+            # display static pieces
+            game.display_pieces(screenplay)
+
+            # display grabbed piece
+            if dragger.dragging:
+                dragger.update_blit(screenplay)
+
+
             for event in pygame.event.get():
 
                 # mouse selects piece
@@ -40,14 +49,23 @@ class Main:
                     # presence of piece within selected square
                     if board.squares[selected_square_row][selected_square_col].piece_presence():
                         piece = board.squares[selected_square_row][selected_square_col].piece
+                        dragger.save_initial(event.pos)
+                        dragger.drag_piece(piece)
+                        # game.display_chessboard(screenplay)
+                        # game.display_pieces(screenplay)
 
                 # mouse drags piece
                 elif event.type == pygame.MOUSEMOTION:
-                    pass
+                    if dragger.dragging:
+                        dragger.update_mouse(event.pos)
+                        game.display_chessboard(screenplay)
+                        dragger.update_blit(screenplay)
+                        game.display_pieces(screenplay)
+                        
                 
                 # mouse releases piece
                 elif event.type == pygame.MOUSEBUTTONUP:
-                    pass
+                    dragger.undrag_piece()
                 
                 # close app
                 elif event.type == pygame.QUIT:
