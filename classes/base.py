@@ -1,4 +1,4 @@
-# screen dimension
+# screenplay dimension
 sp_width = 800
 sp_height = 800
 
