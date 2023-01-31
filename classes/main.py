@@ -59,8 +59,8 @@ class Main:
                     if dragger.dragging:
                         dragger.update_mouse(event.pos)
                         game.display_chessboard(screenplay)
-                        dragger.update_blit(screenplay)
                         game.display_pieces(screenplay)
+                        dragger.update_blit(screenplay)
                         
                 
                 # mouse releases piece

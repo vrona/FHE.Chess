@@ -20,8 +20,8 @@ class Dragger:
         # pygame specification
         img = pygame.image.load(img_path)
         img_centered = (self.mouseX, self.mouseY)
-        self.piece.texture_rect = img.get_rect(center=img_centered)
-        surface.blit(img, self.piece.texture_rect)                  
+        self.piece.rectangle = img.get_rect(center=img_centered)
+        surface.blit(img, self.piece.rectangle)                  
 
 
     def update_mouse(self, position):

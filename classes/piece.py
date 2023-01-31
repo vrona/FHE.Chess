@@ -3,7 +3,7 @@ import os
 
 class Piece:
 
-    def __init__(self, name, color, value, img_uri=None, texture_rect=None):
+    def __init__(self, name, color, value, img_uri=None, rectangle=None):
         self.name = name
         self.color = color
 
@@ -13,12 +13,11 @@ class Piece:
         self.moved = False
         self.img_uri = img_uri
         self.set_texture()
-        self.texture_rect = texture_rect
+        self.rectangle = rectangle
 
     def set_texture(self, size=80):
         self.img_uri = os.path.join(
-            f'content/pieces/pieces_{size}px/{self.color}_{self.name}.png'
-        )
+            f'content/pieces/pieces_{size}px/{self.color}_{self.name}.png')
 
     def add_move(self, move):
         self.ok_moves.append(move)

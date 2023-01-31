@@ -33,5 +33,5 @@ class Game:
                         # pygame specification
                         img = pygame.image.load(piece.img_uri)
                         img_center = col * sqsize + sqsize // 2, row * sqsize + sqsize // 2
-                        piece.texture_rect = img.get_rect(center=img_center)
-                        surface.blit(img, piece.texture_rect)
+                        piece.rectangle = img.get_rect(center=img_center)
+                        surface.blit(img, piece.rectangle)
