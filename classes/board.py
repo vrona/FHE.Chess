@@ -85,14 +85,67 @@ class Board:
                         piece.add_ok_move(move)
 
 
-        def straightline_move(): pass
+        def straightline_move(increments):
+            for incr in increments:
+                row_incr, col_incr = incr
+                possible_move_row = row + row_incr
+                possible_move_col = col + col_incr
+
+                while True:
+                    if Square.in_board(possible_move_row, possible_move_col):
+                        
+                        # micro location
+                        initial = Square(row, col) 
+                        destination = Square(possible_move_row, possible_move_col)
+                            
+                        # move at micro
+                        move = Move(initial, destination)
+                        
+                        # empty square
+                        if self.squares[possible_move_row][possible_move_col].empty():
+                        
+                            piece.add_ok_move(move)
+
+                        # opponent presence
+                        elif self.squares[possible_move_row][possible_move_col].opponent_presence(piece.color):
+                            
+                            piece.add_ok_move(move)
+                            break
+
+                    else: break 
+                    # incrementing_incrs
+                    possible_move_row = possible_move_row + row_incr
+                    possible_move_col = possible_move_col + col_incr
 
         if isinstance(piece, Pawn): pawn_moves()
         elif isinstance(piece, Knight): kight_moves()
-        elif isinstance(piece, Bishop): pass
-        elif isinstance(piece, Rook): pass
-        elif isinstance(piece, Queen): pass
-        elif isinstance(piece, King): pass
+        elif isinstance(piece, Bishop):
+            straightline_move([
+                (-1,1), #SW to NE
+                (-1,-1),#SE to NW
+                (1,-1), #NE to SW
+                (1,1)   #NW to SE
+            ])
+        elif isinstance(piece, Rook):
+            straightline_move([
+                (-1,0),#up
+                (0,1), #right
+                (0,-1),#left
+                (1,0)  #down
+            ])
+        elif isinstance(piece, Queen):
+            straightline_move([
+                (-1,0),#up
+                (0,1), #right
+                (0,-1),#left
+                (1,0),  #down
+                (-1,1), #SW to NE
+                (-1,-1),#SE to NW
+                (1,-1), #NE to SW
+                (1,1)   #NW to SE
+            ])
+        
+        elif isinstance(piece, King): straightline_move()
 
 
     def _create(self):
