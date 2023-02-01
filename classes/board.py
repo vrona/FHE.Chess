@@ -2,6 +2,7 @@
 from base import *
 from square import Square
 from piece import *
+from move import *
 
 class Board:
 
@@ -12,7 +13,54 @@ class Board:
         self._add_pieces('white')
         self._add_pieces('black')
 
-    def _create(self):        
+    
+    def compute_move(self, piece, row, col):
+        """
+        computes possible moves() of specific piece at a given coordinates
+        """
+        def kight_moves():
+            possible_moves = [
+                (row-2, col+1),
+                (row-1, col+2),
+                (row+1, col+2),
+                (row+2, col+1),
+                (row+2, col-1),
+                (row+1, col-2),
+                (row-1, col-2),
+                (row-2, col-1),
+            ]
+            for ok_move in possible_moves:
+                ok_move_row, ok_move_col = ok_move # y, x
+
+                # macro location
+                if Square.in_board(ok_move_row, ok_move_col):
+                    if self.squares[ok_move_row][ok_move_col].empty_occupied(piece.color):
+                        
+                        # micro location
+                        initial = Square(row, col) 
+                        destination = Square(ok_move_row, ok_move_col)
+
+                        # move at micro
+                        move = Move(initial, destination)
+                        piece.add_ok_move(move)
+
+
+        if isinstance(piece, Pawn):
+            pass
+        elif isinstance(piece, Knight):
+            kight_moves()
+            pass
+        elif isinstance(piece, Bishop):
+            pass
+        elif isinstance(piece, Rook):
+            pass
+        elif isinstance(piece, Queen):
+            pass
+        elif isinstance(piece, King):
+            pass
+
+
+    def _create(self):
 
         for row in range(cb_rows):
             for col in range(cb_cols):

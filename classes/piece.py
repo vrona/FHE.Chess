@@ -19,7 +19,7 @@ class Piece:
         self.img_uri = os.path.join(
             f'content/pieces/pieces_{size}px/{self.color}_{self.name}.png')
 
-    def add_move(self, move):
+    def add_ok_move(self, move):
         self.ok_moves.append(move)
 
 

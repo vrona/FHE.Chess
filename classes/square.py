@@ -9,3 +9,23 @@ class Square:
     
     def piece_presence(self):
         return self.piece != None
+
+    def empty(self):
+        return not self.piece_presence()
+
+    def player_presence(self, color):
+        return self.piece_presence() and self.piece.color == color
+
+    def oppopent_presence(self, color):
+        return self.piece_presence() and self.piece.color != color
+
+    def empty_occupied(self, color):
+        return self.empty() or self.oppopent_presence(color)
+
+    @staticmethod
+    def in_board(*args):
+        for arg in args:
+            if arg < 0 or arg > 7:
+                return False
+        
+        return True
