@@ -16,11 +16,11 @@ class Square:
     def player_presence(self, color):
         return self.piece_presence() and self.piece.color == color
 
-    def oppopent_presence(self, color):
+    def opponent_presence(self, color):
         return self.piece_presence() and self.piece.color != color
 
     def empty_occupied(self, color):
-        return self.empty() or self.oppopent_presence(color)
+        return self.empty() or self.opponent_presence(color)
 
     @staticmethod
     def in_board(*args):
