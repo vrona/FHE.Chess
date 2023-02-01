@@ -39,7 +39,7 @@ class Board:
                         # micro location
                         initial = Square(row, col) 
                         destination = Square(ok_move_row, ok_move_col)
-
+                        
                         # move at micro
                         move = Move(initial, destination)
                         piece.add_ok_move(move)
