@@ -97,7 +97,7 @@ class Main:
                         if board.valid_move(dragger.piece, move):
                             captured = board.squares[released_row][released_col].piece_presence()
                             board.move(dragger.piece, move)
-                            game.sound_it(captured)
+                            #game.sound_it(captured)
                             game.display_chessboard(screenplay)
                             game.display_lastmove(screenplay)
                             game.display_pieces(screenplay)
