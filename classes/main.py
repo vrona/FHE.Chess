@@ -25,17 +25,20 @@ class Main:
         dragger = self.game.dragger
 
         while True:
-            # show chess board
+            # display chess board
             game.display_chessboard(screenplay)
 
-            # show last move
+            # display last move
             game.display_lastmove(screenplay)
             
-            # show move
+            # display move
             game.display_moves(screenplay)
 
             # display static pieces
             game.display_pieces(screenplay)
+
+            # display user experience hover
+            game.display_hover(screenplay)
 
             # display grabbed piece
             if dragger.dragging:
@@ -65,11 +68,15 @@ class Main:
 
                 # mouse drags piece
                 elif event.type == pygame.MOUSEMOTION:
+                    game.set_hover(event.pos[1] // sqsize, event.pos[0] // sqsize)
+                    
                     if dragger.dragging:
                         dragger.update_mouse(event.pos)
                         game.display_chessboard(screenplay)
+                        game.display_lastmove(screenplay)
                         game.display_moves(screenplay)
                         game.display_pieces(screenplay)
+                        game.display_hover(screenplay)
                         dragger.update_blit(screenplay)
                         
                 
