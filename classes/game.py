@@ -12,15 +12,6 @@ class Game:
     def display_chessboard(self, surface):
         for row in range(cb_rows):
             for col in range(cb_cols):
-                # if(row + col) %2 == 0:
-                #     color = (251,203,4) #(255,203,0,255)
-                # else:
-                #     color = (29,24,9) #(0,0,0,255)
-
-                # rect = (col * sqsize, row * sqsize, sqsize, sqsize)
-
-                # pygame.draw.rect(surface, color, rect)
-
                 self.display_rect('#ffcb00', '#000000', col, row, surface)
 
     def display_pieces(self, surface):
@@ -43,21 +34,25 @@ class Game:
         if self.dragger.dragging:
             piece = self.dragger.piece
 
+            black_dots = pygame.image.load("/Volumes/vrona_SSD/FHE.Chess/content/imgdot/black_dots.png")
+            white_dots = pygame.image.load("/Volumes/vrona_SSD/FHE.Chess/content/imgdot/white_dots.png")
+
             for move in piece.ok_moves:
+                img_center = move.destination.col * sqsize + sqsize // 2, move.destination.row * sqsize + sqsize // 2
+
+                if (move.destination.row + move.destination.col) % 2 == 0:
+
+                    piece.rectangle = black_dots.get_rect(center=img_center)
+                    surface.blit(black_dots, piece.rectangle)
+                else:
+                    piece.rectangle = white_dots.get_rect(center=img_center)
+                    surface.blit(white_dots, piece.rectangle)
                 
-                self.display_rect('#FBFBFA', '#F6F6F5', move.destination.col, move.destination.row, surface)
-                # color = '#aaf542' if (move.destination.row + move.destination.col) % 2 == 0 else '#f57242'
-                # if(move.destination.row + move.destination.col) %2 == 0:
-                #     color = '#aaf542' #(255,203,0,255)
-                # else:
-                #     color = '#f57242' #(0,0,0,255)
+                # for color self.display_rect('#ffeac8', '#ffebc6', move.destination.col, move.destination.row, surface, stroke=10)
+               
 
-                # rect = (move.destination.col * sqsize, move.destination.row * sqsize, sqsize, sqsize)
-
-                # pygame.draw.rect(surface, color, rect)
-
-    def display_rect(self, ok_color, no_color, xcol, yrow, surface):
+    def display_rect(self, ok_color, no_color, xcol, yrow, surface, stroke=0):
         
         color = ok_color if (yrow + xcol) % 2 == 0 else no_color # color
         rect = (xcol * sqsize, yrow * sqsize, sqsize, sqsize)   # rect
-        pygame.draw.rect(surface, color, rect)                 # blit
+        pygame.draw.rect(surface, color, rect, stroke)         # blit

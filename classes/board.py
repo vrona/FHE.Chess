@@ -129,7 +129,6 @@ class Board:
                 (row+1, col-1), #SW
                 (row+0, col-1), #W
                 (row-1, col-1)] #NW
-            # missing castling
             
             for ok_move in juxtapose:
                 ok_move_row, ok_move_col = ok_move # y, x
@@ -146,6 +145,7 @@ class Board:
                         move = Move(initial, destination)
                         piece.add_ok_move(move)
 
+        # missing castling for king, queen
 
 
         if isinstance(piece, Pawn): pawn_moves()
@@ -212,7 +212,9 @@ class Board:
         # queen
         self.squares[row_other][3] = Square(row_other, 3, Queen(color))
 
+        # test self.squares[3][3] = Square(3, 3, Queen(color))
+
         # king
         self.squares[row_other][4] = Square(row_other, 4, King(color))
 
-        #test self.squares[3][4] = Square(3, 4, King(color))
+        # testself.squares[2][4] = Square(2, 4, King(color))
