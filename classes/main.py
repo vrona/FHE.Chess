@@ -3,10 +3,8 @@ import sys
 
 from base import *
 from game import Game
-from dragger import Dragger
-from board import Board
 from square import Square
-from move import *
+from move import Move
 
 class Main:
 
@@ -97,8 +95,9 @@ class Main:
 
                         # check move ok ?
                         if board.valid_move(dragger.piece, move):
+                            captured = board.squares[released_row][released_col].piece_presence()
                             board.move(dragger.piece, move)
-
+                            game.sound_it(captured)
                             game.display_chessboard(screenplay)
                             game.display_lastmove(screenplay)
                             game.display_pieces(screenplay)

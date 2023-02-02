@@ -2,6 +2,8 @@ import pygame
 from base import *
 from board import Board
 from dragger import Dragger
+from config import Config
+
 
 class Game:
 
@@ -9,7 +11,8 @@ class Game:
         self.player_turn = 'white'
         self.square_hovered = None
         self.board = Board()
-        self.dragger = Dragger() 
+        self.dragger = Dragger()
+        self.config = Config()
 
     def display_chessboard(self, surface):
         for row in range(cb_rows):
@@ -63,8 +66,7 @@ class Game:
 
     def display_hover(self, surface):
         if self.square_hovered:
-            self.display_rect('#ffeac8', '#ffebc6', self.square_hovered.col, self.square_hovered.row, surface, stroke=3)
-            
+            self.display_rect('#ffeac8', '#ffebc6', self.square_hovered.col, self.square_hovered.row, surface, stroke=3)      
 
     def display_rect(self, ok_color, no_color, xcol, yrow, surface, stroke=0):
         
@@ -77,3 +79,9 @@ class Game:
 
     def next_player(self):
         self.player_turn = 'white' if self.player_turn == "black" else "black"
+
+    def sound_it(self, captured=False):
+        if captured:
+            self.config.capture_sound.play()
+        else:
+            self.config.move_sound.play()
