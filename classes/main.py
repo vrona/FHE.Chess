@@ -51,12 +51,14 @@ class Main:
                     # presence of piece within selected square
                     if board.squares[selected_square_row][selected_square_col].piece_presence():
                         piece = board.squares[selected_square_row][selected_square_col].piece
-                        board.compute_move(piece, selected_square_row, selected_square_col)
-                        dragger.save_initial(event.pos)
-                        dragger.drag_piece(piece)
-                        game.display_chessboard(screenplay)
-                        game.display_moves(screenplay)
-                        game.display_pieces(screenplay)
+
+                        if piece.color == game.player_turn:
+                            board.compute_move(piece, selected_square_row, selected_square_col)
+                            dragger.save_initial(event.pos)
+                            dragger.drag_piece(piece)
+                            game.display_chessboard(screenplay)
+                            game.display_moves(screenplay)
+                            game.display_pieces(screenplay)
 
                 # mouse drags piece
                 elif event.type == pygame.MOUSEMOTION:
@@ -89,6 +91,7 @@ class Main:
 
                             game.display_chessboard(screenplay)
                             game.display_pieces(screenplay)
+                            game.next_player()
 
                     dragger.undrag_piece()
                 

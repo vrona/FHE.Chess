@@ -1,5 +1,3 @@
-
-
 class Move:
 
     def __init__(self, initial, destination):

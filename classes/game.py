@@ -6,6 +6,7 @@ from dragger import Dragger
 class Game:
 
     def __init__(self):
+        self.player_turn = 'white'
         self.board = Board()
         self.dragger = Dragger() 
 
@@ -34,8 +35,8 @@ class Game:
         if self.dragger.dragging:
             piece = self.dragger.piece
 
-            black_dots = pygame.image.load("/Volumes/vrona_SSD/FHE.Chess/content/imgdot/black_dots.png")
-            white_dots = pygame.image.load("/Volumes/vrona_SSD/FHE.Chess/content/imgdot/white_dots.png")
+            black_dots = pygame.image.load("content/imgdot/black_dots.png")
+            white_dots = pygame.image.load("content/imgdot/white_dots.png")
 
             for move in piece.ok_moves:
                 img_center = move.destination.col * sqsize + sqsize // 2, move.destination.row * sqsize + sqsize // 2
@@ -56,3 +57,7 @@ class Game:
         color = ok_color if (yrow + xcol) % 2 == 0 else no_color # color
         rect = (xcol * sqsize, yrow * sqsize, sqsize, sqsize)   # rect
         pygame.draw.rect(surface, color, rect, stroke)         # blit
+
+    
+    def next_player(self):
+        self.player_turn = 'white' if self.player_turn == "black" else "black"
