@@ -22,6 +22,8 @@ class Piece:
     def add_ok_move(self, move):
         self.ok_moves.append(move)
 
+    def clear_moves(self):
+        self.ok_moves = []
 
 class Pawn(Piece):
 

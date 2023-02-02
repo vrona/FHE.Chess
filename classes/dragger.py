@@ -14,6 +14,7 @@ class Dragger:
         self.initial_col = 0
 
     def update_blit(self, surface):
+        """user experience stuff"""
         self.piece.set_texture(size=128)
         img_path = self.piece.img_uri
 
@@ -24,9 +25,11 @@ class Dragger:
         surface.blit(img, self.piece.rectangle)                  
 
     def update_mouse(self, position):
+        """current mouse position helper"""
         self.mouseX, self.mouseY = position
 
     def save_initial(self, position):
+        """get initial position of square"""
         self.initial_row = position[1] // sqsize # y coordinate
         self.initial_col = position[0] // sqsize # x coordinate
 

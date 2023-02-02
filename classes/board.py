@@ -9,10 +9,30 @@ class Board:
     def __init__(self):
         # each columns is initialized with 8 zeros related to 8 rows which are actually squares.
         self.squares = [[0]*8 for col in range(cb_cols)]
+        self.last_move = None
         self._create()
         self._add_pieces('white')
         self._add_pieces('black')
 
+    def move(self, piece, move):
+        initial = move.initial
+        destination = move.destination
+
+        # updating the chessboard
+        self.squares[initial.row][initial.col].piece = None
+        self.squares[destination.row][destination.col].piece = piece
+
+        # move
+        piece.moved = True
+
+        # keep last move
+        self.last_move = move
+
+        # clear stock of ok moves
+        piece.clear_moves()
+
+    def valid_move(self, piece, move):
+        return move in piece.ok_moves
     
     def compute_move(self, piece, row, col):
         """
@@ -149,7 +169,9 @@ class Board:
 
 
         if isinstance(piece, Pawn): pawn_moves()
+
         elif isinstance(piece, Knight): kight_moves()
+
         elif isinstance(piece, Bishop):
             straightline_move([
                 (-1,1), #to NE
@@ -157,6 +179,7 @@ class Board:
                 (1,-1), #to SW
                 (1,1)   #to SE
             ])
+
         elif isinstance(piece, Rook):
             straightline_move([
                 (-1,0),#N
@@ -164,6 +187,7 @@ class Board:
                 (0,-1),#W
                 (1,0)  #S
             ])
+
         elif isinstance(piece, Queen):
             straightline_move([
                 (-1,0),#N
@@ -178,7 +202,6 @@ class Board:
         
         elif isinstance(piece, King): king_moves()
 
-
     def _create(self):
 
         for row in range(cb_rows):
@@ -191,7 +214,6 @@ class Board:
         # pawns
         for col in range(cb_cols):
             self.squares[row_pawn][col] = Square(row_pawn, col, Pawn(color))
-
         # test self.squares[5][0] = Square(5, 0, Pawn(color))
         # test self.squares[5][3] = Square(5, 3, Pawn(color))
         
@@ -211,10 +233,8 @@ class Board:
         
         # queen
         self.squares[row_other][3] = Square(row_other, 3, Queen(color))
-
         # test self.squares[3][3] = Square(3, 3, Queen(color))
 
         # king
         self.squares[row_other][4] = Square(row_other, 4, King(color))
-
         # testself.squares[2][4] = Square(2, 4, King(color))
