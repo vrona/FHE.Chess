@@ -56,7 +56,7 @@ class Board:
                         move = Move(initial, destination)
                         piece.add_ok_move(move)                                                
 
-            # promotion & en passant
+            # missing promotion & en passant
 
         def kight_moves():
             possible_moves = [
@@ -67,7 +67,7 @@ class Board:
                 (row+2, col-1),
                 (row+1, col-2),
                 (row-1, col-2),
-                (row-2, col-1),
+                (row-2, col-1)
             ]
             for ok_move in possible_moves:
                 ok_move_row, ok_move_col = ok_move # y, x
@@ -119,35 +119,64 @@ class Board:
                     possible_move_row = possible_move_row + row_incr
                     possible_move_col = possible_move_col + col_incr
 
+        def king_moves():
+            juxtapose = [
+                (row-1, col+0), #N
+                (row-1, col+1), #NE
+                (row+0, col+1), #E
+                (row+1, col+1), #SE
+                (row+1, col+0), #S
+                (row+1, col-1), #SW
+                (row+0, col-1), #W
+                (row-1, col-1)] #NW
+            # missing castling
+            
+            for ok_move in juxtapose:
+                ok_move_row, ok_move_col = ok_move # y, x
+
+                # macro location
+                if Square.in_board(ok_move_row, ok_move_col):
+                    if self.squares[ok_move_row][ok_move_col].empty_occupied(piece.color):
+                        
+                        # micro location
+                        initial = Square(row, col) 
+                        destination = Square(ok_move_row, ok_move_col)
+                        
+                        # move at micro
+                        move = Move(initial, destination)
+                        piece.add_ok_move(move)
+
+
+
         if isinstance(piece, Pawn): pawn_moves()
         elif isinstance(piece, Knight): kight_moves()
         elif isinstance(piece, Bishop):
             straightline_move([
-                (-1,1), #SW to NE
-                (-1,-1),#SE to NW
-                (1,-1), #NE to SW
-                (1,1)   #NW to SE
+                (-1,1), #to NE
+                (-1,-1),#to NW
+                (1,-1), #to SW
+                (1,1)   #to SE
             ])
         elif isinstance(piece, Rook):
             straightline_move([
-                (-1,0),#up
-                (0,1), #right
-                (0,-1),#left
-                (1,0)  #down
+                (-1,0),#N
+                (0,1), #E
+                (0,-1),#W
+                (1,0)  #S
             ])
         elif isinstance(piece, Queen):
             straightline_move([
-                (-1,0),#up
-                (0,1), #right
-                (0,-1),#left
-                (1,0),  #down
-                (-1,1), #SW to NE
-                (-1,-1),#SE to NW
-                (1,-1), #NE to SW
-                (1,1)   #NW to SE
+                (-1,0),#N
+                (0,1), #E
+                (0,-1),#W
+                (1,0), #S
+                (-1,1), #to NE
+                (-1,-1),#to NW
+                (1,-1), #to SW
+                (1,1)   #to SE
             ])
         
-        elif isinstance(piece, King): straightline_move()
+        elif isinstance(piece, King): king_moves()
 
 
     def _create(self):
@@ -185,3 +214,5 @@ class Board:
 
         # king
         self.squares[row_other][4] = Square(row_other, 4, King(color))
+
+        #test self.squares[3][4] = Square(3, 4, King(color))
