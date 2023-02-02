@@ -45,7 +45,7 @@ class Game:
 
             for move in piece.ok_moves:
                 
-                self.display_rect('#d1d0d1', '#d1d0d2', move.destination.col, move.destination.row, surface)
+                self.display_rect('#FBFBFA', '#F6F6F5', move.destination.col, move.destination.row, surface)
                 # color = '#aaf542' if (move.destination.row + move.destination.col) % 2 == 0 else '#f57242'
                 # if(move.destination.row + move.destination.col) %2 == 0:
                 #     color = '#aaf542' #(255,203,0,255)

@@ -103,13 +103,15 @@ class Board:
                         
                         # empty square
                         if self.squares[possible_move_row][possible_move_col].empty():
-                        
                             piece.add_ok_move(move)
 
                         # opponent presence
                         elif self.squares[possible_move_row][possible_move_col].opponent_presence(piece.color):
-                            
                             piece.add_ok_move(move)
+                            break
+                    
+                        # player presence
+                        elif self.squares[possible_move_row][possible_move_col].player_presence(piece.color):
                             break
 
                     else: break 
@@ -161,19 +163,22 @@ class Board:
         for col in range(cb_cols):
             self.squares[row_pawn][col] = Square(row_pawn, col, Pawn(color))
 
-        # self.squares[5][0] = Square(5, 0, Pawn(color))
-        # self.squares[5][3] = Square(5, 3, Pawn(color))
+        # test self.squares[5][0] = Square(5, 0, Pawn(color))
+        # test self.squares[5][3] = Square(5, 3, Pawn(color))
+        
         # knights
         self.squares[row_other][1] = Square(row_other, 1, Knight(color))
         self.squares[row_other][6] = Square(row_other, 6, Knight(color))
 
-        # beshops
+        # bishops
         self.squares[row_other][2] = Square(row_other, 2, Bishop(color))
         self.squares[row_other][5] = Square(row_other, 5, Bishop(color))
-
+        # test self.squares[4][3] = Square(4, 3, Bishop(color))
+        
         # rooks
         self.squares[row_other][0] = Square(row_other, 0, Rook(color))
         self.squares[row_other][7] = Square(row_other, 7, Rook(color))
+        # test self.squares[row_other][7] = Square(row_other, 7, Rook(color))
         
         # queen
         self.squares[row_other][3] = Square(row_other, 3, Queen(color))
