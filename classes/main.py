@@ -105,6 +105,14 @@ class Main:
 
                     dragger.undrag_piece()
                 
+                # reset app
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_r:
+                        game.reset()
+                        game = self.game
+                        board = self.game.board
+                        dragger = self.game.dragger
+                        
                 # close app
                 elif event.type == pygame.QUIT:
                     pygame.quit()
