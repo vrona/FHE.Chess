@@ -47,10 +47,13 @@ class Board:
 
     def castling(self, initial, destination):
         return abs(initial.col - destination.col) == 2
-
+        
     def valid_move(self, piece, move):
         return move in piece.ok_moves
     
+    def in_check(self):
+        pass
+
     def compute_move(self, piece, row, col):
         """
         computes possible moves() of specific piece at a given coordinates
@@ -184,7 +187,7 @@ class Board:
             # castling
             if not piece.moved:
                 
-                # queen
+                # queenside
                 left_rook = self.squares[row][0].piece
 
                 if isinstance(left_rook, Rook):
@@ -208,7 +211,7 @@ class Board:
                                 move_king = Move(initial, destination)
                                 piece.add_ok_move(move_king)
 
-                # king
+                # kingside
                 right_rook = self.squares[row][7].piece
 
                 if isinstance(right_rook, Rook):
