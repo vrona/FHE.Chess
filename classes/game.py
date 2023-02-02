@@ -35,6 +35,7 @@ class Game:
         if self.dragger.dragging:
             piece = self.dragger.piece
 
+            # ok moves show as image
             black_dots = pygame.image.load("content/imgdot/black_dots.png")
             white_dots = pygame.image.load("content/imgdot/white_dots.png")
 
@@ -49,8 +50,16 @@ class Game:
                     piece.rectangle = white_dots.get_rect(center=img_center)
                     surface.blit(white_dots, piece.rectangle)
                 
-                # for color self.display_rect('#ffeac8', '#ffebc6', move.destination.col, move.destination.row, surface, stroke=10)
+                # ok moves show as color self.display_rect('#ffeac8', '#ffebc6', move.destination.col, move.destination.row, surface, stroke=10)
                
+    def display_lastmove(self, surface):
+        if self.board.last_move:
+            initial = self.board.last_move.initial
+            destination = self.board.last_move.destination
+
+            for coor in [initial, destination]:
+                self.display_rect('#f5f7f9', '#c1c4c8', coor.col, coor.row, surface)
+
 
     def display_rect(self, ok_color, no_color, xcol, yrow, surface, stroke=0):
         

@@ -28,6 +28,9 @@ class Main:
             # show chess board
             game.display_chessboard(screenplay)
 
+            # show last move
+            game.display_lastmove(screenplay)
+            
             # show move
             game.display_moves(screenplay)
 
@@ -90,6 +93,7 @@ class Main:
                             board.move(dragger.piece, move)
 
                             game.display_chessboard(screenplay)
+                            game.display_lastmove(screenplay)
                             game.display_pieces(screenplay)
                             game.next_player()
 
