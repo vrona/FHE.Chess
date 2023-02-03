@@ -14,7 +14,7 @@ class Board:
         self._add_pieces('white')
         self._add_pieces('black')
 
-    def move(self, piece, move):
+    def move(self, piece, move, simulation = False):
         initial = move.initial
         destination = move.destination
 
@@ -41,7 +41,7 @@ class Board:
 
         # check king castling
         if isinstance(piece, King):
-            if self.castling(initial, destination):
+            if self.castling(initial, destination) and not simulation:
                 diff = destination.col - initial.col
                 rook = piece.left_rook if (diff < 0) else piece.right_rook # determine if castling queenside or kingside
                 self.move(rook, rook.ok_moves[-1])
@@ -82,7 +82,7 @@ class Board:
         """"for simulation"""
         temppiece = copy.deepcopy(piece)
         tempboard = copy.deepcopy(self)
-        tempboard.move(temppiece, move) # move virtually one piece
+        tempboard.move(temppiece, move, simulation=True) # move virtually one piece
 
         for row in range(cb_rows):
             for col in range(cb_cols):
