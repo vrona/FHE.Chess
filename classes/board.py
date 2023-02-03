@@ -116,13 +116,14 @@ class Board:
                 if Square.in_board(ok_move_row, ok_move_col):
                     if self.squares[ok_move_row][ok_move_col].empty_occupied(piece.color):
                         
+                        Move.move_from_to(piece, row, col, ok_move_row, ok_move_col)
                         # micro location
-                        initial = Square(row, col) 
-                        destination = Square(ok_move_row, ok_move_col)
+                        # initial = Square(row, col) 
+                        # destination = Square(ok_move_row, ok_move_col)
                         
-                        # move at micro
-                        move = Move(initial, destination)
-                        piece.add_ok_move(move)
+                        # # move at micro
+                        # move = Move(initial, destination)
+                        # piece.add_ok_move(move)
 
         def straightline_move(increments):
             for incr in increments:
@@ -176,13 +177,14 @@ class Board:
                 if Square.in_board(ok_move_row, ok_move_col):
                     if self.squares[ok_move_row][ok_move_col].empty_occupied(piece.color):
                         
-                        # micro location
-                        initial = Square(row, col) 
-                        destination = Square(ok_move_row, ok_move_col)
+                        Move.move_from_to(piece, row, col, ok_move_row, ok_move_col)
+                        # # micro location
+                        # initial = Square(row, col) 
+                        # destination = Square(ok_move_row, ok_move_col)
                         
-                        # move at micro
-                        move = Move(initial, destination)
-                        piece.add_ok_move(move)
+                        # # move at micro
+                        # move = Move(initial, destination)
+                        # piece.add_ok_move(move)
 
             # castling
             if not piece.moved:
@@ -200,16 +202,18 @@ class Board:
                                 piece.left_rook = left_rook # adds left rook to queen
                                 
                                 # rook move to king
-                                initial = Square(row, 0)
-                                destination = Square(row, 3)
-                                move_rook = Move(initial, destination)
-                                left_rook.add_ok_move(move_rook)
+                                Move.move_from_to(left_rook, row, 0, row, 3)
+                                # initial = Square(row, 0)
+                                # destination = Square(row, 3)
+                                # move_rook = Move(initial, destination)
+                                # left_rook.add_ok_move(move_rook)
 
                                 # king move to rook
-                                initial = Square(row, col)
-                                destination = Square(row, 2)
-                                move_king = Move(initial, destination)
-                                piece.add_ok_move(move_king)
+                                Move.move_from_to(piece, row, col, row, 2)
+                                # initial = Square(row, col)
+                                # destination = Square(row, 2)
+                                # move_king = Move(initial, destination)
+                                # piece.add_ok_move(move_king)
 
                 # kingside
                 right_rook = self.squares[row][7].piece
@@ -224,16 +228,18 @@ class Board:
                                 piece.right_rook = right_rook # adds right rook to king
                                 
                                 # rook move to king
-                                initial = Square(row, 7)
-                                destination = Square(row, 5)
-                                move_rook = Move(initial, destination)
-                                right_rook.add_ok_move(move_rook)
+                                Move.move_from_to(right_rook, row, 7, row, 5)
+                                # initial = Square(row, 7)
+                                # destination = Square(row, 5)
+                                # move_rook = Move(initial, destination)
+                                # right_rook.add_ok_move(move_rook)
 
                                 # king move to rook
-                                initial = Square(row, col)
-                                destination = Square(row, 6)
-                                move_king = Move(initial, destination)
-                                piece.add_ok_move(move_king)
+                                Move.move_from_to(piece, row, col, row, 6)
+                                # initial = Square(row, col)
+                                # destination = Square(row, 6)
+                                # move_king = Move(initial, destination)
+                                # piece.add_ok_move(move_king)
 
 
         if isinstance(piece, Pawn): pawn_moves()
