@@ -57,7 +57,7 @@ class Main:
                         piece = board.squares[selected_square_row][selected_square_col].piece
 
                         if piece.color == game.player_turn:
-                            board.compute_move(piece, selected_square_row, selected_square_col)
+                            board.compute_move(piece, selected_square_row, selected_square_col, bool=True)
                             dragger.save_initial(event.pos)
                             dragger.drag_piece(piece)
                             game.display_chessboard(screenplay)
@@ -97,6 +97,8 @@ class Main:
                         if board.valid_move(dragger.piece, move):
                             captured = board.squares[released_row][released_col].piece_presence()
                             board.move(dragger.piece, move)
+
+                            board.set_true_en_passant(dragger.piece)
                             #game.sound_it(captured)
                             game.display_chessboard(screenplay)
                             game.display_lastmove(screenplay)
