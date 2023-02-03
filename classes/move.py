@@ -15,6 +15,7 @@ class Move:
     def move_from_to(piece, initial_row, initial_col, ok_move_row, ok_move_col):
         # micro location
         initial = Square(initial_row, initial_col)
+        #piece_destination = self.squares[ok_move_row][ok_move_col].piece # get piece at destination aka king check
         destination = Square(ok_move_row, ok_move_col)
         
         # move at micro
