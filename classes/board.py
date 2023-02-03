@@ -104,13 +104,14 @@ class Board:
                     if self.squares[possible_move_row][move_col].opponent_presence(piece.color):
 
                          # micro location
-                        initial = Square(row, col)
-                        piece_destination = self.squares[possible_move_row][possible_move_col].piece # get piece at destination aka king check
-                        destination = Square(possible_move_row, move_col, piece_destination)
+                        #initial = Square(row, col)
+                        piece_destination = self.squares[possible_move_row][move_col].piece # get piece at destination aka king check
+                        Move.move_from_to(piece, row, col, possible_move_row, move_col, piece_destination)
+                        #destination = Square(possible_move_row, move_col, piece_destination)
                         
                         # move at micro
-                        move = Move(initial, destination)
-                        piece.add_ok_move(move)                                                
+                        #move = Move(initial, destination)
+                        #piece.add_ok_move(move)                                                
 
             # missing en passant
 
@@ -133,7 +134,7 @@ class Board:
                     if self.squares[ok_move_row][ok_move_col].empty_occupied(piece.color):
                         
                         piece_destination = self.squares[ok_move_row][ok_move_col].piece # get piece at destination aka king check
-                        Move.move_from_to(piece, row, col, ok_move_row, ok_move_col)
+                        Move.move_from_to(piece, row, col, ok_move_row, ok_move_col, piece_destination)
 
         def straightline_move(increments):
             for incr in increments:

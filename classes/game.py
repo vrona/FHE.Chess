@@ -17,7 +17,7 @@ class Game:
     def display_chessboard(self, surface):
         for row in range(cb_rows):
             for col in range(cb_cols):
-                self.display_rect('#ffcb00', '#000000', col, row, surface) #242424
+                self.display_rect('#ffcb00', '#383E42', col, row, surface) #242424
 
     def display_pieces(self, surface):
         for row in range(cb_rows):

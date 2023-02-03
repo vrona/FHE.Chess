@@ -12,11 +12,10 @@ class Move:
         return self.initial == other.initial and self.destination == other.destination
 
     @staticmethod
-    def move_from_to(piece, initial_row, initial_col, ok_move_row, ok_move_col):
+    def move_from_to(piece, initial_row, initial_col, ok_move_row, ok_move_col, piece_destination=None):
         # micro location
         initial = Square(initial_row, initial_col)
-        #piece_destination = self.squares[ok_move_row][ok_move_col].piece # get piece at destination aka king check
-        destination = Square(ok_move_row, ok_move_col)
+        destination = Square(ok_move_row, ok_move_col, piece_destination)
         
         # move at micro
         move = Move(initial, destination)
