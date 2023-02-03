@@ -5,9 +5,11 @@ file_version: 1.1.1
 app_version: 1.1.4
 ---
 
-Chess rules: one time possibility that two pieces move at once and over another piece (basically only knights can). At Kingside, the King moves two squares to the right while the right Rook moves two squares over the King. At Queenside, the King moves two squares to the left while the right Rook moves three squares over the King. (prerequisites: no piece must between the King and either the chosen Rook and none of them as moved yet).
+Chess rules: one time possibility that two pieces move at once and over another piece (basically only knights can).
 
-<br/>
+At _Kingside_, the King moves two squares to the right while the right Rook moves two squares over the King.
+
+At _Queenside_, the King moves two squares to the left while the right Rook moves three squares over the King. (prerequisites: no pieces must be between the King and the chosen Rook and none of them have moved yet).
 
 <br/>
 
