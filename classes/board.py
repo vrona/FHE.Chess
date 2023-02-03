@@ -52,7 +52,7 @@ class Board:
     def valid_move(self, piece, move):
         return move in piece.ok_moves
     
-    def in_check(self, piece, move):
+    def check_simulation(self, piece, move):
         """"for simulation"""
         temppiece = copy.deepcopy(piece)
         tempboard = copy.deepcopy(self)
