@@ -42,7 +42,6 @@ class Main:
             if dragger.dragging:
                 dragger.update_blit(screenplay)
 
-
             for event in pygame.event.get():
 
                 # mouse selects piece
