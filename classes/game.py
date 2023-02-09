@@ -3,7 +3,7 @@ from base import *
 from board import Board
 from dragger import Dragger
 from config import Config
-
+from square import Square
 
 class Game:
 
@@ -17,7 +17,19 @@ class Game:
     def display_chessboard(self, surface):
         for row in range(cb_rows):
             for col in range(cb_cols):
-                self.display_rect('#ffcb00', '#383E42', col, row, surface) #242424
+                self.display_rect('#ffcb00', '#383E42', col, row, surface) 
+
+                # numeric labels along col 0
+                if col == 0:
+                    numeric_label = self.config.font.render(str(cb_rows-row), 10, "#FFFFFF")
+                    numeric_label_position = (5, 5+row * sqsize)
+                    surface.blit(numeric_label, numeric_label_position)
+
+                # numeric labels along col 0
+                if row == 7:
+                    algebraic_label = self.config.font.render(Square.get_algeb_not(col), 1,"#FFFFFF")
+                    algebraic_label_position = (col * sqsize + sqsize - 20, sp_height - 20)
+                    surface.blit(algebraic_label, algebraic_label_position)
 
     def display_pieces(self, surface):
         for row in range(cb_rows):

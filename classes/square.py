@@ -1,9 +1,12 @@
 class Square:
 
+    algebraic_notation_cols = {0:"a", 1:"b", 2:"c",  3:"d",  4:"e",  5:"f",  6:"g",  7:"h"}
+
     def __init__(self, row, col, piece=None):
         self.row = row
         self.col = col
         self.piece = piece
+        self.algebraic_cols = self.algebraic_notation_cols[col]
 
     def __eq__(self, other): # explicit definition of square equality
         return self.row == other.row and self.col == other.col
@@ -30,3 +33,8 @@ class Square:
                 return False
         
         return True
+
+    @staticmethod
+    def get_algeb_not(col):
+        algebraic_notation_cols = {0:"a", 1:"b", 2:"c",  3:"d",  4:"e",  5:"f",  6:"g",  7:"h"}
+        return algebraic_notation_cols[col]
