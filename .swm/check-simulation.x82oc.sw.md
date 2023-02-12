@@ -1,8 +1,8 @@
 ---
 id: x82oc
 title: Check simulation
-file_version: 1.1.1
-app_version: 1.1.4
+file_version: 1.1.2
+app_version: 1.2.0
 ---
 
 check means the King is under attack.
@@ -13,24 +13,27 @@ Virtualization of the board by copying the Board() and Piece() classes. Then, co
 
 
 <!-- NOTE-swimm-snippet: the lines below link your snippet to Swimm -->
-### 📄 classes/board.py
+### 📄 chessboard/board.py
 ```python
-55         def check_simulation(self, piece, move):
-56             """"for simulation"""
-57             temppiece = copy.deepcopy(piece)
-58             tempboard = copy.deepcopy(self)
-59             tempboard.move(temppiece, move)
-60     
-61             for row in range(cb_rows):
-62                 for col in range(cb_cols):
-63                     if tempboard.squares[row][col].opponent_presence(piece.color):
-64                         piece = tempboard.squares[row][col].piece
-65                         tempboard.compute_move(piece, row, col)
-66     
-67                         for mvmt in piece.ok_moves:
-68                             if isinstance(mvmt.destination.piece, King):
-69                                 return True
-70             return False
+80         def check_simulation(self, piece, move):
+81             
+82             """"for simulation"""
+83             temppiece = copy.deepcopy(piece)
+84             tempboard = copy.deepcopy(self)
+85             tempboard.move(temppiece, move, simulation=True) # move virtually one piece
+86     
+87             for row in range(cb_rows):
+88                 for col in range(cb_cols):
+89                     """check for all opponent if their potential ok_moves arrive in the team's Kings' square"""
+90                     if tempboard.squares[row][col].opponent_presence(piece.color):
+91                         p = tempboard.squares[row][col].piece
+92                         
+93                         tempboard.compute_move(p, row, col, bool=False)
+94     
+95                         for mvmt in p.ok_moves:
+96                             if isinstance(mvmt.destination.piece, King):
+97                                 return True
+98             return False
 ```
 
 <br/>
