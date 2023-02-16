@@ -1,53 +1,44 @@
 import torch
 import torch.nn as nn
 from torch import optim
-import numpy as np 
+from torchvision import transforms
+import numpy as np
 
 """
 ASCII SET isometric1 http://asciiset.com/figletserver.html
 """
 # CUDA's availability
-train_on_gpu = torch.cuda.is_available()
+device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cuda")
 
-if not train_on_gpu:
-    print('CPU Training... (CUDA not available)')
+# if not train_on_gpu:
+#     print('CPU Training... (CUDA not available)')
 
-else:
-    print('GPU Training...')
-
-"""
-LOADING SECTION
-training_set = ZDataset(dataset['AN'])
-training_loader =  DataLoader(training_set, batch_size=32, drop_last=True)
-"""
-trainloader = 0 
-validloader = 0
-testloader = 0
+# else:
+#     print('GPU Training...')
 
 
 
-def validation(model, testloader, criterion):
-    accuracy = 0
-    test_loss = 0
-    
-    # get the x_data from testloader
-    # get output from model and model.forward(input_data)
-    # update test_loss += criterion(output, )
-    # update accuracy += equality.type_as(torch.FloatTensor()).mean()
-
-    return test_loss, accuracy
-
-def train(model, epochs=5):
+def train_valid(model, trainloader, validloader, n_epochs=5):
 
     # loss function
-    criterion = nn.CrossEntropyLoss() # To Change
+    criterion = nn.CrossEntropyLoss()
+    """
+    initial_square = nn.CrossEntropyLoss()
+    destination_square = nn.CrossEntropyLoss()
 
+    2 prob distribution (which piece and which move)
+    loss_initial_square = initial_square(output[:,0,:], y[:,0,:])
+    loss_destination_square = destination_square(output[:,1,:], y[:,1,:])
+    loss_move = loss_initial_square + loss_destination_square
+
+
+    """
     # optimizer
     optimizer = optim.Adam(model.parameters(), lr = 0.01)
 
     valid_loss_min = np.Inf # track change in validation loss
 
-    for e in range(epochs):
+    for epoch in range(n_epochs):
 
         train_loss = 0
         valid_loss = 0
@@ -66,13 +57,12 @@ def train(model, epochs=5):
         #                   \|__|         \/__/                     \/__/    
 
 
-        # model in training mode, dropout is on
+        # model in training mode
         model.train()
         
         for data, target in trainloader:
             
-            if train_on_gpu:
-                data, target = data.cuda(), target.cuda()
+            data, target = data.to(device), target.to(device)
 
             # clear the gradients from all variable
             optimizer.zero_grad()
@@ -106,8 +96,7 @@ def train(model, epochs=5):
 
         for data, target in validloader:
 
-            if train_on_gpu:
-                data, target = data.cuda(), target.cuda()
+            data, target = data.to(device), target.to(device)
 
             # forward
             output = model(data)
@@ -122,7 +111,7 @@ def train(model, epochs=5):
 
     # print training/validation statistics 
     print('Epoch: {} \tTraining Loss: {:.6f} \tValidation Loss: {:.6f}'.format(
-        epochs, train_loss, valid_loss))
+        epoch, train_loss, valid_loss))
     
     # save model if validation loss has decreased
     if valid_loss <= valid_loss_min:
@@ -146,7 +135,7 @@ def train(model, epochs=5):
 #                   \/__/         \/__/            
 
 
-def test(model, model_name, criterion):
+def test(model, model_name, testloader, criterion):
 
     model.loard_state_dict(torch.load(model_name))
 
@@ -154,19 +143,21 @@ def test(model, model_name, criterion):
 
     model.eval()
 
-    for data, target in testloader:
+    with torch.no_grad():
 
-        # forward
-        output = model(data)
-        # batch loss
-        loss = criterion(output, target)
-        # train_loss update
-        test_loss += loss.item()*data.size(0)
+        for data, target in testloader:
 
-        # TO DO comparison to true data
-        # with conversion of output to wanted format
+            # forward
+            output = model(data)
+            # batch loss
+            loss = criterion(output, target)
+            # train_loss update
+            test_loss += loss.item()*data.size(0)
+
+            # TO DO comparison to true data
+            # with conversion of output to wanted format
 
 
-    # average test loss
-    test_loss = test_loss/len(testloader.dataset)
-    print('Test Loss: {:.6f}\n'.format(test_loss))
+        # average test loss
+        test_loss = test_loss/len(testloader.dataset)
+        print('Test Loss: {:.6f}\n'.format(test_loss))
