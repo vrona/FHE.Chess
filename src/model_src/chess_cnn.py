@@ -104,4 +104,9 @@ class PieceNet(nn.Module):
 
         return x
     
-"""best probability distribution from each output feature map * conditioned to rules"""
+"""best probability distribution from each output feature map * conditioned to rules:
+- only legal move (ban illegal)
+- randomness (check stochastic)
+- adhoc function
+- input feature maps
+"""

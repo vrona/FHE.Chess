@@ -1,7 +1,6 @@
 import torch
 import torch.nn as nn
 from torch import optim
-from torchvision import transforms
 import numpy as np
 
 """

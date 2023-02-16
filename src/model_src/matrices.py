@@ -31,7 +31,7 @@ class Board_State():
         return np.array(board_matrix) # numpy matrix
 
 
-    def board_2_rep(self, board):
+    def board_tensor(self, board):
         """board to matrix representation per pieces types"""
         pieces = ['p','r','n','b','q','k']
         layers = []

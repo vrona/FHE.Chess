@@ -52,7 +52,7 @@ class ZDataset(Dataset):
         for move in moves:
             board.push_san(move)
             
-            x = Board_State.board_2_rep(board)
+            x = Board_State.board_tensor(board)
             y = Move_State.move_piece(next_move, board)
 
             # determine white or black turn (1 for w, -1 for b)
