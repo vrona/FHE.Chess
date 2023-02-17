@@ -1,7 +1,8 @@
 from dataset import ZDataset
+from torch.utils.data import DataLoader
 from trainnvalid import train_valid, test
 import numpy as np
-from cnn_model import Net
+from chess_cnn import Net, PlainChessNET
 
 model = Net()
 
@@ -19,9 +20,9 @@ training_set = ZDataset(dataset['AN'])
 
 
 # normalization + convert to tensor
-trainloader = torch.utils.data.DataLoader(training_set, batch_size=32, drop_last=True)
-validloader = torch.utils.data.DataLoader(valid_set, batch_size=32, drop_last=True)
-testloader = torch.utils.data.DataLoader(test_set, batch_size=32, drop_last=True)
+trainloader = DataLoader(training_set, batch_size=32, drop_last=True)
+validloader = DataLoader(valid_set, batch_size=32, drop_last=True)
+testloader = DataLoader(test_set, batch_size=32, drop_last=True)
  
 
 """from piece class variable legal moves are in self.ok_moves = []"""

@@ -72,4 +72,4 @@ class Move_State():
 
     def list_move_sequence(listms):
         """individual moves"""
-        return re.sub('\d*\.','',listms).split(' ')[:-1]
+        return re.sub('\d*\. ','',listms).split(' ')[:-1]
