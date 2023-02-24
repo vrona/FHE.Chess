@@ -2,7 +2,7 @@ import re
 import numpy as np
 
 num_to_alpha = {0:"a", 1:"b", 2:"c",  3:"d",  4:"e",  5:"f",  6:"g",  7:"h"}
-alpha_to_num = {"a":0, "b":1, "c":2,  "d":3,  "e":4,  "f":5,  "g":6,  "a":7}
+alpha_to_num = {"a":0, "b":1, "c":2,  "d":3,  "e":4,  "f":5,  "g":6,  "h":7}
 
 """ codeflow
 get moves from db
@@ -17,10 +17,10 @@ class Board_State():
     def feat_map_piece(self, board, type):
         """convert board chess lib format to binary like"""
         self.sub_board = str(board)
-        self.sub_board = re.sub(f'[^{type}{type.upper()} \n', '.', self.sub_board)
-        self.sub_board = re.sub(f'[^{type}','-1', self.sub_board)
-        self.sub_board = re.sub(f'[^{type.upper()}','1', self.sub_board)
-        self.sub_board = re.sub(f'.','0', self.sub_board)
+        self.sub_board = re.sub(f'[^{type}{type.upper()} \n]', '.', self.sub_board)
+        self.sub_board = re.sub(f'{type}', '-1', self.sub_board)
+        self.sub_board = re.sub(f'{type.upper()}', '1', self.sub_board)
+        self.sub_board = re.sub(f'\.', '0', self.sub_board)
 
         board_matrix = []
         for row in self.sub_board.split('\n'):
@@ -52,7 +52,7 @@ class Move_State():
     def __init__(self):
         pass
 
-    def move_piece(move, board):
+    def move_piece(self, move, board):
         """function for moving"""
         board.push_san(move).uci() # 1st needs to convert the dataset from algebraic to uci format
         move = str(board.pop())
@@ -70,6 +70,6 @@ class Move_State():
         return np.stack([initial_output_layer, destination_output_layer])
     
 
-    def list_move_sequence(listms):
+    def list_move_sequence(self, listms):
         """individual moves"""
         return re.sub('\d*\. ','',listms).split(' ')[:-1]

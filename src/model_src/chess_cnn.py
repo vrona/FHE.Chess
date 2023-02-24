@@ -10,7 +10,6 @@ S: stride
 output_w : (W-F+2P)/S+1
 eg.: if input 7*7 / filter 3*3 / s 1 / pad 0 then output_w 3*3
 """
- 
 
 class Net(nn.Module):
 
