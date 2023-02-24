@@ -1,6 +1,4 @@
 import torch
-import torch.nn as nn
-from torch import optim
 import numpy as np
 
 """
@@ -16,11 +14,10 @@ device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cu
 #     print('GPU Training...')
 
 
-
-def train_valid(model, trainloader, validloader, n_epochs=5):
+def train_valid(model, trainloader, validloader, criterion, optimizer, n_epochs=5):
 
     # loss function
-    criterion = nn.CrossEntropyLoss()
+    
     """
     initial_square = nn.CrossEntropyLoss()
     destination_square = nn.CrossEntropyLoss()
@@ -32,9 +29,6 @@ def train_valid(model, trainloader, validloader, n_epochs=5):
 
 
     """
-    # optimizer
-    optimizer = optim.Adam(model.parameters(), lr = 0.01)
-
     valid_loss_min = np.Inf # track change in validation loss
 
     for epoch in range(n_epochs):
@@ -117,7 +111,7 @@ def train_valid(model, trainloader, validloader, n_epochs=5):
         print('Validation loss decreased ({:.6f} --> {:.6f}).  Saving model ...'.format(
         valid_loss_min, valid_loss))
 
-        torch.save(model.state_dict(), 'model_plain_chess.pt')
+        torch.save(model.state_dict(), "model_plain_chess.pt")
         valid_loss_min = valid_loss
 
 
@@ -134,9 +128,8 @@ def train_valid(model, trainloader, validloader, n_epochs=5):
 #                   \/__/         \/__/            
 
 
-def test(model, model_name, testloader, criterion):
+def test(model, testloader, criterion):
 
-    model.loard_state_dict(torch.load(model_name))
 
     test_loss = 0.0
 
