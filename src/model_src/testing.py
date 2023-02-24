@@ -11,8 +11,6 @@ wechess = pd.read_csv(game_move_set)
 
 train, valid, test = np.split(wechess.sample(frac=1, random_state=42), [int(.6*len(wechess)), int(.8*len(wechess))])
 
-print(type(train), train.shape)
-
 
 #      ___           ___           ___           ___           ___       ___           ___           ___     
 #     /\  \         /\  \         /\  \         /\  \         /\__\     /\  \         /\  \         /\  \    
