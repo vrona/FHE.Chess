@@ -33,7 +33,7 @@ train_data = DataLoader(trainset, batch_size = 40000, shuffle=True, drop_last=Tr
 valid_data = DataLoader(validset, batch_size = 40000, shuffle=True, drop_last=True)
 test_data = DataLoader(testset, batch_size = 40000, shuffle=True, drop_last=True)
 
-x, y = next(iter(train_data))
+x, y = next(iter(valid_data))
 print(x, y)
 #first = datafromset[0]
 #print(datafromset)

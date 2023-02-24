@@ -57,8 +57,8 @@ class ZDataset(Dataset):
 
 
     def __len__(self):
-        """returns the number of training data in batches"""
-        return self.size_data_set #883375 #40000
+        """returns the dataset's size"""
+        return self.size_data_set #total 883375
 
 
     def __getitem__(self, idx):
@@ -72,12 +72,9 @@ class ZDataset(Dataset):
         next_move = initial_moves[game_state_i]
 
         moves = initial_moves[:game_state_i]
-
         board = chess.Board()
 
-
         for move in moves:
-            
             board.push_san(move)
 
         x = helper_board_state.board_tensor(board)

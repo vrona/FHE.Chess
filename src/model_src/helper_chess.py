@@ -32,13 +32,14 @@ class Board_State():
 
 
     def board_tensor(self, board):
-        """board to matrix representation per pieces types"""
+        """board to matrix representation per pieces types and then stacked"""
         pieces = ['p','r','n','b','q','k']
         layers = []
         for piece in pieces:
             layers.append(self.feat_map_piece(board, piece)) # return feature map / pieces
         
-        board_rep = np.stack(layers) #3D tensor
+        board_rep = np.stack(layers) #3D tensor shape (6,8,8)
+        
         return board_rep
     
 
