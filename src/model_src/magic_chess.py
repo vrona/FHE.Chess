@@ -67,7 +67,7 @@ criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr = 0.01)
 
 
-train_valid(model, train_loader, criterion, optimizer, valid_loader)
+train_valid(model, train_loader, valid_loader, criterion, optimizer)
 
 #model with lowest validation loss
 model.loard_state_dict(torch.load("model_plain_chess.pt"))

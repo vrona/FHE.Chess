@@ -5,7 +5,9 @@ import numpy as np
 ASCII SET isometric1 http://asciiset.com/figletserver.html
 """
 # CUDA's availability
-device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cuda")
+
+#device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+device = torch.device("cpu")
 
 # if not train_on_gpu:
 #     print('CPU Training... (CUDA not available)')
@@ -55,7 +57,7 @@ def train_valid(model, trainloader, validloader, criterion, optimizer, n_epochs=
         
         for data, target in trainloader:
             
-            data, target = data.to(device), target.to(device)
+            #data, target = data.to(device), target.to(device)
 
             # clear the gradients from all variable
             optimizer.zero_grad()

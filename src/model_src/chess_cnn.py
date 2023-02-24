@@ -45,13 +45,13 @@ class PlainChessNET(nn.Module):
     def __init__(self, hidden_layers=4, hidden_size=100):
 
         super(PlainChessNET, self).__init__()
-        self.net = Net()
+        
         # define layers of CNN
 
         # input >> hidden layer
         self.hidden_layers = hidden_layers
         self.input_layer = nn.Conv2d(6, hidden_size, kernel_size=3, stride=1, padding=1)
-        self.modulelist = nn.ModuleList([self.net(hidden_size) for i in range(hidden_layers)])
+        self.modulelist = nn.ModuleList([Net(hidden_size) for i in range(hidden_layers)])
         self.output_layer = nn.Conv2d(hidden_size, 2, kernel_size=3, stride=1, padding=1)
 
 
