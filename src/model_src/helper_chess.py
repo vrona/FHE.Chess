@@ -56,6 +56,7 @@ class Move_State():
     def move_piece(self, move, board):
         """function for moving"""
         board.push_san(move).uci() # 1st needs to convert the dataset from algebraic to uci format
+
         move = str(board.pop())
 
         initial_output_layer = np.zeros((8,8)) # from 1 to 0 on the departure matrix

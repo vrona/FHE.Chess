@@ -66,7 +66,7 @@ class PlainChessNET(nn.Module):
         for h in range(self.hidden_layers):
             x = self.modulelist[h](x)
         
-        x = self.output_layer(x)
+        x = self.output_layer(x) # torch.Size([32, 2, 8, 8])
 
         return x
     

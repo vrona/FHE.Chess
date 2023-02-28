@@ -72,6 +72,7 @@ class ZDataset(Dataset):
         next_move = initial_moves[game_state_i]
 
         moves = initial_moves[:game_state_i]
+
         board = chess.Board()
 
         for move in moves:

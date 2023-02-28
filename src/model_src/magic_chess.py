@@ -1,18 +1,17 @@
 from dataset import ZDataset
 import torch
 import torch.nn as nn
-from torch import optim
 from torch.utils.data import DataLoader
-from trainnvalid import train_valid, test
+from trainvalidtest import train_valid, test
 import numpy as np
 import pandas as pd
 from chess_cnn import PlainChessNET
+import wandb
 
 # Dataset = "path/chess-game" # ZDataset(we_2000['AN'])
 # training_set = Dataset + "/train"
 # valid_set = Dataset + "/valid"
 # test_set = Dataset + "/test"
-
 
 """
 LOADING SECTION
@@ -51,23 +50,32 @@ train, valid, test = np.split(wechess.sample(frac=1, random_state=42), [int(.6*l
 #     ~~            \/__/                       \/__/         \/__/     \/__/         \/__/         ~~       
 
 #datafromset = ZDataset(wechess['AN'])
-trainset = ZDataset(train['AN'], 530025) # 530025
-validset = ZDataset(valid['AN'], 176675) # 176675
-testset = ZDataset(test['AN'], 176675)   # 176676
+trainset = ZDataset(train['AN'], train.shape[0]) # 530025
+validset = ZDataset(valid['AN'], valid.shape[0]) # 176675
+testset = ZDataset(test['AN'], test.shape[0])   # 176676
 
-train_loader = DataLoader(trainset, batch_size = 32, shuffle=True, drop_last=True)
-valid_loader = DataLoader(validset, batch_size = 32, shuffle=True, drop_last=True)
-test_loader = DataLoader(testset, batch_size = 32, shuffle=True, drop_last=True)
+train_loader = DataLoader(trainset, batch_size = 256, shuffle=True, drop_last=True)
+valid_loader = DataLoader(validset, batch_size = 256, shuffle=True, drop_last=True)
+test_loader = DataLoader(testset, batch_size = 256, shuffle=True, drop_last=True)
+
+# Weights & Biases run tracking
+api = wandb.Api()
+
+
+run = api.run("vrona/Chess App/run")
+run.config["learning_rate"] = 0.02
+run.config["epochs"] = 2
+run.update()
 
 #model
 model = PlainChessNET()
 #loss
 criterion = nn.CrossEntropyLoss()
 #optimizer
-optimizer = optim.Adam(model.parameters(), lr = 0.01)
 
 
-train_valid(model, train_loader, valid_loader, criterion, optimizer)
+
+train_valid(model, train_loader, valid_loader, criterion)
 
 #model with lowest validation loss
 model.loard_state_dict(torch.load("model_plain_chess.pt"))

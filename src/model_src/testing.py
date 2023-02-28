@@ -25,9 +25,9 @@ train, valid, test = np.split(wechess.sample(frac=1, random_state=42), [int(.6*l
 #     ~~            \/__/                       \/__/         \/__/     \/__/         \/__/         ~~       
 
 #datafromset = ZDataset(wechess['AN'])
-trainset = ZDataset(train['AN'], 530025) # 530025
-validset = ZDataset(valid['AN'], 176675) # 176675
-testset = ZDataset(test['AN'], 176675)   # 176676
+trainset = ZDataset(train['AN'], train.shape[0]) # 530025
+validset = ZDataset(valid['AN'], valid.shape[0]) # 176675
+testset = ZDataset(test['AN'], test.shape[0])   # 176676
 
 train_data = DataLoader(trainset, batch_size = 32, shuffle=True, drop_last=True)
 valid_data = DataLoader(validset, batch_size = 32, shuffle=True, drop_last=True)

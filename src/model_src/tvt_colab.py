@@ -1,5 +1,7 @@
 import torch
 import numpy as np
+import wandb
+from torch import optim
 from tqdm import tqdm
 
 """
@@ -16,8 +18,21 @@ device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cp
 # else:
 #     print('GPU Training...')
 
+wandb.init(
+        project = "Chess App",
 
-def train_valid(model, trainloader, validloader, criterion, optimizer, n_epochs=50):
+        config = {
+        "learning_rate": 0.01,
+        "architecture": "CNN",
+        "dataset": "WhiteELO 2000 arevel",
+        "epochs": 50,
+        }
+    )
+
+# copy config
+wb_config = wandb.config
+
+def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.epochs):
 
     # loss function
     
@@ -30,10 +45,12 @@ def train_valid(model, trainloader, validloader, criterion, optimizer, n_epochs=
     loss_destination_square = destination_square(output[:,1,:], y[:,1,:])
     loss_move = loss_initial_square + loss_destination_square
 
-
     """
+
+    optimizer = optim.Adam(model.parameters(), lr = wb_config.learning_rate)
     valid_loss_min = np.Inf # track change in validation loss
 
+    
     for epoch in range(n_epochs):
 
         #train_loss = 0
@@ -78,11 +95,12 @@ def train_valid(model, trainloader, validloader, criterion, optimizer, n_epochs=
           # train_loss update
           train_loss = loss.item()*data.size(0)
 
+          wandb.log({"train_loss": train_loss})
+          
           loop.set_description(f"Epoch [{epoch}/{n_epochs}]")
           loop.set_postfix(train_loss = loss.item()*data.size(0))
           #print('Epoch: {} \tTraining Loss: {:.6f}'.format(epoch, train_loss))
           #print('Epoch: {} \tTraining Loss: {:.6f}\r'.format(epoch, train_loss))
-
 
 
         #        ___           ___           ___                   ___           ___           ___           ___     
@@ -113,8 +131,9 @@ def train_valid(model, trainloader, validloader, criterion, optimizer, n_epochs=
             # train_loss update
             valid_loss = loss.item()*data.size(0)
 
+            wandb.log({"valid_loss": valid_loss})
             loop_valid.set_description(f"Epoch [{epoch}/{n_epochs}]")
-            loop_valid.set_postfix(valid_loss = loss.item()*data.size(0)) #
+            loop_valid.set_postfix(valid_loss = loss.item()*data.size(0))
     # avg loss
     #train_loss = train_loss / len(trainloader.sampler)
     #valid_loss = train_loss / len(validloader.sampler)

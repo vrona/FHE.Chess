@@ -1,5 +1,6 @@
 import torch
 import numpy as np
+from tqdm import tqdm
 
 """
 ASCII SET isometric1 http://asciiset.com/figletserver.html
@@ -51,18 +52,21 @@ def train_valid(model, trainloader, validloader, criterion, optimizer, n_epochs=
         #                  |:|  |         /:/  /      \/__/         /:/  /   
         #                   \|__|         \/__/                     \/__/    
 
+        loop = tqdm(enumerate(trainloader), total=len(trainloader), leave=False)
 
         # model in training mode
         model.train()
         
-        for data, target in trainloader:
+        for batch_idx, (data, target) in loop:
             
-            #data, target = data.to(device), target.to(device)
+            data, target = data.to(torch.float32).to(device), target.to(torch.float32).to(device)
 
             # clear the gradients from all variable
             optimizer.zero_grad()
             # forward
             output = model(data)
+
+
             # batch loss
             loss = criterion(output, target)
             # backward pass
@@ -70,7 +74,10 @@ def train_valid(model, trainloader, validloader, criterion, optimizer, n_epochs=
             # single optimization step
             optimizer.step()
             # train_loss update
-            train_loss += loss.item()*data.size(0)
+            #train_loss += loss.item()*data.size(0)
+
+            loop.set_description(f"Epoch [{epoch}/{n_epochs}]")
+            loop.set_postfix(train_loss = loss.item()*data.size(0))
 
 
 
@@ -86,35 +93,39 @@ def train_valid(model, trainloader, validloader, criterion, optimizer, n_epochs=
         #      ~~~~           /:/  /       \:\__\   \/__/        \::/__/        /:/  /                     \:\__\    
         #                     \/__/         \/__/                 ~~            \/__/                       \/__/    
 
-                    
+        loop_valid = tqdm(enumerate(validloader), total=len(validloader), leave=False)                    
+
         model.eval()
 
-        for data, target in validloader:
+        for batch_idx, (data, target) in loop_valid:
 
-            data, target = data.to(device), target.to(device)
+            data, target = data.to(torch.float32).to(device), target.to(torch.float32).to(device)
 
             # forward
             output = model(data)
             # batch loss
             loss = criterion(output, target)
             # train_loss update
-            valid_loss += loss.item()*data.size(0)
+            valid_loss = loss.item()*data.size(0)
+
+            loop_valid.set_description(f"Epoch [{epoch}/{n_epochs}]")
+            loop_valid.set_postfix(valid_loss = loss.item()*data.size(0))
 
     # avg loss
-    train_loss = train_loss / len(trainloader.sampler)
-    valid_loss = train_loss / len(validloader.sampler)
+    #train_loss = train_loss / len(trainloader.sampler)
+    #valid_loss = train_loss / len(validloader.sampler)
 
     # print training/validation statistics 
-    print('Epoch: {} \tTraining Loss: {:.6f} \tValidation Loss: {:.6f}'.format(
-        epoch, train_loss, valid_loss))
+    #print('Epoch: {} \tTraining Loss: {:.6f} \tValidation Loss: {:.6f}'.format(
+    #    epoch, train_loss, valid_loss))
     
-    # save model if validation loss has decreased
-    if valid_loss <= valid_loss_min:
-        print('Validation loss decreased ({:.6f} --> {:.6f}).  Saving model ...'.format(
-        valid_loss_min, valid_loss))
+        # save model if validation loss has decreased
+        if valid_loss <= valid_loss_min:
+            print('Validation loss decreased ({:.6f} --> {:.6f}).  Saving model ...'.format(
+            valid_loss_min, valid_loss))
 
-        torch.save(model.state_dict(), "model_plain_chess.pt")
-        valid_loss_min = valid_loss
+            torch.save(model.state_dict(), "model_plain_chess.pt")
+            valid_loss_min = valid_loss
 
 
 #      ___           ___           ___           ___     
