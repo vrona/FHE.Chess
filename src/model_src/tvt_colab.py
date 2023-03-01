@@ -19,7 +19,7 @@ device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cp
 #     print('GPU Training...')
 
 wandb.init(
-        project = "Chess App",
+        project = "Chess_App",
 
         config = {
         "learning_rate": 0.01,
@@ -134,23 +134,25 @@ def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.
             wandb.log({"valid_loss": valid_loss})
             loop_valid.set_description(f"Epoch [{epoch}/{n_epochs}]")
             loop_valid.set_postfix(valid_loss = loss.item()*data.size(0))
-    # avg loss
-    #train_loss = train_loss / len(trainloader.sampler)
-    #valid_loss = train_loss / len(validloader.sampler)
+            # avg loss
+            #train_loss = train_loss / len(trainloader.sampler)
+            #valid_loss = train_loss / len(validloader.sampler)
 
-    # print training/validation statistics 
-    #print('Epoch: {} \tTraining Loss: {:.6f} \tValidation Loss: {:.6f}'.format(
-        #epoch, train_loss, valid_loss))
-          
-    
-    # save model if validation loss has decreased
+            # print training/validation statistics 
+            #print('Epoch: {} \tTraining Loss: {:.6f} \tValidation Loss: {:.6f}'.format(
+                #epoch, train_loss, valid_loss))
+                
+            
+            # save model if validation loss has decreased
             if valid_loss <= valid_loss_min:
               print('Validation loss decreased ({:.6f} --> {:.6f}).  Saving model ...'.format(
               valid_loss_min, valid_loss))
 
               torch.save(model.state_dict(), "model_plain_chess.pt")
               valid_loss_min = valid_loss
-
+    
+    # closing the wandb logs
+    wandb.finish()
 
 #      ___           ___           ___           ___     
 #     /\  \         /\  \         /\  \         /\  \    

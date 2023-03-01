@@ -1,0 +1,26 @@
+[34m[1mwandb[39m[22m: [32m[41mERROR[39m[49m Could not find run <Run vrona/Chess_App/1 (not found)>
+Traceback (most recent call last):
+  File "/Users/mikehatchi/anaconda3/envs/fhe_chess/lib/python3.8/site-packages/wandb/apis/normalize.py", line 26, in wrapper
+    return func(*args, **kwargs)
+  File "/Users/mikehatchi/anaconda3/envs/fhe_chess/lib/python3.8/site-packages/wandb/apis/public.py", line 878, in run
+    self._runs[path] = Run(self.client, entity, project, run_id)
+  File "/Users/mikehatchi/anaconda3/envs/fhe_chess/lib/python3.8/site-packages/wandb/apis/public.py", line 1718, in __init__
+    self.load(force=not _attrs)
+  File "/Users/mikehatchi/anaconda3/envs/fhe_chess/lib/python3.8/site-packages/wandb/apis/public.py", line 1822, in load
+    raise ValueError("Could not find run %s" % self)
+ValueError: Could not find run <Run vrona/Chess_App/1 (not found)>
+During handling of the above exception, another exception occurred:
+Traceback (most recent call last):
+  File "/Volumes/vrona_SSD/FHE.Chess/src/model_src/magic_chess.py", line 65, in <module>
+    run = api.run("vrona/Chess_App/1")
+  File "/Users/mikehatchi/anaconda3/envs/fhe_chess/lib/python3.8/site-packages/wandb/apis/normalize.py", line 64, in wrapper
+    raise CommError(message, err).with_traceback(sys.exc_info()[2])
+  File "/Users/mikehatchi/anaconda3/envs/fhe_chess/lib/python3.8/site-packages/wandb/apis/normalize.py", line 26, in wrapper
+    return func(*args, **kwargs)
+  File "/Users/mikehatchi/anaconda3/envs/fhe_chess/lib/python3.8/site-packages/wandb/apis/public.py", line 878, in run
+    self._runs[path] = Run(self.client, entity, project, run_id)
+  File "/Users/mikehatchi/anaconda3/envs/fhe_chess/lib/python3.8/site-packages/wandb/apis/public.py", line 1718, in __init__
+    self.load(force=not _attrs)
+  File "/Users/mikehatchi/anaconda3/envs/fhe_chess/lib/python3.8/site-packages/wandb/apis/public.py", line 1822, in load
+    raise ValueError("Could not find run %s" % self)
+wandb.errors.CommError: Could not find run <Run vrona/Chess_App/1 (not found)>

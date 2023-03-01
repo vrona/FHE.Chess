@@ -59,13 +59,13 @@ valid_loader = DataLoader(validset, batch_size = 256, shuffle=True, drop_last=Tr
 test_loader = DataLoader(testset, batch_size = 256, shuffle=True, drop_last=True)
 
 # Weights & Biases run tracking
-api = wandb.Api()
+# api = wandb.Api()
 
 
-run = api.run("vrona/Chess App/run")
-run.config["learning_rate"] = 0.02
-run.config["epochs"] = 2
-run.update()
+# run = api.run("vrona/Chess_App")
+# # run.config["learning_rate"] = 0.02
+# # run.config["epochs"] = 2
+# run.update()
 
 #model
 model = PlainChessNET()
