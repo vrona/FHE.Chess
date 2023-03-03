@@ -59,12 +59,12 @@ class Move_State():
 
         move = str(board.pop())
 
-        initial_output_layer = np.zeros((8,8)) # from 1 to 0 on the departure matrix
+        initial_output_layer = np.zeros((8,8)) # from 0 to 1 on the departure matrix
         initial_row = 8 - int(move[1])
         initial_column = alpha_to_num[move[0]]
         initial_output_layer[initial_row,  initial_column] = 1
 
-        destination_output_layer = np.zeros((8,8)) # from 1 to 0 on the arrival matrix
+        destination_output_layer = np.zeros((8,8)) # from 0 to 1 on the arrival matrix
         destination_row = 8 - int(move[3])
         destination_column = alpha_to_num[move[2]]
         destination_output_layer[destination_row, destination_column] = 1

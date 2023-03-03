@@ -9,8 +9,8 @@ ASCII SET isometric1 http://asciiset.com/figletserver.html
 """
 # CUDA's availability
 
-#device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-device = torch.device("cpu")
+device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+#device = torch.device("cpu")
 
 # if not train_on_gpu:
 #     print('CPU Training... (CUDA not available)')
@@ -25,14 +25,14 @@ wandb.init(
         "learning_rate": 0.01,
         "architecture": "CNN",
         "dataset": "WhiteELO 2000 arevel",
-        "epochs": 10,
+        "epochs": 50,
         }
     )
 
 # copy config
 wb_config = wandb.config
 
-def train_valid(model, trainloader, validloader, criterion_from, criterion_to, n_epochs= wb_config.epochs):
+def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.epochs):
 
     # loss function
     
@@ -45,15 +45,16 @@ def train_valid(model, trainloader, validloader, criterion_from, criterion_to, n
     loss_destination_square = destination_square(output[:,1,:], y[:,1,:])
     loss_move = loss_initial_square + loss_destination_square
 
-
     """
+
     optimizer = optim.Adam(model.parameters(), lr = wb_config.learning_rate)
     valid_loss_min = np.Inf # track change in validation loss
 
+    
     for epoch in range(n_epochs):
 
-        #train_loss = 0
-        #valid_loss = 0
+        train_loss = 0
+        valid_loss = 0
 
 
         #      ___           ___           ___                       ___     
@@ -68,44 +69,36 @@ def train_valid(model, trainloader, validloader, criterion_from, criterion_to, n
         #                  |:|  |         /:/  /      \/__/         /:/  /   
         #                   \|__|         \/__/                     \/__/    
 
-        loop = tqdm(enumerate(trainloader), total=len(trainloader), leave=False)
 
         # model in training mode
         model.train().to(device)
         
+        loop = tqdm(enumerate(trainloader), total=len(trainloader), leave=False)
+        
         for batch_idx, (data, target) in loop:
-            
-            data, target = data.to(torch.float).to(device), target.to(torch.float).to(device)
 
-            # clear the gradients from all variable
-            optimizer.zero_grad()
-            # forward
-            output = model(data)
+          data, target = data.to(torch.float32).to(device), target.to(torch.float32).to(device)
 
-            # batch loss
-            print(output.shape, output[:,0,:].shape)
-            loss_from = criterion_from(output[:,0,:], target[:,0,:])
-            #print("loss_from :",loss_from)
-            loss_to= criterion_to(output[:,1,:], target[:,1,:])
-            #print("loss_to :", loss_to)
-            loss = loss_from + loss_to
-            #print("loss :", loss)
+          # clear the gradients from all variable
+          optimizer.zero_grad()
+          # forward
+          output = model(data)
 
-            # backward pass
-            loss.backward()
-            # single optimization step
-            optimizer.step()
+          # batch loss
+          loss = criterion(output, target)
 
-            # train_loss update
-            train_loss = loss.item()*data.size(0)
+          # backward pass
+          loss.backward()
+          # single optimization step
+          optimizer.step()
 
-            #print("train loss :",train_loss)
-
-            wandb.log({"train_loss": loss.item()*data.size(0)})
-
-            loop.set_description(f"Epoch [{epoch}/{n_epochs}]")
-            loop.set_postfix(train_loss = loss.item()*data.size(0))
-
+          # train_loss update
+          train_loss += loss.item()*data.size(0)
+          
+          loop.set_description(f"Epoch [{epoch}/{n_epochs}]")
+          loop.set_postfix(train_loss = loss.item()*data.size(0))
+          #print('Epoch: {} \tTraining Loss: {:.6f}'.format(epoch, train_loss))
+          #print('Epoch: {} \tTraining Loss: {:.6f}\r'.format(epoch, train_loss))
 
 
         #        ___           ___           ___                   ___           ___           ___           ___     
@@ -120,45 +113,52 @@ def train_valid(model, trainloader, validloader, criterion_from, criterion_to, n
         #      ~~~~           /:/  /       \:\__\   \/__/        \::/__/        /:/  /                     \:\__\    
         #                     \/__/         \/__/                 ~~            \/__/                       \/__/    
 
-        loop_valid = tqdm(enumerate(validloader), total=len(validloader), leave=False)                    
+        loop_valid = tqdm(enumerate(validloader), total=len(validloader),
+        leave=False)
 
         model.eval().to(device)
 
         for batch_idx, (data, target) in loop_valid:
 
-            data, target = data.to(torch.float).to(device), target.to(torch.float).to(device)
+            data, target = data.to(torch.float32).to(device), target.to(torch.float32).to(device)
 
             # forward
             output = model(data)
             # batch loss
-            loss_from = criterion_from(output[:,0,:], target[:,0,:])
-            loss_to= criterion_to(output[:,1,:], target[:,1,:])
-            loss = loss_from + loss_to
-            # train_loss update
-            valid_loss = loss.item()*data.size(0)
-            
-            wandb.log({"valid_loss": loss.item()*data.size(0)})
+            loss = criterion(output, target)
+            # valid_loss update
+            valid_loss += loss.item()*data.size(0)
+
             loop_valid.set_description(f"Epoch [{epoch}/{n_epochs}]")
             loop_valid.set_postfix(valid_loss = loss.item()*data.size(0))
-
-        # avg loss
-        train_loss = train_loss / len(trainloader) #.sampler
-        valid_loss = train_loss / len(validloader) #.sampler
-
-        # print training/validation statistics 
-        print('Epoch: {} \tTraining Loss: {:.6f} \tValidation Loss: {:.6f}'.format(
-            epoch, train_loss, valid_loss))
+            
         
+        # avg loss
+        train_loss = train_loss / len(trainloader)
+        valid_loss = valid_loss / len(validloader)
+        
+        wandb.log({"train_loss": train_loss})
+        wandb.log({"valid_loss": valid_loss})
+
+        
+
+        
+            # print training/validation statistics 
+            #print('Epoch: {} \tTraining Loss: {:.6f} \tValidation Loss: {:.6f}'.format(
+                #epoch, train_loss, valid_loss))
+                
+            
         # save model if validation loss has decreased
         if valid_loss <= valid_loss_min:
-            print('Validation loss decreased ({:.6f} --> {:.6f}).  Saving model ...'.format(
-            valid_loss_min, valid_loss))
+          print('Validation loss decreased ({:.6f} --> {:.6f}).  Saving model ...'.format(
+          valid_loss_min, valid_loss))
 
-        torch.save(model.state_dict(), "model_plain_chess.pt")
-        valid_loss_min = valid_loss
-
+          torch.save(model.state_dict(), "model_plain_chess.pt")
+          valid_loss_min = valid_loss
+    
     # closing the wandb logs
     wandb.finish()
+
 #      ___           ___           ___           ___     
 #     /\  \         /\  \         /\  \         /\  \    
 #     \:\  \       /::\  \       /::\  \        \:\  \   
@@ -172,7 +172,7 @@ def train_valid(model, trainloader, validloader, criterion_from, criterion_to, n
 #                   \/__/         \/__/            
 
 
-def test(model, testloader, criterion_from, criterion_to):
+def test(model, testloader, criterion):
 
 
     test_loss = 0.0
@@ -185,13 +185,8 @@ def test(model, testloader, criterion_from, criterion_to):
 
             # forward
             output = model(data)
-            
             # batch loss
-            #loss = criterion_from(output, target)
-            loss_from = criterion_from(output[:,0,:], target[:,0,:])
-            loss_to= criterion_to(output[:,1,:], target[:,1,:])
-            loss = loss_from + loss_to
-            
+            loss = criterion(output, target)
             # train_loss update
             test_loss += loss.item()*data.size(0)
 
@@ -200,5 +195,5 @@ def test(model, testloader, criterion_from, criterion_to):
 
 
         # average test loss
-        test_loss = test_loss/len(testloader)
+        test_loss = test_loss/len(testloader.dataset)
         print('Test Loss: {:.6f}\n'.format(test_loss))

@@ -6,7 +6,7 @@ from trainvalidtest import train_valid, test
 import numpy as np
 import pandas as pd
 from chess_cnn import PlainChessNET
-import wandb
+
 
 # Dataset = "path/chess-game" # ZDataset(we_2000['AN'])
 # training_set = Dataset + "/train"
@@ -54,30 +54,24 @@ trainset = ZDataset(train['AN'], train.shape[0]) # 530025
 validset = ZDataset(valid['AN'], valid.shape[0]) # 176675
 testset = ZDataset(test['AN'], test.shape[0])   # 176676
 
-train_loader = DataLoader(trainset, batch_size = 256, shuffle=True, drop_last=True)
-valid_loader = DataLoader(validset, batch_size = 256, shuffle=True, drop_last=True)
-test_loader = DataLoader(testset, batch_size = 256, shuffle=True, drop_last=True)
-
-# Weights & Biases run tracking
-# api = wandb.Api()
+train_loader = DataLoader(trainset, batch_size = 64, shuffle=True, drop_last=True)
+valid_loader = DataLoader(validset, batch_size = 64, shuffle=True, drop_last=True)
+test_loader = DataLoader(testset, batch_size = 64, shuffle=True, drop_last=True)
 
 
-# run = api.run("vrona/Chess_App")
-# # run.config["learning_rate"] = 0.02
-# # run.config["epochs"] = 2
-# run.update()
 
 #model
 model = PlainChessNET()
 #loss
-criterion = nn.CrossEntropyLoss()
+criterion_from = nn.CrossEntropyLoss()
+criterion_to = nn.CrossEntropyLoss()
 #optimizer
 
 
 
-train_valid(model, train_loader, valid_loader, criterion)
+train_valid(model, train_loader, valid_loader, criterion_from, criterion_to)
 
 #model with lowest validation loss
 model.loard_state_dict(torch.load("model_plain_chess.pt"))
 
-test(model, test_loader, criterion)
+test(model, test_loader, criterion_from, criterion_to)

@@ -30,19 +30,21 @@ class Net(nn.Module):
         x_input = torch.clone(x)
 
         # activations and batch normalization
-        x = F.selu(self.conv1(x))
+        x = self.conv1(x)
         x = self.batchn1(x)
+        x = F.selu(x)
+        self.conv2(x)
+        x = self.batchn2(x)
 
         x = x + x_input
-        x = F.selu(self.conv2(x))
-        x = self.batchn2(x)
+        x = F.selu(x)
 
         return x
 
 
 class PlainChessNET(nn.Module):
 
-    def __init__(self, hidden_layers=4, hidden_size=100):
+    def __init__(self, hidden_layers=4, hidden_size=200):
 
         super(PlainChessNET, self).__init__()
         

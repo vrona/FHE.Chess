@@ -35,6 +35,3 @@ test_data = DataLoader(testset, batch_size = 32, shuffle=True, drop_last=True)
 
 x, y = next(iter(valid_data))
 print(x, y)
-
-
-

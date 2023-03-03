@@ -78,8 +78,8 @@ class ZDataset(Dataset):
         for move in moves:
             board.push_san(move)
 
-        x = helper_board_state.board_tensor(board)
-        y = helper_move_state.move_piece(next_move, board)
+        x = helper_board_state.board_tensor(board)          # shape(6,8,8)
+        y = helper_move_state.move_piece(next_move, board)  # shape(2,8,8)
 
         # determine white or black turn (1 for w, -1 for b)
         if game_state_i %2 == 1:
