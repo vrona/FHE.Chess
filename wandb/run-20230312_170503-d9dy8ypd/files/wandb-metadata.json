@@ -1,0 +1,42 @@
+{
+    "os": "macOS-10.14.6-x86_64-i386-64bit",
+    "python": "3.8.2",
+    "heartbeatAt": "2023-03-12T16:05:04.640507",
+    "startedAt": "2023-03-12T16:05:03.791388",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/Volumes/vrona_SSD/FHE.Chess/src/new_model_src_new/magic_chess_new.py",
+    "codePath": "src/new_model_src_new/magic_chess_new.py",
+    "git": {
+        "remote": "https://github.com/vrona/FHE.Chess.git",
+        "commit": "2b1e31f20169c6b01e61900cf164851125538fcb"
+    },
+    "email": "mikehatchi@hotmail.com",
+    "root": "/Volumes/vrona_SSD/FHE.Chess",
+    "host": "VRONA-MBP.lan",
+    "username": "mikehatchi",
+    "executable": "/Users/mikehatchi/anaconda3/envs/fhe_chess/bin/python3",
+    "cpu_count": 6,
+    "cpu_count_logical": 12,
+    "cpu_freq": {
+        "current": 2200,
+        "min": 2200,
+        "max": 2200
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2200,
+            "min": 2200,
+            "max": 2200
+        }
+    ],
+    "disk": {
+        "total": 233.46913528442383,
+        "used": 216.86306381225586
+    },
+    "memory": {
+        "total": 16.0
+    }
+}
