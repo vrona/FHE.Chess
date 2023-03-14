@@ -74,6 +74,7 @@ class Chessset(Dataset):
         #y = helper_move_state.move_piece(next_move, board)  # shape(2,8,8)
 
         z = helper_move_state.choose_piece(next_move, board) # shape (1)
+
         # get the eval
         # xx = get_eval() of piece_pos
         # yy = get_eval() of move_pos

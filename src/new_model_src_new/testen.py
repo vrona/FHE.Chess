@@ -11,8 +11,6 @@ import numpy as np
 #     [0, 0, 0, 0, 0, 0, 0, 0]
 # ])
 
-
 # tops = np.argpartition(pawn_table, kth=1, axis=1)
 # #topuno = tops[tops]
 # print(tops)
-

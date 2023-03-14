@@ -1,0 +1,185 @@
+2023-03-14 10:44:22,508 INFO    StreamThr :5324 [internal.py:wandb_internal():87] W&B internal server running at pid: 5324, started at: 2023-03-14 10:44:22.507838
+2023-03-14 10:44:22,509 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: status
+2023-03-14 10:44:22,510 INFO    WriterThread:5324 [datastore.py:open_for_write():85] open: /Volumes/vrona_SSD/FHE.Chess/wandb/run-20230314_104422-hvam5rva/run-hvam5rva.wandb
+2023-03-14 10:44:22,511 DEBUG   SenderThread:5324 [sender.py:send():336] send: header
+2023-03-14 10:44:22,527 DEBUG   SenderThread:5324 [sender.py:send():336] send: run
+2023-03-14 10:44:23,119 INFO    SenderThread:5324 [dir_watcher.py:__init__():216] watching files in: /Volumes/vrona_SSD/FHE.Chess/wandb/run-20230314_104422-hvam5rva/files
+2023-03-14 10:44:23,119 INFO    SenderThread:5324 [sender.py:_start_run_threads():1067] run started: hvam5rva with start time 1678787062.507477
+2023-03-14 10:44:23,119 DEBUG   SenderThread:5324 [sender.py:send_request():363] send_request: summary_record
+2023-03-14 10:44:23,119 INFO    SenderThread:5324 [sender.py:_save_file():1321] saving file wandb-summary.json with policy end
+2023-03-14 10:44:23,122 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: check_version
+2023-03-14 10:44:23,122 DEBUG   SenderThread:5324 [sender.py:send_request():363] send_request: check_version
+2023-03-14 10:44:23,268 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: run_start
+2023-03-14 10:44:23,275 DEBUG   HandlerThread:5324 [system_info.py:__init__():31] System info init
+2023-03-14 10:44:23,275 DEBUG   HandlerThread:5324 [system_info.py:__init__():46] System info init done
+2023-03-14 10:44:23,275 INFO    HandlerThread:5324 [system_monitor.py:start():151] Starting system monitor
+2023-03-14 10:44:23,276 INFO    SystemMonitor:5324 [system_monitor.py:_start():116] Starting system asset monitoring threads
+2023-03-14 10:44:23,276 INFO    HandlerThread:5324 [system_monitor.py:probe():172] Collecting system info
+2023-03-14 10:44:23,276 DEBUG   HandlerThread:5324 [system_info.py:probe():195] Probing system
+2023-03-14 10:44:23,277 INFO    SystemMonitor:5324 [interfaces.py:start():168] Started cpu
+2023-03-14 10:44:23,280 INFO    SystemMonitor:5324 [interfaces.py:start():168] Started disk
+2023-03-14 10:44:23,281 INFO    SystemMonitor:5324 [interfaces.py:start():168] Started memory
+2023-03-14 10:44:23,282 INFO    SystemMonitor:5324 [interfaces.py:start():168] Started network
+2023-03-14 10:44:23,286 DEBUG   HandlerThread:5324 [system_info.py:_probe_git():180] Probing git
+2023-03-14 10:44:23,313 DEBUG   HandlerThread:5324 [system_info.py:_probe_git():188] Probing git done
+2023-03-14 10:44:23,313 DEBUG   HandlerThread:5324 [system_info.py:probe():241] Probing system done
+2023-03-14 10:44:23,313 DEBUG   HandlerThread:5324 [system_monitor.py:probe():181] {'os': 'macOS-10.14.6-x86_64-i386-64bit', 'python': '3.8.2', 'heartbeatAt': '2023-03-14T09:44:23.276772', 'startedAt': '2023-03-14T09:44:22.500518', 'docker': None, 'cuda': None, 'args': (), 'state': 'running', 'program': '/Volumes/vrona_SSD/FHE.Chess/src/new_model_src_new/magic_chess_new.py', 'codePath': 'src/new_model_src_new/magic_chess_new.py', 'git': {'remote': 'https://github.com/vrona/FHE.Chess.git', 'commit': '25ffc0e0474e186946e0437a9f454339bcecdaf8'}, 'email': 'mikehatchi@hotmail.com', 'root': '/Volumes/vrona_SSD/FHE.Chess', 'host': 'VRONA-MBP.lan', 'username': 'mikehatchi', 'executable': '/Users/mikehatchi/anaconda3/envs/fhe_chess/bin/python3', 'cpu_count': 6, 'cpu_count_logical': 12, 'cpu_freq': {'current': 2200, 'min': 2200, 'max': 2200}, 'cpu_freq_per_core': [{'current': 2200, 'min': 2200, 'max': 2200}], 'disk': {'total': 233.46913528442383, 'used': 217.3561897277832}, 'memory': {'total': 16.0}}
+2023-03-14 10:44:23,313 INFO    HandlerThread:5324 [system_monitor.py:probe():182] Finished collecting system info
+2023-03-14 10:44:23,313 INFO    HandlerThread:5324 [system_monitor.py:probe():185] Publishing system info
+2023-03-14 10:44:23,313 DEBUG   HandlerThread:5324 [system_info.py:_save_pip():51] Saving list of pip packages installed into the current environment
+2023-03-14 10:44:23,314 DEBUG   HandlerThread:5324 [system_info.py:_save_pip():67] Saving pip packages done
+2023-03-14 10:44:23,314 DEBUG   HandlerThread:5324 [system_info.py:_save_conda():74] Saving list of conda packages installed into the current environment
+2023-03-14 10:44:23,319 ERROR   HandlerThread:5324 [system_info.py:_save_conda():85] Error saving conda packages: [Errno 2] No such file or directory: 'conda'
+Traceback (most recent call last):
+  File "/Users/mikehatchi/anaconda3/envs/fhe_chess/lib/python3.8/site-packages/wandb/sdk/internal/system/system_info.py", line 81, in _save_conda
+    subprocess.call(
+  File "/Users/mikehatchi/anaconda3/envs/fhe_chess/lib/python3.8/subprocess.py", line 340, in call
+    with Popen(*popenargs, **kwargs) as p:
+  File "/Users/mikehatchi/anaconda3/envs/fhe_chess/lib/python3.8/subprocess.py", line 854, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/Users/mikehatchi/anaconda3/envs/fhe_chess/lib/python3.8/subprocess.py", line 1702, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'conda'
+2023-03-14 10:44:23,320 DEBUG   HandlerThread:5324 [system_info.py:_save_conda():86] Saving conda packages done
+2023-03-14 10:44:23,321 INFO    HandlerThread:5324 [system_monitor.py:probe():187] Finished publishing system info
+2023-03-14 10:44:23,323 DEBUG   SenderThread:5324 [sender.py:send():336] send: files
+2023-03-14 10:44:23,323 INFO    SenderThread:5324 [sender.py:_save_file():1321] saving file wandb-metadata.json with policy now
+2023-03-14 10:44:23,329 DEBUG   SenderThread:5324 [sender.py:send():336] send: telemetry
+2023-03-14 10:44:23,330 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: stop_status
+2023-03-14 10:44:23,330 DEBUG   SenderThread:5324 [sender.py:send_request():363] send_request: stop_status
+2023-03-14 10:44:24,029 INFO    wandb-upload_0:5324 [upload_job.py:push():138] Uploaded file /var/folders/cm/79mndh7174jf8l2sy41z6r_80000gn/T/tmpj3jm_d6zwandb/mqnqu0v3-wandb-metadata.json
+2023-03-14 10:44:24,123 INFO    Thread-13 :5324 [dir_watcher.py:_on_file_created():275] file/dir created: /Volumes/vrona_SSD/FHE.Chess/wandb/run-20230314_104422-hvam5rva/files/conda-environment.yaml
+2023-03-14 10:44:24,123 INFO    Thread-13 :5324 [dir_watcher.py:_on_file_created():275] file/dir created: /Volumes/vrona_SSD/FHE.Chess/wandb/run-20230314_104422-hvam5rva/files/requirements.txt
+2023-03-14 10:44:24,123 INFO    Thread-13 :5324 [dir_watcher.py:_on_file_created():275] file/dir created: /Volumes/vrona_SSD/FHE.Chess/wandb/run-20230314_104422-hvam5rva/files/wandb-metadata.json
+2023-03-14 10:44:24,123 INFO    Thread-13 :5324 [dir_watcher.py:_on_file_created():275] file/dir created: /Volumes/vrona_SSD/FHE.Chess/wandb/run-20230314_104422-hvam5rva/files/wandb-summary.json
+2023-03-14 10:44:27,554 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: status_report
+2023-03-14 10:44:28,127 INFO    Thread-13 :5324 [dir_watcher.py:_on_file_created():275] file/dir created: /Volumes/vrona_SSD/FHE.Chess/wandb/run-20230314_104422-hvam5rva/files/output.log
+2023-03-14 10:44:28,770 DEBUG   SenderThread:5324 [sender.py:send():336] send: exit
+2023-03-14 10:44:28,770 INFO    SenderThread:5324 [sender.py:send_exit():559] handling exit code: 1
+2023-03-14 10:44:28,771 INFO    SenderThread:5324 [sender.py:send_exit():561] handling runtime: 5
+2023-03-14 10:44:28,771 INFO    SenderThread:5324 [sender.py:_save_file():1321] saving file wandb-summary.json with policy end
+2023-03-14 10:44:28,771 INFO    SenderThread:5324 [sender.py:send_exit():567] send defer
+2023-03-14 10:44:28,772 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: defer
+2023-03-14 10:44:28,772 INFO    HandlerThread:5324 [handler.py:handle_request_defer():170] handle defer: 0
+2023-03-14 10:44:28,772 DEBUG   SenderThread:5324 [sender.py:send_request():363] send_request: defer
+2023-03-14 10:44:28,772 INFO    SenderThread:5324 [sender.py:send_request_defer():583] handle sender defer: 0
+2023-03-14 10:44:28,773 INFO    SenderThread:5324 [sender.py:transition_state():587] send defer: 1
+2023-03-14 10:44:28,773 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: defer
+2023-03-14 10:44:28,773 INFO    HandlerThread:5324 [handler.py:handle_request_defer():170] handle defer: 1
+2023-03-14 10:44:28,773 DEBUG   SenderThread:5324 [sender.py:send_request():363] send_request: defer
+2023-03-14 10:44:28,773 INFO    SenderThread:5324 [sender.py:send_request_defer():583] handle sender defer: 1
+2023-03-14 10:44:28,773 INFO    SenderThread:5324 [sender.py:transition_state():587] send defer: 2
+2023-03-14 10:44:28,774 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: defer
+2023-03-14 10:44:28,774 INFO    HandlerThread:5324 [handler.py:handle_request_defer():170] handle defer: 2
+2023-03-14 10:44:28,774 INFO    HandlerThread:5324 [system_monitor.py:finish():161] Stopping system monitor
+2023-03-14 10:44:28,794 DEBUG   SystemMonitor:5324 [system_monitor.py:_start():130] Starting system metrics aggregation loop
+2023-03-14 10:44:28,794 DEBUG   SystemMonitor:5324 [system_monitor.py:_start():137] Finished system metrics aggregation loop
+2023-03-14 10:44:28,794 DEBUG   SystemMonitor:5324 [system_monitor.py:_start():141] Publishing last batch of metrics
+2023-03-14 10:44:28,795 INFO    HandlerThread:5324 [interfaces.py:finish():175] Joined cpu
+2023-03-14 10:44:28,795 INFO    HandlerThread:5324 [interfaces.py:finish():175] Joined disk
+2023-03-14 10:44:28,795 INFO    HandlerThread:5324 [interfaces.py:finish():175] Joined memory
+2023-03-14 10:44:28,795 INFO    HandlerThread:5324 [interfaces.py:finish():175] Joined network
+2023-03-14 10:44:28,795 DEBUG   SenderThread:5324 [sender.py:send_request():363] send_request: defer
+2023-03-14 10:44:28,795 INFO    SenderThread:5324 [sender.py:send_request_defer():583] handle sender defer: 2
+2023-03-14 10:44:28,795 INFO    SenderThread:5324 [sender.py:transition_state():587] send defer: 3
+2023-03-14 10:44:28,795 DEBUG   SenderThread:5324 [sender.py:send():336] send: stats
+2023-03-14 10:44:28,795 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: defer
+2023-03-14 10:44:28,796 INFO    HandlerThread:5324 [handler.py:handle_request_defer():170] handle defer: 3
+2023-03-14 10:44:28,796 DEBUG   SenderThread:5324 [sender.py:send_request():363] send_request: defer
+2023-03-14 10:44:28,796 INFO    SenderThread:5324 [sender.py:send_request_defer():583] handle sender defer: 3
+2023-03-14 10:44:28,796 INFO    SenderThread:5324 [sender.py:transition_state():587] send defer: 4
+2023-03-14 10:44:28,796 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: defer
+2023-03-14 10:44:28,796 INFO    HandlerThread:5324 [handler.py:handle_request_defer():170] handle defer: 4
+2023-03-14 10:44:28,796 DEBUG   SenderThread:5324 [sender.py:send_request():363] send_request: defer
+2023-03-14 10:44:28,796 INFO    SenderThread:5324 [sender.py:send_request_defer():583] handle sender defer: 4
+2023-03-14 10:44:28,796 INFO    SenderThread:5324 [sender.py:transition_state():587] send defer: 5
+2023-03-14 10:44:28,796 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: defer
+2023-03-14 10:44:28,796 INFO    HandlerThread:5324 [handler.py:handle_request_defer():170] handle defer: 5
+2023-03-14 10:44:28,797 DEBUG   SenderThread:5324 [sender.py:send():336] send: summary
+2023-03-14 10:44:28,801 INFO    SenderThread:5324 [sender.py:_save_file():1321] saving file wandb-summary.json with policy end
+2023-03-14 10:44:28,801 DEBUG   SenderThread:5324 [sender.py:send_request():363] send_request: defer
+2023-03-14 10:44:28,801 INFO    SenderThread:5324 [sender.py:send_request_defer():583] handle sender defer: 5
+2023-03-14 10:44:28,801 INFO    SenderThread:5324 [sender.py:transition_state():587] send defer: 6
+2023-03-14 10:44:28,802 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: defer
+2023-03-14 10:44:28,802 INFO    HandlerThread:5324 [handler.py:handle_request_defer():170] handle defer: 6
+2023-03-14 10:44:28,802 DEBUG   SenderThread:5324 [sender.py:send_request():363] send_request: defer
+2023-03-14 10:44:28,802 INFO    SenderThread:5324 [sender.py:send_request_defer():583] handle sender defer: 6
+2023-03-14 10:44:28,805 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: status_report
+2023-03-14 10:44:29,043 INFO    SenderThread:5324 [sender.py:transition_state():587] send defer: 7
+2023-03-14 10:44:29,043 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: defer
+2023-03-14 10:44:29,043 INFO    HandlerThread:5324 [handler.py:handle_request_defer():170] handle defer: 7
+2023-03-14 10:44:29,043 DEBUG   SenderThread:5324 [sender.py:send_request():363] send_request: defer
+2023-03-14 10:44:29,043 INFO    SenderThread:5324 [sender.py:send_request_defer():583] handle sender defer: 7
+2023-03-14 10:44:29,128 INFO    Thread-13 :5324 [dir_watcher.py:_on_file_modified():292] file/dir modified: /Volumes/vrona_SSD/FHE.Chess/wandb/run-20230314_104422-hvam5rva/files/config.yaml
+2023-03-14 10:44:29,128 INFO    Thread-13 :5324 [dir_watcher.py:_on_file_modified():292] file/dir modified: /Volumes/vrona_SSD/FHE.Chess/wandb/run-20230314_104422-hvam5rva/files/wandb-summary.json
+2023-03-14 10:44:29,627 INFO    SenderThread:5324 [sender.py:transition_state():587] send defer: 8
+2023-03-14 10:44:29,627 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: defer
+2023-03-14 10:44:29,627 INFO    HandlerThread:5324 [handler.py:handle_request_defer():170] handle defer: 8
+2023-03-14 10:44:29,627 DEBUG   SenderThread:5324 [sender.py:send_request():363] send_request: defer
+2023-03-14 10:44:29,627 INFO    SenderThread:5324 [sender.py:send_request_defer():583] handle sender defer: 8
+2023-03-14 10:44:29,633 INFO    SenderThread:5324 [sender.py:transition_state():587] send defer: 9
+2023-03-14 10:44:29,633 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: defer
+2023-03-14 10:44:29,633 INFO    HandlerThread:5324 [handler.py:handle_request_defer():170] handle defer: 9
+2023-03-14 10:44:29,633 DEBUG   SenderThread:5324 [sender.py:send():336] send: artifact
+2023-03-14 10:44:29,774 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: poll_exit
+2023-03-14 10:44:30,129 INFO    Thread-13 :5324 [dir_watcher.py:_on_file_modified():292] file/dir modified: /Volumes/vrona_SSD/FHE.Chess/wandb/run-20230314_104422-hvam5rva/files/output.log
+2023-03-14 10:44:30,807 INFO    SenderThread:5324 [sender.py:send_artifact():1417] sent artifact job-https___github.com_vrona_FHE.Chess.git_src_new_model_src_new_magic_chess_new.py - {'id': 'QXJ0aWZhY3Q6Mzk2NzcwNTQ4', 'digest': 'b1bcf2ac54a5dd74192fd9aff854324b', 'state': 'COMMITTED', 'aliases': [{'artifactCollectionName': 'job-https___github.com_vrona_FHE.Chess.git_src_new_model_src_new_magic_chess_new.py', 'alias': 'latest'}, {'artifactCollectionName': 'job-https___github.com_vrona_FHE.Chess.git_src_new_model_src_new_magic_chess_new.py', 'alias': 'v1'}], 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjU2ODAzMzEz', 'latestArtifact': {'id': 'QXJ0aWZhY3Q6Mzk2NzcwNTQ4', 'versionIndex': 1}}, 'version': 'v1'}
+2023-03-14 10:44:30,807 DEBUG   SenderThread:5324 [sender.py:send_request():363] send_request: defer
+2023-03-14 10:44:30,807 INFO    SenderThread:5324 [sender.py:send_request_defer():583] handle sender defer: 9
+2023-03-14 10:44:30,807 INFO    SenderThread:5324 [dir_watcher.py:finish():362] shutting down directory watcher
+2023-03-14 10:44:31,131 INFO    SenderThread:5324 [dir_watcher.py:finish():392] scan: /Volumes/vrona_SSD/FHE.Chess/wandb/run-20230314_104422-hvam5rva/files
+2023-03-14 10:44:31,131 INFO    SenderThread:5324 [dir_watcher.py:finish():406] scan save: /Volumes/vrona_SSD/FHE.Chess/wandb/run-20230314_104422-hvam5rva/files/conda-environment.yaml conda-environment.yaml
+2023-03-14 10:44:31,131 INFO    SenderThread:5324 [dir_watcher.py:finish():406] scan save: /Volumes/vrona_SSD/FHE.Chess/wandb/run-20230314_104422-hvam5rva/files/config.yaml config.yaml
+2023-03-14 10:44:31,131 INFO    SenderThread:5324 [dir_watcher.py:finish():406] scan save: /Volumes/vrona_SSD/FHE.Chess/wandb/run-20230314_104422-hvam5rva/files/output.log output.log
+2023-03-14 10:44:31,132 INFO    SenderThread:5324 [dir_watcher.py:finish():406] scan save: /Volumes/vrona_SSD/FHE.Chess/wandb/run-20230314_104422-hvam5rva/files/requirements.txt requirements.txt
+2023-03-14 10:44:31,135 INFO    SenderThread:5324 [dir_watcher.py:finish():406] scan save: /Volumes/vrona_SSD/FHE.Chess/wandb/run-20230314_104422-hvam5rva/files/wandb-metadata.json wandb-metadata.json
+2023-03-14 10:44:31,135 INFO    SenderThread:5324 [dir_watcher.py:finish():406] scan save: /Volumes/vrona_SSD/FHE.Chess/wandb/run-20230314_104422-hvam5rva/files/wandb-summary.json wandb-summary.json
+2023-03-14 10:44:31,135 INFO    SenderThread:5324 [sender.py:transition_state():587] send defer: 10
+2023-03-14 10:44:31,136 DEBUG   SenderThread:5324 [sender.py:send_request():363] send_request: poll_exit
+2023-03-14 10:44:31,136 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: defer
+2023-03-14 10:44:31,136 INFO    HandlerThread:5324 [handler.py:handle_request_defer():170] handle defer: 10
+2023-03-14 10:44:31,139 DEBUG   SenderThread:5324 [sender.py:send_request():363] send_request: defer
+2023-03-14 10:44:31,139 INFO    SenderThread:5324 [sender.py:send_request_defer():583] handle sender defer: 10
+2023-03-14 10:44:31,139 INFO    SenderThread:5324 [file_pusher.py:finish():162] shutting down file pusher
+2023-03-14 10:44:31,783 INFO    wandb-upload_0:5324 [upload_job.py:push():138] Uploaded file /Volumes/vrona_SSD/FHE.Chess/wandb/run-20230314_104422-hvam5rva/files/config.yaml
+2023-03-14 10:44:31,842 INFO    wandb-upload_2:5324 [upload_job.py:push():138] Uploaded file /Volumes/vrona_SSD/FHE.Chess/wandb/run-20230314_104422-hvam5rva/files/requirements.txt
+2023-03-14 10:44:31,893 INFO    wandb-upload_3:5324 [upload_job.py:push():138] Uploaded file /Volumes/vrona_SSD/FHE.Chess/wandb/run-20230314_104422-hvam5rva/files/wandb-summary.json
+2023-03-14 10:44:31,912 INFO    wandb-upload_1:5324 [upload_job.py:push():138] Uploaded file /Volumes/vrona_SSD/FHE.Chess/wandb/run-20230314_104422-hvam5rva/files/output.log
+2023-03-14 10:44:32,117 INFO    Thread-12 :5324 [sender.py:transition_state():587] send defer: 11
+2023-03-14 10:44:32,118 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: defer
+2023-03-14 10:44:32,118 INFO    HandlerThread:5324 [handler.py:handle_request_defer():170] handle defer: 11
+2023-03-14 10:44:32,118 DEBUG   SenderThread:5324 [sender.py:send_request():363] send_request: defer
+2023-03-14 10:44:32,118 INFO    SenderThread:5324 [sender.py:send_request_defer():583] handle sender defer: 11
+2023-03-14 10:44:32,119 INFO    SenderThread:5324 [file_pusher.py:join():167] waiting for file pusher
+2023-03-14 10:44:32,119 INFO    SenderThread:5324 [sender.py:transition_state():587] send defer: 12
+2023-03-14 10:44:32,119 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: defer
+2023-03-14 10:44:32,119 INFO    HandlerThread:5324 [handler.py:handle_request_defer():170] handle defer: 12
+2023-03-14 10:44:32,119 DEBUG   SenderThread:5324 [sender.py:send_request():363] send_request: defer
+2023-03-14 10:44:32,119 INFO    SenderThread:5324 [sender.py:send_request_defer():583] handle sender defer: 12
+2023-03-14 10:44:32,332 INFO    SenderThread:5324 [sender.py:transition_state():587] send defer: 13
+2023-03-14 10:44:32,332 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: defer
+2023-03-14 10:44:32,332 INFO    HandlerThread:5324 [handler.py:handle_request_defer():170] handle defer: 13
+2023-03-14 10:44:32,332 DEBUG   SenderThread:5324 [sender.py:send_request():363] send_request: defer
+2023-03-14 10:44:32,332 INFO    SenderThread:5324 [sender.py:send_request_defer():583] handle sender defer: 13
+2023-03-14 10:44:32,333 INFO    SenderThread:5324 [sender.py:transition_state():587] send defer: 14
+2023-03-14 10:44:32,333 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: defer
+2023-03-14 10:44:32,333 INFO    HandlerThread:5324 [handler.py:handle_request_defer():170] handle defer: 14
+2023-03-14 10:44:32,333 DEBUG   SenderThread:5324 [sender.py:send():336] send: final
+2023-03-14 10:44:32,333 DEBUG   SenderThread:5324 [sender.py:send():336] send: footer
+2023-03-14 10:44:32,333 DEBUG   SenderThread:5324 [sender.py:send_request():363] send_request: defer
+2023-03-14 10:44:32,334 INFO    SenderThread:5324 [sender.py:send_request_defer():583] handle sender defer: 14
+2023-03-14 10:44:32,334 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: poll_exit
+2023-03-14 10:44:32,335 DEBUG   SenderThread:5324 [sender.py:send_request():363] send_request: poll_exit
+2023-03-14 10:44:32,335 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: server_info
+2023-03-14 10:44:32,335 DEBUG   SenderThread:5324 [sender.py:send_request():363] send_request: server_info
+2023-03-14 10:44:32,337 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: get_summary
+2023-03-14 10:44:32,337 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: sampled_history
+2023-03-14 10:44:32,542 INFO    MainThread:5324 [wandb_run.py:_footer_history_summary_info():3442] rendering history
+2023-03-14 10:44:32,543 INFO    MainThread:5324 [wandb_run.py:_footer_history_summary_info():3474] rendering summary
+2023-03-14 10:44:32,543 INFO    MainThread:5324 [wandb_run.py:_footer_sync_info():3398] logging synced files
+2023-03-14 10:44:32,543 DEBUG   HandlerThread:5324 [handler.py:handle_request():144] handle_request: shutdown
+2023-03-14 10:44:32,543 INFO    HandlerThread:5324 [handler.py:finish():841] shutting down handler
+2023-03-14 10:44:33,336 INFO    WriterThread:5324 [datastore.py:close():299] close: /Volumes/vrona_SSD/FHE.Chess/wandb/run-20230314_104422-hvam5rva/run-hvam5rva.wandb
+2023-03-14 10:44:33,544 INFO    SenderThread:5324 [sender.py:finish():1493] shutting down sender
+2023-03-14 10:44:33,544 INFO    SenderThread:5324 [file_pusher.py:finish():162] shutting down file pusher
+2023-03-14 10:44:33,544 INFO    SenderThread:5324 [file_pusher.py:join():167] waiting for file pusher

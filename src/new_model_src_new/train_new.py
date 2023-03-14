@@ -74,8 +74,9 @@ def train_valid(model, trainloader, validloader, criterion_from, criterion_to, n
         model.train().to(device)
         
         for batch_idx, (data, target) in loop:
-            
+            print("\ntrain:", type(target), target.shape)
             data, target = data.to(torch.float).to(device), target.to(torch.float).to(device)
+            print("\ntrain_2nd:", target.size) # DEAD try tensor reshape
 
             # clear the gradients from all variable
             optimizer.zero_grad()

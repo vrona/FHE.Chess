@@ -1,9 +1,18 @@
 import re
+import chess
 import numpy as np
 
+# dictionary of algebraic(string) = digit
 #num_to_alpha = {0:"a", 1:"b", 2:"c",  3:"d",  4:"e",  5:"f",  6:"g",  7:"h"}
 alpha_to_num = {"a":0, "b":1, "c":2,  "d":3,  "e":4,  "f":5,  "g":6,  "h":7}
 
+# dictionary of piece (string): binary(string) 8 bits
+dict_piece_binary = {
+"p":'01110000', "r":'01110010', "n":'01101110', "b":'01100010', "q":'01110001', "k":'01101011',
+"P":'01010000', "R":'01010010', "N":'01001110', "B":'01000010', "Q":'01010001', "K":'01001011'
+}
+
+# array of square table location within chessboard (8x8) 
 square_table = np.array([
     [56,57,58,59,60,61,62,63],
     [48,49,50,51,52,53,54,55],
@@ -14,6 +23,12 @@ square_table = np.array([
     [8,9,10,11,12,13,14,15],
     [0,1,2,3,4,5,6,7],
                      ])
+
+# dictionary of square_location(in): binary(string)
+dict_sq_binary = {}
+for z in range(0, 64):
+    dict_sq_binary[z] = bin(z)[2:]
+
 
 """ codeflow
 get moves from db
@@ -78,12 +93,12 @@ class Move_State():
         choosen_piece_row = 8 - int(from_to_move[1]) # flipping the board (origin of row starts from top instead of bottom)
         choosen_piece_column = alpha_to_num[from_to_move[0]]
 
-        square_localization = square_table[choosen_piece_row, choosen_piece_column]
-        piece = board.piece_at(square_localization)
+        square_location = square_table[choosen_piece_row, choosen_piece_column]
+        piece = board.piece_at(square_location)
         #print(from_to_move,"\nCOLUMN {}:".format(from_to_move[0]),choosen_piece_column, "ROW {}:".format(from_to_move[1]),choosen_piece_row)
-        #print("SQUARE:",square_localization)
+        #print("SQUARE:",square_location)
         #print("PIECE:",piece)
-        return square_localization, piece
+        return square_location, piece
 
     def choose_piece(self, move, board):
         """choosing the adequate piece to play"""
@@ -96,9 +111,22 @@ class Move_State():
         initial_column = alpha_to_num[from_to_move[0]]
         #initial_output_layer[initial_row,  initial_column] = 1
         
-        #print(square_table[initial_row, initial_column])
+        square_location = square_table[initial_row, initial_column]
+        piece = board.piece_at(square_location)
 
-        return square_table[initial_row, initial_column] #initial_output_layer
+        # XOR binary square_location ^ piece_binary
+        y=int(dict_sq_binary[square_location],2) ^ int(dict_piece_binary[str(piece)],2)
+        y = '{0:b}'.format(y)
+
+        bin_sq_loc_piece_array = np.zeros(shape=(8,))
+        for i, z in enumerate(y):
+            bin_sq_loc_piece_array[i] = int(z)
+
+
+        # y_hat = torch.tensor(bin_sq_loc_piece_array, dtype=torch.int8)
+        # print(y_hat)
+        
+        return bin_sq_loc_piece_array # square_table[initial_row, initial_column] #initial_output_layer
 
 
     def move_piece(self, move, board):

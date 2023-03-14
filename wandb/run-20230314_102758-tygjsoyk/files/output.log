@@ -1,0 +1,21 @@
+Traceback (most recent call last):
+  File "/Volumes/vrona_SSD/FHE.Chess/src/new_model_src_new/magic_chess_new.py", line 70, in <module>
+    train_valid(model, train_loader, valid_loader, criterion_from, criterion_to)
+  File "/Volumes/vrona_SSD/FHE.Chess/src/new_model_src_new/train_new.py", line 76, in train_valid
+    for batch_idx, (data, target) in loop:
+  File "/Users/mikehatchi/anaconda3/envs/fhe_chess/lib/python3.8/site-packages/tqdm/std.py", line 1195, in __iter__
+    for obj in iterable:
+  File "/Users/mikehatchi/anaconda3/envs/fhe_chess/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 628, in __next__
+    data = self._next_data()
+  File "/Users/mikehatchi/anaconda3/envs/fhe_chess/lib/python3.8/site-packages/torch/utils/data/dataloader.py", line 671, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/Users/mikehatchi/anaconda3/envs/fhe_chess/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 58, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/Users/mikehatchi/anaconda3/envs/fhe_chess/lib/python3.8/site-packages/torch/utils/data/_utils/fetch.py", line 58, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/Volumes/vrona_SSD/FHE.Chess/src/new_model_src_new/dataset_new.py", line 76, in __getitem__
+    z = helper_move_state.choose_piece(next_move, board) # shape (1)
+  File "/Volumes/vrona_SSD/FHE.Chess/src/new_model_src_new/helper_chess_new.py", line 117, in choose_piece
+    y=int(dict_sq_binary[square_location],2) ^ int(dict_piece_binary[piece],2)
+KeyError: Piece.from_symbol('p')
+<class 'chess.Piece'>
