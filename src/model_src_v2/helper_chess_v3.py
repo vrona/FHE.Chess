@@ -13,7 +13,7 @@ dict_piece_binary = {
 }
 
 # array of square table location within chessboard (8x8) 
-square_table = np.array([
+bitboard = np.array([
     [56,57,58,59,60,61,62,63],
     [48,49,50,51,52,53,54,55],
     [40,41,42,43,44,45,46,47],
@@ -22,7 +22,7 @@ square_table = np.array([
     [16,17,18,19,20,21,22,23],
     [8,9,10,11,12,13,14,15],
     [0,1,2,3,4,5,6,7],
-                     ])
+    ])
 
 # dictionary of square_location(in): binary(string)
 dict_sq_binary = {}
@@ -93,7 +93,7 @@ class Move_State():
         choosen_piece_row = 8 - int(from_to_move[1]) # flipping the board (origin of row starts from top instead of bottom)
         choosen_piece_column = alpha_to_num[from_to_move[0]]
 
-        square_location = square_table[choosen_piece_row, choosen_piece_column]
+        square_location = bitboard[choosen_piece_row, choosen_piece_column]
         piece = board.piece_at(square_location)
         #print(from_to_move,"\nCOLUMN {}:".format(from_to_move[0]),choosen_piece_column, "ROW {}:".format(from_to_move[1]),choosen_piece_row)
         #print("SQUARE:",square_location)
@@ -106,26 +106,17 @@ class Move_State():
 
         from_to_move = str(board.pop())
 
-        #initial_output_layer = np.zeros((8,8)) # from 0 to 1 on the departure matrix
         initial_row = 8 - int(from_to_move[1])
         initial_column = alpha_to_num[from_to_move[0]]
-        #initial_output_layer[initial_row,  initial_column] = 1
+
         
-        square_location = square_table[initial_row, initial_column]
-        piece = board.piece_at(square_location)
-
-        # XOR binary square_location ^ piece_binary
-        y=int(dict_sq_binary[square_location],2) ^ int(dict_piece_binary[str(piece)],2)
-        y = '{0:b}'.format(y)
-
-        bin_sq_loc_piece_array = np.zeros(shape=(8,))
-        for i, z in enumerate(y):
-            bin_sq_loc_piece_array[i] = int(z)
-
-        # y_hat = torch.tensor(bin_sq_loc_piece_array, dtype=torch.int8)
-        # print(y_hat)
+        square_location = bitboard[initial_row, initial_column]
+       
+        flattened_bitboard = np.zeros((64,))
+        flattened_bitboard[square_location] = 1
+        #print("SQUARE:",square_location, flattened_bitboard)
         
-        return bin_sq_loc_piece_array # square_table[initial_row, initial_column] #initial_output_layer
+        return flattened_bitboard # bitboard[initial_row, initial_column] #initial_output_layer
 
 
     def move_piece(self, move, board):

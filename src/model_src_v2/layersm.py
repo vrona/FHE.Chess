@@ -1,7 +1,7 @@
 import chess
 import numpy as np
 import re
-from helper_chess_new import Move_State
+from helper_chess_v3 import Move_State
 
 helper_move_state = Move_State()
 
@@ -25,29 +25,44 @@ puis via UCI la piece avant le move pour apprendre à choisir la pièce
 puis prendre le move de destination"""
 
 piece = sequence_moves[5]
-moves = sequence_moves[:1]
+moves = sequence_moves[:3]
 
 board = chess.Board()
-
 
 for move in moves:
     board.push_san(move).uci()
 
 from_to_move = str(board.pop())
-
 row = 8 - int(from_to_move[1]) # flipping the board (origin of row starts from top instead of bottom)
 column = alpha_to_num[from_to_move[0]]
 
-print(from_to_move,"\nCOLUMN {}:".format(from_to_move[0]),column, "ROW {}:".format(from_to_move[1]),row)
 bitmap = chessloc[row, column]
-print("SQUARE:",bitmap)
-piece = board.piece_at(bitmap)
-print("PIECE:",piece) #,board
+
+mat_bitboard = np.zeros((64,))
+mat_bitboard[bitmap] = 1
+print("SQUARE:",bitmap, mat_bitboard)
 
 
-initial_output_layer = np.zeros((8,8)) # from 0 to 1 on the departure matrix
-initial_output_layer[row,  column] = 1
-print(initial_output_layer)
+############## DONE ################
+
+# for move in moves:
+#     board.push_san(move).uci()
+
+# from_to_move = str(board.pop())
+
+# row = 8 - int(from_to_move[1]) # flipping the board (origin of row starts from top instead of bottom)
+# column = alpha_to_num[from_to_move[0]]
+
+# print(from_to_move,"\nCOLUMN {}:".format(from_to_move[0]),column, "ROW {}:".format(from_to_move[1]),row)
+# bitmap = chessloc[row, column]
+# print("SQUARE:",bitmap)
+# piece = board.piece_at(bitmap)
+# print("PIECE:",piece) #,board
+
+
+# initial_output_layer = np.zeros((8,8)) # from 0 to 1 on the departure matrix
+# initial_output_layer[row,  column] = 1
+# print(initial_output_layer)
 
 
 ############## DONE ################
