@@ -1,7 +1,7 @@
 from torch.utils.data import Dataset, Subset
 import numpy as np
 import chess
-from helper_chess_v3 import Board_State, Move_State
+from helper_chess_v4 import Board_State, Move_State
 
 
 #       ___           ___           ___           ___           ___           ___           ___     
@@ -72,13 +72,15 @@ class Chessset(Dataset):
 
         #y = helper_move_state.move_piece(next_move, board)  # shape(2,8,8)
 
+        #t = helper_move_state.test_from(next_move, board)
+        
         z = helper_move_state.choose_piece(next_move, board) # shape (1)
 
         # get the eval
         # xx = get_eval() of piece_pos
         # yy = get_eval() of move_pos
 
-        # determine white or black turn (1 for w, -1 for b)
+        # determine white or black turn (1 for w, -1 for b) and then the one to play has always positive value
         if game_state_i %2 == 1:
             x *= -1
         return x, z

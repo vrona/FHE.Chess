@@ -40,22 +40,23 @@ class Board_State():
     def __init__(self):
         pass
     
-    def whattype(self, color):
-        if color.isupper():
-            value = 1
-            return color.upper(), value
-        else:
-            value = -1
-            return color, value
+    # def whattype(self, color):
+    #     if color.isupper():
+    #         value = 1
+    #         return color.upper(), value
+    #     else:
+    #         value = -1
+    #         return color, value
     
 
     def feat_map_piece(self, board, color):
         """convert board chess lib format to binary like"""
-        type, hotone = self.whattype(color)
+        #type, hotone = self.whattype(color)
 
         sub_board = str(board)
-        sub_board = re.sub(f'[^{type} \n]', '.', sub_board)
-        sub_board = re.sub(f'{type}', '{}'.format(hotone), sub_board)
+        sub_board = re.sub(f'[^{color}{color.upper()} \n]', '.', sub_board)
+        sub_board = re.sub(f'{color}', '{}'.format(-1), sub_board)
+        sub_board = re.sub(f'{color.upper()}', '{}'.format(1), sub_board)
         sub_board = re.sub(f'\.', '0', sub_board)
         board_matrix = []
         for row in sub_board.split('\n'):
@@ -68,11 +69,11 @@ class Board_State():
 
     def board_tensor(self, board):
         """board to matrix representation per pieces types and then stacked"""
-        pieces = ['p','r','n','b','q','k','P', 'R', 'N', 'B', 'Q', 'K']
+        pieces = ['p','r','n','b','q','k'] #,'P', 'R', 'N', 'B', 'Q', 'K']
         layers = []
         for piece in pieces:
             layers.append(self.feat_map_piece(board, piece)) # return feature map / pieces
-        
+
         board_rep = np.stack(layers) #3D tensor shape (12,8,8)
         return board_rep
     
@@ -112,12 +113,27 @@ class Move_State():
         
         square_location = bitboard[initial_row, initial_column]
        
-        #flattened_bitboard = np.zeros((64,))
-        #flattened_bitboard[square_location] = 1
+        flattened_bitboard = np.zeros((64,))
+        flattened_bitboard[square_location] = 1
         #print("SQUARE:",square_location, flattened_bitboard)
         
-        return square_location #flattened_bitboard # bitboard[initial_row, initial_column] #initial_output_layer
+        return flattened_bitboard # bitboard[initial_row, initial_column] #initial_output_layer
 
+
+    def test_from(self, move, board):
+        """function for moving"""
+        board.push_san(move).uci() # 1st needs to convert the dataset from algebraic to uci format
+
+        move = str(board.pop())
+
+        initial_output_layer = np.zeros((8,8)) # from 0 to 1 on the departure matrix
+        initial_row = 8 - int(move[1])
+        initial_column = alpha_to_num[move[0]]
+        initial_output_layer[initial_row,  initial_column] = 1
+
+        print(initial_output_layer)
+        return initial_output_layer
+    
 
     def move_piece(self, move, board):
         """function for moving"""

@@ -22,7 +22,7 @@ wandb.init(
         project = "Chess_App",
 
         config = {
-        "learning_rate": 0.01,
+        "learning_rate": 0.0018,
         "architecture": "CNN",
         "dataset": "WhiteELO 2000 arevel",
         "epochs": 10,
@@ -83,8 +83,9 @@ def train_valid(model, trainloader, validloader, criterion_from, criterion_to, n
             output = model(data)
 
             # batch loss
-            print(output.shape, output[:,0,:].shape)
+            #print(output.shape, target.shape)
             loss_from = criterion_from(output[:,0,:], target[:,0,:])
+
             #print("loss_from :",loss_from)
             loss_to= criterion_to(output[:,1,:], target[:,1,:])
             #print("loss_to :", loss_to)
@@ -101,10 +102,10 @@ def train_valid(model, trainloader, validloader, criterion_from, criterion_to, n
 
             #print("train loss :",train_loss)
 
-            wandb.log({"train_loss": loss.item()*data.size(0)})
+            wandb.log({"train_loss": loss_from.item()*data.size(0)})
 
             loop.set_description(f"Epoch [{epoch}/{n_epochs}]")
-            loop.set_postfix(train_loss = loss.item()*data.size(0))
+            loop.set_postfix(from_loss = loss_from.item()*data.size(0))
 
 
 

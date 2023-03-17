@@ -1,13 +1,15 @@
-2023-03-16 20:06:10,768 This is just a harmless debug message
-2023-03-16 20:06:10,768 This is just an information for you
-2023-03-16 20:06:10,768 OOPS!!!Its a Warning
-2023-03-16 20:06:10,768 Have you try to divide a number by zero
-2023-03-16 20:06:10,768 The Internet is not working....
-2023-03-16 20:06:10,822 Popen(['git', 'rev-parse', '--show-toplevel'], cwd=/Volumes/vrona_SSD/FHE.Chess, universal_newlines=False, shell=None, istream=None)
-2023-03-16 20:06:11,874 Starting new HTTPS connection (1): api.wandb.ai:443
-2023-03-16 20:06:12,089 https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
-2023-03-16 20:06:12,096 Starting new HTTPS connection (1): api.wandb.ai:443
-2023-03-16 20:06:12,304 https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
-2023-03-16 20:06:12,320 Popen(['git', 'cat-file', '--batch-check'], cwd=/Volumes/vrona_SSD/FHE.Chess, universal_newlines=False, shell=None, istream=<valid stream>)
-2023-03-16 20:06:13,245 Note: NumExpr detected 12 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 8.
-2023-03-16 20:06:13,245 NumExpr defaulting to 8 threads.
+2023-03-17 22:03:37,527 This is just a harmless debug message
+2023-03-17 22:03:37,527 This is just an information for you
+2023-03-17 22:03:37,527 OOPS!!!Its a Warning
+2023-03-17 22:03:37,527 Have you try to divide a number by zero
+2023-03-17 22:03:37,527 The Internet is not working....
+2023-03-17 22:03:37,579 Popen(['git', 'rev-parse', '--show-toplevel'], cwd=/Volumes/vrona_SSD/FHE.Chess, universal_newlines=False, shell=None, istream=None)
+2023-03-17 22:03:38,631 Starting new HTTPS connection (1): api.wandb.ai:443
+2023-03-17 22:03:38,986 https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2023-03-17 22:03:38,992 Starting new HTTPS connection (1): api.wandb.ai:443
+2023-03-17 22:03:39,237 https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2023-03-17 22:03:39,254 Popen(['git', 'cat-file', '--batch-check'], cwd=/Volumes/vrona_SSD/FHE.Chess, universal_newlines=False, shell=None, istream=<valid stream>)
+2023-03-17 22:03:40,737 Note: NumExpr detected 12 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 8.
+2023-03-17 22:03:40,737 NumExpr defaulting to 8 threads.
+2023-03-17 22:04:39,311 Starting new HTTPS connection (1): o151352.ingest.sentry.io:443
+2023-03-17 22:04:39,894 https://o151352.ingest.sentry.io:443 "POST /api/5288891/envelope/ HTTP/1.1" 200 2

@@ -36,7 +36,7 @@ wandb.init(
         project = "Chess_App",
 
         config = {
-        "learning_rate": 0.001,
+        "learning_rate": 1e-2, #"weight_decay":0.099,
         "architecture": "CNN",
         "dataset": "White Black ELO 2000 arevel",
         "epochs": 10,
@@ -46,7 +46,7 @@ wandb.init(
 # copy config
 wb_config = wandb.config
 
-def train_valid(model, trainloader, validloader, criterion_from, n_epochs= wb_config.epochs):
+def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.epochs):
 
     # loss function
     
@@ -61,7 +61,7 @@ def train_valid(model, trainloader, validloader, criterion_from, n_epochs= wb_co
 
 
     """
-    optimizer = optim.Adam(model.parameters(), lr = wb_config.learning_rate)
+    optimizer = optim.Adam(model.parameters(), lr = wb_config.learning_rate) #weight_decay=wb_config.weight_decay
     valid_loss_min = np.Inf # track change in validation loss
 
     for epoch in range(n_epochs):
@@ -89,34 +89,33 @@ def train_valid(model, trainloader, validloader, criterion_from, n_epochs= wb_co
         
         for batch_idx, (data, target) in loop:
 
-            data, target = data.to(torch.float).to(device), target.to(torch.float).to(device)
-
+            data, target = data.to(torch.float).to(device), target.to(torch.float).to(device) #.to(torch.long) #
+            #data, target = data.to(device), target.to(device)
             # clear the gradients from all variable
             optimizer.zero_grad()
 
             # forward
             output = model(data)
 
-            #print("out",output[0],'\n',"target",target[0])
             # batch loss
-            loss = criterion_from(output, target)
+            loss_0 = criterion(output[0,:], target[0,:])
 
             #print("loss :", loss)
 
             # backward pass
-            loss.backward()
+            loss_0.backward()
             # single optimization step
             optimizer.step()
 
             # train_loss update
-            train_loss += loss.item()*data.size(0)
+            #train_loss += loss.item()*data.size(0)
 
             #print("train loss :",train_loss)
 
-            wandb.log({"train_loss": loss.item()*data.size(0)})
+            wandb.log({"loss_0": loss_0.item()*data.size(0)})
 
             loop.set_description(f"Epoch_train [{epoch}/{n_epochs}]")
-            loop.set_postfix(training_loss = loss.item()*data.size(0))
+            loop.set_postfix(loss_0 = loss_0.item()*data.size(0))
 
 
 
@@ -143,7 +142,7 @@ def train_valid(model, trainloader, validloader, criterion_from, n_epochs= wb_co
             # forward
             output = model(data)
             # batch loss
-            loss = criterion_from(output, target)
+            loss = criterion(output, target)
             # train_loss update
             valid_loss += loss.item()*data.size(0)
             
@@ -181,7 +180,7 @@ def train_valid(model, trainloader, validloader, criterion_from, n_epochs= wb_co
 #                   \/__/         \/__/            
 
 
-def test(model, testloader, criterion_from):
+def test(model, testloader, criterion):
 
 
     test_loss = 0.0
@@ -200,8 +199,8 @@ def test(model, testloader, criterion_from):
             # forward
             output = model(data)
             # batch loss
-            #loss = criterion_from(output, target)
-            loss = criterion_from(output, target)
+            #loss = criterion(output, target)
+            loss = criterion(output, target)
 
             # train_loss update
             test_loss += loss.item()*data.size(0)

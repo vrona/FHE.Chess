@@ -5,7 +5,7 @@ from torch.utils.data import DataLoader
 from train_v2 import train_valid, test
 import numpy as np
 import pandas as pd
-from cnn_v5 import PlainChessNET
+from cnn_v6 import PlainChessNET
 
 
 # Dataset = "path/chess-game" # Chessset(we_2000['AN'])
@@ -54,17 +54,16 @@ trainset = Chessset(training_set['AN'], training_set.shape[0]) # 530025
 validset = Chessset(valid_set['AN'], valid_set.shape[0]) # 176675
 testset = Chessset(test_set['AN'], test_set.shape[0])   # 176676
 
-train_loader = DataLoader(trainset, batch_size = 16, shuffle=True, drop_last=True)
-valid_loader = DataLoader(validset, batch_size = 16, shuffle=True, drop_last=True)
-test_loader = DataLoader(testset, batch_size = 16, shuffle=True, drop_last=True)
+train_loader = DataLoader(trainset, batch_size = 64, shuffle=True, drop_last=True)
+valid_loader = DataLoader(validset, batch_size = 64, shuffle=True, drop_last=True)
+test_loader = DataLoader(testset, batch_size = 64, shuffle=True, drop_last=True)
 
 
 #model
 model = PlainChessNET()
 #loss
-criterion = nn.CrossEntropyLoss()
-
-# criterion_to = nn.CrossEntropyLoss()
+criterion = nn.CrossEntropyLoss(reduction='sum')
+#criterion = nn.MSELoss()
 #optimizer
 
 train_valid(model, train_loader, valid_loader, criterion)
