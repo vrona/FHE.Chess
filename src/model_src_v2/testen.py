@@ -1,4 +1,5 @@
 import numpy as np
+from peewee import SqliteDatabase
 
 # pawn_table = np.array([
 #     [0, 0, 0, 0, 0, 0, 0, 0],
@@ -14,3 +15,7 @@ import numpy as np
 # tops = np.argpartition(pawn_table, kth=1, axis=1)
 # #topuno = tops[tops]
 # print(tops)
+
+db = SqliteDatabase("/Volumes/vrona_SSD/lichess_data/wb_2000_database.db")
+
+db.connect()
