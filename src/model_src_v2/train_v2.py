@@ -36,7 +36,7 @@ wandb.init(
         project = "Chess_App",
 
         config = {
-        "learning_rate": 1e-2, #"weight_decay":0.099,
+        "learning_rate": 1.8e-3, #"weight_decay":0.099,
         "architecture": "CNN",
         "dataset": "White Black ELO 2000 arevel",
         "epochs": 10,
@@ -98,7 +98,13 @@ def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.
             output = model(data)
 
             # batch loss
-            loss_0 = criterion(output[0,:], target[0,:])
+            #print("OUT____", output.shape,"TAR****", target.shape)
+
+            #print(output, target)
+            loss_0 = criterion(output, target) #[:,0]
+
+            #print("*****LOSS****",loss_0)
+            #loss_1 = criterion(output[0,:], target[0,:])
 
             #print("loss :", loss)
 
@@ -111,11 +117,11 @@ def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.
             #train_loss += loss.item()*data.size(0)
 
             #print("train loss :",train_loss)
-
-            wandb.log({"loss_0": loss_0.item()*data.size(0)})
+            
+            wandb.log({"loss_0": loss_0.item()*data.size(0)}) #, "sum out": torch.sum(output)
 
             loop.set_description(f"Epoch_train [{epoch}/{n_epochs}]")
-            loop.set_postfix(loss_0 = loss_0.item()*data.size(0))
+            loop.set_postfix(loss_0 = loss_0.item()*data.size(0)) #, out_sum = torch.sum(output)
 
 
 

@@ -22,24 +22,40 @@ class PlainChessNET(nn.Module):
 
         # input >> hidden layer
 
-        self.input_layer = nn.Conv2d(6, 128, kernel_size=2, stride=1, padding=1)
-        self.batchn1 = nn.BatchNorm2d(128)
-        self.conv2 = nn.Conv2d(128, 128, kernel_size=2, stride=1, padding=1)
+        self.input_layer = nn.Conv2d(6, 64, kernel_size=3, stride=1, padding=1)
+        self.batchn1 = nn.BatchNorm2d(64)
+        self.conv2 = nn.Conv2d(64, 128, kernel_size=3, stride=1, padding=1)
         self.batchn2 = nn.BatchNorm2d(128)
 
+        self.conv3 = nn.Conv2d(128, 128, kernel_size=3, stride=1, padding=1)
+        self.batchn3 = nn.BatchNorm2d(128)
+
+        self.conv4 = nn.Conv2d(128, 512, kernel_size=3, stride=1, padding=1)
+        self.batchn4 = nn.BatchNorm2d(512)
+
         self.flatten = nn.Flatten()
-        self.fc1 = nn.Linear(12800, 64)
-        self.batchn3 = nn.BatchNorm1d(64)
-        self.output = nn.Linear(64,64)
+        self.fc1 = nn.Linear(32768, 512)
+    
+        self.batchn1d_1 = nn.BatchNorm1d(512)
+        self.output = nn.Linear(512,64)
+        self.batchn1d_2 = nn.BatchNorm1d(64)
 
 
     def convo(self, x):
         x = self.input_layer(x)
         x = self.batchn1(x)
-        x = F.selu(x)
+        x = F.relu(x)
 
         x = self.conv2(x)
         x = self.batchn2(x)
+        x = F.selu(x)
+
+        x = self.conv3(x)
+        x = self.batchn3(x)
+        x = F.selu(x)
+
+        x = self.conv4(x)
+        x = self.batchn4(x)
         x = F.selu(x)
         return x
     
@@ -55,10 +71,13 @@ class PlainChessNET(nn.Module):
         #print(x, x.shape)
 
         x = self.fc1(x)
-        x = F.relu(x)
-        
+
+        x = F.log_softmax(x, dim=0)
+        #x = self.batchn1d_1(x)
+
         x = self.output(x) # torch.Size([64, 8])
         #x = F.softmax(x, dim=1)
+        #x = self.batchn1d_2(x)
 
         return x
     
