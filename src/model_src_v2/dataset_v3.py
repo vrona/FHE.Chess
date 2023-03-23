@@ -68,7 +68,7 @@ class Chessset(Dataset):
         for move in moves:
             board.push_san(move)
 
-        x = helper_board_state.board_tensor(board)          # shape(6,8,8)
+        x = helper_board_state.board_tensor_12(board)          # shape(6,8,8) or shape(12,8,8)
         
         y = helper_move_state.from_to_bitboards(next_move, board) # shape (1)
 

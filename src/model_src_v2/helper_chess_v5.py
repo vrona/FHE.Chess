@@ -39,18 +39,17 @@ class Board_State():
     def __init__(self):
         pass
     
-    # def whattype(self, color):
-    #     if color.isupper():
-    #         value = 1
-    #         return color.upper(), value
-    #     else:
-    #         value = -1
-    #         return color, value
+    def whattype(self, color):
+        if color.isupper():
+            value = 1
+            return color.upper(), value
+        else:
+            value = -1
+            return color, value
     
 
-    def feat_map_piece(self, board, color):
+    def feat_map_piece_6(self, board, color):
         """convert board chess lib format to binary like"""
-        #type, hotone = self.whattype(color)
 
         sub_board = str(board)
         sub_board = re.sub(f'[^{color}{color.upper()} \n]', '.', sub_board)
@@ -65,17 +64,45 @@ class Board_State():
 
         return np.array(board_matrix) # numpy matrix
 
+    def feat_map_piece_12(self, board, color):
+        """convert board chess lib format to binary like"""
+        
+        #type, hotone = self.whattype(color)
+        t, v = self.whattype(color)
+        
+        sub_board = str(board)
+        sub_board = re.sub(f'[^{t} \n]', '.', sub_board)
+        sub_board = re.sub(f'{t}', '{}'.format(v), sub_board)
+        sub_board = re.sub(f'\.', '0', sub_board)
+        board_matrix = []
+        for row in sub_board.split('\n'):
+            row = row.split(' ')
+            row = [int(x) for x in row]
+            board_matrix.append(row)
 
-    def board_tensor(self, board):
+        return np.array(board_matrix) # numpy matrix
+
+
+    def board_tensor_6(self, board):
         """board to matrix representation per pieces types and then stacked"""
-        pieces = ['p','r','n','b','q','k'] #,'P', 'R', 'N', 'B', 'Q', 'K']
+        pieces = ['p','r','n','b','q','k']
         layers = []
         for piece in pieces:
-            layers.append(self.feat_map_piece(board, piece)) # return feature map / pieces
+            layers.append(self.feat_map_piece_6(board, piece)) # return feature map / pieces
+
+        board_rep = np.stack(layers) #3D tensor shape (6,8,8)
+        return board_rep
+    
+
+    def board_tensor_12(self, board):
+        """board to matrix representation per pieces types and then stacked"""
+        pieces = ['p','r','n','b','q','k','P', 'R', 'N', 'B', 'Q', 'K']
+        layers = []
+        for piece in pieces:
+            layers.append(self.feat_map_piece_12(board, piece)) # return feature map / pieces
 
         board_rep = np.stack(layers) #3D tensor shape (12,8,8)
         return board_rep
-    
 
 class Move_State():
     """

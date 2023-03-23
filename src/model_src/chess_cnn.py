@@ -54,7 +54,7 @@ class PlainChessNET(nn.Module):
         self.hidden_layers = hidden_layers
         self.input_layer = nn.Conv2d(6, hidden_size, kernel_size=3, stride=1, padding=1)
         self.modulelist = nn.ModuleList([Net(hidden_size) for i in range(hidden_layers)])
-        self.output_layer = nn.Conv2d(hidden_size, 1, kernel_size=3, stride=1, padding=1)
+        self.output_layer = nn.Conv2d(hidden_size, 2, kernel_size=3, stride=1, padding=1)
 
 
     def forward(self, x):

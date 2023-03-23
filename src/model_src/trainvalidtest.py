@@ -75,7 +75,7 @@ def train_valid(model, trainloader, validloader, criterion_from, criterion_to, n
         
         for batch_idx, (data, target) in loop:
             
-            data, target = data.to(torch.float).to(device), target.to(torch.long).to(device)
+            data, target = data.to(torch.float).to(device), target.to(torch.float).to(device)
 
             # clear the gradients from all variable
             optimizer.zero_grad()
@@ -85,14 +85,15 @@ def train_valid(model, trainloader, validloader, criterion_from, criterion_to, n
             # batch loss
 
             # print("Out sum:",torch.sum(output[:,0,:]), "Target sum:",torch.sum(target[:,0,:]))
+            print(output.shape, target.shape)
             print(output[:,0,:].shape, target[:,0,:].shape)
-            loss = criterion_from(output[:,0,:], target[:,0,:])
-            ##loss_from = criterion_from(output[:,0,:], target[:,0,:])
+            print(output[:,1,:].shape, target[:,1,:].shape)
 
-            #print("loss_from :",loss_from)
-            ##loss_to= criterion_to(output[:,1,:], target[:,1,:])
+            loss_from = criterion_from(output[:,0,:], target[:,0,:])
+            loss_to= criterion_to(output[:,1,:], target[:,1,:])
+    
             #print("loss_to :", loss_to)
-            ##loss = loss_from + loss_to
+            loss = loss_from + loss_to
             #print("loss :", loss)
 
             # backward pass
@@ -105,7 +106,7 @@ def train_valid(model, trainloader, validloader, criterion_from, criterion_to, n
 
             #print("train loss :",train_loss)
 
-            wandb.log({"train_loss": loss.item()*data.size(0)})
+            wandb.log({"train_loss": loss.item()}) #*data.size(0)
 
             loop.set_description(f"Epoch [{epoch}/{n_epochs}]")
             loop.set_postfix(from_loss = loss.item()*data.size(0))

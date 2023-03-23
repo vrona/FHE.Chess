@@ -103,18 +103,13 @@ def train_valid(model, trainloader, validloader, criterion_f, criterion_t, n_epo
             loss_to = criterion_t(output[:,1,:], target[:,1,:])
             loss_0 = loss_from + loss_to
 
-            #print("*****LOSS****",loss_0)
-            #loss_1 = criterion(output[0,:], target[0,:])
-
-            #print("loss :", loss)
-
             # backward pass
             loss_0.backward()
             # single optimization step
             optimizer.step()
 
             # train_loss update
-            #train_loss += loss.item()*data.size(0)
+            train_loss += loss_0.item()*data.size(0)
 
             #print("train loss :",train_loss)
             
@@ -149,8 +144,8 @@ def train_valid(model, trainloader, validloader, criterion_f, criterion_t, n_epo
             output = model(data)
             # batch loss
 
-            loss_from = criterion(output[:,0,:], target[:,0,:])
-            loss_to = criterion(output[:,1,:], target[:,1,:])
+            loss_from = criterion_f(output[:,0,:], target[:,0,:])
+            loss_to = criterion_t(output[:,1,:], target[:,1,:])
             loss_0 = loss_from + loss_to
             # train_loss update
             valid_loss += loss_0.item()*data.size(0)
@@ -161,7 +156,7 @@ def train_valid(model, trainloader, validloader, criterion_f, criterion_t, n_epo
 
         # avg loss
         train_loss = train_loss / len(trainloader) #.sampler
-        valid_loss = train_loss / len(validloader) #.sampler
+        valid_loss = valid_loss / len(validloader) #.sampler
 
         # print training/validation statistics 
         print('Epoch: {} \tTraining Loss: {:.6f} \tValidation Loss: {:.6f}'.format(
@@ -189,7 +184,7 @@ def train_valid(model, trainloader, validloader, criterion_f, criterion_t, n_epo
 #                   \/__/         \/__/            
 
 
-def test(model, testloader, criterion):
+def test(model, testloader, criterion_f, criterion_t):
 
 
     test_loss = 0.0
@@ -209,8 +204,8 @@ def test(model, testloader, criterion):
             output = model(data)
             # batch loss
             #loss = criterion(output, target)
-            loss_from = criterion(output[:,0,:], target[:,0,:])
-            loss_to = criterion(output[:,1,:], target[:,1,:])
+            loss_from = criterion_f(output[:,0,:], target[:,0,:])
+            loss_to = criterion_t(output[:,1,:], target[:,1,:])
             loss_0 = loss_from + loss_to
 
             # train_loss update
@@ -236,7 +231,7 @@ def test(model, testloader, criterion):
 
             # print(final_pred, indixofvals[final_pred])
             #prediction = output.data.max(1)
-            accuracy += (indix == target).sum().item()
+            accuracy += (vals == target).sum().item()
 
             wandb.log({"test_loss": loss_0.item()*data.size(0)})
             loop_test.set_description(f"test [{batch_idx}/{len(testloader)}]")
