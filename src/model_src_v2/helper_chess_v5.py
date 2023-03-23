@@ -100,58 +100,34 @@ class Move_State():
         #print("PIECE:",piece)
         return square_location, piece
 
-    def choose_piece(self, move, board):
+
+    def from_to_bitboards(self, move, board):
         """choosing the adequate piece to play"""
         board.push_san(move).uci() # 1st needs to convert the dataset from algebraic to uci format
 
         from_to_move = str(board.pop())
 
-        initial_row = 8 - int(from_to_move[1])
-        initial_column = alpha_to_num[from_to_move[0]]
+        # SQUARE_FROM
+        from_row = 8 - int(from_to_move[1])
+        from_column = alpha_to_num[from_to_move[0]]
 
-        
-        square_location = bitboard[initial_row, initial_column]
+        square_from = bitboard[from_row, from_column]
        
-        flattened_bitboard = np.zeros((64,))
-        flattened_bitboard[square_location] = 1
+        flat_bitboard_from = np.zeros((64,))
+        flat_bitboard_from[square_from] = 1
         #print("SQUARE:",square_location, flattened_bitboard)
-        
-        return flattened_bitboard # bitboard[initial_row, initial_column] #initial_output_layer
 
+        # SQUARE_TO
+        to_row = 8 - int(from_to_move[3])
+        to_column = alpha_to_num[from_to_move[2]]
 
-    def test_from(self, move, board):
-        """function for moving"""
-        board.push_san(move).uci() # 1st needs to convert the dataset from algebraic to uci format
+        square_to = bitboard[to_row, to_column]
+       
+        flat_bitboard_to = np.zeros((64,))
+        flat_bitboard_to[square_to] = 1
 
-        move = str(board.pop())
-
-        initial_output_layer = np.zeros((8,8)) # from 0 to 1 on the departure matrix
-        initial_row = 8 - int(move[1])
-        initial_column = alpha_to_num[move[0]]
-        initial_output_layer[initial_row,  initial_column] = 1
-
-        print(initial_output_layer)
-        return initial_output_layer
-    
-
-    def move_piece(self, move, board):
-        """function for moving"""
-        board.push_san(move).uci() # 1st needs to convert the dataset from algebraic to uci format
-
-        move = str(board.pop())
-
-        initial_output_layer = np.zeros((8,8)) # from 0 to 1 on the departure matrix
-        initial_row = 8 - int(move[1])
-        initial_column = alpha_to_num[move[0]]
-        initial_output_layer[initial_row,  initial_column] = 1
-
-        destination_output_layer = np.zeros((8,8)) # from 0 to 1 on the arrival matrix
-        destination_row = 8 - int(move[3])
-        destination_column = alpha_to_num[move[2]]
-        destination_output_layer[destination_row, destination_column] = 1
-
-        return np.stack([initial_output_layer, destination_output_layer])
-    
+        return np.stack([flat_bitboard_from,flat_bitboard_to])
+   
 
     def list_move_sequence(self, listms):
         """individual moves"""

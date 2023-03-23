@@ -1,10 +1,10 @@
-from dataset_v2 import Chessset
 import torch.nn as nn
 from torch.utils.data import DataLoader
 from train_v2 import train_valid, test
 import numpy as np
 import pandas as pd
-from cnn_v8 import PlainChessNET
+from dataset_v3 import Chessset
+from cnn_v10 import PlainChessNET
 
 
 # Dataset = "path/chess-game" # Chessset(we_2000['AN'])
@@ -61,12 +61,13 @@ test_loader = DataLoader(testset, batch_size = 64, shuffle=True, drop_last=True)
 model = PlainChessNET()
 #loss
 #criterion = nn.CrossEntropyLoss() #reduction='sum'
-#criterion = nn.MSELoss()
+criterion_f = nn.MSELoss()
+criterion_t = nn.MSELoss()
 #criterion = nn.L1Loss()
-criterion = nn.NLLLoss()
+#criterion = nn.NLLLoss()
 #optimizer
 
-train_valid(model, train_loader, valid_loader, criterion)
+train_valid(model, train_loader, valid_loader, criterion_f, criterion_t)
 
 ### model with lowest validation loss
 #model.load_state_dict(torch.load("model_plain_chess.pt"))

@@ -47,7 +47,7 @@ class Net(nn.Module):
 
 class PlainChessNET(nn.Module):
 
-    def __init__(self, hidden_layers=2, hidden_size=384):
+    def __init__(self, hidden_layers=3, hidden_size=384):
 
         super(PlainChessNET, self).__init__()
         
@@ -61,8 +61,9 @@ class PlainChessNET(nn.Module):
         self.flatten = nn.Flatten()
         
         self.fc1 = nn.Linear(8192, 128)
-        self.batchn1d_1 = nn.BatchNorm1d(128)
-        self.output = nn.Linear(128,64)
+        #self.batchn1d_1 = nn.BatchNorm1d(128)
+        self.output_from = nn.Linear(128,64)
+        self.output_to = nn.Linear(128,64)
 
 
     def forward(self, x):
@@ -81,6 +82,11 @@ class PlainChessNET(nn.Module):
 
         x = self.fc1(x)
         x = F.relu(x)
-        x = self.output(x)
 
-        return x
+        x_from = self.output_from(x)
+        x_to = self.output_to(x)
+
+        x_stack = torch.stack((x_from,x_to), dim=0)
+        x_stack = torch.transpose(x_stack, 0, 1)
+
+        return x_stack

@@ -72,7 +72,7 @@ class PlainChessNET(nn.Module):
 
         x = self.fc1(x)
 
-        x = F.log_softmax(x, dim=0)
+        x = F.relu(x)
         #x = self.batchn1d_1(x)
 
         x = self.output(x) # torch.Size([64, 8])

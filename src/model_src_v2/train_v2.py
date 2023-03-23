@@ -36,7 +36,7 @@ wandb.init(
         project = "Chess_App",
 
         config = {
-        "learning_rate": 1.8e-3, #"weight_decay":0.099,
+        "learning_rate": 1.0e-3, #"weight_decay":0.099,
         "architecture": "CNN",
         "dataset": "White Black ELO 2000 arevel",
         "epochs": 10,
@@ -46,7 +46,7 @@ wandb.init(
 # copy config
 wb_config = wandb.config
 
-def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.epochs):
+def train_valid(model, trainloader, validloader, criterion_f, criterion_t, n_epochs= wb_config.epochs):
 
     # loss function
     
@@ -98,10 +98,10 @@ def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.
             output = model(data)
 
             # batch loss
-            #print("OUT____", output.shape,"TAR****", target.shape)
-
-            #print(output, target)
-            loss_0 = criterion(output, target) #[:,0]
+            
+            loss_from = criterion_f(output[:,0,:], target[:,0,:])
+            loss_to = criterion_t(output[:,1,:], target[:,1,:])
+            loss_0 = loss_from + loss_to
 
             #print("*****LOSS****",loss_0)
             #loss_1 = criterion(output[0,:], target[0,:])
@@ -148,13 +148,16 @@ def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.
             # forward
             output = model(data)
             # batch loss
-            loss = criterion(output, target)
+
+            loss_from = criterion(output[:,0,:], target[:,0,:])
+            loss_to = criterion(output[:,1,:], target[:,1,:])
+            loss_0 = loss_from + loss_to
             # train_loss update
-            valid_loss += loss.item()*data.size(0)
+            valid_loss += loss_0.item()*data.size(0)
             
-            wandb.log({"valid_loss": loss.item()*data.size(0)})
+            wandb.log({"valid_loss": loss_0.item()*data.size(0)})
             loop_valid.set_description(f"Epoch_valid [{epoch}/{n_epochs}]")
-            loop_valid.set_postfix(validate_loss = loss.item()*data.size(0))
+            loop_valid.set_postfix(validate_loss = loss_0.item()*data.size(0))
 
         # avg loss
         train_loss = train_loss / len(trainloader) #.sampler
@@ -206,10 +209,12 @@ def test(model, testloader, criterion):
             output = model(data)
             # batch loss
             #loss = criterion(output, target)
-            loss = criterion(output, target)
+            loss_from = criterion(output[:,0,:], target[:,0,:])
+            loss_to = criterion(output[:,1,:], target[:,1,:])
+            loss_0 = loss_from + loss_to
 
             # train_loss update
-            test_loss += loss.item()*data.size(0)
+            test_loss += loss_0.item()*data.size(0)
 
             # WIP TO DO comparison to true data
             # with conversion of output to wanted format
@@ -233,9 +238,9 @@ def test(model, testloader, criterion):
             #prediction = output.data.max(1)
             accuracy += (indix == target).sum().item()
 
-            wandb.log({"test_loss": loss.item()*data.size(0)})
+            wandb.log({"test_loss": loss_0.item()*data.size(0)})
             loop_test.set_description(f"test [{batch_idx}/{len(testloader)}]")
-            loop_test.set_postfix(testing_loss = loss.item()*data.size(0))
+            loop_test.set_postfix(testing_loss = loss_0.item()*data.size(0))
 
 
         # average test loss

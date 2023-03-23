@@ -1,4 +1,4 @@
-from dataset_v2 import Chessset
+from dataset_v3 import Chessset
 
 from torch.utils.data import DataLoader
 import pandas as pd
