@@ -1,4 +1,4 @@
-from torch.utils.data import Dataset, Subset
+from torch.utils.data import Dataset
 import numpy as np
 import chess
 from helper_chess_v5 import Board_State, Move_State

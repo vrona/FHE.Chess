@@ -4,12 +4,17 @@ import chess
 
 
 
-"""
+
 ##### make a square location / binary converter as a dictionnary. 
 dict_sq_binary = {}
 
 for z in range(0, 64):
-    dict_sq_binary[z] = bin(z)[2:]
+    dict_sq_binary[z] = bin(z)[2:].zfill(8)
+
+
+dict_array_sqbin = {}
+for z in range(0, 64):
+    dict_array_sqbin[z] = np.array(list(np.binary_repr(z).zfill(8))).astype(np.int8)
 
 
 # {0 : '0'     , 1 : '1'     , 2 : '10'    , 3 : '11'    , 4 : '100'   , 5 : '101'   , 6 : '110'   , 7 : '111',
@@ -42,7 +47,16 @@ for i, z in enumerate(y):
 # convert an array to tensor
 y_hat = torch.tensor(new_arr, dtype=torch.int8)
 
+def sq_bin(sq):
+    tensofsq = int(dict_sq_binary[sq])
+    return tensofsq
+
+def array_sqbin(sq):
+    torsh = torch.tensor(dict_array_sqbin[sq])
+    return torsh
+
+for i in range(60,64):
+    print(sq_bin(i),"----",array_sqbin(i))
 
 # make a binary to 8 bits binary
 # print(bin(y)[2:].zfill(len(dict_piece_binary['K']))) 8 bits
-"""

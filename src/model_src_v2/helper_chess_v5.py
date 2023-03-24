@@ -140,8 +140,8 @@ class Move_State():
 
         square_from = bitboard[from_row, from_column]
        
-        flat_bitboard_from = np.zeros((64,))
-        flat_bitboard_from[square_from] = 1
+        #flat_bitboard_from = np.zeros((64,))
+        #flat_bitboard_from[square_from] = 1
         #print("SQUARE:",square_location, flattened_bitboard)
 
         # SQUARE_TO
@@ -150,10 +150,11 @@ class Move_State():
 
         square_to = bitboard[to_row, to_column]
        
-        flat_bitboard_to = np.zeros((64,))
-        flat_bitboard_to[square_to] = 1
+        #flat_bitboard_to = np.zeros((64,))
+        #flat_bitboard_to[square_to] = 1
 
-        return np.stack([flat_bitboard_from,flat_bitboard_to])
+        return np.stack([square_from, square_to])
+        #return np.stack([flat_bitboard_from,flat_bitboard_to])
    
 
     def list_move_sequence(self, listms):
