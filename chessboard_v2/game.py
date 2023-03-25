@@ -50,22 +50,23 @@ class Game:
                         surface.blit(img, piece.rectangle)
 
     def snapchot_pieces(self):
-        board = chess.Board()
-        print(board)
         
-        getpiece = []
+        # empty array of character 
+        string_bitmap = np.chararray((8,8))
+
+        # filling the array of character
         for row in range(cb_rows):
             for col in range(cb_cols):
 
                 #presence of a piece
                 if self.board.squares[row][col].piece_presence():
-                # 
-                #         print(row,col)
-                    piece = self.board.squares[row][col].piece
-                    print(chess.Piece(piece.type, piece.pname))
-                    
 
-        print(getpiece)
+                    piece = self.board.squares[row][col].piece
+                    string_bitmap[row,col] = chess.Piece(piece.type, piece.pname)
+                else:
+                    string_bitmap[row,col] = '.'
+                    
+        print("\n",str(string_bitmap))
 
 
 

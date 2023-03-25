@@ -1,9 +1,9 @@
-from dataset_v4 import Chessset
-
 from torch.utils.data import DataLoader
 import pandas as pd
 import numpy as np
 
+from dataset_v3 import Chessset
+from pred_chess import predict
 
 
 game_move_set = "/Volumes/vrona_SSD/lichess_data/wb_2000.csv"
@@ -33,5 +33,5 @@ train_data = DataLoader(trainset, batch_size = 32, shuffle=True, drop_last=True)
 valid_data = DataLoader(validset, batch_size = 32, shuffle=True, drop_last=True)
 test_data = DataLoader(testset, batch_size = 32, shuffle=True, drop_last=True)
 
-x, z = next(iter(valid_data))
-print(x.shape, z.shape)
+x, z = next(iter(test_data))
+predict(x)
