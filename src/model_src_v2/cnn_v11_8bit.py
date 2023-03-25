@@ -29,18 +29,18 @@ class Net(nn.Module):
 
     def forward(self, x):
         # define forward behavior
-        #x_input = torch.clone(x)
+        x_input = torch.clone(x)
 
         # activations and batch normalization
         x = self.conv1(x)
         x = self.batchn1(x)
-        x = F.relu(x)
+        x = F.selu(x)
 
         x = self.conv2(x)
         x = self.batchn2(x)
 
-        #x = x + x_input
-        x = F.relu(x)
+        x = x + x_input
+        x = F.selu(x)
 
         return x
 
@@ -57,11 +57,10 @@ class PlainChessNET(nn.Module):
         self.hidden_layers = hidden_layers
         self.input_layer = nn.Conv2d(12, hidden_size, kernel_size=3, stride=1, padding=1)
         self.modulelist = nn.ModuleList([Net(hidden_size) for i in range(hidden_layers)])
-        #self.last_conv = nn.Conv2d(hidden_size, 64, kernel_size=3, stride=1, padding=1)
-
+        self.output_layer = nn.Conv2d(hidden_size, 64, kernel_size=3, stride=1, padding=1)
         self.flatten = nn.Flatten()
-
-        self.fc1 = nn.Linear(hidden_size * 64, 64)
+        
+        self.fc1 = nn.Linear(4096, 64)
         self.batchn1d_1 = nn.BatchNorm1d(64)
         self.output_from = nn.Linear(64,8)
         self.output_to = nn.Linear(64,8)
@@ -78,23 +77,19 @@ class PlainChessNET(nn.Module):
         for h in range(self.hidden_layers):
             x = self.modulelist[h](x)
         
-        #x = self.last_conv(x) # torch.Size([64, 128, 8, 8])
+        x = self.output_layer(x) # torch.Size([64, 128, 8, 8])
         x = self.flatten(x)
 
         x = self.fc1(x)
         x = F.relu(x)
-        #x = self.batchn1d_1(x)
+        x = self.batchn1d_1(x)
+        
+        # nllloss
+        #x_from = F.log_softmax(self.output_from(x),dim=1)
+        #x_to = F.log_softmax(self.output_to(x),dim=1)
 
-        # nllloss crossentropyloss
-        # x_from = F.log_softmax(self.output_from(x),dim=1)
-        # x_to = F.log_softmax(self.output_to(x),dim=1)
-
-        # mseloss
-        #x_from = F.relu(self.output_from(x))
-        #x_to = F.relu_(self.output_to(x))
-
-        x_from = torch.sigmoid(self.output_from(x))
-        x_to = torch.sigmoid(self.output_to(x))
+        x_from = F.relu(self.output_from(x))
+        x_to = F.relu_(self.output_to(x))
 
         x_stack = torch.stack((x_from,x_to), dim=0)
         x_stack = torch.transpose(x_stack, 0, 1)

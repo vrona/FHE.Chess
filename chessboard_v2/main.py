@@ -6,6 +6,37 @@ from game import Game
 from square import Square
 from move import Move
 
+class Getdata:
+
+    def __init__(self):
+        pygame.init()
+        self.screenplay = pygame.display.set_mode((sp_width, sp_height))
+        pygame.display.set_caption('Zama FHE Chess')
+        self.game = Game()
+
+    def snap(self):
+
+        #screenplay = self.screenplay
+        game = self.game
+        #board = self.game.board
+        #dragger = self.game.dragger
+        """        i, j = 0,0
+        while i < 8:
+            while j < 8:"""
+            # game.display_chessboard(screenplay)
+
+            # # display last move
+            # game.display_lastmove(screenplay)
+            
+            # # display move
+            # game.display_moves(screenplay)
+
+            # # display static pieces
+            # game.display_pieces(screenplay)
+        game.snapchot_pieces()
+        
+
+
 class Main:
 
     def __init__(self):
@@ -34,7 +65,7 @@ class Main:
 
             # display static pieces
             game.display_pieces(screenplay)
-
+            game.snapchot_pieces()
             # display user experience hover
             game.display_hover(screenplay)
 
@@ -127,3 +158,6 @@ class Main:
 
 main = Main()
 main.mainloop()
+
+# board_data = Getdata()
+# board_data.snap()

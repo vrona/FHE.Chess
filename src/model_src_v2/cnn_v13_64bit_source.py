@@ -63,8 +63,7 @@ class PlainChessNET(nn.Module):
 
         self.fc1 = nn.Linear(hidden_size * 64, 64)
         self.batchn1d_1 = nn.BatchNorm1d(64)
-        self.output_from = nn.Linear(64,8)
-        self.output_to = nn.Linear(64,8)
+        self.output_source = nn.Linear(64,64)
 
 
     def forward(self, x):
@@ -86,17 +85,12 @@ class PlainChessNET(nn.Module):
         #x = self.batchn1d_1(x)
 
         # nllloss crossentropyloss
-        # x_from = F.log_softmax(self.output_from(x),dim=1)
-        # x_to = F.log_softmax(self.output_to(x),dim=1)
+        # x_source = F.log_softmax(self.output_source(x),dim=1)
 
         # mseloss
-        #x_from = F.relu(self.output_from(x))
-        #x_to = F.relu_(self.output_to(x))
+        #x_source = F.relu(self.output_source(x))
 
-        x_from = torch.sigmoid(self.output_from(x))
-        x_to = torch.sigmoid(self.output_to(x))
+        # sigmoid
+        x_source = torch.sigmoid(self.output_source(x))
 
-        x_stack = torch.stack((x_from,x_to), dim=0)
-        x_stack = torch.transpose(x_stack, 0, 1)
-
-        return x_stack
+        return x_source

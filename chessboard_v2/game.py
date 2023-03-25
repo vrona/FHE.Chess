@@ -4,6 +4,8 @@ from board import Board
 from dragger import Dragger
 from config import Config
 from square import Square
+import numpy as np
+import chess
 
 class Game:
 
@@ -46,6 +48,26 @@ class Game:
                         img_center = col * sqsize + sqsize // 2, row * sqsize + sqsize // 2
                         piece.rectangle = img.get_rect(center=img_center)
                         surface.blit(img, piece.rectangle)
+
+    def snapchot_pieces(self):
+        board = chess.Board()
+        print(board)
+        
+        getpiece = []
+        for row in range(cb_rows):
+            for col in range(cb_cols):
+
+                #presence of a piece
+                if self.board.squares[row][col].piece_presence():
+                # 
+                #         print(row,col)
+                    piece = self.board.squares[row][col].piece
+                    print(chess.Piece(piece.type, piece.pname))
+                    
+
+        print(getpiece)
+
+
 
     def display_moves(self, surface):
         if self.dragger.dragging:
