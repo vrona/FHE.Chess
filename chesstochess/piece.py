@@ -1,9 +1,11 @@
 import os
 import chess
+from clone_chess import Clone_Chess
 
 class Piece:
 
     def __init__(self, name, color, value, img_uri=None, rectangle=None):
+        self.clone_chess = Clone_Chess()
         self.name = name
         self.color = color
 
@@ -21,6 +23,7 @@ class Piece:
 
     def add_ok_move(self, move):
         self.ok_moves.append(move)
+        self.clone_chess.check_legal_move(source, target) #TO DOOOO Check a move before doing it
 
     def clear_moves(self):
         self.ok_moves = []

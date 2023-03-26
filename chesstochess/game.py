@@ -69,7 +69,6 @@ class Game:
         print("\n",str(string_bitmap))
 
 
-
     def display_moves(self, surface):
         if self.dragger.dragging:
             piece = self.dragger.piece
