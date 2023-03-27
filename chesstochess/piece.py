@@ -23,7 +23,8 @@ class Piece:
 
     def add_ok_move(self, move):
         self.ok_moves.append(move)
-        self.clone_chess.check_legal_move(source, target) #TO DOOOO Check a move before doing it
+        self.clone_chess.check_legal_move(move) #TO DOOOO Check a move before doing it       
+
 
     def clear_moves(self):
         self.ok_moves = []

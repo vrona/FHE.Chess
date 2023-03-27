@@ -1,5 +1,6 @@
 import chess
-
+from square import Square
+from base import *
 #-----python-chess-----#
 
 class Clone_Chess:
@@ -40,13 +41,26 @@ class Clone_Chess:
     def outcome(self):
         return self.board.outcome()
     
+    # def get_alpha_location(self, source, target):
+    #     for row in range(cb_rows):
+    #         for col in range(cb_cols):
+    #             print(Square.get_algeb_not(col), row)
 
     #### CHECKINGS ####
 
     # check if move within legal moves
-    def check_legal_move(self, source, target):        
-        uci_format = "".join((source,target))
-        return chess.Move.from_uci(uci_format) in self.legal_moves()
+    def check_legal_move(self, move):
+
+        self.convert_move_2_string(move)
+        
+        # for row in range(cb_rows):
+        #     for col in range(cb_cols):
+        #     source = Square(row, col) 
+        #     target = Square(possible_move_row, col)
+        #print(source.row, source.col)
+        # uci_format = "".join((source,target))
+        
+        # print(self.legal_moves(), chess.Move.from_uci(uci_format) in self.legal_moves())
 
     # check checkmate?
     def checkmate_check(self):
@@ -80,11 +94,21 @@ class Clone_Chess:
         
         if self.board.can_claim_fifty_moves():
             return self.board.can_claim_fifty_moves()
-
     
     def claim_draw(self):
         return self.board.can_claim_draw()
     
+    
+    #### HELPERS ####
 
-pseudo_chess_engine = Clone_Chess()
-pseudo_chess_engine.check_reptitions()
+    def convert_move_2_string(self, move):
+
+        source_col = Square.get_algeb_not(move.source.col)
+        source_row = str(move.source.row)
+        target_col = Square.get_algeb_not(move.target.col)
+        target_row = str(move.target.row)
+
+        str_source = "".join((source_col,source_row))
+        str_target = "".join((target_col,target_row))
+
+        print(str_source, str_target)

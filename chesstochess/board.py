@@ -13,8 +13,7 @@ class Board:
         self._create()
         self._add_pieces('white')
         self._add_pieces('black')
-        self.board = board_lib
-        print(self.board)
+
 
     def move(self, piece, move, simulation = False):
         source = move.source
@@ -56,6 +55,7 @@ class Board:
 
         # clear stock of ok moves
         piece.clear_moves()
+
     
     def check_pawn_promotion(self, piece, target):
         if target.row == 0 or target.row == 7:
