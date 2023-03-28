@@ -12,6 +12,7 @@ class Piece:
         value_sign = 1 if color == 'white' else -1
         self.value = value * value_sign
         self.ok_moves = []
+        self.checklegal = []
         self.moved = False
         self.img_uri = img_uri
         self.set_texture()
@@ -23,7 +24,13 @@ class Piece:
 
     def add_ok_move(self, move):
         self.ok_moves.append(move)
-        self.clone_chess.check_legal_move(move) #TO DOOOO Check a move before doing it       
+        if self.clone_chess.check_legal_move(move):
+
+            self.checklegal.append(move)
+        print(self.checklegal)
+
+            
+ 
 
 
     def clear_moves(self):

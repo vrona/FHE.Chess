@@ -58,7 +58,7 @@ class Board:
 
     
     def check_pawn_promotion(self, piece, target):
-        if target.row == 0 or target.row == 7:
+        if target.row == 1 or target.row == 8:
             self.squares[target.row][target.col].piece= Queen(piece.color)
 
     def castling(self, source, target):
@@ -423,12 +423,14 @@ class Board:
         
         elif isinstance(piece, King): king_moves()
 
-    def _create(self):
 
+    def _create(self):
+        
         for row in range(cb_rows):
             for col in range(cb_cols):
                 self.squares[row][col] = Square(row, col)
     
+
     def _add_pieces(self, color):
         row_pawn, row_other = (6,7) if color == 'white' else (1,0)
 
