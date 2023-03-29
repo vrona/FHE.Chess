@@ -27,7 +27,6 @@ class Board:
         self.squares[source.row][source.col].piece = None
         self.squares[target.row][target.col].piece = piece
 
-        self.clone_chess.convert_move_2_string_bis(source.col,source.row,target.col,target.row)
 
         # check for pawn promotion
         if isinstance(piece, Pawn):
