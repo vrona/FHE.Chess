@@ -7,6 +7,7 @@ class Move:
         
         self.source = source
         self.target = target
+
     
     def __eq__(self, other): # explicit definition of move equality
         return self.source == other.source and self.target == other.target

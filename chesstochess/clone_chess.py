@@ -1,6 +1,7 @@
 import chess
 from square import Square
 from base import *
+from move import Move as mv
 #-----python-chess-----#
 
 class Clone_Chess:
@@ -11,9 +12,10 @@ class Clone_Chess:
    #### ACTIONS ####
     
     # make a move from source to target square
-    def move_to_board(self, source,target):
-        uci_move = "".join((source,target))
-        self.board.push_san(uci_move)
+    def move_clone_board(self, move):
+       #uci_format = "".join((source,target))
+        uci_format = self.convert_move_2_string(move)
+        self.board.push_san(uci_format)
         print(self.board)
 
     def undo_move(self):
@@ -27,11 +29,15 @@ class Clone_Chess:
     #### GETS ####
     # get a snapshot of board
     def get_board(self):
-        return self.board
+        print(self.board)
     
-    # TO DO get the legal moves for a given position
+    # get the legal moves for a given position
     def legal_moves(self):
         return self.board.legal_moves
+    
+    # get the pseudo legal moves (might leaves or put the King in check)) for a given position
+    def pseudo_legal_moves(self):
+        return self.board.pseudo_legal_moves
     
     # get the number of legal moves
     def legal_moves_count(self):
@@ -48,6 +54,10 @@ class Clone_Chess:
     def check_legal_move(self, move):
         uci_format = self.convert_move_2_string(move)
         return chess.Move.from_uci(uci_format) in self.legal_moves()
+
+    def check_pseudo_legal_move(self, move):
+        uci_format = self.convert_move_2_string(move)
+        return chess.Move.from_uci(uci_format) in self.pseudo_legal_moves()
 
     # check checkmate?
     def checkmate_check(self):
@@ -100,4 +110,28 @@ class Clone_Chess:
         # str_target = "".join((target_col,target_row))
 
         str_move = "".join((source_col,source_row,target_col,target_row))
+        print(str_move)
         return str_move #str_source, str_target
+    
+    def convert_string_2_move(self, str_move):
+        
+        source_target = [x for x in (chess.Move.uci(str_move))]
+        source_col,source_row,target_col,target_row = source_target[0], source_target[1], source_target[2], source_target[3]
+
+        source_col = Square.convert_algeb_not(source_col)
+        target_col = Square.convert_algeb_not(target_col)
+
+        print(source_col, target_col)
+        # str_source = "".join((source_col,source_row))
+        # str_target = "".join((target_col,target_row))
+
+         # micro location
+        source = Square(source_row, source_col) 
+        target = Square(target_row, target_col)
+        
+        # move at micro
+        move = mv(source, target)
+
+        
+        print(move)
+        #return move #str_source, str_target
