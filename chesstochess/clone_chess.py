@@ -13,6 +13,7 @@ class Clone_Chess:
     # make a move from source to target square
     def move_clone_board(self, move):
        #uci_format = "".join((source,target))
+       # checking the moves
        #if self.check_legal_move(move):
         uci_format = self.convert_move_2_string(move)
         self.board.push_san(uci_format)
@@ -105,14 +106,11 @@ class Clone_Chess:
         target_col = Square.get_algeb_not(move.target.col)
         target_row = str(8-move.target.row)
 
-        # str_source = "".join((source_col,source_row))
-        # str_target = "".join((target_col,target_row))
-
         str_move = "".join((source_col,source_row,target_col,target_row))
-        #print(str_move)
-        return str_move #str_source, str_target
-    
 
+        return str_move
+    
+    # for testing
     def convert_move_2_string_bis(self, source_col, source_row, target_col, target_row):
 
         src_col = Square.get_algeb_not(source_col)
@@ -127,7 +125,7 @@ class Clone_Chess:
         print(str_move)
         return str_move #str_source, str_target
 
-
+    # for testing
     def convert_string_2_move(self, str_move):
         
         source_target = [x for x in (chess.Move.uci(str_move))]

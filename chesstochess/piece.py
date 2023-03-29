@@ -1,7 +1,6 @@
 import os
 import chess
 from clone_chess import Clone_Chess
-from move import Move
 
 class Piece:
 
@@ -13,7 +12,6 @@ class Piece:
         value_sign = 1 if color == 'white' else -1
         self.value = value * value_sign
         self.ok_moves = []
-        self.checklegal = []
         self.pseudochecklegal = []
         self.moved = False
         self.img_uri = img_uri
@@ -32,7 +30,6 @@ class Piece:
 
     def clear_moves(self):
         self.ok_moves = []
-        self.checklegal = []
 
 
 class Pawn(Piece):
