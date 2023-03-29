@@ -4,7 +4,8 @@ import sys
 from base import *
 from game import Game
 from square import Square
-from move import Move      
+from move import Move
+from clone_chess import Clone_Chess
 
 
 class Main:
@@ -14,6 +15,7 @@ class Main:
         self.screenplay = pygame.display.set_mode((sp_width, sp_height))
         pygame.display.set_caption('Zama FHE Chess')
         self.game = Game()
+        self.clone_chess = Clone_Chess()
 
 
     def mainloop(self):
@@ -22,6 +24,7 @@ class Main:
         game = self.game
         board = self.game.board
         dragger = self.game.dragger
+        clone_chess = self.clone_chess
 
         while True:
             # display chess board
@@ -95,8 +98,9 @@ class Main:
 
                         # check move ok ?
                         if board.valid_move(dragger.piece, move):
-                            captured = board.squares[released_row][released_col].piece_presence()
+                            #captured = board.squares[released_row][released_col].piece_presence()
                             board.move(dragger.piece, move)
+                            clone_chess.move_clone_board(move)
 
                             board.set_true_en_passant(dragger.piece)
                             #game.sound_it(captured)

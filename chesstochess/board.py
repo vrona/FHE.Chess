@@ -27,6 +27,8 @@ class Board:
         self.squares[source.row][source.col].piece = None
         self.squares[target.row][target.col].piece = piece
 
+        self.clone_chess.convert_move_2_string_bis(source.col,source.row,target.col,target.row)
+
         # check for pawn promotion
         if isinstance(piece, Pawn):
             # en_passant capture
@@ -46,7 +48,7 @@ class Board:
             if self.castling(source, target) and not simulation:
                 diff = target.col - source.col
                 rook = piece.left_rook if (diff < 0) else piece.right_rook # determine if castling queenside or kingside
-                self.move(rook, rook.ok_moves[-1]) #checklegal[-1]) 
+                self.move(rook, rook.ok_moves[-1])
 
         # move
         piece.moved = True
@@ -78,16 +80,12 @@ class Board:
         piece.en_passant = True 
 
     def valid_move(self, piece, move):
-        return move in piece.ok_moves #checklegal # 
+        return move in piece.ok_moves  
     
 
     def check_situation(self):
         return Clone_Chess.check_check()
-    
-    def clone_checkNmove(self, move):
-        if self.clone_chess.check_legal_move(move):
-            pass
-            #self.clone_chess.move_clone_board(move)
+ 
 
     def check_simulation(self, piece, move):
         
@@ -104,7 +102,7 @@ class Board:
                     
                     tempboard.compute_move(p, row, col, bool=False)
 
-                    for mvmt in p.ok_moves: #checklegal: #
+                    for mvmt in p.ok_moves: #
                         if isinstance(mvmt.target.piece, King):
                             return True
         return False
@@ -132,16 +130,16 @@ class Board:
                         
                         # move at micro
                         move = Move(source, target)
-                        ##self.clone_chess.move_clone_board(move)
                         # piece.add_ok_move(move)
-
+                        
                         if bool:
                             if not self.check_simulation(piece, move): # if not in check go ahead
-                                #self.clone_chess.move_clone_board(move)
                                 piece.add_ok_move(move)
+ 
                         else:
-                            #self.clone_chess.move_clone_board(move)
                             piece.add_ok_move(move) # if not in check go ahead
+                            
+
                             
                     else: break # move done
                 else: break # outside chessboard
@@ -163,11 +161,12 @@ class Board:
 
                         if bool:
                             if not self.check_simulation(piece, move): # if not in check go ahead
-                                #self.clone_chess.move_clone_board(move)
                                 piece.add_ok_move(move)
+
                         else:
-                            #self.clone_chess.move_clone_board(move)
                             piece.add_ok_move(move) # if not in check go ahead
+
+
 
             # en_passant
             attacker_ini_row = 3 if piece.color == 'white' else 4
@@ -190,11 +189,11 @@ class Board:
 
                             if bool:
                                 if not self.check_simulation(piece, move): # if not in check go ahead
-                                    #self.clone_chess.move_clone_board(move)
                                     piece.add_ok_move(move)
+
                             else:
-                                #self.clone_chess.move_clone_board(move)
                                 piece.add_ok_move(move) # if not in check go ahead
+    
 
             # right juxtapose square
             if Square.in_board(col+1) and row == attacker_ini_row:
@@ -213,12 +212,10 @@ class Board:
 
                             if bool:
                                 if not self.check_simulation(piece, move): # if not in check go ahead
-                                    #self.clone_chess.move_clone_board(move)
                                     piece.add_ok_move(move)
+                                    
                             else:
-                                #self.clone_chess.move_clone_board(move)
                                 piece.add_ok_move(move) # if not in check go ahead
-
 
 
         def kight_moves():
@@ -248,11 +245,12 @@ class Board:
 
                         if bool:
                             if not self.check_simulation(piece, move): # if not in check go ahead
-                                #self.clone_chess.move_clone_board(move)
                                 piece.add_ok_move(move)
+                                
                         else:
-                            #self.clone_chess.move_clone_board(move)
                             piece.add_ok_move(move) # if not in check go ahead
+
+
 
 
         def straightline_move(increments):
@@ -277,21 +275,22 @@ class Board:
 
                             if bool:
                                 if not self.check_simulation(piece, move): # if not in check go ahead
-                                    #self.clone_chess.move_clone_board(move)
                                     piece.add_ok_move(move)
+                                    
+        
                             else:
-                                #self.clone_chess.move_clone_board(move)
                                 piece.add_ok_move(move) # if not in check go ahead
+
+    
 
                         # opponent presence
                         elif self.squares[possible_move_row][possible_move_col].opponent_presence(piece.color):
                             
                             if bool:
                                 if not self.check_simulation(piece, move): # if not in check go ahead
-                                    #self.clone_chess.move_clone_board(move)
                                     piece.add_ok_move(move)
+                                    
                             else:
-                                #self.clone_chess.move_clone_board(move)
                                 piece.add_ok_move(move) # if not in check go ahead
                             break
                     
@@ -331,13 +330,13 @@ class Board:
 
                         if bool:
                             if not self.check_simulation(piece, move): # if not in check go ahead
-                                #self.clone_chess.move_clone_board(move)
                                 piece.add_ok_move(move)
-                            else: break
 
+                            else: break
                         else:
-                            #self.clone_chess.move_clone_board(move)
                             piece.add_ok_move(move) # if not in check go ahead
+
+
 
             # castling
             if not piece.moved:

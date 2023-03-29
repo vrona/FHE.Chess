@@ -1,6 +1,7 @@
 import os
 import chess
 from clone_chess import Clone_Chess
+from move import Move
 
 class Piece:
 
@@ -24,22 +25,10 @@ class Piece:
         self.img_uri = os.path.join(
             f'content/pieces/pieces_{size}px/{self.color}_{self.name}.png')
 
-    string_src_trgt = []
+
     def add_ok_move(self, move):
-
-        self.string_src_trgt.append(self.clone_chess.convert_move_2_string(move))
-        
-        for x in self.clone_chess.legal_moves():
-            #self.checklegal.append(x)
-
-            self.clone_chess.convert_string_2_move(x)
-            #print("legal",x,"all",j)
         self.ok_moves.append(move)
-
-        # to delete
-        #self.clone_chess.check_legal_move(x)
-        # if self.clone_chess.check_legal_move(move):
-        #     self.checklegal.append(move)
+        
 
     def clear_moves(self):
         self.ok_moves = []

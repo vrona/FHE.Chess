@@ -1,7 +1,6 @@
 import chess
 from square import Square
 from base import *
-from move import Move as mv
 #-----python-chess-----#
 
 class Clone_Chess:
@@ -14,9 +13,9 @@ class Clone_Chess:
     # make a move from source to target square
     def move_clone_board(self, move):
        #uci_format = "".join((source,target))
-        uci_format = self.convert_move_2_string(move)
-        self.board.push_san(uci_format)
-        print(self.board)
+       if self.check_legal_move(move):
+            uci_format = self.convert_move_2_string(move)
+            self.board.push_san(uci_format)
 
     def undo_move(self):
             self.board.pop()
@@ -29,7 +28,7 @@ class Clone_Chess:
     #### GETS ####
     # get a snapshot of board
     def get_board(self):
-        print(self.board)
+        print(self.board,"\n")
     
     # get the legal moves for a given position
     def legal_moves(self):
@@ -110,9 +109,25 @@ class Clone_Chess:
         # str_target = "".join((target_col,target_row))
 
         str_move = "".join((source_col,source_row,target_col,target_row))
-        print(str_move)
+        #print(str_move)
         return str_move #str_source, str_target
     
+
+    def convert_move_2_string_bis(self, source_col, source_row, target_col, target_row):
+
+        src_col = Square.get_algeb_not(source_col)
+        src_row = str(8-source_row)
+        trgt_col = Square.get_algeb_not(target_col)
+        trgt_row = str(8-target_row)
+
+        # str_source = "".join((source_col,source_row))
+        # str_target = "".join((target_col,target_row))
+
+        str_move = "".join((src_col,src_row,trgt_col,trgt_row))
+        print(str_move)
+        return str_move #str_source, str_target
+
+
     def convert_string_2_move(self, str_move):
         
         source_target = [x for x in (chess.Move.uci(str_move))]
@@ -121,17 +136,9 @@ class Clone_Chess:
         source_col = Square.convert_algeb_not(source_col)
         target_col = Square.convert_algeb_not(target_col)
 
-        print(source_col, target_col)
-        # str_source = "".join((source_col,source_row))
-        # str_target = "".join((target_col,target_row))
-
          # micro location
         source = Square(source_row, source_col) 
         target = Square(target_row, target_col)
         
         # move at micro
-        move = mv(source, target)
-
-        
-        print(move)
-        #return move #str_source, str_target
+        return source, target

@@ -77,7 +77,7 @@ class Game:
             black_dots = pygame.image.load("content/imgdot/black_dots.png")
             white_dots = pygame.image.load("content/imgdot/white_dots.png")
 
-            for move in piece.ok_moves: #checklegal:
+            for move in piece.ok_moves:
 
                 img_center = move.target.col * sqsize + sqsize // 2, move.target.row * sqsize + sqsize // 2
 
@@ -115,11 +115,11 @@ class Game:
     def next_player(self):
         self.player_turn = 'white' if self.player_turn == "black" else "black"
 
-    def sound_it(self, captured=False):
-        if captured:
-            self.config.capture_sound.play()
-        else:
-            self.config.move_sound.play()
+    # def sound_it(self, captured=False):
+    #     if captured:
+    #         self.config.capture_sound.play()
+    #     else:
+    #         self.config.move_sound.play()
 
     def reset(self):
         self.__init__()
