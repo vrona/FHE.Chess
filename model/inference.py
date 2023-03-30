@@ -1,15 +1,19 @@
 import torch
+import sys
+
+sys.path.insert(1,"/Volumes/vrona_SSD/FHE.Chess/src/model_src_v2")
 from cnn_v11_8bit import PlainChessNET
 from helper_chess_v7_8source import Board_State
-
 
 
 class Inference:
 
     def __init__(self):
         pass
+
+    
     # inference function
-    def predict(board, topk=3):
+    def predict(input_board, topk=3):
             
         # defining the processor
         device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
@@ -28,10 +32,10 @@ class Inference:
         model.load_state_dict(state_dict)
         model.eval()
 
-        #board = board_to_tensor.board_tensor_12(input_board)
-            
+        board = board_to_tensor.board_tensor_12(input_board)
+
         # Prediction of the class from an image file
-        
+
         ####board.requires_grad_(False)
 
         

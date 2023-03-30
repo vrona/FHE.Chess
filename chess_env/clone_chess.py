@@ -29,7 +29,7 @@ class Clone_Chess:
     #### GETS ####
     # get a snapshot of board
     def get_board(self):
-        print(self.board,"\n")
+        return self.board
     
     # get the legal moves for a given position
     def legal_moves(self):

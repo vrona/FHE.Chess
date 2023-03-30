@@ -7,6 +7,11 @@ from square import Square
 from move import Move
 from clone_chess import Clone_Chess
 
+sys.path.insert(1,"/Volumes/vrona_SSD/FHE.Chess/model")
+from inference import Inference
+#from inference import Inference
+#from  src.model_src_v2 import Inference
+
 
 class Main:
 
@@ -16,6 +21,7 @@ class Main:
         pygame.display.set_caption('Zama FHE Chess')
         self.game = Game()
         self.clone_chess = Clone_Chess()
+        self.inference = Inference()
 
 
     def mainloop(self):
@@ -25,6 +31,7 @@ class Main:
         board = self.game.board
         dragger = self.game.dragger
         clone_chess = self.clone_chess
+        inference = self.inference
 
         while True:
             # display chess board
@@ -103,6 +110,9 @@ class Main:
 
                             # cloning move from app to python-chess
                             clone_chess.move_clone_board(move)
+                            
+                            # get the snapshot of the board and use it as input_data to AI
+                            inference.predict(clone_chess.get_board())
 
                             board.set_true_en_passant(dragger.piece)
                             #game.sound_it(captured)

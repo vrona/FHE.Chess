@@ -70,7 +70,7 @@ class Board_State():
 
     def feat_map_piece_12(self, board, color):
         """convert board chess lib format to binary like"""
-        
+
         #type, hotone = self.whattype(color)
         t, v = self.whattype(color)
         
@@ -78,6 +78,7 @@ class Board_State():
         sub_board = re.sub(f'[^{t} \n]', '.', sub_board)
         sub_board = re.sub(f'{t}', '{}'.format(v), sub_board)
         sub_board = re.sub(f'\.', '0', sub_board)
+
         board_matrix = []
         for row in sub_board.split('\n'):
             row = row.split(' ')
