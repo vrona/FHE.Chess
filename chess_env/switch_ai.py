@@ -7,7 +7,6 @@ class Switch_toAI:
         self.color = color
 
     def switch_white_AI(self, on, color):
-
         return
 
 
