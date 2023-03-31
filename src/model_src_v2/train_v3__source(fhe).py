@@ -1,36 +1,41 @@
 import torch
+from torch import optim
 import numpy as np
 import wandb
-from torch import optim
 from tqdm import tqdm
-import logging
+
+##PyTorch Quantization static##
+# from torch.ao.quantization import(
+#     get_default_qconfig_mapping,
+#     get_default_qat_qconfig_mapping,
+#     QConfigMapping,
+# )
+# import torch.ao.quantization.quantize_fx as quantize_fx
+# import copy
+
+#import logging
 
 """
 ASCII SET isometric1 http://asciiset.com/figletserver.html
 """
-logging.basicConfig(filename="std.log", 
-					format='%(asctime)s %(message)s', 
-					filemode='w')
+# logging.basicConfig(filename="std.log", 
+# 					format='%(asctime)s %(message)s', 
+# 					filemode='w')
 
-logger=logging.getLogger()
-logger.setLevel(logging.DEBUG)
+# logger=logging.getLogger()
+# logger.setLevel(logging.DEBUG)
 
-logger.debug("This is just a harmless debug message") 
-logger.info("This is just an information for you") 
-logger.warning("OOPS!!!Its a Warning") 
-logger.error("Have you try to divide a number by zero") 
-logger.critical("The Internet is not working....")
+# logger.debug("This is just a harmless debug message") 
+# logger.info("This is just an information for you") 
+# logger.warning("OOPS!!!Its a Warning") 
+# logger.error("Have you try to divide a number by zero") 
+# logger.critical("The Internet is not working....")
 
 # CUDA's availability
 
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 #device = torch.device("cpu")
 
-# if not train_on_gpu:
-#     print('CPU Training... (CUDA not available)')
-
-# else:
-#     print('GPU Training...')
 
 wandb.init(
         project = "Chess_App",
