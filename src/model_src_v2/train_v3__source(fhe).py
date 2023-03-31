@@ -3,6 +3,7 @@ from torch import optim
 import numpy as np
 import wandb
 from tqdm import tqdm
+#from concrete.ml.torch.compile import com
 
 ##PyTorch Quantization static##
 # from torch.ao.quantization import(
@@ -55,17 +56,6 @@ def train_valid(model, trainloader, validloader, criterion, criterion_t, n_epoch
 
     # loss function
     
-    """
-    initial_square = nn.CrossEntropyLoss()
-    destination_square = nn.CrossEntropyLoss()
-
-    2 prob distribution (which piece and which move)
-    loss_initial_square = initial_square(output[:,0,:], y[:,0,:])
-    loss_destination_square = destination_square(output[:,1,:], y[:,1,:])
-    loss_move = loss_initial_square + loss_destination_square
-
-
-    """
     optimizer = optim.Adam(model.parameters(), lr = wb_config.learning_rate) #weight_decay=wb_config.weight_decay
     valid_loss_min = np.Inf # track change in validation loss
 

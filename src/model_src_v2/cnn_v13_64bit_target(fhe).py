@@ -5,7 +5,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 #N_FEAT = 12
-n_bits = 8
+n_bits = 4 # {'op_inputs':4, 'op_weights':3}
 
 class QTNet(nn.Module):
 

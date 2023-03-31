@@ -1,0 +1,41 @@
+{
+    "os": "Linux-5.10.147+-x86_64-with-glibc2.31",
+    "python": "3.9.16",
+    "heartbeatAt": "2023-03-31T11:30:02.302390",
+    "startedAt": "2023-03-31T11:30:01.508796",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/content/gdrive/MyDrive/FHX/train_chess_csv.py",
+    "codePath": "gdrive/MyDrive/FHX/train_chess_csv.py",
+    "host": "59682fa352d2",
+    "username": "root",
+    "executable": "/usr/bin/python3",
+    "cpu_count": 1,
+    "cpu_count_logical": 2,
+    "cpu_freq": {
+        "current": 2199.998,
+        "min": 0.0,
+        "max": 0.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2199.998,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2199.998,
+            "min": 0.0,
+            "max": 0.0
+        }
+    ],
+    "disk": {
+        "total": 107.71508407592773,
+        "used": 25.937957763671875
+    },
+    "memory": {
+        "total": 12.681190490722656
+    }
+}
