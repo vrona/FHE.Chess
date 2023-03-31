@@ -151,7 +151,7 @@ class Move_State():
         target_flat_bit = np.zeros((64,))
         target_flat_bit[target_square_bit] = 1
         
-        print("SQUARE:",source_square_bit, target_square_bit)
+        #print("SQUARE:",source_square_bit, target_square_bit)
         
         return source_flat_bit, target_flat_bit
 

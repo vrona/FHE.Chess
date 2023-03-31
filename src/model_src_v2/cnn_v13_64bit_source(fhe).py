@@ -28,29 +28,25 @@ class QTNet(nn.Module):
         # input >> hidden layer
         self.quant_inp = qnn.QuantIdentity(bit_width=n_bits, return_quant_tensor=True)
         self.qconv1 = qnn.QuantConv2d(hidden_size, hidden_size, kernel_size=3, stride=1, padding=1, bias=True, weight_bit_width=n_bits, bias_quant=Int32Bias)
-        #self.conv1 = nn.Conv2d(hidden_size, hidden_size,kernel_size=3, stride=1, padding=1)
-        #self.batchn1 = nn.BatchNorm2d(hidden_size)
+        self.qrelu1 = qnn.QuantReLU(bit_width=n_bits, return_quant_tensor=True)
 
+        self.qconv2 = qnn.QuantConv2d(hidden_size, hidden_size, kernel_size=3, stride=1, padding=1, bias=True, weight_bit_width=n_bits, bias_quant=Int32Bias)
+        self.qrelu2 = qnn.QuantReLU(bit_width=n_bits, return_quant_tensor=True)
 
-        self.qconv2 = qnn.QuantConv2d(hidden_size, hidden_size, kernel_size=3, stride=1, padding=1, bias=True, weight_bit_width=n_bits, bias_quant=Int32Bias))
-        #self.conv2 = nn.Conv2d(hidden_size, hidden_size, kernel_size=3, stride=1, padding=1)
-        #self.batchn2 = nn.BatchNorm2d(hidden_size)
 
     def forward(self, x):
         # define forward behavior
-        #x_input = torch.clone(x)
 
         # activations and batch normalization
         x = self.quant_inp(x)
         x = self.qconv1(x)
-        x = self.batchn1(x)
-        x = F.relu(x)
+        x = self.qrelu1(x)
+        # no batch
+
 
         x = self.qconv2(x)
-        x = self.batchn2(x)
-
-        #x = x + x_input
-        x = F.relu(x)
+        x = self.qrelu2(x)
+        # no batch
 
         return x
 
@@ -65,42 +61,64 @@ class QTChessNET(nn.Module):
 
         # input >> hidden layer
         self.hidden_layers = hidden_layers
-        self.input_layer = nn.Conv2d(12, hidden_size, kernel_size=3, stride=1, padding=1)
-        self.modulelist = nn.ModuleList([QTNet(hidden_size) for i in range(hidden_layers)])
-        #self.last_conv = nn.Conv2d(hidden_size, 64, kernel_size=3, stride=1, padding=1)
+        self.quant_inp = qnn.QuantIdentity(bit_width=n_bits, return_quant_tensor=True)
+        self.qinput_layer = qnn.QuantConv2d(12, hidden_size, kernel_size=3, stride=1, padding=1, bias=True, weight_bit_width=n_bits, bias_quant=Int32Bias)
+        self.qrelu1 = qnn.QuantReLU(bit_width=n_bits, return_quant_tensor=True)
+
+        self.qmodulelist = nn.ModuleList([QTNet(hidden_size) for i in range(hidden_layers)])
 
         self.flatten = nn.Flatten()
 
-        self.fc1 = nn.Linear(hidden_size * 64, 64)
-        self.batchn1d_1 = nn.BatchNorm1d(64)
-        self.output_source = nn.Linear(64,64)
+        self.qfc1 = qnn.QuantLinear(hidden_size * 64, 64, bias=True, weight_bit_width=n_bits, bias_quant=Int32Bias)
+        self.qrelu2 = qnn.QuantReLU(bit_width=n_bits, return_quant_tensor=True)
+
+        self.qoutput_source = qnn.QuantLinear(64, 64, bias=True, weight_bit_width=n_bits, bias_quant=Int32Bias)
+
+        #self.qlast_relu = qnn.QuantReLU(bit_width=n_bits, return_quant_tensor=True)
+        self.qSigmoid = qnn.QuantSigmoid(bit_width=n_bits, return_quant_tensor=True)
 
 
     def forward(self, x):
         # define forward behavior
 
         # add sequence of convolutional
-        #x = F.max_pool2d()
-        x = self.input_layer(x)
-        x = F.relu(x)
+        x = self.quant_inp(x)
+        x = self.qinput_layer(x)
+        x = self.qrelu1(x)
 
         for h in range(self.hidden_layers):
-            x = self.modulelist[h](x)
+            x = self.qmodulelist[h](x)
         
-        #x = self.last_conv(x) # torch.Size([64, 128, 8, 8])
+        # torch.Size([64, 128, 8, 8])
         x = self.flatten(x)
 
-        x = self.fc1(x)
-        x = F.relu(x)
-        #x = self.batchn1d_1(x)
+        x = self.qfc1(x)
+        x = self.qrelu2(x)
 
-        # nllloss crossentropyloss
-        # x_source = F.log_softmax(self.output_source(x),dim=1)
+        ## nllloss
+        #x_source = torch.log_softmax(self.qoutput_source(x),dim=1)
 
-        # mseloss
-        #x_source = F.relu(self.output_source(x))
+        ## mseloss
+            # relu
+        #x_source = self.qlast_relu(self.qoutput_source(x))
 
-        # sigmoid
-        x_source = torch.sigmoid(self.output_source(x))
+            # sigmoid
+        x_source = self.qSigmoid(self.qoutput_source(x))
 
         return x_source
+    
+
+    """
+    https://github.com/Xilinx/brevitas/issues/363
+    Train
+    QuantReLU(return_quant_tensor=False)
+    QuantConv2d(return_quant_tensor=False, bias_quant=None)
+    BatchNorm2d() or ReLU
+    Conv2d
+    BatchNorm2d
+    
+    Merge BatchNorm2d into Conv2d or QuantConv2d
+    
+    Train with QuantReLU(return_quant_tensor=True)
+    QuantConv2d(return_quant_tensor=False, bias_quant=Int32Bias)
+    """
