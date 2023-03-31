@@ -2,16 +2,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-"""
-w: input volume size
-F: kernel/filter size
-P: amount of zero padding
-S: stride
-output_w : (W-F+2P)/S+1
-eg.: if input 7*7 / filter 3*3 / s 1 / pad 0 then output_w 3*3
-
-8-3+2
-"""
 
 class Net(nn.Module):
 
@@ -29,7 +19,6 @@ class Net(nn.Module):
 
     def forward(self, chessboard):
         # define forward behavior
-        #x_input = torch.clone(chessboard)
 
         # activations and batch normalization
         chessboard = self.conv1(chessboard)
@@ -38,8 +27,6 @@ class Net(nn.Module):
 
         chessboard = self.conv2(chessboard)
         chessboard = self.batchn2(chessboard)
-
-        #chessboard = chessboard + x_input
         chessboard = F.relu(chessboard)
 
         return chessboard
@@ -73,7 +60,7 @@ class PlainChessNET(nn.Module):
     def forward(self, chessboard, source):
         # define forward behavior
 
-        # add sequence of convolutional
+        # chessboard context
 
         chessboard = self.input_layer(chessboard)
         chessboard = F.relu(chessboard)
@@ -86,8 +73,8 @@ class PlainChessNET(nn.Module):
 
         chessboard = self.fc1(chessboard)
         chessboard = F.relu(chessboard)
-        
 
+        # source aka selected square to be moved to target
         source = self.input_source(source)
 
         # merging chessboard (context + selected source square)

@@ -29,7 +29,6 @@ class Net(nn.Module):
 
     def forward(self, x):
         # define forward behavior
-        #x_input = torch.clone(x)
 
         # activations and batch normalization
         x = self.conv1(x)
@@ -39,7 +38,6 @@ class Net(nn.Module):
         x = self.conv2(x)
         x = self.batchn2(x)
 
-        #x = x + x_input
         x = F.relu(x)
 
         return x
@@ -57,7 +55,6 @@ class PlainChessNET(nn.Module):
         self.hidden_layers = hidden_layers
         self.input_layer = nn.Conv2d(12, hidden_size, kernel_size=3, stride=1, padding=1)
         self.modulelist = nn.ModuleList([Net(hidden_size) for i in range(hidden_layers)])
-        #self.last_conv = nn.Conv2d(hidden_size, 64, kernel_size=3, stride=1, padding=1)
 
         self.flatten = nn.Flatten()
 
@@ -70,7 +67,6 @@ class PlainChessNET(nn.Module):
         # define forward behavior
 
         # add sequence of convolutional
-        #x = F.max_pool2d()
         x = self.input_layer(x)
         x = F.relu(x)
 

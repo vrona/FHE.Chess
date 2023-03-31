@@ -1,98 +1,103 @@
+import brevitas.nn as qnn
+from brevitas.quant import Int32Bias
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-"""
-w: input volume size
-F: kernel/filter size
-P: amount of zero padding
-S: stride
-output_w : (W-F+2P)/S+1
-eg.: if input 7*7 / filter 3*3 / s 1 / pad 0 then output_w 3*3
+#N_FEAT = 12
+n_bits = 8
 
-8-3+2
-"""
-
-class Net(nn.Module):
+class QTNet(nn.Module):
 
     def __init__(self, hidden_size):
 
-        super(Net, self).__init__()
+        super(QTNet, self).__init__()
         # define layers of CNN
 
         # input >> hidden layer
-        self.conv1 = nn.Conv2d(hidden_size, hidden_size,kernel_size=3, stride=1, padding=1)
-        self.batchn1 = nn.BatchNorm2d(hidden_size)
+        self.quant_inp = qnn.QuantIdentity(bit_width=n_bits, return_quant_tensor=True)
+        self.qconv1 = qnn.QuantConv2d(hidden_size, hidden_size, kernel_size=3, stride=1, padding=1, bias=True, weight_bit_width=n_bits, bias_quant=Int32Bias)
+        self.qbatchn1 = qnn.BatchNorm2dToQuantScaleBias(hidden_size)
+        self.qrelu1 = qnn.QuantReLU(bit_width=n_bits, return_quant_tensor=True)
 
-        self.conv2 = nn.Conv2d(hidden_size, hidden_size, kernel_size=3, stride=1, padding=1)
-        self.batchn2 = nn.BatchNorm2d(hidden_size)
+        self.qconv2 = qnn.QuantConv2d(hidden_size, hidden_size, kernel_size=3, stride=1, padding=1, bias=True, weight_bit_width=n_bits, bias_quant=Int32Bias)
+        self.qbatchn2 = qnn.BatchNorm2dToQuantScaleBias(hidden_size)
+        self.qrelu2 = qnn.QuantReLU(bit_width=n_bits, return_quant_tensor=True)
+
 
     def forward(self, chessboard):
         # define forward behavior
-        #x_input = torch.clone(chessboard)
 
         # activations and batch normalization
-        chessboard = self.conv1(chessboard)
-        chessboard = self.batchn1(chessboard)
-        chessboard = F.relu(chessboard)
+        chessboard = self.quant_inp(chessboard)
+        chessboard = self.qconv1(chessboard)
+        chessboard = self.qbatchn1(chessboard)
+        chessboard = self.qrelu1(chessboard)
 
-        chessboard = self.conv2(chessboard)
-        chessboard = self.batchn2(chessboard)
-
-        #chessboard = chessboard + x_input
-        chessboard = F.relu(chessboard)
+        chessboard = self.qconv2(chessboard)
+        chessboard = self.qbatchn2(chessboard)
+        chessboard = self.qrelu2(chessboard)
 
         return chessboard
 
 
-class PlainChessNET(nn.Module):
+class QTtrgChessNET(nn.Module):
 
     def __init__(self, hidden_layers=2, hidden_size=128):
 
-        super(PlainChessNET, self).__init__()
+        super(QTtrgChessNET, self).__init__()
         
         # define layers of CNN
 
         # chessboard part (12,8,8) input >> hidden layer
         self.hidden_layers = hidden_layers
-        self.input_layer = nn.Conv2d(12, hidden_size, kernel_size=3, stride=1, padding=1)
-        self.modulelist = nn.ModuleList([Net(hidden_size) for i in range(hidden_layers)])
-        
+        self.quant_inp_chessboard = qnn.QuantIdentity(bit_width=n_bits, return_quant_tensor=True)
+        self.qinput_layer = qnn.QuantConv2d(12, hidden_size, kernel_size=3, stride=1, padding=1, bias=True, weight_bit_width=n_bits, bias_quant=Int32Bias)
+        self.qrelu1 = qnn.QuantReLU(bit_width=n_bits, return_quant_tensor=True)
+
+        self.qmodulelist = nn.ModuleList([QTNet(hidden_size) for i in range(hidden_layers)])
+
         self.flatten = nn.Flatten()
-        self.fc1 = nn.Linear(hidden_size * 64, 64)
+
+        self.qfc1 = qnn.QuantLinear(hidden_size * 64, 64, bias=True, weight_bit_width=n_bits, bias_quant=Int32Bias)
+        self.qrelu2 = qnn.QuantReLU(bit_width=n_bits, return_quant_tensor=True)
 
         # source (the selected squares)
-        self.input_source = nn.Linear(64,64)
+        self.quant_inp_source = qnn.QuantIdentity(bit_width=n_bits, return_quant_tensor=True)
+        self.qinput_source = qnn.QuantLinear(64, 64, bias=True, weight_bit_width=n_bits, bias_quant=Int32Bias)
 
-        self.batchn1d_1 = nn.BatchNorm1d(64)
+        self.qbatchn1d_1 = qnn.BatchNorm1dToQuantScaleBias(64)
         
         # output target (the targeted square)
-        self.output_target = nn.Linear(64,64)
+        self.qoutput_target = qnn.QuantLinear(64, 64, bias=True, weight_bit_width=n_bits, bias_quant=Int32Bias)
+
+        #self.qlast_relu = qnn.QuantReLU(bit_width=n_bits, return_quant_tensor=True)
+        self.qSigmoid = qnn.QuantSigmoid(bit_width=n_bits, return_quant_tensor=True)
 
 
     def forward(self, chessboard, source):
         # define forward behavior
 
         # add sequence of convolutional
-
-        chessboard = self.input_layer(chessboard)
-        chessboard = F.relu(chessboard)
+        chessboard = self.quant_inp_chessboard(chessboard)
+        chessboard = self.qinput_layer(chessboard)
+        chessboard = self.qrelu1(chessboard)
 
         for h in range(self.hidden_layers):
-            chessboard = self.modulelist[h](chessboard)
+            chessboard = self.qmodulelist[h](chessboard)
         
 
         chessboard = self.flatten(chessboard)
 
-        chessboard = self.fc1(chessboard)
-        chessboard = F.relu(chessboard)
+        chessboard = self.qfc1(chessboard)
+        chessboard = self.qrelu2(chessboard)
         
-
-        source = self.input_source(source)
+        source = self.quant_inp_source(source)
+        source = self.qinput_source(source)
 
         # merging chessboard (context + selected source square)
         merge = chessboard + source
-        merge = self.batchn1d_1(merge)
+        merge = self.qbatchn1d_1(merge)
 
         # nllloss crossentropyloss
         # x_target = F.log_softmax(self.output_target(merge),dim=1)
@@ -101,6 +106,6 @@ class PlainChessNET(nn.Module):
         #x_target = F.relu(self.output_target(merge))
 
         # sigmoid
-        x_target = torch.sigmoid(self.output_target(merge))
+        x_target = self.qSigmoid(self.qoutput_target(merge))
 
         return x_target
