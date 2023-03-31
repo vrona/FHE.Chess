@@ -60,11 +60,12 @@ class PlainChessNET(nn.Module):
         
         self.flatten = nn.Flatten()
         self.fc1 = nn.Linear(hidden_size * 64, 64)
-        self.batchn1d_1 = nn.BatchNorm1d(64)
 
         # source (the selected squares)
         self.input_source = nn.Linear(64,64)
 
+        self.batchn1d_1 = nn.BatchNorm1d(64)
+        
         # output target (the targeted square)
         self.output_target = nn.Linear(64,64)
 
@@ -85,12 +86,13 @@ class PlainChessNET(nn.Module):
 
         chessboard = self.fc1(chessboard)
         chessboard = F.relu(chessboard)
-        #chessboard = self.batchn1d_1(chessboard)
+        
 
         source = self.input_source(source)
 
         # merging chessboard (context + selected source square)
         merge = chessboard + source
+        merge = self.batchn1d_1(merge)
 
         # nllloss crossentropyloss
         # x_target = F.log_softmax(self.output_target(merge),dim=1)

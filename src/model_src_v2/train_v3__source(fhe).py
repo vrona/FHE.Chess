@@ -39,7 +39,7 @@ wandb.init(
         "learning_rate": 1.0e-3, #"weight_decay":0.099,
         "architecture": "CNN",
         "dataset": "White Black ELO 2000 arevel",
-        "epochs": 12,
+        "epochs": 5,
         }
     )
 
