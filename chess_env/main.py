@@ -8,7 +8,7 @@ from move import Move
 from clone_chess import Clone_Chess
 
 sys.path.insert(1,"/Volumes/vrona_SSD/FHE.Chess/model")
-from inference import Inference
+from inference_64bit import Inference
 #from inference import Inference
 #from  src.model_src_v2 import Inference
 
@@ -48,7 +48,7 @@ class Main:
             #game.snapchot_pieces()
             # display user experience hover
             game.display_hover(screenplay)
-
+            
             # display grabbed piece
             if dragger.dragging:
                 dragger.update_blit(screenplay)
@@ -58,6 +58,9 @@ class Main:
                 # mouse selects piece
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     dragger.update_mouse(event.pos)
+
+                    # get the snapshot of the board and use it as input_data to AI
+                    inference.predict(clone_chess.get_board())
                     
                     selected_square_row = dragger.mouseY // sqsize
                     selected_square_col = dragger.mouseX // sqsize
@@ -112,7 +115,7 @@ class Main:
                             clone_chess.move_clone_board(move)
                             
                             # get the snapshot of the board and use it as input_data to AI
-                            inference.predict(clone_chess.get_board())
+                            #inference.predict(clone_chess.get_board())
 
                             board.set_true_en_passant(dragger.piece)
                             #game.sound_it(captured)

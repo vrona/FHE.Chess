@@ -5,11 +5,6 @@ import numpy as np
 #num_to_alpha = {0:"a", 1:"b", 2:"c",  3:"d",  4:"e",  5:"f",  6:"g",  7:"h"}
 alpha_to_num = {"a":0, "b":1, "c":2,  "d":3,  "e":4,  "f":5,  "g":6,  "h":7}
 
-# dictionary of piece (string): binary(string) 8 bits
-dict_piece_binary = {
-"p":'01110000', "r":'01110010', "n":'01101110', "b":'01100010', "q":'01110001', "k":'01101011',
-"P":'01010000', "R":'01010010', "N":'01001110', "B":'01000010', "Q":'01010001', "K":'01001011'
-}
 
 # array of square table location within chessboard (8x8) 
 bitboard = np.array([
@@ -23,17 +18,6 @@ bitboard = np.array([
     [0,1,2,3,4,5,6,7],
     ])
 
-# dictionary of source_square_bit(in): binary(string)
-dict_sq_binary = {}
-for z in range(0, 64):
-    dict_sq_binary[z] = bin(z)[2:]
-
-
-""" codeflow
-get moves from db
-create empty matrix for each piece type
-translate to matrix
-"""
 
 class Board_State():
     def __init__(self):
@@ -154,27 +138,8 @@ class Move_State():
         #print("SQUARE:",source_square_bit, target_square_bit)
         
         return source_flat_bit, target_flat_bit
-
-
-
-    def move_piece(self, move, board):
-        """function for moving"""
-        board.push_san(move).uci() # 1st needs to convert the dataset from algebraic to uci format
-
-        move = str(board.pop())
-
-        initial_output_layer = np.zeros((8,8)) # from 0 to 1 on the departure matrix
-        source_row = 8 - int(move[1])
-        source_col = alpha_to_num[move[0]]
-        initial_output_layer[source_row,  source_col] = 1
-
-        destination_output_layer = np.zeros((8,8)) # from 0 to 1 on the arrival matrix
-        destination_row = 8 - int(move[3])
-        destination_column = alpha_to_num[move[2]]
-        destination_output_layer[destination_row, destination_column] = 1
-
-        return np.stack([initial_output_layer, destination_output_layer])
     
+    def convert...
 
     def list_move_sequence(self, listms):
         """individual moves"""
