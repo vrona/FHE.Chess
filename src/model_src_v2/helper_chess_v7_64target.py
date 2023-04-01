@@ -139,7 +139,8 @@ class Move_State():
         
         return source_flat_bit, target_flat_bit
     
-    def convert...
+    def tensor_to_uci(self, target_square):
+        
 
     def list_move_sequence(self, listms):
         """individual moves"""
