@@ -1,0 +1,13 @@
+2023-04-01 17:06:13,811 This is just a harmless debug message
+2023-04-01 17:06:13,811 This is just an information for you
+2023-04-01 17:06:13,811 OOPS!!!Its a Warning
+2023-04-01 17:06:13,811 Have you try to divide a number by zero
+2023-04-01 17:06:13,811 The Internet is not working....
+2023-04-01 17:06:13,862 Popen(['git', 'rev-parse', '--show-toplevel'], cwd=/Volumes/vrona_SSD/FHE.Chess, universal_newlines=False, shell=None, istream=None)
+2023-04-01 17:06:14,917 Starting new HTTPS connection (1): api.wandb.ai:443
+2023-04-01 17:06:15,174 https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2023-04-01 17:06:15,183 Starting new HTTPS connection (1): api.wandb.ai:443
+2023-04-01 17:06:15,413 https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2023-04-01 17:06:15,429 Popen(['git', 'cat-file', '--batch-check'], cwd=/Volumes/vrona_SSD/FHE.Chess, universal_newlines=False, shell=None, istream=<valid stream>)
+2023-04-01 17:07:15,434 Starting new HTTPS connection (1): o151352.ingest.sentry.io:443
+2023-04-01 17:07:15,610 https://o151352.ingest.sentry.io:443 "POST /api/5288891/envelope/ HTTP/1.1" 200 2

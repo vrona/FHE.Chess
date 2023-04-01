@@ -8,7 +8,10 @@ class Clone_Chess:
     def __init__(self):
         self.board = chess.Board()
 
-   #### ACTIONS ####
+    #       __ ___    __        __ 
+    #  /\  /    |  | /  \ |\ | (_  
+    # /--\ \__  |  | \__/ | \| __) 
+                             
     
     # make a move from source to target square
     def move_clone_board(self, move):
@@ -48,7 +51,9 @@ class Clone_Chess:
         return self.board.outcome()
     
 
-    #### CHECKINGS ####
+    #  __       __  __             __   __ 
+    # /   |__| |_  /   |_/ | |\ | / _  (_  
+    # \__ |  | |__ \__ | \ | | \| \__) __)
 
     # check if move within legal moves
     def check_legal_move(self, move):
@@ -84,7 +89,10 @@ class Clone_Chess:
         return (self.board.is_fivefold_repetition(), self.board.is_seventyfive_moves())
 
 
-    #### CLAIMINGS ####
+    #  __                         __   __ 
+    # /   |    /\  | |\/| | |\ | / _  (_  
+    # \__ |__ /--\ | |  | | | \| \__) __) 
+
     def claim_repetitions(self):
         if self.board.can_claim_threefold_repetition():
             return self.board.can_claim_threefold_repetition()
@@ -95,8 +103,11 @@ class Clone_Chess:
     def claim_draw(self):
         return self.board.can_claim_draw()
     
+
     
-    #### HELPERS ####
+    #       __      __   __  __   __ 
+    # |__| |_  |   |__) |_  |__) (_  
+    # |  | |__ |__ |    |__ | \  __)              
 
     # convert square[col][row] to string for uci format
     def convert_move_2_string(self, move):

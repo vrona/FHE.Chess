@@ -7,14 +7,16 @@ class Switch_toAI:
         self.color = color
 
     def switch_white_AI(self, on, color):
-        return
+        pass
 
 
     def switch_black_AI(self, on, color):
 
-        return
+        pass
     
     def switch_whiteNblack_AI(self, on, color):
 
-        return
+        pass
+    
+
 

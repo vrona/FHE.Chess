@@ -19,7 +19,7 @@ class Inference:
         self.target_model = target_net() #PlainChessNET()
     
     # inference function
-    def predict(self, input_board,topk=3):
+    def predict(self, input_board, topk=3):
 
         source_model = self.source_model
         target_model = self.target_model
@@ -32,12 +32,15 @@ class Inference:
         target_state_dict = torch.load("/Volumes/vrona_SSD/FHE.Chess/weights/target_run-20230331_113001-ksiulsjk/target_model_plain_chess_4.pt",map_location = device)
 
         # loading models
+        ## source
         source_model.load_state_dict(source_state_dict)
         source_model.eval()
 
+        ## target
         target_model.load_state_dict(target_state_dict)
         target_model.eval()
 
+        # chessboard
         board = self.board_to_tensor.board_tensor_12(input_board)
         
         # Prediction of source square
