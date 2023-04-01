@@ -98,18 +98,6 @@ class Move_State():
     def __init__(self):
         pass
     
-    def piece_n_sqlocation(self, move, board):
-
-        from_to_move = str(board.pop())
-        choosen_piece_row = 8 - int(from_to_move[1]) # flipping the board (origin of row starts from top instead of bottom)
-        choosen_piece_column = alpha_to_num[from_to_move[0]]
-
-        source_square_bit = bitboard[choosen_piece_row, choosen_piece_column]
-        piece = board.piece_at(source_square_bit)
-        #print(from_to_move,"\nCOLUMN {}:".format(from_to_move[0]),choosen_piece_column, "ROW {}:".format(from_to_move[1]),choosen_piece_row)
-        #print("SQUARE:",source_square_bit)
-        #print("PIECE:",piece)
-        return source_square_bit, piece
 
     def from_to_bitboards(self, move, board):
         """choosing the adequate piece to play"""
@@ -139,8 +127,11 @@ class Move_State():
         
         return source_flat_bit, target_flat_bit
     
-    def tensor_to_uci(self, target_square):
-        
+    def source_flat_bit(self, source_square):
+        source_flat_bit = np.zeros((64,))
+        source_flat_bit[source_square] = 1
+        return source_flat_bit
+
 
     def list_move_sequence(self, listms):
         """individual moves"""
