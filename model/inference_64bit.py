@@ -50,21 +50,23 @@ class Inference:
         source_output = source_model(torch.tensor(board).unsqueeze(0).to(torch.float).to(device))
         #source_square = torch.argmax(source_output)
 
-        
+        # 3 topk source square
         _, source_square = torch.topk(source_output, topk)
 
         for s in range(topk):
-            print(source_square.data[0][s].item())
 
-        # Prediction of target square
+        # Prediction of target square of each topk source square
 
             source_square_bit = self.move_to_tensor.source_flat_bit(source_square.data[0][s].item())
             chessboard, source_square_bit = torch.tensor(board).unsqueeze(0).to(torch.float).to(device), torch.tensor(source_square_bit).unsqueeze(0).to(torch.float).to(device)
             target_output = target_model(chessboard, source_square_bit)
             #target_square = torch.argmax(target_output)
+
+            # 3 topk target square
             _, target_square = torch.topk(target_output, topk)
 
-            print(target_square)
+            for t in range(topk):
+                print(source_square.data[0][s].item(),"-->",target_square.data[0][t].item())
         # source_square = source_square / source_square.sum()
         # source_square = source_square ** 3
         # source_square = source_square / source_square.sum()
