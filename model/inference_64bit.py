@@ -48,15 +48,23 @@ class Inference:
         
         #the_model.to(device)
         source_output = source_model(torch.tensor(board).unsqueeze(0).to(torch.float).to(device))
-        source_square = torch.argmax(source_output)
+        #source_square = torch.argmax(source_output)
+
+        
+        _, source_square = torch.topk(source_output, topk)
+
+        for s in range(topk):
+            print(source_square.data[0][s].item())
 
         # Prediction of target square
-        source_square_bit = self.move_to_tensor.source_flat_bit(source_square)
-        chessboard, source_square_bit = torch.tensor(board).unsqueeze(0).to(torch.float).to(device), torch.tensor(source_square_bit).unsqueeze(0).to(torch.float).to(device)
-        target_output = target_model(chessboard, source_square_bit)
-        target_square = torch.argmax(target_output)
 
+            source_square_bit = self.move_to_tensor.source_flat_bit(source_square.data[0][s].item())
+            chessboard, source_square_bit = torch.tensor(board).unsqueeze(0).to(torch.float).to(device), torch.tensor(source_square_bit).unsqueeze(0).to(torch.float).to(device)
+            target_output = target_model(chessboard, source_square_bit)
+            #target_square = torch.argmax(target_output)
+            _, target_square = torch.topk(target_output, topk)
 
+            print(target_square)
         # source_square = source_square / source_square.sum()
         # source_square = source_square ** 3
         # source_square = source_square / source_square.sum()
@@ -76,8 +84,8 @@ class Inference:
         # idx_to_class = {v: k for k, v in model.class_to_idx.items()}
         # classes = [idx_to_class[i] for i in indices]
         # names = [cat_to_name[str(j)] for j in classes]
-        print(source_square, target_square)
-        return source_output, target_square
+        #print(source_square, target_square)
+        return source_output #, target_square
 
 
 
