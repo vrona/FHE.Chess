@@ -23,6 +23,7 @@ from helper_chess_v7_64target import Board_State, Move_State
 
 class Inference:
 
+
     def __init__(self):
         self.board_to_tensor = Board_State()
         self.move_to_tensor = Move_State()
@@ -30,10 +31,13 @@ class Inference:
         # instantiate the model
         self.source_model = source_net() #PlainChessNET()
         self.target_model = target_net() #PlainChessNET()
-    
-    # inference function
-    def predict(self, input_board, topf=3, topt=2):
 
+
+    # inference function
+    def predict(self, input_board, topf=2, topt=3):
+        
+        proposal_moves = []
+        legal_proposal_moves = []
         source_model = self.source_model
         target_model = self.target_model
 
@@ -75,26 +79,30 @@ class Inference:
             target_output = target_model(chessboard, source_square_bit)
             #target_square = torch.argmax(target_output)
 
-            # 2 topt target square
+            # topt target square
             _, target_square = torch.topk(target_output, topt)
 
+            # proposal moves without legal move filter
             for t in range(topt):
-                self.square_to_alpha(input_board, source_square.data[0][s].item(), target_square.data[0][t].item())
+                proposal_moves.append(self.square_to_alpha(source_square.data[0][s].item(), target_square.data[0][t].item()))
 
-      
-        return source_output, target_square
+        
+        for prop in proposal_moves:
+            if chess.Move.from_uci(prop) in input_board.legal_moves:
+                legal_proposal_moves.append(prop)
+        
+        print(legal_proposal_moves)
+        return legal_proposal_moves
     
 
-    def square_to_alpha(self, input_board, src_sq, trgt_sq):
-
+    def square_to_alpha(self, src_sq, trgt_sq):
+        
         col_s, row_s = chess.FILE_NAMES[chess.square_file(src_sq)],chess.square_rank(src_sq)
         col_t, row_t = chess.FILE_NAMES[chess.square_file(trgt_sq)],chess.square_rank(trgt_sq)
 
         move_proposal = "".join((str(col_s),str(row_s+1),str(col_t),str(row_t+1)))
-
-        if chess.Move.from_uci(move_proposal) in input_board.legal_moves:
-             print(move_proposal)
-
+        return  move_proposal
+    
 
         #print(square,">>>",algebraic_notation_cols[chess.square_file(square)],chess.square_rank((square)))
 
