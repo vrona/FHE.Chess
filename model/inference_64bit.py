@@ -73,8 +73,11 @@ class Inference:
         for s in range(topf):
 
         # Prediction of target square of each topf source square
+
             # convert source square number into 64 array
             source_square_bit = self.move_to_tensor.source_flat_bit(source_square.data[0][s].item())
+
+            # convert to tensor
             chessboard, source_square_bit = torch.tensor(board).unsqueeze(0).to(torch.float).to(device), torch.tensor(source_square_bit).unsqueeze(0).to(torch.float).to(device)
             target_output = target_model(chessboard, source_square_bit)
             #target_square = torch.argmax(target_output)
@@ -86,15 +89,16 @@ class Inference:
             for t in range(topt):
                 proposal_moves.append(self.square_to_alpha(source_square.data[0][s].item(), target_square.data[0][t].item()))
 
-        
+        # from raw proposal to legal propose
         for prop in proposal_moves:
             if chess.Move.from_uci(prop) in input_board.legal_moves:
                 legal_proposal_moves.append(prop)
         
         print(legal_proposal_moves)
         return legal_proposal_moves
-    
 
+
+    # convert square number into chessboard digit coordinates
     def square_to_alpha(self, src_sq, trgt_sq):
         
         col_s, row_s = chess.FILE_NAMES[chess.square_file(src_sq)],chess.square_rank(src_sq)
@@ -102,7 +106,4 @@ class Inference:
 
         move_proposal = "".join((str(col_s),str(row_s+1),str(col_t),str(row_t+1)))
         return  move_proposal
-    
-
-        #print(square,">>>",algebraic_notation_cols[chess.square_file(square)],chess.square_rank((square)))
 

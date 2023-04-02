@@ -6,6 +6,7 @@ from game import Game
 from square import Square
 from move import Move
 from clone_chess import Clone_Chess
+from button import Button
 
 sys.path.insert(1,"/Volumes/vrona_SSD/FHE.Chess/model")
 from inference_64bit import Inference
@@ -20,6 +21,7 @@ class Main:
         self.screenplay = pygame.display.set_mode((sp_width, sp_height))
         pygame.display.set_caption('Zama FHE Chess')
         self.game = Game()
+        self.button = Button()
         self.clone_chess = Clone_Chess()
         self.inference = Inference()
 
@@ -28,6 +30,7 @@ class Main:
         
         screenplay = self.screenplay
         game = self.game
+        button = self.button
         board = self.game.board
         dragger = self.game.dragger
         clone_chess = self.clone_chess
@@ -48,6 +51,10 @@ class Main:
             #game.snapchot_pieces()
             # display user experience hover
             game.display_hover(screenplay)
+
+            button.button_whiteAI(screenplay)
+            button.button_blackAI(screenplay)
+            button.button_bothAI(screenplay)
             
             # display grabbed piece
             if dragger.dragging:
@@ -57,8 +64,7 @@ class Main:
                                 
                 # mouse selects piece
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    # get the snapshot of the board and use it as input_data to AI
-                    inference.predict(clone_chess.get_board())
+
                     dragger.update_mouse(event.pos)
 
 
@@ -71,6 +77,9 @@ class Main:
                         piece = board.squares[selected_square_row][selected_square_col].piece
 
                         if piece.color == game.player_turn:
+                            if piece.color == 'white':
+                                # get the snapshot of the board and use it as input_data to AI
+                                inference.predict(clone_chess.get_board())
                             board.compute_move(piece, selected_square_row, selected_square_col, bool=True)
                             dragger.save_source(event.pos)
                             dragger.drag_piece(piece)
