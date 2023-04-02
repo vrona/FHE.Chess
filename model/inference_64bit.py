@@ -9,19 +9,17 @@ from cnn_v13_64bit_target_unfhe import PlainChessNET as target_net
 
 from helper_chess_v7_64target import Board_State, Move_State
 
-# array of square table location within chessboard (8x8) 
-bitboard = np.array([
-    [56,57,58,59,60,61,62,63],
-    [48,49,50,51,52,53,54,55],
-    [40,41,42,43,44,45,46,47],
-    [32,33,34,35,36,37,38,39],
-    [24,25,26,27,28,29,30,31],
-    [16,17,18,19,20,21,22,23],
-    [8,9,10,11,12,13,14,15],
-    [0,1,2,3,4,5,6,7],
-    ])
+# recall square table location within chessboard (8x8) 
+    # 8 [56,57,58,59,60,61,62,63],
+    # 7 [48,49,50,51,52,53,54,55],
+    # 6 [40,41,42,43,44,45,46,47],
+    # 5 [32,33,34,35,36,37,38,39],
+    # 4 [24,25,26,27,28,29,30,31],
+    # 3 [16,17,18,19,20,21,22,23],
+    # 2 [8 ,9 ,10,11,12,13,14,15],
+    # 1 [0 ,1 ,2 ,3 ,4 ,5 ,6 ,7 ]
+    #    a  b  c  d  e  f  g  h
 
-algebraic_notation_cols = {0:"a", 1:"b", 2:"c",  3:"d",  4:"e",  5:"f",  6:"g",  7:"h"}
 
 class Inference:
 
@@ -80,57 +78,23 @@ class Inference:
             # 2 topt target square
             _, target_square = torch.topk(target_output, topt)
 
-            for t in range(topf):
-                #print(source_square.data[0][s].item(),"-->",target_square.data[0][t].item())
-                self.square_to_alpha(source_square.data[0][s].item(),target_square.data[0][t].item())
+            for t in range(topt):
+                self.square_to_alpha(input_board, source_square.data[0][s].item(), target_square.data[0][t].item())
 
-        # source_square = source_square / source_square.sum()
-        # source_square = source_square ** 3
-        # source_square = source_square / source_square.sum()
-
-
-        # [56,57,58,59,60,61,62,63],
-        # [48,49,50,51,52,53,54,55],
-        # [40,41,42,43,44,45,46,47],
-        # [32,33,34,35,36,37,38,39],
-        # [24,25,26,27,28,29,30,31],
-        # [16,17,18,19,20,21,22,23],
-        # [8 ,9 ,10,11,12,13,14,15],
-        # [0 ,1 ,2 ,3 ,4 ,5 ,6 ,7 ]
-        #probs, indices = source_square.topf(topf)
-
-        # indices = indices.cpu().numpy()[0]
-        # idx_to_class = {v: k for k, v in model.class_to_idx.items()}
-        # classes = [idx_to_class[i] for i in indices]
-        # names = [cat_to_name[str(j)] for j in classes]
-        #print(source_square, target_square)
-        return source_output #, target_square
+      
+        return source_output, target_square
     
 
-    def square_to_alpha(self,src_sq, trgt_sq):
-        print(chess.square_file(src_sq), chess.square_file(trgt_sq))
+    def square_to_alpha(self, input_board, src_sq, trgt_sq):
+
+        col_s, row_s = chess.FILE_NAMES[chess.square_file(src_sq)],chess.square_rank(src_sq)
+        col_t, row_t = chess.FILE_NAMES[chess.square_file(trgt_sq)],chess.square_rank(trgt_sq)
+
+        move_proposal = "".join((str(col_s),str(row_s+1),str(col_t),str(row_t+1)))
+
+        if chess.Move.from_uci(move_proposal) in input_board.legal_moves:
+             print(move_proposal)
+
+
         #print(square,">>>",algebraic_notation_cols[chess.square_file(square)],chess.square_rank((square)))
 
-    def square_to_alphadigit(self):#, source, target
-
-        dict_chess = {}
-        for r in range(8):
-            for c in range(8):
-                dict_chess[bitboard[7-r][c]] = (r,c)
-
-        return dict_chess
-
-        
-
-
-#def get_algeb_not(col):
-
-    #return algebraic_notation_cols[col]
-
-
-
-
-
-
-infer = Inference()
-infer.square_to_alphadigit()

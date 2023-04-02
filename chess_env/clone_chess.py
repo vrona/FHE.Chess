@@ -37,11 +37,11 @@ class Clone_Chess:
     # get the legal moves for a given position
     def legal_moves(self):
         return self.board.legal_moves
-    
+
     # get the pseudo legal moves (might leaves or put the King in check)) for a given position
     def pseudo_legal_moves(self):
         return self.board.pseudo_legal_moves
-    
+
     # get the number of legal moves
     def legal_moves_count(self):
         return self.board.legal_moves.count()
@@ -49,7 +49,7 @@ class Clone_Chess:
     # get game outcome
     def outcome(self):
         return self.board.outcome()
-    
+
 
     #  __       __  __             __   __ 
     # /   |__| |_  /   |_/ | |\ | / _  (_  

@@ -54,13 +54,14 @@ class Main:
                 dragger.update_blit(screenplay)
 
             for event in pygame.event.get():
-
+                                
                 # mouse selects piece
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    dragger.update_mouse(event.pos)
-
                     # get the snapshot of the board and use it as input_data to AI
                     inference.predict(clone_chess.get_board())
+                    dragger.update_mouse(event.pos)
+
+
                     
                     selected_square_row = dragger.mouseY // sqsize
                     selected_square_col = dragger.mouseX // sqsize
