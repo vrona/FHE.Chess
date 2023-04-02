@@ -1,10 +1,3 @@
-import chess
-
-
-# def alpha(numint):
-#     print(algebraic[chess.square_file(numint)], chess.square_rank((numint)))
-
-# alpha(32)
 
 class Square:
 
