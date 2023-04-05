@@ -45,8 +45,8 @@ class Inference:
         device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
         # loading the checkpoint
-        source_state_dict = torch.load("/Volumes/vrona_SSD/FHE.Chess/weights/source_run-20230331_070007-igpm68ny/model_plain_chess4.pt",map_location = device)
-        target_state_dict = torch.load("/Volumes/vrona_SSD/FHE.Chess/weights/target_run-20230331_113001-ksiulsjk/target_model_plain_chess_4.pt",map_location = device)
+        source_state_dict = torch.load("model/source_clear.pt",map_location = device)
+        target_state_dict = torch.load("model/target_clear.pt",map_location = device)
 
         # loading models
         ## source

@@ -2,7 +2,9 @@ import brevitas.nn as qnn
 from brevitas.quant import Int32Bias
 import torch
 import torch.nn as nn
+from torch.nn.utils import prune
 import torch.nn.functional as F
+import numpy as np
 
 #N_FEAT = 12
 n_bits = 8
@@ -23,6 +25,33 @@ class QTNet(nn.Module):
         self.qconv2 = qnn.QuantConv2d(hidden_size, hidden_size, kernel_size=3, stride=1, padding=1, bias=True, weight_bit_width=n_bits, bias_quant=Int32Bias)
         self.qbatchn2 = qnn.BatchNorm2dToQuantScaleBias(hidden_size)
         self.qrelu2 = qnn.QuantReLU(bit_width=n_bits, return_quant_tensor=True)
+
+
+    def pruning_modlist(self, enable):
+            """Enables or removes pruning."""
+
+            # Maximum number of active neurons (i.e. corresponding weight != 0)
+            n_active = 12
+
+            # Go through all the convolution layers
+            for layer in (self.qconv1, self.qconv2, self.conv3):
+                s = layer.weight.shape
+
+                # Compute fan-in (number of inputs to a neuron)
+                # and fan-out (number of neurons in the layer)
+                st = [s[0], np.prod(s[1:])]
+
+                # The number of input neurons (fan-in) is the product of
+                # the kernel width x height x inChannels.
+                if st[1] > n_active:
+                    if enable:
+                        # This will create a forward hook to create a mask tensor that is multiplied
+                        # with the weights during forward. The mask will contain 0s or 1s
+                        prune.l1_unstructured(layer, "weight", (st[1] - n_active) * st[0])
+                    else:
+                        # When disabling pruning, the mask is multiplied with the weights
+                        # and the result is stored in the weights member
+                        prune.remove(layer, "weight")
 
 
     def forward(self, x):

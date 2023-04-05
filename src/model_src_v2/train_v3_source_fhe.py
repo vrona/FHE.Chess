@@ -3,7 +3,7 @@ from torch import optim
 import numpy as np
 import wandb
 from tqdm import tqdm
-#from concrete.ml.torch.compile import com
+from concrete.ml.torch.compile import com
 
 ##PyTorch Quantization static##
 # from torch.ao.quantization import(
@@ -14,23 +14,11 @@ from tqdm import tqdm
 # import torch.ao.quantization.quantize_fx as quantize_fx
 # import copy
 
-#import logging
+
 
 """
 ASCII SET isometric1 http://asciiset.com/figletserver.html
 """
-# logging.basicConfig(filename="std.log", 
-# 					format='%(asctime)s %(message)s', 
-# 					filemode='w')
-
-# logger=logging.getLogger()
-# logger.setLevel(logging.DEBUG)
-
-# logger.debug("This is just a harmless debug message") 
-# logger.info("This is just an information for you") 
-# logger.warning("OOPS!!!Its a Warning") 
-# logger.error("Have you try to divide a number by zero") 
-# logger.critical("The Internet is not working....")
 
 # CUDA's availability
 
@@ -52,7 +40,7 @@ wandb.init(
 # copy config
 wb_config = wandb.config
 
-def train_valid(model, trainloader, validloader, criterion, criterion_t, n_epochs= wb_config.epochs):
+def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.epochs):
 
     # loss function
     
@@ -102,12 +90,12 @@ def train_valid(model, trainloader, validloader, criterion, criterion_t, n_epoch
             optimizer.step()
 
             # train_loss update
-            train_loss += loss.item()#*data.size(0)
+            train_loss += loss.item()
             
-            wandb.log({"loss": loss.item()})#*data.size(0)})
+            wandb.log({"loss": loss.item()})
 
             loop.set_description(f"Epoch_train [{epoch}/{n_epochs}]")
-            loop.set_postfix(loss = loss.item())#*data.size(0))
+            loop.set_postfix(loss = loss.item())
 
 
 
@@ -138,15 +126,15 @@ def train_valid(model, trainloader, validloader, criterion, criterion_t, n_epoch
             loss = criterion(output, target)
 
             # valid_loss update
-            valid_loss += loss.item()#*data.size(0)
+            valid_loss += loss.item()
             
-            wandb.log({"valid_loss": loss.item()})#*data.size(0)})
+            wandb.log({"valid_loss": loss.item()})
             loop_valid.set_description(f"Epoch_valid [{epoch}/{n_epochs}]")
-            loop_valid.set_postfix(validate_loss = loss.item())#*data.size(0))
+            loop_valid.set_postfix(validate_loss = loss.item())
 
         # avg loss
-        train_loss = train_loss / len(trainloader) #.sampler
-        valid_loss = valid_loss / len(validloader) #.sampler
+        train_loss = train_loss / len(trainloader)
+        valid_loss = valid_loss / len(validloader)
 
         # print training/validation statistics 
         print('Epoch: {} \tTraining Loss: {:.6f} \tValidation Loss: {:.6f}'.format(
@@ -176,7 +164,7 @@ def train_valid(model, trainloader, validloader, criterion, criterion_t, n_epoch
 #                   \/__/         \/__/            
 
 
-def test(model, testloader, criterion, criterion_t):
+def test(model, testloader, criterion):
 
 
     test_loss = 0.0
@@ -194,38 +182,23 @@ def test(model, testloader, criterion, criterion_t):
             data, target = data.to(torch.float).to(device), target.to(torch.float).to(device)
             # forward
             output = model(data)
+
             # batch loss
-            #loss = criterion(output, target)
             loss = criterion(output, target)
 
-            # train_loss update
-            test_loss += loss.item()#*data.size(0)
+            # test_loss update
+            test_loss += loss.item()
 
-            # WIP TO DO comparison to true data
-            # with conversion of output to wanted format
-            #prediction_item = output[-1].item()
-   
-            vals, indix = torch.max(output, 1)
- 
-            #indexes = output.data.max(1, keepdim=True)[1]
-            #_, predtest = torch.max(output.data, 1)
-            #print("pred",vals)
-            #print(vals,'\n',indix)
+            # accuracy (output vs target)
+            _, outdix = torch.max(output, 1)
+     
+            _, tardix = torch.max(target, 1)
+     
+            accuracy += (outdix == tardix).sum().item()
 
-            #print("pred", torch.max(vals),"index", torch.argmax(vals))
-
-            # nummax = vals.detach().numpy()
-            # indixofvals = indix.detach().numpy()
-
-            # final_pred = np.argmax(nummax)
-
-            # print(final_pred, indixofvals[final_pred])
-            #prediction = output.data.max(1)
-            accuracy += (indix == target).sum().item()
-
-            wandb.log({"test_loss": loss.item()})#*data.size(0)
+            wandb.log({"test_loss": loss.item(), "accuracy": 100 * accuracy / len(testloader)})
             loop_test.set_description(f"test [{batch_idx}/{len(testloader)}]")
-            loop_test.set_postfix(testing_loss = loss.item())#*data.size(0)
+            loop_test.set_postfix(testing_loss = loss.item())
 
 
         # average test loss
