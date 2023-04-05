@@ -3,9 +3,9 @@ import sys
 import numpy as np
 import chess
 
-sys.path.insert(1,"/Volumes/vrona_SSD/FHE.Chess/src/model_src_v2")
-from cnn_v13_64bit_source_unfhe import PlainChessNET as source_net
-from cnn_v13_64bit_target_unfhe import PlainChessNET as target_net
+sys.path.insert(1,"src/model_src_v2")
+from cnn_v13_64bit_source_clear import PlainChessNET as source_net
+from cnn_v13_64bit_target_clear import PlainChessNET as target_net
 
 from helper_chess_v7_64target import Board_State, Move_State
 
@@ -45,8 +45,8 @@ class Inference:
         device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
         # loading the checkpoint
-        source_state_dict = torch.load("model/source_clear.pt",map_location = device)
-        target_state_dict = torch.load("model/target_clear.pt",map_location = device)
+        source_state_dict = torch.load("server/model/source_clear.pt",map_location = device)
+        target_state_dict = torch.load("server/model/target_clear.pt",map_location = device)
 
         # loading models
         ## source

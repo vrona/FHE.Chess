@@ -1,6 +1,7 @@
 import pygame
 import sys
 
+sys.path.insert(1,"server/chess_env") #/Volumes/vrona_SSD/
 from base import *
 from game import Game
 from square import Square
@@ -8,7 +9,7 @@ from move import Move
 from clone_chess import Clone_Chess
 from button import Button
 
-sys.path.insert(1,"/Volumes/vrona_SSD/FHE.Chess/model")
+sys.path.insert(1,"server/model")
 from inference_64bit import Inference
 #from inference import Inference
 #from  src.model_src_v2 import Inference
