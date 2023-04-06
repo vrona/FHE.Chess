@@ -1,11 +1,17 @@
+import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
-from train_v2 import train_valid, test
+
 import numpy as np
 import pandas as pd
-from dataset_v3 import Chessset
-from cnn_v10 import PlainChessNET
 
+# from train_v3_target import train_valid, test
+# from dataset_v3_target import Chessset
+# from cnn_v13_64bit_target import PlainChessNET
+
+from train_v3 import train_valid, test
+from dataset_v3_source import Chessset
+from cnn_v13_64bit_source import PlainChessNET
 
 # Dataset = "path/chess-game" # Chessset(we_2000['AN'])
 # training_set = Dataset + "/training_set"
@@ -29,7 +35,7 @@ training_set = Chessset(dataset['AN'])
 #      \/__/                       \/__/                                        ~~            \/__/                       \/__/    
 
 
-game_move_set = "/Volumes/vrona_SSD/lichess_data/wb_2000.csv"
+game_move_set = "/content/gdrive/MyDrive/FHX/wb_2000_300.csv"
 wechess = pd.read_csv(game_move_set)
 
 # split dataset splitted into: training_set (80%), valid_set (20%), test_set (20%)
@@ -61,16 +67,17 @@ test_loader = DataLoader(testset, batch_size = 64, shuffle=True, drop_last=True)
 model = PlainChessNET()
 #loss
 #criterion = nn.CrossEntropyLoss() #reduction='sum'
-criterion_f = nn.MSELoss()
-criterion_t = nn.MSELoss()
+criterion = nn.MSELoss() #nn.CrossEntropyLoss() # reduction='sum' nn.MSELoss()
+#criterion_t = nn.MSELoss() #nn.CrossEntropyLoss() # reduction='mean' nn.MSELoss()
 #criterion = nn.L1Loss()
 #criterion = nn.NLLLoss()
 #optimizer
 
-train_valid(model, train_loader, valid_loader, criterion_f, criterion_t)
+## TRAINING
+#train_valid(model, train_loader, valid_loader, criterion)
 
 ### model with lowest validation loss
-#model.load_state_dict(torch.load("model_plain_chess.pt"))
+model.load_state_dict(torch.load("/content/gdrive/MyDrive/FHX/weigths/source_model_plain_chess4.pt"))
 
 # Test and accuracy
-#test(model, test_loader, criterion)
+test(model, test_loader, criterion)

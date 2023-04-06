@@ -3,7 +3,6 @@ from torch import optim
 import numpy as np
 import wandb
 from tqdm import tqdm
-from concrete.ml.torch.compile import com
 
 ##PyTorch Quantization static##
 # from torch.ao.quantization import(
