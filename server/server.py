@@ -33,19 +33,22 @@ print("socket is listening, server started")
 board_from_space = clone_chess.get_board()
 
 def threaded_client(conn):
+    # initialization of reply
     conn.send(pickle.dumps(board_from_space))
     reply = ""
 
     while True:
         try:
-            data = pickle.loads(conn.recv(2048))
+            # gather the data from client
+            data = pickle.loads(conn.recv(2048*3))
+            # reply from the server
             reply = inference.predict(data)
 
             if not data:
                 print("disconnected")
                 break
             else:
-                #print("received:", data)
+                print("received:", data)
                 print("sending:", reply)
             
             conn.sendall(pickle.dumps(reply))

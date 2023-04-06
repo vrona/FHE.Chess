@@ -1,21 +1,19 @@
 import pygame
 import sys
 
-sys.path.insert(1,"/Volumes/vrona_SSD/FHE.Chess")
+sys.path.insert(1,"server/")
 from network import Network
 
 sys.path.insert(1,"client/chess_env")
-from base import *
+from base import sp_width, sp_height, sqsize
 from game import Game
 from square import Square
 from move import Move
 from clone_chess import Clone_Chess
 from button import Button
 
-sys.path.insert(1,"server/model")
-from inference_64bit import Inference
-#from inference import Inference
-#from  src.model_src_v2 import Inference
+# sys.path.insert(1,"server/model")
+# from inference_64bit import Inference
 
 
 class Main:
@@ -27,7 +25,7 @@ class Main:
         self.game = Game()
         self.button = Button()
         self.clone_chess = Clone_Chess()
-        self.inference = Inference()
+        # self.inference = Inference()
         self.cs_network = Network()
 
 
@@ -39,7 +37,7 @@ class Main:
         board = self.game.board
         dragger = self.game.dragger
         clone_chess = self.clone_chess
-        inference = self.inference
+        # inference = self.inference
         cs_network = self.cs_network
 
         while True:
@@ -73,7 +71,6 @@ class Main:
 
                     dragger.update_mouse(event.pos)
 
-
                     
                     selected_square_row = dragger.mouseY // sqsize
                     selected_square_col = dragger.mouseX // sqsize
@@ -84,7 +81,7 @@ class Main:
 
                         if piece.color == game.player_turn:
                             if piece.color == 'white':
-                                # get the snapshot of the board and use it as input_data to AI
+                                # get the snapshot of the board and use it as input_data to AI via server
                                 cs_network.send(clone_chess.get_board())
 
                             board.compute_move(piece, selected_square_row, selected_square_col, bool=True)

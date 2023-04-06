@@ -60,7 +60,7 @@ class Board:
 
     
     def check_pawn_promotion(self, piece, target):
-        if target.row == 1 or target.row == 8:
+        if target.row == 0 or target.row == 7:
             self.squares[target.row][target.col].piece= Queen(piece.color)
 
     def castling(self, source, target):
@@ -101,7 +101,7 @@ class Board:
                     
                     tempboard.compute_move(p, row, col, bool=False)
 
-                    for mvmt in p.ok_moves: #
+                    for mvmt in p.ok_moves:
                         if isinstance(mvmt.target.piece, King):
                             return True
         return False
