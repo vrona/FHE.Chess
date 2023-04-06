@@ -96,6 +96,9 @@ class Game:
     def next_player(self):
         self.player_turn = 'white' if self.player_turn == "black" else "black"
 
+    def get_turn_color(self):
+        print(self.player_turn)
+
     # def sound_it(self, captured=False):
     #     if captured:
     #         self.config.capture_sound.play()

@@ -4,7 +4,7 @@ import sys
 sys.path.insert(1,"server/")
 from network import Network
 
-sys.path.insert(1,"client/chess_env")
+# sys.path.insert(1,"client/chess_env")
 from base import sp_width, sp_height, sqsize
 from game import Game
 from square import Square
@@ -57,13 +57,17 @@ class Main:
             game.display_hover(screenplay)
 
             button.button_whiteAI(screenplay)
-            button.button_blackAI(screenplay)
-            button.button_bothAI(screenplay)
+            # button.button_blackAI(screenplay)
+            # button.button_bothAI(screenplay)
+            button.button_HH(screenplay)
             
+            print(button.mode)
+            # GET COLOR TURN game.get_turn_color()
             # display grabbed piece
             if dragger.dragging:
                 dragger.update_blit(screenplay)
-
+                print("TURN:", game.player_turn)
+            
             for event in pygame.event.get():
                                 
                 # mouse selects piece
@@ -80,6 +84,7 @@ class Main:
                         piece = board.squares[selected_square_row][selected_square_col].piece
 
                         if piece.color == game.player_turn:
+
                             if piece.color == 'white':
                                 # get the snapshot of the board and use it as input_data to AI via server
                                 cs_network.send(clone_chess.get_board())
