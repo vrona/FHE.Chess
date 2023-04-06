@@ -1,7 +1,7 @@
 import pygame
 import sys
 
-sys.path.insert(1,"server/chess_env") #/Volumes/vrona_SSD/
+sys.path.insert(1,"client/chess_env")
 from base import *
 from game import Game
 from square import Square
@@ -49,7 +49,7 @@ class Main:
 
             # display static pieces
             game.display_pieces(screenplay)
-            #game.snapchot_pieces()
+
             # display user experience hover
             game.display_hover(screenplay)
 
@@ -150,11 +150,7 @@ class Main:
                     pygame.quit()
                     sys.exit()
 
-
-
-
             pygame.display.update()
-
 
 main = Main()
 main.mainloop()

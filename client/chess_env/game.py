@@ -49,33 +49,14 @@ class Game:
                         piece.rectangle = img.get_rect(center=img_center)
                         surface.blit(img, piece.rectangle)
 
-    def snapchot_pieces(self):
-        
-        # empty array of character 
-        string_bitmap = np.chararray((8,8))
-
-        # filling the array of character
-        for row in range(cb_rows):
-            for col in range(cb_cols):
-
-                #presence of a piece
-                if self.board.squares[row][col].piece_presence():
-
-                    piece = self.board.squares[row][col].piece
-                    string_bitmap[row,col] = chess.Piece(piece.type, piece.pname)
-                else:
-                    string_bitmap[row,col] = '.'
-                    
-        print("\n",str(string_bitmap))
-
 
     def display_moves(self, surface):
         if self.dragger.dragging:
             piece = self.dragger.piece
 
             # ok moves show as image
-            black_dots = pygame.image.load("server/content/imgdot/black_dots.png")
-            white_dots = pygame.image.load("server/content/imgdot/white_dots.png")
+            black_dots = pygame.image.load("client/content/imgdot/black_dots.png")
+            white_dots = pygame.image.load("client/content/imgdot/white_dots.png")
 
             for move in piece.ok_moves:
 

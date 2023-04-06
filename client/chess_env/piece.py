@@ -21,7 +21,7 @@ class Piece:
 
     def set_texture(self, size=80):
         self.img_uri = os.path.join(
-            f'server/content/pieces/pieces_{size}px/{self.color}_{self.name}.png')
+            f'client/content/pieces/pieces_{size}px/{self.color}_{self.name}.png')
 
 
     def add_ok_move(self, move):
