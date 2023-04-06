@@ -1,6 +1,9 @@
 import pygame
 import sys
 
+sys.path.insert(1,"/Volumes/vrona_SSD/FHE.Chess")
+from network import Network
+
 sys.path.insert(1,"client/chess_env")
 from base import *
 from game import Game
@@ -25,6 +28,7 @@ class Main:
         self.button = Button()
         self.clone_chess = Clone_Chess()
         self.inference = Inference()
+        self.cs_network = Network()
 
 
     def mainloop(self):
@@ -36,6 +40,7 @@ class Main:
         dragger = self.game.dragger
         clone_chess = self.clone_chess
         inference = self.inference
+        cs_network = self.cs_network
 
         while True:
             # display chess board
@@ -80,7 +85,8 @@ class Main:
                         if piece.color == game.player_turn:
                             if piece.color == 'white':
                                 # get the snapshot of the board and use it as input_data to AI
-                                inference.predict(clone_chess.get_board())
+                                cs_network.send(clone_chess.get_board())
+
                             board.compute_move(piece, selected_square_row, selected_square_col, bool=True)
                             dragger.save_source(event.pos)
                             dragger.drag_piece(piece)
