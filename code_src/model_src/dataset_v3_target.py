@@ -1,7 +1,7 @@
 from torch.utils.data import Dataset
 import numpy as np
 import chess
-from helper_chess_v7_64source import Board_State, Move_State
+from helper_chess_v7_64target import Board_State, Move_State
 
 
 #       ___           ___           ___           ___           ___           ___           ___     
@@ -29,23 +29,11 @@ class Chessset(Dataset):
         super(Chessset, self).__init__()
         self.size_data_set = size_data_set
         self.games_df = games_df
-        
-        # self.evaluation = evaluation
-        
-        # # convert data to normalized floatTensor
-        # transform = transforms.Compose([
-        #     transforms.ToTensor(),
-        #     transforms.Normalize((0.5, 0.5, 0.5),(0.5, 0.5, 0.5))
-        #     ])
-        
-        # if train_on_gpu:
-        #     self.games_df = torch.tensor(self.games_df, dtype=torch.float16).to("cuda")
-        #     self.evaluation = torch.tensor(self.evaluation, dtype=torch.float16).to("cuda")
 
 
     def __len__(self):
         """returns the dataset's size"""
-        return self.size_data_set #total 883375
+        return self.size_data_set
 
 
     def __getitem__(self, idx):
@@ -68,9 +56,9 @@ class Chessset(Dataset):
         for move in moves:
             board.push_san(move)
 
-        x = helper_board_state.board_tensor_12(board)          # shape(6,8,8) or shape(12,8,8)
+        chessboard = helper_board_state.board_tensor_12(board)          # shape(6,8,8) or shape(12,8,8)
         
-        y = helper_move_state.from_to_bitboards(next_move, board) # shape (1)
+        source,target = helper_move_state.from_to_bitboards(next_move, board) # shape (1)
 
         # get the eval
         # xx = get_eval() of piece_pos
@@ -78,5 +66,5 @@ class Chessset(Dataset):
 
         # determine white or black turn (1 for w, -1 for b) and then the one to play has always positive value
         if game_state_i %2 == 1:
-            x *= -1
-        return x, y
+            chessboard *= -1
+        return chessboard,source,target

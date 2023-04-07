@@ -90,31 +90,50 @@ class Board_State():
 
 class Move_State():
     """
-    2 matrices for spatial features:
-    #1 which piece to move from where
-    #2 where to move the piece
+    #1 which square to move from
+    #2 where square to move to
     """
 
     def __init__(self):
         pass
-
+    
 
     def from_to_bitboards(self, move, board):
-        """choosing the adequate piece to play"""
+        """choosing the adequate square to target"""
         board.push_san(move).uci() # 1st needs to convert the dataset from algebraic to uci format
 
         from_to_move = str(board.pop())
 
-        initial_row = 8 - int(from_to_move[1])
-        initial_column = alpha_to_num[from_to_move[0]]
+        # source
+        source_row = 8 - int(from_to_move[1])
+        source_col = alpha_to_num[from_to_move[0]]
 
-        square_location = bitboard[initial_row, initial_column]
+        source_square_bit = bitboard[source_row, source_col]
        
-        flattened_bitboard = np.zeros((64,))
-        flattened_bitboard[square_location] = 1
+        source_flat_bit = np.zeros((64,))
+        source_flat_bit[source_square_bit] = 1
 
-        return flattened_bitboard
+        # target
+        target_row = 8 - int(from_to_move[3])
+        target_col = alpha_to_num[from_to_move[2]]
+
+        target_square_bit = bitboard[target_row, target_col]
+       
+        target_flat_bit = np.zeros((64,))
+        target_flat_bit[target_square_bit] = 1
+        
+        #print("SQUARE:",source_square_bit, target_square_bit)
+        
+        return source_flat_bit, target_flat_bit
     
+    def source_flat_bit(self, source_square):
+        """
+        convert source square into flat (64,) array
+        """
+        source_flat_bit = np.zeros((64,))
+        source_flat_bit[source_square] = 1
+        return source_flat_bit
+
 
     def list_move_sequence(self, listms):
         """individual moves"""
