@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  
+  chess_app:
+    image: zamafhe/concrete-ml:v0.4.0
+    container_name: fhechess-server
+    command: python3 --host 0.0.0.0
+    ports:
+      - 80:80
+      - 5555:5555
+    volumes:
+      - shared-volume:/fhe_chess
+  
+  server:
+    build: server/
+    command: python3 ./server.py
+    ports:
+      - 5555:5555
+    volumes:
+      - shared-volume:/fhe_chess
+
+  client:
+    build: client/
+    command: python3 ./chess_env/main.py
+    network_mode: host
+    depends_on:
+      - server
+    volumes:
+      - shared-volume:/fhe_chess
+
+volumes:
+  shared-volume:
+
+  

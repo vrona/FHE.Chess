@@ -1,4 +1,4 @@
-import sys
+"""import sys
 from base import *
 
 
@@ -71,3 +71,4 @@ class Switch_AI:
     def ai_play(self, board):
         if self.mode == 
         self.cs_network.send()
+"""

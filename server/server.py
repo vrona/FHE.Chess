@@ -15,9 +15,8 @@ inference = Inference()
 # socket
 server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 
-
+host = '0.0.0.0' #'127.0.0.1'
 port = 5555
-host = '127.0.0.1'
 
 # bind
 try:
