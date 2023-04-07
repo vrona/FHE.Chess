@@ -3,23 +3,12 @@ import numpy as np
 import wandb
 from torch import optim
 from tqdm import tqdm
-import logging
+
 
 """
 ASCII SET isometric1 http://asciiset.com/figletserver.html
 """
-logging.basicConfig(filename="std.log", 
-					format='%(asctime)s %(message)s', 
-					filemode='w')
 
-logger=logging.getLogger()
-logger.setLevel(logging.DEBUG)
-
-logger.debug("This is just a harmless debug message") 
-logger.info("This is just an information for you") 
-logger.warning("OOPS!!!Its a Warning") 
-logger.error("Have you try to divide a number by zero") 
-logger.critical("The Internet is not working....")
 
 # CUDA's availability
 
@@ -38,7 +27,7 @@ wandb.init(
         config = {
         "learning_rate": 1.0e-3, #"weight_decay":0.099,
         "architecture": "CNN",
-        "dataset": "White Black ELO 2000 arevel",
+        "dataset": "White Black ELO 2000 A.Revel kaggle dataset",
         "epochs": 5,
         }
     )

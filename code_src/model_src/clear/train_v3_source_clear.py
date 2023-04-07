@@ -21,7 +21,7 @@ wandb.init(
         config = {
         "learning_rate": 1.0e-3, #"weight_decay":0.099,
         "architecture": "CNN",
-        "dataset": "White Black ELO 2000 arevel",
+        "dataset": "White Black ELO 2000 A.Revel kaggle dataset",
         "epochs": 5,
         }
     )
