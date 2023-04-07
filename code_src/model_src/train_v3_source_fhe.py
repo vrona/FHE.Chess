@@ -3,21 +3,14 @@ from torch import optim
 import numpy as np
 import wandb
 from tqdm import tqdm
-
-##PyTorch Quantization static##
-# from torch.ao.quantization import(
-#     get_default_qconfig_mapping,
-#     get_default_qat_qconfig_mapping,
-#     QConfigMapping,
-# )
-# import torch.ao.quantization.quantize_fx as quantize_fx
-# import copy
+from concrete.ml.torch.compile import compile_brevitas_qat_model, compile_torch_model
 
 
 
 """
 ASCII SET isometric1 http://asciiset.com/figletserver.html
 """
+
 
 # CUDA's availability
 
@@ -29,7 +22,7 @@ wandb.init(
         project = "Chess_App",
 
         config = {
-        "learning_rate": 1.0e-3, #"weight_decay":0.099,
+        "learning_rate": 1.0e-3,
         "architecture": "CNN",
         "dataset": "White Black ELO 2000 arevel",
         "epochs": 5,

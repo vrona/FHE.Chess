@@ -61,7 +61,7 @@ class Main:
             # button.button_bothAI(screenplay)
             button.button_HH(screenplay)
             
-            print(button.mode)
+            #print(button.mode)
             # GET COLOR TURN game.get_turn_color()
             # display grabbed piece
             if dragger.dragging:

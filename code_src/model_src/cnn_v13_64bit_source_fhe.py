@@ -9,32 +9,54 @@ import numpy as np
 #N_FEAT = 12
 n_bits = 8
 
-class QTNet(nn.Module):
 
-    def __init__(self, hidden_size):
+class QTChessNET(nn.Module):
 
-        super(QTNet, self).__init__()
+    def __init__(self, hidden_size=128):
+
+        super(QTChessNET, self).__init__()
+        
+
         # define layers of CNN
 
-        # input >> hidden layer
-        self.quant_inp = qnn.QuantIdentity(bit_width=n_bits, return_quant_tensor=True)
-        self.qconv1 = qnn.QuantConv2d(hidden_size, hidden_size, kernel_size=3, stride=1, padding=1, bias=True, weight_bit_width=n_bits, bias_quant=Int32Bias)
+        # input >> chessboard 12*8*8
+        self.quant_1 = qnn.QuantIdentity(bit_width=n_bits, return_quant_tensor=True)
+        self.qinput_layer = qnn.QuantConv2d(12, hidden_size, kernel_size=3, stride=1, padding=1, bias=True, weight_bit_width=n_bits, bias_quant=Int32Bias)
         self.qbatchn1 = qnn.BatchNorm2dToQuantScaleBias(hidden_size)
         self.qrelu1 = qnn.QuantReLU(bit_width=n_bits, return_quant_tensor=True)
 
+        self.quant_2 = qnn.QuantIdentity(bit_width=n_bits, return_quant_tensor=True)
         self.qconv2 = qnn.QuantConv2d(hidden_size, hidden_size, kernel_size=3, stride=1, padding=1, bias=True, weight_bit_width=n_bits, bias_quant=Int32Bias)
         self.qbatchn2 = qnn.BatchNorm2dToQuantScaleBias(hidden_size)
         self.qrelu2 = qnn.QuantReLU(bit_width=n_bits, return_quant_tensor=True)
 
+        self.quant_3 = qnn.QuantIdentity(bit_width=n_bits, return_quant_tensor=True)
+        self.qconv3 = qnn.QuantConv2d(hidden_size, hidden_size, kernel_size=3, stride=1, padding=1, bias=True, weight_bit_width=n_bits, bias_quant=Int32Bias)
+        self.qbatchn3 = qnn.BatchNorm2dToQuantScaleBias(hidden_size)
+        self.qrelu3 = qnn.QuantReLU(bit_width=n_bits, return_quant_tensor=True)
 
-    def pruning_modlist(self, enable):
+        self.flatten = nn.Flatten()
+
+        self.qfc1 = qnn.QuantLinear(hidden_size * 64, 64, bias=True, weight_bit_width=n_bits, bias_quant=Int32Bias)
+        self.qrelu2 = qnn.QuantReLU(bit_width=n_bits, return_quant_tensor=True)
+
+        self.qoutput_source = qnn.QuantLinear(64, 64, bias=True, weight_bit_width=n_bits, bias_quant=Int32Bias)
+
+        #self.qlast_relu = qnn.QuantReLU(bit_width=n_bits, return_quant_tensor=True)
+        self.qSigmoid = qnn.QuantSigmoid(bit_width=n_bits, return_quant_tensor=True)
+
+        # enable pruning
+        self.pruning_conv(True)
+
+    # from https://github.com/zama-ai/concrete-ml/blob/release/0.6.x/docs/advanced_examples/ConvolutionalNeuralNetwork.ipynb
+    def pruning_conv(self, enable):
             """Enables or removes pruning."""
 
             # Maximum number of active neurons (i.e. corresponding weight != 0)
             n_active = 12
 
             # Go through all the convolution layers
-            for layer in (self.qconv1, self.qconv2, self.conv3):
+            for layer in (self.qinput_layer, self.qconv2, self.qconv3):
                 s = layer.weight.shape
 
                 # Compute fan-in (number of inputs to a neuron)
@@ -57,57 +79,23 @@ class QTNet(nn.Module):
     def forward(self, x):
         # define forward behavior
 
-        # activations and batch normalization
-        x = self.quant_inp(x)
+        # add sequence of convolutional
+        x = self.quant_1(x)
+
+        x = self.qinput_layer(x)
         x = self.qbatchn1(x)
         x = self.qrelu1(x)
 
-
+        x = self.quant_2(x)
         x = self.qconv2(x)
+        x = self.qbatchn2(x)
         x = self.qrelu2(x)
 
-        return x
-
-
-class QTsrcChessNET(nn.Module):
-
-    def __init__(self, hidden_layers=2, hidden_size=128):
-
-        super(QTsrcChessNET, self).__init__()
+        x = self.quant_3(x)
+        x = self.qconv3(x)
+        x = self.qbatchn3(x)
+        x = self.qrelu3(x)
         
-        # define layers of CNN
-
-        # input >> hidden layer
-        self.hidden_layers = hidden_layers
-        self.quant_inp = qnn.QuantIdentity(bit_width=n_bits, return_quant_tensor=True)
-        self.qinput_layer = qnn.QuantConv2d(12, hidden_size, kernel_size=3, stride=1, padding=1, bias=True, weight_bit_width=n_bits, bias_quant=Int32Bias)
-        self.qrelu1 = qnn.QuantReLU(bit_width=n_bits, return_quant_tensor=True)
-
-        self.qmodulelist = nn.ModuleList([QTNet(hidden_size) for i in range(hidden_layers)])
-
-        self.flatten = nn.Flatten()
-
-        self.qfc1 = qnn.QuantLinear(hidden_size * 64, 64, bias=True, weight_bit_width=n_bits, bias_quant=Int32Bias)
-        self.qrelu2 = qnn.QuantReLU(bit_width=n_bits, return_quant_tensor=True)
-
-        self.qoutput_source = qnn.QuantLinear(64, 64, bias=True, weight_bit_width=n_bits, bias_quant=Int32Bias)
-
-        #self.qlast_relu = qnn.QuantReLU(bit_width=n_bits, return_quant_tensor=True)
-        self.qSigmoid = qnn.QuantSigmoid(bit_width=n_bits, return_quant_tensor=True)
-
-
-    def forward(self, x):
-        # define forward behavior
-
-        # add sequence of convolutional
-        x = self.quant_inp(x)
-        x = self.qinput_layer(x)
-        x = self.qrelu1(x)
-
-        for h in range(self.hidden_layers):
-            x = self.qmodulelist[h](x)
-        
-        # torch.Size([64, 128, 8, 8])
         x = self.flatten(x)
 
         x = self.qfc1(x)
