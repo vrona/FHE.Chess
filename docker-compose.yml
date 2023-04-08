@@ -3,12 +3,14 @@ version: "3"
 services:
   
   fhe_chess:
-    image: zamafhe/concrete-ml:v0.4.0
     container_name: fhe.chess
-    command: python3 --host 0.0.0.0 --port 80
+    image: zamafhe/concrete-ml:v0.4.0
+
     ports:
-      - 80:80
+      - 8888:8888
+    
+    tty: true
+    
     volumes:
       - .:/app_src
 
-  
