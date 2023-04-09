@@ -133,7 +133,7 @@ class Board:
                         # piece.add_ok_move(move)
                         
                         if bool:
-                            #if not self.check_simulation(piece, move): # if not in check go ahead
+                            if not self.check_simulation(piece, move): # if not in check go ahead
                                 piece.add_ok_move(move)
  
                         else:
@@ -160,7 +160,7 @@ class Board:
                         move = Move(source, target)
 
                         if bool:
-                            #if not self.check_simulation(piece, move): # if not in check go ahead
+                            if not self.check_simulation(piece, move): # if not in check go ahead
                                 piece.add_ok_move(move)
 
                         else:
@@ -188,7 +188,7 @@ class Board:
                             move = Move(source, target)
 
                             if bool:
-                                #if not self.check_simulation(piece, move): # if not in check go ahead
+                                if not self.check_simulation(piece, move): # if not in check go ahead
                                     piece.add_ok_move(move)
 
                             else:
@@ -211,7 +211,7 @@ class Board:
                             move = Move(source, target)
 
                             if bool:
-                                #if not self.check_simulation(piece, move): # if not in check go ahead
+                                if not self.check_simulation(piece, move): # if not in check go ahead
                                     piece.add_ok_move(move)
                                     
                             else:
@@ -244,7 +244,7 @@ class Board:
                         move = Move(source, target)
 
                         if bool:
-                            #if not self.check_simulation(piece, move): # if not in check go ahead
+                            if not self.check_simulation(piece, move): # if not in check go ahead
                                 piece.add_ok_move(move)
                                 
                         else:
@@ -274,7 +274,7 @@ class Board:
                         if self.squares[possible_move_row][possible_move_col].empty():
 
                             if bool:
-                                #if not self.check_simulation(piece, move): # if not in check go ahead
+                                if not self.check_simulation(piece, move): # if not in check go ahead
                                     piece.add_ok_move(move)
 
                             else:
@@ -286,7 +286,7 @@ class Board:
                         elif self.squares[possible_move_row][possible_move_col].opponent_presence(piece.color):
                             
                             if bool:
-                                #if not self.check_simulation(piece, move): # if not in check go ahead
+                                if not self.check_simulation(piece, move): # if not in check go ahead
                                     piece.add_ok_move(move)
                                     
                             else:
@@ -328,10 +328,10 @@ class Board:
                         move = Move(source, target)
 
                         if bool:
-                            #if not self.check_simulation(piece, move): # if not in check go ahead
+                            if not self.check_simulation(piece, move): # if not in check go ahead
                                 piece.add_ok_move(move)
 
-                            #else: break
+                            else: break
                         else:
                             piece.add_ok_move(move) # if not in check go ahead
 
