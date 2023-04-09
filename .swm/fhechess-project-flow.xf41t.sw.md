@@ -53,8 +53,6 @@ It happens that this project is based on both (to speed up development).
 
 From scratch everything from `📄 client/chess_env` except the class `📄 client/chess_env/clone_chess.py` which return python-chess methods.
 
-<br/>
-
 ## #2 Data
 
 Data used is downloadable here [https://www.kaggle.com/datasets/arevel/chess-games](https://www.kaggle.com/datasets/arevel/chess-games)
@@ -73,9 +71,21 @@ Data used is downloadable here [https://www.kaggle.com/datasets/arevel/chess-gam
 
 The chosen philosophy is straightforward: train one model to determine the SOURCE square (no matter the piece and evaluation), train another model to determine the TARGET square.
 
-### #3.1 clear source / target
+*   **#3.1 clear source / target**
 
-### #3.2 quantized source / target
+    *   **Source model**
+
+        *   input source : (12,8,8) board -> output source : selected Square number to move FROM as 1D array of shape (64,)
+
+        *   3 convolution layers (hidden size=128) + fully-connected layer (64)
+
+    *   **Target model**
+
+        *   input target : (12,8,8) board + selected Square number to move from as 1D array of shape (64,) -> output target : selected Square number to move TO as 1D array of shape (64,)
+
+        *   3 convolution layers (hidden size=128) + fully-connected layer (64)
+
+*   **#3.2 quantized source / target**
 
 #4 Train / Validation / Test
 
