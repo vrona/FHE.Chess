@@ -1,5 +1,6 @@
 import pygame
 
+# to make font looks good
 class Config:
 
     def __init__(self):

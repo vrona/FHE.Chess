@@ -32,7 +32,7 @@ print("socket is listening, server started")
 board_from_space = clone_chess.get_board()
 
 def threaded_client(conn):
-    # initialization of reply
+    # initialization of reply NOT EFFICIENT HERE
     conn.send(pickle.dumps(board_from_space))
     reply = ""
 
@@ -46,9 +46,9 @@ def threaded_client(conn):
             if not data:
                 print("disconnected")
                 break
-            # else:
-            #     print("received:", data)
-            #     print("sending:", reply)
+            else:
+                print("received:\n",data,"\n")
+                print("sending legal proposals:\n",reply,"\n")
             
             conn.sendall(pickle.dumps(reply))
         except:

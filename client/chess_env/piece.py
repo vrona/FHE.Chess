@@ -8,10 +8,7 @@ class Piece:
         self.clone_chess = Clone_Chess()
         self.name = name
         self.color = color
-
-        value_sign = 1 if color == 'white' else -1
         self.ok_moves = []
-
         self.moved = False
         self.img_uri = img_uri
         self.set_texture()

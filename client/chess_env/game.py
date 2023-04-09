@@ -4,8 +4,6 @@ from board import Board
 from dragger import Dragger
 from config import Config
 from square import Square
-import numpy as np
-import chess
 
 class Game:
 
@@ -71,7 +69,8 @@ class Game:
                     surface.blit(white_dots, piece.rectangle)
                 
                 # ok moves show as color self.display_rect('#ffeac8', '#ffebc6', move.target.col, move.target.row, surface, stroke=10)
-               
+    
+    # this enable players to see where the move is from light grey
     def display_lastmove(self, surface):
         if self.board.last_move:
             source = self.board.last_move.source
@@ -80,10 +79,13 @@ class Game:
             for coor in [source, target]:
                 self.display_rect('#f5f7f9', '#c1c4c8', coor.col, coor.row, surface)
 
+
+    # when grabbing piece, it hovers over the chessboard
     def display_hover(self, surface):
         if self.square_hovered:
             self.display_rect('#ffeac8', '#ffebc6', self.square_hovered.col, self.square_hovered.row, surface, stroke=3)      
 
+    # helper function for repetitive and necessary function in pygame
     def display_rect(self, ok_color, no_color, xcol, yrow, surface, stroke=0):
         
         color = ok_color if (yrow + xcol) % 2 == 0 else no_color # color
@@ -99,11 +101,6 @@ class Game:
     def get_turn_color(self):
         print(self.player_turn)
 
-    # def sound_it(self, captured=False):
-    #     if captured:
-    #         self.config.capture_sound.play()
-    #     else:
-    #         self.config.move_sound.play()
 
     def reset(self):
         self.__init__()

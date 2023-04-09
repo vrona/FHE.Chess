@@ -12,8 +12,8 @@ from move import Move
 from clone_chess import Clone_Chess
 from button import Button
 
-sys.path.insert(1,"server/model")
-from inference_64bit import Inference
+# sys.path.insert(1,"server/model")
+# from inference_64bit import Inference
 
 
 class Main:
@@ -25,7 +25,7 @@ class Main:
         self.game = Game()
         self.button = Button()
         self.clone_chess = Clone_Chess()
-        self.inference = Inference()
+        #self.inference = Inference() in case to debug inference
         self.cs_network = Network()
 
 
@@ -37,7 +37,7 @@ class Main:
         board = self.game.board
         dragger = self.game.dragger
         clone_chess = self.clone_chess
-        inference = self.inference
+        #inference = self.inference
         cs_network = self.cs_network
 
         while True:
@@ -61,27 +61,27 @@ class Main:
             # button.button_bothAI(screenplay)
             button.button_HH(screenplay)
             
-            #print(button.mode)
-            # GET COLOR TURN game.get_turn_color()
-            # display grabbed piece
 
+
+            # AI PART
             if button.get_ai_mode() and game.player_turn=="white":
 
                 # get the snapshot of the board and use it as input_data to AI via server
-                liftofmoves = cs_network.send(clone_chess.get_board())
+                # get reply from server as list of tuples of moves
+                listoftuplesofmoves = cs_network.send(clone_chess.get_board())
                 
-                selected_square_row = liftofmoves[0][0][1]
-                selected_square_col = liftofmoves[0][0][0]
-                targeted_square_row = liftofmoves[0][1][1]
-                targeted_square_col = liftofmoves[0][1][0]
+                selected_square_row = listoftuplesofmoves[0][0][1]
+                selected_square_col = listoftuplesofmoves[0][0][0]
+                targeted_square_row = listoftuplesofmoves[0][1][1]
+                targeted_square_col = listoftuplesofmoves[0][1][0]
                 
+                # making the move
                 self.autonomous_piece(7-selected_square_row, selected_square_col, 7-targeted_square_row, targeted_square_col, board, game, clone_chess, screenplay)
             
+            # HUMAN PART
             if dragger.dragging:
                 dragger.update_blit(screenplay)
             
-        
-
             for event in pygame.event.get():
 
                 # mouse selects piece
@@ -89,15 +89,6 @@ class Main:
 
                     dragger.update_mouse(event.pos)
 
-                    # if button.get_ai_mode() and game.player_turn=="white":
-                        
-                    #     #if piece.color == 'white':
-                    #     # get the snapshot of the board and use it as input_data to AI via server
-                    #     liftofmoves = cs_network.send(clone_chess.get_board())
-                        
-                    #     selected_square_row = liftofmoves[0][0][1]
-                    #     selected_square_col = liftofmoves[0][0][0]
-                    # else:
                     selected_square_row = dragger.mouseY // sqsize
                     selected_square_col = dragger.mouseX // sqsize
 
@@ -146,20 +137,20 @@ class Main:
 
                         # check move ok ?
                         if board.valid_move(dragger.piece, move):
-                            #print(dragger.piece.name)
-                            #captured = board.squares[released_row][released_col].piece_presence()
+                            
                             board.move(dragger.piece, move)
 
                             # BRIDGE HERE cloning move from app to python-chess
                             clone_chess.move_clone_board(move)
                             
                             board.set_true_en_passant(dragger.piece)
-                            #game.sound_it(captured)
+
                             game.display_chessboard(screenplay)
                             game.display_lastmove(screenplay)
                             game.display_pieces(screenplay)
                             game.next_player()
                         
+                        # print the Outcome of the game
                         if clone_chess.outcome(clone_chess.get_board()) is not None:
 
                             print(clone_chess.outcome(clone_chess.get_board()))
@@ -198,7 +189,6 @@ class Main:
 
                 move = Move(source, target)
 
-
                 #  check move ok ?
                 if game.board.valid_move(piece, move):
                     
@@ -215,6 +205,7 @@ class Main:
                     game.display_pieces(surface)
                     game.next_player()
 
+                # print the Outcome of the game
                 if clone_chess.outcome(clone_chess.get_board()) is not None:
                     print("Game outcome", clone_chess.outcome(clone_chess.get_board()))
 

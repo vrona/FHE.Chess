@@ -1,8 +1,7 @@
 import pygame
 from base import *
 
-
-
+# class to let pygame mouse grab pieces
 class Dragger:
 
     def __init__(self):
@@ -13,6 +12,7 @@ class Dragger:
         self.source_row = 0
         self.source_col = 0
 
+    # with grabbing piece move from 80px to 128px (UX stuff)
     def update_blit(self, surface):
         """user experience stuff"""
         self.piece.set_texture(size=128)
@@ -24,6 +24,7 @@ class Dragger:
         self.piece.rectangle = img.get_rect(center=img_centered)
         surface.blit(img, self.piece.rectangle)                  
 
+    # for grabbing
     def update_mouse(self, position):
         """current mouse position helper"""
         self.mouseX, self.mouseY = position

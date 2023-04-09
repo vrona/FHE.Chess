@@ -35,7 +35,11 @@ class Inference:
 
     # inference function
     def predict(self, input_board, topf=2, topt=3):
-        
+        """
+        Recall: 2 disctinct models (source & target)
+        input source : 12,8,8 board -> output source : selected Square number to move FROM as 1D array of shape (64,)
+        input target : 12,8,8 board + selected Square number to move from as 1D array of shape (64,) -> output target : selected Square number to move TO as 1D array of shape (64,)
+        """
         dictofproposal = {}
         legal_proposal_moves = []
         source_model = self.source_model
@@ -100,7 +104,7 @@ class Inference:
             if chess.Move.from_uci(prop) in input_board.legal_moves:
                 legal_proposal_moves.append(values)
         
-        print("Legal_Proposal",legal_proposal_moves,"\n")
+        #print("Legal_Proposal",legal_proposal_moves,"\n")
         return legal_proposal_moves
 
 

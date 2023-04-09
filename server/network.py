@@ -15,7 +15,7 @@ class Network:
         self.clone_chess = Clone_Chess()
         self.connect()
 
-
+    # NOT EFFICIENT TO ENHANCE
     def get_some_data(self):
         return self.clone_chess.get_board()
 

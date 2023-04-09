@@ -2,7 +2,10 @@ import chess
 from square import Square
 from base import *
 #-----python-chess-----#
-
+"""
+TO SPEED UP DEVELOPMENT AND FACILITATE AI DEVELOPMENT, USE OF PYTHON-CHESS
+https://python-chess.readthedocs.io/en/latest/#
+"""
 class Clone_Chess:
     
     def __init__(self):

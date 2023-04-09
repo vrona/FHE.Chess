@@ -79,6 +79,7 @@ class Board:
         
         piece.en_passant = True 
 
+    # check if move is valid (not based on chess lib)
     def valid_move(self, piece, move):
         return move in piece.ok_moves  
     
@@ -86,7 +87,8 @@ class Board:
     def check_situation(self):
         return Clone_Chess.check_check()
  
-
+    # here it simulate if King is check, thus it blocks any movement that lead king to be checked.
+    # improvements needed cause some deadends.
     def check_simulation(self, piece, move):
         
         """"for simulation"""
@@ -462,9 +464,7 @@ class Board:
         # pawns
         for col in range(cb_cols):
             self.squares[row_pawn][col] = Square(row_pawn, col, Pawn(color))
-        # test self.squares[5][0] = Square(5, 0, Pawn(color))
-        # test self.squares[5][3] = Square(5, 3, Pawn(color))
-        
+
         # knights
         self.squares[row_other][1] = Square(row_other, 1, Knight(color))
         self.squares[row_other][6] = Square(row_other, 6, Knight(color))
@@ -472,16 +472,16 @@ class Board:
         # bishops
         self.squares[row_other][2] = Square(row_other, 2, Bishop(color))
         self.squares[row_other][5] = Square(row_other, 5, Bishop(color))
-        # test self.squares[4][3] = Square(4, 3, Bishop(color))
+
         
         # rooks
         self.squares[row_other][0] = Square(row_other, 0, Rook(color))
         self.squares[row_other][7] = Square(row_other, 7, Rook(color))
-        # test self.squares[row_other][7] = Square(row_other, 7, Rook(color))
+
         
         # queen
         self.squares[row_other][3] = Square(row_other, 3, Queen(color))
-        # test self.squares[3][3] = Square(3, 3, Queen(color))
+
 
         # king
         self.squares[row_other][4] = Square(row_other, 4, King(color))

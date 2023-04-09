@@ -10,10 +10,11 @@ class Button:
         self.ai_mode = False
         self.name_mode = ' White H'
 
+    # retrieve if AI Mode status
     def get_ai_mode(self):
         return self.ai_mode
     
-
+    # click function
     def ckeck_click(self, x, action_name):
 
         mouse_pos = pygame.mouse.get_pos()
@@ -31,7 +32,7 @@ class Button:
         else:
            return False
 
-
+    # draw button
     def draw(self, surface, color, text, x):
 
         self.text = text
