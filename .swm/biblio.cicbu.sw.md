@@ -1,11 +1,13 @@
 ---
 id: cicbu
 title: biblio
-file_version: 1.1.1
-app_version: 1.1.5
+file_version: 1.1.2
+app_version: 1.6.1
 ---
 
-[https://database.lichess.org/#standard\\\_games](https://database.lichess.org/#standard\_games) 2023 January 33.5 GB +103,000,000 games
+other database [https://database.lichess.org/#standard\\\_games](https://database.lichess.org/#standard_games) 2023 January 33.5 GB +103,000,000 games
+
+Chess pictures: John Pablok's improved Cburnett chess set\[JohnPablok chess set\]([https://opengameart.org/sites/default/files/JohnPablok%20Cburnett%20Chess%20Zip.zip](https://opengameart.org/sites/default/files/JohnPablok%20Cburnett%20Chess%20Zip.zip))
 
 <br/>
 
