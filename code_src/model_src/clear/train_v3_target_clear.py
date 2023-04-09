@@ -13,19 +13,13 @@ ASCII SET isometric1 http://asciiset.com/figletserver.html
 # CUDA's availability
 
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-#device = torch.device("cpu")
 
-# if not train_on_gpu:
-#     print('CPU Training... (CUDA not available)')
-
-# else:
-#     print('GPU Training...')
 
 wandb.init(
         project = "Chess_App",
 
         config = {
-        "learning_rate": 1.0e-3, #"weight_decay":0.099,
+        "learning_rate": 1.0e-3,
         "architecture": "CNN",
         "dataset": "White Black ELO 2000 A.Revel kaggle dataset",
         "epochs": 5,
@@ -68,7 +62,7 @@ def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.
         for batch_idx, (chessboard, source, target) in loop:
 
             chessboard, source, target = chessboard.to(torch.float).to(device), source.to(torch.float).to(device), target.to(torch.float).to(device)
-            #chessboard, source, target = chessboard.to(device), target.to(device)
+
             # clear the gradients from all variable
             optimizer.zero_grad()
 
@@ -85,12 +79,12 @@ def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.
             optimizer.step()
 
             # train_loss update
-            train_loss += loss.item()#*data.size(0)
+            train_loss += loss.item()
             
-            wandb.log({"loss": loss.item()})#*data.size(0)})
+            wandb.log({"loss": loss.item()})
 
             loop.set_description(f"Epoch_train [{epoch}/{n_epochs}]")
-            loop.set_postfix(loss = loss.item())#*data.size(0))
+            loop.set_postfix(loss = loss.item())
 
 
 
@@ -121,15 +115,15 @@ def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.
             loss = criterion(output, target)
 
             # valid_loss update
-            valid_loss += loss.item()#*data.size(0)
+            valid_loss += loss.item()
             
-            wandb.log({"valid_loss": loss.item()})#*data.size(0)})
+            wandb.log({"valid_loss": loss.item()})
             loop_valid.set_description(f"Epoch_valid [{epoch}/{n_epochs}]")
-            loop_valid.set_postfix(validate_loss = loss.item())#*data.size(0))
+            loop_valid.set_postfix(validate_loss = loss.item())
 
         # avg loss
-        train_loss = train_loss / len(trainloader) #.sampler
-        valid_loss = valid_loss / len(validloader) #.sampler
+        train_loss = train_loss / len(trainloader)
+        valid_loss = valid_loss / len(validloader)
 
         # print training/validation statistics 
         print('Epoch: {} \tTraining Loss: {:.6f} \tValidation Loss: {:.6f}'.format(
@@ -140,8 +134,8 @@ def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.
             print('Validation loss decreased ({:.6f} --> {:.6f}).  Saving model ...'.format(
             valid_loss_min, valid_loss))
 
-        torch.save(model.state_dict(), "model_plain_chess.pt")
-        valid_loss_min = valid_loss
+            torch.save(model.state_dict(), "source_model_plain_chess.pt")
+            valid_loss_min = valid_loss
     
     wandb.finish()
 

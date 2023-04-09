@@ -47,8 +47,8 @@ class Clone_Chess:
         return self.board.legal_moves.count()
 
     # get game outcome
-    def outcome(self):
-        return self.board.outcome()
+    def outcome(self, board):
+        return board.outcome()
 
 
     #  __       __  __             __   __ 

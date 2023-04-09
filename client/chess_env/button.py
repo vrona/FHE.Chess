@@ -7,23 +7,26 @@ class Button:
 
         self.normal = True
         self.y_pos = y
-        self.mode = "batman"#(False, "")
+        self.ai_mode = False
+        self.name_mode = ' White H'
 
-
-    def get_mode(self):
-        return self.mode
+    def get_ai_mode(self):
+        return self.ai_mode
     
 
     def ckeck_click(self, x, action_name):
 
         mouse_pos = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()[0]
-        button_rect = pygame.rect.Rect((x, self.y_pos),(135,30))
+        button_rect = pygame.rect.Rect((x, self.y_pos),(130,30))
         
         if click and button_rect.collidepoint(mouse_pos) and self.normal:
             # set the AI or Human mode
-            self.mode = action_name
+            self.name_mode = action_name
             self.normal = False
+
+            if self.name_mode=="White AI":
+                self.ai_mode = True
 
         else:
            return False
@@ -34,17 +37,17 @@ class Button:
         self.text = text
         font = pygame.font.Font('freesansbold.ttf', 26)
         button_text = font.render(self.text, True, 'black')
-        button_rect = pygame.rect.Rect((x, self.y_pos),(135,30))
+        button_rect = pygame.rect.Rect((x, self.y_pos),(120,30))
         pygame.draw.rect(surface, color, button_rect, 0, 5)
         pygame.draw.rect(surface, 'black', button_rect, 2, 3)
         surface.blit(button_text, (x+3, self.y_pos +3))
 
 
     def button_whiteAI(self, surface):
-        self.button_name = 'WHITE AI'
-        self.ckeck_click(98.75, self.button_name)
+        self.button_name = 'White AI'
+        self.ckeck_click(220, self.button_name)
         if self.normal:
-            self.draw(surface,'white', self.button_name,98.75)
+            self.draw(surface,'white', self.button_name,220)
 
 
     # def button_blackAI(self, surface):
@@ -64,10 +67,10 @@ class Button:
 
 
     def button_HH(self, surface):
-        self.button_name = 'H vs H'
-        self.ckeck_click(566.25, self.button_name)
+        self.button_name = ' White H'
+        self.ckeck_click(445, self.button_name)
         if self.normal:
-            self.draw(surface,'white', self.button_name,566.25)
+            self.draw(surface,'white', self.button_name,445)
 
 
     # def button_start(self, surface):

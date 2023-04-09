@@ -36,7 +36,7 @@ class Inference:
     # inference function
     def predict(self, input_board, topf=2, topt=3):
         
-        proposal_moves = []
+        dictofproposal = {}
         legal_proposal_moves = []
         source_model = self.source_model
         target_model = self.target_model
@@ -87,23 +87,40 @@ class Inference:
 
             # proposal moves without legal move filter
             for t in range(topt):
-                proposal_moves.append(self.square_to_alpha(source_square.data[0][s].item(), target_square.data[0][t].item()))
+                #proposal_moves.append(self.square_to_alpha(source_square.data[0][s].item(), target_square.data[0][t].item()))
+                keys_prop,  values_digit = self.square_to_alpha(source_square.data[0][s].item(), target_square.data[0][t].item())
 
-        # from raw proposal to legal propose
-        for prop in proposal_moves:
-            if chess.Move.from_uci(prop) in input_board.legal_moves:
-                legal_proposal_moves.append(prop)
+                #feeding the dict of proposal with uci format as keys and digit equivalent as values
+                dictofproposal[keys_prop] = values_digit
         
-        print(legal_proposal_moves)
+        
+        # from raw proposal to legal propose
+        for prop, values in dictofproposal.items():
+
+            if chess.Move.from_uci(prop) in input_board.legal_moves:
+                legal_proposal_moves.append(values)
+        
+        print(legal_proposal_moves[0])
         return legal_proposal_moves
 
 
-    # convert square number into chessboard digit coordinates
     def square_to_alpha(self, src_sq, trgt_sq):
-        
-        col_s, row_s = chess.FILE_NAMES[chess.square_file(src_sq)],chess.square_rank(src_sq)
-        col_t, row_t = chess.FILE_NAMES[chess.square_file(trgt_sq)],chess.square_rank(trgt_sq)
+        """
+        convert square number into chessboard digit coordinates (due to chess lib) and alpha.
+        input: source square number, target square number
+        return : uci format (str), source and target as digit coordinates
+        """
 
-        move_proposal = "".join((str(col_s),str(row_s+1),str(col_t),str(row_t+1)))
-        return  move_proposal
+        # digit conversion
+        col_s, row_s = chess.square_file(src_sq),chess.square_rank(src_sq)
+        col_t, row_t = chess.square_file(trgt_sq),chess.square_rank(trgt_sq)
+
+        # alpha conversion
+        alpha_col_s = chess.FILE_NAMES[col_s]
+        alpha_col_t = chess.FILE_NAMES[col_t]
+        
+        # converting coordinates to str and join to get uci move format (see chess lib)
+        move_proposal = "".join((str(alpha_col_s),str(row_s+1),str(alpha_col_t),str(row_t+1)))
+
+        return  move_proposal, ((col_s,row_s),(col_t,row_t))
 

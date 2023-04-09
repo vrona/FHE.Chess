@@ -46,9 +46,9 @@ def threaded_client(conn):
             if not data:
                 print("disconnected")
                 break
-            else:
-                print("received:", data)
-                print("sending:", reply)
+            # else:
+            #     print("received:", data)
+            #     print("sending:", reply)
             
             conn.sendall(pickle.dumps(reply))
         except:

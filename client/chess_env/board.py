@@ -47,6 +47,7 @@ class Board:
             if self.castling(source, target) and not simulation:
                 diff = target.col - source.col
                 rook = piece.left_rook if (diff < 0) else piece.right_rook # determine if castling queenside or kingside
+                print("rook",rook)
                 self.move(rook, rook.ok_moves[-1])
 
         # move
@@ -132,7 +133,7 @@ class Board:
                         # piece.add_ok_move(move)
                         
                         if bool:
-                            if not self.check_simulation(piece, move): # if not in check go ahead
+                            #if not self.check_simulation(piece, move): # if not in check go ahead
                                 piece.add_ok_move(move)
  
                         else:
@@ -159,7 +160,7 @@ class Board:
                         move = Move(source, target)
 
                         if bool:
-                            if not self.check_simulation(piece, move): # if not in check go ahead
+                            #if not self.check_simulation(piece, move): # if not in check go ahead
                                 piece.add_ok_move(move)
 
                         else:
@@ -187,7 +188,7 @@ class Board:
                             move = Move(source, target)
 
                             if bool:
-                                if not self.check_simulation(piece, move): # if not in check go ahead
+                                #if not self.check_simulation(piece, move): # if not in check go ahead
                                     piece.add_ok_move(move)
 
                             else:
@@ -210,7 +211,7 @@ class Board:
                             move = Move(source, target)
 
                             if bool:
-                                if not self.check_simulation(piece, move): # if not in check go ahead
+                                #if not self.check_simulation(piece, move): # if not in check go ahead
                                     piece.add_ok_move(move)
                                     
                             else:
@@ -243,7 +244,7 @@ class Board:
                         move = Move(source, target)
 
                         if bool:
-                            if not self.check_simulation(piece, move): # if not in check go ahead
+                            #if not self.check_simulation(piece, move): # if not in check go ahead
                                 piece.add_ok_move(move)
                                 
                         else:
@@ -273,10 +274,9 @@ class Board:
                         if self.squares[possible_move_row][possible_move_col].empty():
 
                             if bool:
-                                if not self.check_simulation(piece, move): # if not in check go ahead
+                                #if not self.check_simulation(piece, move): # if not in check go ahead
                                     piece.add_ok_move(move)
-                                    
-        
+
                             else:
                                 piece.add_ok_move(move) # if not in check go ahead
 
@@ -286,7 +286,7 @@ class Board:
                         elif self.squares[possible_move_row][possible_move_col].opponent_presence(piece.color):
                             
                             if bool:
-                                if not self.check_simulation(piece, move): # if not in check go ahead
+                                #if not self.check_simulation(piece, move): # if not in check go ahead
                                     piece.add_ok_move(move)
                                     
                             else:
@@ -328,10 +328,10 @@ class Board:
                         move = Move(source, target)
 
                         if bool:
-                            if not self.check_simulation(piece, move): # if not in check go ahead
+                            #if not self.check_simulation(piece, move): # if not in check go ahead
                                 piece.add_ok_move(move)
 
-                            else: break
+                            #else: break
                         else:
                             piece.add_ok_move(move) # if not in check go ahead
 

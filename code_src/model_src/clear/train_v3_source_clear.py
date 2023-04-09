@@ -12,14 +12,13 @@ ASCII SET isometric1 http://asciiset.com/figletserver.html
 # CUDA's availability
 
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-#device = torch.device("cpu")
 
 
 wandb.init(
         project = "Chess_App",
 
         config = {
-        "learning_rate": 1.0e-3, #"weight_decay":0.099,
+        "learning_rate": 1.0e-3,
         "architecture": "CNN",
         "dataset": "White Black ELO 2000 A.Revel kaggle dataset",
         "epochs": 5,
@@ -61,8 +60,8 @@ def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.
         
         for batch_idx, (data, target) in loop:
 
-            data, target = data.to(torch.float).to(device), target.to(torch.float).to(device) #.to(torch.long) #
-            #data, target = data.to(device), target.to(device)
+            data, target = data.to(torch.float).to(device), target.to(torch.float).to(device)
+
             # clear the gradients from all variable
             optimizer.zero_grad()
 
@@ -179,10 +178,10 @@ def test(model, testloader, criterion):
             test_loss += loss.item()
 
             # accuracy (output vs target)
-            _, outdix = torch.max(output, 1)
+            valo, outdix = torch.max(output, 1)
      
-            _, tardix = torch.max(target, 1)
-     
+            valt, tardix = torch.max(target, 1)
+
             accuracy += (outdix == tardix).sum().item()
 
             wandb.log({"test_loss": loss.item(), "accuracy": 100 * accuracy / len(testloader)})
