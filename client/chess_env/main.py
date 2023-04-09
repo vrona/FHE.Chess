@@ -192,7 +192,7 @@ class Main:
                 #  check move ok ?
                 if game.board.valid_move(piece, move):
                     
-                    print("Piece", piece.name, "from",source_col, source_row,"to",target_col, target_row)
+                    print(piece.name, "from",source_col, source_row,"to",target_col, target_row)
                     board.move(piece, move)
 
                     # BRIDGE HERE cloning move from app to python-chess

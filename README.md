@@ -37,5 +37,3 @@ Apply directly to this bounty by sending an application [here](https://zama.ai/b
 
 ## Questions?
 Do you have a specific question about this bounty? Join the live conversation on the FHE.org discord server [here](https://discord.fhe.org). You can also send us an email at: bounty@zama.ai
-
-Chess design: John Pablok's improved Cburnett chess set[JohnPablok chess set](https://opengameart.org/sites/default/files/JohnPablok%20Cburnett%20Chess%20Zip.zip)
