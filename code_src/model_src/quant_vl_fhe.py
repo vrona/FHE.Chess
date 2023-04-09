@@ -31,6 +31,9 @@ comp_config_vl = Configuration(
     dump_artifacts_on_unexpected_failures=False,
     enable_unsafe_features=True,
 )
-
+"""
+input: float --> quantization --> encryption
+output: float <-- quantization <-- decryption
+"""
 compile_brevitas_qat_model(some_net, some_data, some_n_bits, use_virtual_lib=True,
 configuration=comp_config_vl)
