@@ -9,7 +9,8 @@ app_version: 1.6.1
 
 ```markdown
 ## Overview
-Create an application that plays Chess against an AI oponent. The moves should be encrypted with FHE so that the AI doesn't see them but can still run its algorithm on them.
+Create an application that plays Chess against an AI oponent.
+The moves should be encrypted with FHE so that the AI doesn't see them but can still run its algorithm on them.
 
 ## Description
 Create a machine-learning-based version of a Chess player which can be executed in FHE, i.e., where the computer does not see the unencrypted moves.
@@ -38,8 +39,6 @@ While reading you will based faced to SOURCE and TARGET terms. As a chessboard i
 8      tqdm==4.64.1
 9      wandb==0.13.10
 ```
-
-<br/>
 
 <br/>
 
@@ -73,13 +72,13 @@ The chosen philosophy is straightforward: train one model to determine the SOURC
 
 *   **#3.1 clear source / target**
 
-    *   **Source model**
+    *   **Source model** `📄 code_src/model_src/clear/cnn_v13_64bit_source_clear.py`
 
         *   input source : (12,8,8) board -> output source : selected Square number to move FROM as 1D array of shape (64,)
 
         *   3 convolution layers (hidden size=128) + fully-connected layer (64)
 
-    *   **Target model**
+    *   **Target model** `📄 code_src/model_src/clear/cnn_v13_64bit_target_clear.py`
 
         *   input target : (12,8,8) board + selected Square number to move from as 1D array of shape (64,) -> output target : selected Square number to move TO as 1D array of shape (64,)
 
@@ -87,15 +86,35 @@ The chosen philosophy is straightforward: train one model to determine the SOURC
 
 *   **#3.2 quantized source / target**
 
-#4 Train / Validation / Test
+## #4 Train / Validation / Test
 
-#5 Model Quantization
+*   Clear models: Train/Validation
 
-#6 Simulation
+<br/>
 
-#7 Compilation
+<div align="center"><img src="https://firebasestorage.googleapis.com/v0/b/swimmio-content/o/repositories%2FZ2l0aHViJTNBJTNBRkhFLkNoZXNzJTNBJTNBdnJvbmE%3D%2F43a2be88-898c-436d-9c64-dce01319ef35.png?alt=media&token=26f73975-8ca4-41ee-96e5-06f8ea44a82b" style="width:'50%'"/></div>
 
-#8 Deployment (client-server)
+<br/>
+
+*   Clear models: Test/Accuracy
+
+<br/>
+
+<div align="center"><img src="https://firebasestorage.googleapis.com/v0/b/swimmio-content/o/repositories%2FZ2l0aHViJTNBJTNBRkhFLkNoZXNzJTNBJTNBdnJvbmE%3D%2Fd3f2d163-d3cb-4b7a-8a80-1269a3d5ccf6.png?alt=media&token=1dba49d2-0a8d-45a8-bf70-c5331dc1cfb3" style="width:'50%'"/></div>
+
+<br/>
+
+*   Quantized models: Train/Validation
+
+*   Quantized models: Test/Accuracy
+
+## #5 Model Quantization
+
+## #6 Simulation
+
+## #7 Compilation
+
+## #8 Deployment (client-server)
 
 <br/>
 
