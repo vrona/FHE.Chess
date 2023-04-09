@@ -1,6 +1,11 @@
 
 # FHE.Chess
 
+#### WARNING
+-   FHE models are not effective yet
+-   AI is white only and based on clear player moves
+-   several bugs remains while playing (occured by dual chess engine: one scratch, one python-chess)
+
 ## Overview
 Create an application that plays Chess against an AI oponent. The moves should be encrypted with FHE so that the AI doesn't see them but can still run its algorithm on them.
 
