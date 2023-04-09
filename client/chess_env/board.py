@@ -47,7 +47,7 @@ class Board:
             if self.castling(source, target) and not simulation:
                 diff = target.col - source.col
                 rook = piece.left_rook if (diff < 0) else piece.right_rook # determine if castling queenside or kingside
-                print("rook",rook)
+
                 self.move(rook, rook.ok_moves[-1])
 
         # move

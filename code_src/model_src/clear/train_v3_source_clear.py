@@ -133,7 +133,7 @@ def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.
             print('Validation loss decreased ({:.6f} --> {:.6f}).  Saving model ...'.format(
             valid_loss_min, valid_loss))
 
-        torch.save(model.state_dict(), "model_plain_chess.pt")
+        torch.save(model.state_dict(), "source_model_clear_chess.pt")
         valid_loss_min = valid_loss
     
     wandb.finish()

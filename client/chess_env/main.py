@@ -159,6 +159,9 @@ class Main:
                             game.display_lastmove(screenplay)
                             game.display_pieces(screenplay)
                             game.next_player()
+                        
+                        if clone_chess.outcome(clone_chess.get_board()) is not None:
+
                             print(clone_chess.outcome(clone_chess.get_board()))
 
                     dragger.undrag_piece()
@@ -195,11 +198,11 @@ class Main:
 
                 move = Move(source, target)
 
-                #print(piece.ok_moves)
+
                 #  check move ok ?
                 if game.board.valid_move(piece, move):
                     
-                    print("Piece to move", piece.name, target_row, target_col)
+                    print("Piece", piece.name, "from",source_col, source_row,"to",target_col, target_row)
                     board.move(piece, move)
 
                     # BRIDGE HERE cloning move from app to python-chess
@@ -212,7 +215,8 @@ class Main:
                     game.display_pieces(surface)
                     game.next_player()
 
-                print(clone_chess.outcome(clone_chess.get_board()))
+                if clone_chess.outcome(clone_chess.get_board()) is not None:
+                    print("Game outcome", clone_chess.outcome(clone_chess.get_board()))
 
         else:
             print("No piece")

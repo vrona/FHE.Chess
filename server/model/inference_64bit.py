@@ -100,7 +100,7 @@ class Inference:
             if chess.Move.from_uci(prop) in input_board.legal_moves:
                 legal_proposal_moves.append(values)
         
-        print(legal_proposal_moves[0])
+        print("Legal_Proposal",legal_proposal_moves,"\n")
         return legal_proposal_moves
 
 

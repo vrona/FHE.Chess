@@ -49,8 +49,7 @@ class Chessset(Dataset):
         # get the sequence of moves until the move
         moves = initial_moves[:game_state_i]
 
-        # get the eval for the sequence until that move
-
+        # instantiate board from chess lib
         board = chess.Board()
 
         for move in moves:

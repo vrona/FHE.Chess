@@ -1,3 +1,6 @@
+"""
+NOTHING HERE JUST MY UNDERSTANDING
+"""
 import numpy as np
 from concrete.numpy.compilation.configuration import Configuration
 from concrete.ml.torch.compile import compile_brevitas_qat_model
