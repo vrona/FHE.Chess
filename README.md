@@ -2,9 +2,11 @@
 # FHE.Chess
 
 #### WARNING
--   FHE models are not effective yet
--   AI is white only and based on clear player moves
--   Several bugs remains while playing (occured by dual chess engine: one scratch, one python-chess)
+-   Project work_in_progess,
+-   FHE models are not effective yet,
+-   AI is white only and based on clear player moves,
+-   AI always starts her moves the same way, but from 5 moves it starts to be very funny,
+-   Several bugs remains while playing (occured by dual chess developments: one from scratch, one python-chess).
 
 #### SET UP AND PLAY
 1.   Download client & server folders into local folder <your_local_folder>. Then, $ cd <your_local_folder>
@@ -23,7 +25,8 @@ Create an application that plays Chess against an AI oponent. The moves should b
 Create a machine-learning-based version of a Chess player which can be executed in FHE, i.e., where the computer does not see the unencrypted moves.
 On the player (client) side, the board would be in clear; then, when she plays her move, she encrypts the new position and sends it to the server, which then runs the machine-learning model inference over encrypted data, to predict a new (encrypted) move to apply. Finally, the player decrypts this move and apply it on the position, and reiterate the process until the game is over.
 
-### Project flow
+## Project flow
+Here you can details about the project
 https://github.com/vrona/FHE.Chess/blob/main/.swm/fhechess-project-flow.xf41t.sw.md
 
 
