@@ -118,7 +118,7 @@ The chosen philosophy is straightforward: train one model to determine the SOURC
 
 ## #9 Set up and play
 
-1\. Download client & server folders into local folder <your\_local\_folder>. Then, $ cd <your\_local\_folder>
+1\. Download `client` & `server` folders into local folder <your\_local\_folder>. Then, \`$ cd <your\_local\_folder>\`
 
 2\. Create venv based on requirements.txt and activate venv
 
@@ -126,9 +126,9 @@ The chosen philosophy is straightforward: train one model to determine the SOURC
 
 \- terminal 1: `$ python3 server/server.py`
 
-\- terminal 2: $ python3 client/chess\_env/main.py
+\- terminal 2: \`$ python3 client/chess\_env/main.py\`
 
-**_NB.: When the Chess app crashes, execute $ python3 client/chess\_env/main.py from terminal 2._**
+**_NB.: When the Chess app crashes, execute \`$ python3 client/chess\_env/main.py\` from terminal 2._**
 
 <br/>
 
