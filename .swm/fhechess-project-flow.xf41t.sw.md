@@ -68,7 +68,9 @@ Data used is downloadable here [https://www.kaggle.com/datasets/arevel/chess-gam
 
 ## #3 Models
 
-The chosen philosophy is straightforward: train one model to determine the SOURCE square (no matter the piece and evaluation), train another model to determine the TARGET square.
+**The chosen philosophy is straightforward**: train one model to determine the SOURCE square (no matter the piece and evaluation), train another model to determine the TARGET square.
+
+Consequences: AI always starts her moves the same way, but over 5 moves it starts to be very funny.
 
 *   **#3.1 clear source / target**
 
