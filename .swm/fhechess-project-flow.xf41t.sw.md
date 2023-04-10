@@ -68,7 +68,9 @@ Data used is downloadable here [https://www.kaggle.com/datasets/arevel/chess-gam
 
 ## #3 Models
 
-The chosen philosophy is straightforward: train one model to determine the SOURCE square (no matter the piece and evaluation), train another model to determine the TARGET square.
+**The chosen philosophy is straightforward**: train one model to determine the SOURCE square (no matter the piece and evaluation), train another model to determine the TARGET square.
+
+Consequences: AI always starts her moves the same way, but over 5 moves it starts to be very funny.
 
 *   **#3.1 clear source / target**
 
@@ -118,17 +120,17 @@ The chosen philosophy is straightforward: train one model to determine the SOURC
 
 ## #9 Set up and play
 
-1\. Download client & server folders into local folder <your\_local\_folder>. Then, $ cd <your\_local\_folder>
+1\. Download `client` & `server` folders into local folder `<your_local_folder>`. Then, `$ cd <your_local_folder>`
 
 2\. Create venv based on requirements.txt and activate venv
 
 3\. Open 2 terminals:
 
-\- terminal 1: $ python3 server/server.py
+\- terminal 1: `$ python3 server/server.py`
 
-\- terminal 2: $ python3 client/chess\_env/main.py
+\- terminal 2: `$ python3 client/chess_env/main.py`
 
-**_NB.: When the Chess app crashes, execute $ python3 client/chess\_env/main.py from terminal 2._**
+**_NB._**: When the Chess app crashes, execute `$ python3 client/chess_env/main.py` from terminal 2.
 
 <br/>
 
