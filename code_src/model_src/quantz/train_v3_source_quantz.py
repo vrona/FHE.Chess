@@ -3,9 +3,10 @@ from torch import optim
 import numpy as np
 import wandb
 from tqdm import tqdm
-from concrete.ml.quantization import quantized_module
 
-#torch.manual_seed(42)
+
+
+torch.manual_seed(498846564)
 
 """
 ASCII SET isometric1 http://asciiset.com/figletserver.html
@@ -70,6 +71,9 @@ def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.
             # forward
 
             output = model(data)
+
+            if batch_idx % 100 == 0:
+             print(output)
 
             # batch loss
             loss = criterion(output, target)
@@ -170,11 +174,11 @@ def test(model, testloader, criterion):
         
         for batch_idx, (data, target) in loop_test:
 
-            data, target = data.to(torch.float).to(device), target.to(torch.float).to(device)
+            data, target = data.to(torch.float32).to(device), target.to(torch.float32).to(device)
             # forward
 
             output = model(data)
-            print("output",output)
+            
             # batch loss
             loss = criterion(output, target)
 
@@ -184,11 +188,14 @@ def test(model, testloader, criterion):
             # accuracy (output vs target)
             
             valout, outdix = torch.max(output, 1)
+            print("ARGMAX",torch.argmax(output))
+            print("TTTTTTARGMAX",torch.argmax(target))
      
             valtar, tardix = torch.max(target, 1)
 
             #print(outdix, tardix)
             accuracy += (outdix == tardix).sum().item()
+
 
             wandb.log({"test_loss": loss.item(), "accuracy": 100 * accuracy / len(testloader)})
             loop_test.set_description(f"test [{batch_idx}/{len(testloader)}]")

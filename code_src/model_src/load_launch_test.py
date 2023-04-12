@@ -43,8 +43,8 @@ training_set = Chessset(dataset['AN'])
 #     \::/  /                     \:\__\   \/__/                               \::/__/        /:/  /                      /:/  /   
 #      \/__/                       \/__/                                        ~~            \/__/                       \/__/    
 
-sys.path.insert(1,"/Volumes")
-game_move_set = "vrona_SSD/lichess_data/wb_2000_300.csv"
+
+game_move_set = "data/wb_2000_300.csv"
 wechess = pd.read_csv(game_move_set)
 
 # split dataset splitted into: training_set (80%), valid_set (20%), test_set (20%)
@@ -87,8 +87,10 @@ criterion = nn.MSELoss()
 
 ## TESTING
 # defining the processor
+
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-model.load_state_dict(torch.load("server/model/source_quant.pt",map_location = device)) #source
+
+model.load_state_dict(torch.load("server/model/source_model_quant_chess4.pt",map_location = device)) #source
 #model.load_state_dict(torch.load("server/model/target_clear.pt")) #target
 
 # Test and accuracy
