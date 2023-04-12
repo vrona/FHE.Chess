@@ -43,8 +43,8 @@ training_set = Chessset(dataset['AN'])
 #     \::/  /                     \:\__\   \/__/                               \::/__/        /:/  /                      /:/  /   
 #      \/__/                       \/__/                                        ~~            \/__/                       \/__/    
 
-
-game_move_set = "data/final/wb_2000_300.csv"
+sys.path.insert(1,"/Volumes")
+game_move_set = "vrona_SSD/lichess_data/wb_2000_300.csv"
 wechess = pd.read_csv(game_move_set)
 
 # split dataset splitted into: training_set (80%), valid_set (20%), test_set (20%)
