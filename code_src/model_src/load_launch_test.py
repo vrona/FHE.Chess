@@ -9,9 +9,9 @@ from dataset_v3_source import Chessset
 #from dataset_v3_target import Chessset
 
 # clear - source
-#sys.path.insert(1,"code_src/model_src/clear/")
-#from train_v3_source_clear import test
-#from cnn_v13_64bit_source_clear import PlainChessNET
+# sys.path.insert(1,"code_src/model_src/clear/")
+# from train_v3_source_clear import test
+# from cnn_v13_64bit_source_clear import PlainChessNET
 
 # clear - target
 # from train_v3_target import test
@@ -90,8 +90,10 @@ criterion = nn.MSELoss()
 
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
-model.load_state_dict(torch.load("server/model/source_model_quant_chess4.pt",map_location = device)) #source
-#model.load_state_dict(torch.load("server/model/target_clear.pt")) #target
+#model.load_state_dict(torch.load("server/model/source_clear.pt",map_location = device)) #source
 
+model.load_state_dict(torch.load("code_src/model_src/quantz/source_model_quant_chess3.pt",map_location = device)) #source
+#model.load_state_dict(torch.load("server/model/target_clear.pt")) #target
+model.pruning_conv(False)
 # Test and accuracy
 test(model, test_loader, criterion)

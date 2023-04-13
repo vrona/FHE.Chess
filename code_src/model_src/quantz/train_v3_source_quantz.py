@@ -186,20 +186,23 @@ def test(model, testloader, criterion):
             test_loss += loss.item()
 
             # accuracy (output vs target)
-            
-            valout, outdix = torch.max(output, 1)
-            print("ARGMAX",torch.argmax(output))
-            print("TTTTTTARGMAX",torch.argmax(target))
+            outdix = output.argmax(1)
+            tardix = target.argmax(1)
+
+            #valout, outdix = torch.max(output, 1)
+            #print("ARGMAX",torch.argmax(output))
+            #print("TTTTTTARGMAX",torch.argmax(target))
      
-            valtar, tardix = torch.max(target, 1)
+            #valtar, tardix = torch.max(target, 1)
 
             #print(outdix, tardix)
+            #print((outdix == tardix).sum().item())
             accuracy += (outdix == tardix).sum().item()
 
 
-            wandb.log({"test_loss": loss.item(), "accuracy": 100 * accuracy / len(testloader)})
+            wandb.log({"test_loss": loss.item()})#, "accuracy": 100 * accuracy / len(testloader)})
             loop_test.set_description(f"test [{batch_idx}/{len(testloader)}]")
-            loop_test.set_postfix(testing_loss = loss.item(), accuracy_rate = 100 * accuracy / len(testloader))
+            loop_test.set_postfix(testing_loss = loss.item(), acc = accuracy)#)_rate = 100 * accuracy / len(testloader))
 
 
         # average test loss

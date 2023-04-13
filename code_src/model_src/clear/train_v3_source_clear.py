@@ -181,19 +181,19 @@ def test(model, testloader, criterion):
             valo, outdix = torch.max(output, 1)
      
             valt, tardix = torch.max(target, 1)
+            
+            accuracy += 100*(outdix == tardix).sum().item()/64
 
-            accuracy += (outdix == tardix).sum().item()
-
-            wandb.log({"test_loss": loss.item(), "accuracy": 100 * accuracy / len(testloader)})
+            wandb.log({"test_loss": loss.item(), "accuracy": accuracy / len(testloader)})
             loop_test.set_description(f"test [{batch_idx}/{len(testloader)}]")
-            loop_test.set_postfix(testing_loss = loss.item())
+            loop_test.set_postfix(testing_loss = loss.item(), acc = accuracy / len(testloader))
 
 
         # average test loss
         test_loss = test_loss/len(testloader)
         print('Test Loss: {:.6f}\n'.format(test_loss))
 
-        print('\nTest Accuracy: %2d%% ' % (100 * accuracy / len(testloader)))
+        print('\nTest Accuracy: %2d%% ' % (accuracy / len(testloader)))
     
     # closing the wandb logs
     wandb.finish()
