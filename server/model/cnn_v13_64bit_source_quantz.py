@@ -10,7 +10,7 @@ import numpy as np
 
 class QTChessNET(nn.Module):
 
-    def __init__(self, a_bits = 2, w_bits=3, hidden_size=128):
+    def __init__(self, a_bits = 8, w_bits=8, hidden_size=128):
 
         super(QTChessNET, self).__init__()
         

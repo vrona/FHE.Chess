@@ -92,7 +92,7 @@ device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cp
 
 #model.load_state_dict(torch.load("server/model/source_clear.pt",map_location = device)) #source
 
-model.load_state_dict(torch.load("code_src/model_src/quantz/source_model_quant_chess3.pt",map_location = device)) #source
+model.load_state_dict(torch.load("code_src/model_src/quantz/source_model_quant_chess4.pt",map_location = device)) #source
 #model.load_state_dict(torch.load("server/model/target_clear.pt")) #target
 model.pruning_conv(False)
 # Test and accuracy

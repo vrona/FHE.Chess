@@ -51,7 +51,7 @@ class QTChessNET(nn.Module):
             """Enables or removes pruning."""
 
             # Maximum number of active neurons (i.e. corresponding weight != 0)
-            n_active = 48
+            n_active = 64
 
             # Go through all the convolution layers
             for layer in (self.qinput_layer, self.qconv2, self.qconv3):

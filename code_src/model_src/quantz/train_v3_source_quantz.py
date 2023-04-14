@@ -189,14 +189,6 @@ def test(model, testloader, criterion):
             outdix = output.argmax(1)
             tardix = target.argmax(1)
 
-            #valout, outdix = torch.max(output, 1)
-            #print("ARGMAX",torch.argmax(output))
-            #print("TTTTTTARGMAX",torch.argmax(target))
-     
-            #valtar, tardix = torch.max(target, 1)
-
-            #print(outdix, tardix)
-            #print((outdix == tardix).sum().item())
             accuracy += (outdix == tardix).sum().item()
 
 
