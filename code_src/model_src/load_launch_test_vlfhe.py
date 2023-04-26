@@ -26,7 +26,7 @@ from dataset_v3_source import Chessset
 
 # quantized - source
 sys.path.insert(1,"code_src/model_src/quantz/")
-from train_v3_source_quantz import test
+from train_v3_source_quantz import test, test_with_concrete
 from cnn_v13_64bit_source_quantz import QTChessNET
 
 # quantized - target
@@ -103,94 +103,6 @@ model.pruning_conv(False)
 # Test and accuracy
 # test(model, test_loader, criterion)
 
-def test_with_concrete(quantized_module, test_loader, use_fhe, use_vl, dtype_inputs=np.int64):
-    """Test a neural network that is quantized and compiled with Concrete-ML."""
-
-    # Casting the inputs into int64 is recommended
-    all_y_pred = np.zeros((len(test_loader)), dtype=dtype_inputs)
-    all_targets = np.zeros((len(test_loader)), dtype=dtype_inputs)
-
-    # Iterate over the test batches and accumulate predictions and ground truth labels in a vector
-    idx = 0
-    for data, target in tqdm(test_loader):
-        data = data.numpy()
-
-        # Quantize the inputs and cast to appropriate data type
-        x_test_q = quantized_module.quantize_input(data).astype(dtype_inputs)
-
-        # Accumulate the ground truth labels
-        endidx = idx + target.shape[0]
-        all_targets[idx:endidx] = target.numpy()
-
-        # Iterate over single inputs
-        for i in range(x_test_q.shape[0]):
-            # Inputs must have size (N, C, H, W), we add the batch dimension with N=1
-            x_q = np.expand_dims(x_test_q[i, :], 0)
-
-            # Execute either in FHE (compiled or VL) or just in quantized
-            if use_fhe or use_vl:
-                out_fhe = quantized_module.forward_fhe.encrypt_run_decrypt(x_q)
-                output = quantized_module.dequantize_output(out_fhe)
-            else:
-                output = quantized_module.forward_and_dequant(x_q)
-
-            # Take the predicted class from the outputs and store it
-            y_pred = np.argmax(output, 1)
-            all_y_pred[idx] = y_pred
-            idx += 1
-
-    # Compute and report results
-    n_correct = np.sum(all_targets == all_y_pred)
-    return n_correct / len(test_loader)
-
-
-"""def test_with_concrete(qmodule, testloader, use_fhe, use_vl):
-    test_loss = 0.0
-    accuracy = 0
-    
-    
-    loop_test = tqdm(enumerate(testloader), total=len(testloader), leave=False)
-    
-    model.eval().to(device)
-    
-    with torch.no_grad():
-        
-        for batch_idx, (data, target) in loop_test:
-
-            q_data = qmodule.quantize_input(data) #.astype(dtype_inputs) #data.to(torch.float32).to(device), target.to(torch.float32).to(device)
-            # forward
-            if use_fhe or use_vl:
-                out_fhe = qmodule.forward_fhe.encrypt_run_decrypt(q_data)
-                output = qmodule.dequantize_output(out_fhe)
-            else:
-                output = qmodule.forward_and_dequant(data)
-            output = model(data)
-            
-            # batch loss
-            loss = criterion(output, target)
-
-            # test_loss update
-            test_loss += loss.item()
-
-            # accuracy (output vs target)
-            outdix = output.argmax(1)
-            tardix = target.argmax(1)
-
-
-            accuracy += (outdix == tardix).sum().item()
-
-
-            wandb.log({"test_loss": loss.item()})#, "accuracy": 100 * accuracy / len(testloader)})
-            loop_test.set_description(f"test [{batch_idx}/{len(testloader)}]")
-            loop_test.set_postfix(testing_loss = loss.item(), acc = accuracy)#)_rate = 100 * accuracy / len(testloader))
-
-
-        # average test loss
-        test_loss = test_loss/len(testloader)
-        print('Test Loss: {:.6f}\n'.format(test_loss))
-
-        print('\nTest Accuracy: %2d%% ' % (100 * accuracy / len(testloader)))
-"""
 
 cfg = Configuration(
         dump_artifacts_on_unexpected_failures=False,
@@ -198,13 +110,12 @@ cfg = Configuration(
         p_error=None,
         global_p_error=None)
 
-
 accumlators = []
 accum_bits = []
+
 q_module_vl = compile_brevitas_qat_model(model, train_loader, cfg, n_bits={"a_bits": 8, "w_bits":8},use_virtual_lib=True,configuration=cfg)
 
 accum_bits.append(q_module_vl.forward_fhe.graph.maximum_integer_bit_width())
-
 
 accumlators.append(
     test_with_concrete(

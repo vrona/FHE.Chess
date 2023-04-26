@@ -27,13 +27,6 @@ output: float <-- dequantization <-- decryption
 # copy config
 #wb_config = wandb.config
 
-cfg = Configuration(
-        dump_artifacts_on_unexpected_failures=False,
-        enable_unsafe_features=True,
-        p_error=None,
-        global_p_error=None)
-
-q_module_vl = compile_brevitas_qat_model(model, trainloader, cfg, n_bits={"a_bits": 8, "w_bits":8},use_virtual_lib=True,configuration=cfg)
 
 """def test_concrete(model, testloader, use_fhe, use_vl):
 
