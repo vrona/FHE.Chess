@@ -1,6 +1,3 @@
-import time
-import tqdm
-import wandb
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
@@ -9,7 +6,7 @@ import pandas as pd
 import sys
 
 from concrete.numpy.compilation.configuration import Configuration
-from concrete.ml.torch.compile import compile_brevitas_qat_model
+from concrete.ml.torch.compile import compile_brevitas_qat_model, compile_torch_model
 #from concrete.ml.quantization.quantized_module import QuantizedModule
 
 from dataset_v3_source import Chessset
@@ -26,7 +23,7 @@ from dataset_v3_source import Chessset
 
 # quantized - source
 sys.path.insert(1,"code_src/model_src/quantz/")
-from train_v3_source_quantz import test, test_with_concrete
+from train_v3_source_quantz import test_with_concrete
 from cnn_v13_64bit_source_quantz import QTChessNET
 
 # quantized - target
@@ -112,14 +109,12 @@ cfg = Configuration(
 
 accumlators = []
 accum_bits = []
+#={"a_bits": 8, "w_bits":8}
+n_bits = 8
 
-q_module_vl = compile_brevitas_qat_model(model, train_loader, cfg, n_bits={"a_bits": 8, "w_bits":8},use_virtual_lib=True,configuration=cfg)
-
+q_module_vl = compile_brevitas_qat_model(model, train_loader, n_bits, use_virtual_lib=True, configuration=cfg)
+q_module = compile_torch_model(model,)
 accum_bits.append(q_module_vl.forward_fhe.graph.maximum_integer_bit_width())
 
-accumlators.append(
-    test_with_concrete(
-    q_module_vl, test_loader, use_fhe=False, use_vl=False
-    )
-)
+accumlators.append(test_with_concrete(q_module_vl, test_loader, use_fhe=False, use_vl=False))
 
