@@ -1,4 +1,4 @@
-"""FROM zamafhe/concrete-ml:v0.4.0
+"""FROM zamafhe/concrete-ml:v1.0.0
 
 WORKDIR /client
 ADD client ./"""
