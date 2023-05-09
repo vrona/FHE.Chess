@@ -218,15 +218,18 @@ def test(model, testloader, criterion):
 
 def test_with_concrete(quantized_module, test_loader, use_fhe, use_vl, dtype_inputs=np.int64):
     """Test a neural network that is quantized and compiled with Concrete-ML."""
-
+    print("flag_1")
     # Casting the inputs into int64 is recommended
     all_data = np.zeros((len(test_loader)), dtype=dtype_inputs)
+    print("flag_2")
     all_targets = np.zeros((len(test_loader)), dtype=dtype_inputs)
-
+    print("flag_3")
     loop_vlfhe_test = tqdm(enumerate(test_loader), total=len(test_loader), leave=False)
-    
+    print("flag_4")
     # Iterate over the test batches and accumulate predictions and ground truth labels in a vector
     idx = 0
+    print("flag_5")
+    
     for data, target in loop_vlfhe_test:
         data = data.numpy()
 

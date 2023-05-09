@@ -62,4 +62,5 @@ class Chessset(Dataset):
         # determine white or black turn (1 for w, -1 for b) and then the one to play has always positive value
         if game_state_i %2 == 1:
             x *= -1
+
         return x, y
