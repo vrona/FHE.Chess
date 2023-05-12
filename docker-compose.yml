@@ -4,7 +4,7 @@ services:
   
   fhe_chess:
     container_name: fhe.chess
-    image: zamafhe/concrete-ml:v0.6.0
+    image: zamafhe/concrete-ml:lastest
 
     ports:
       - 8888:8888
