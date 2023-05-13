@@ -9,7 +9,7 @@ import numpy as np
 
 class QTtrgChessNET(nn.Module):
 
-    def __init__(self, n_bits = 3, hidden_size=128):
+    def __init__(self, n_bits = 4, w_bits=4, hidden_size=128):
 
         super(QTtrgChessNET, self).__init__()
         
@@ -18,33 +18,33 @@ class QTtrgChessNET(nn.Module):
         # input >> chessboard (12,8,8)
 
         self.quant_1 = qnn.QuantIdentity(bit_width=n_bits, return_quant_tensor=True)
-        self.qinp_chessboard = qnn.QuantConv2d(12, hidden_size, kernel_size=3, stride=1, padding=1, bias=True, weight_bit_width=n_bits)
+        self.qinp_chessboard = qnn.QuantConv2d(12, hidden_size, kernel_size=3, stride=1, padding=1, bias=True, weight_bit_width=w_bits)
         self.qbatchn1 = qnn.BatchNorm2dToQuantScaleBias(hidden_size)
         self.qrelu1 = qnn.QuantReLU(bit_width=n_bits, return_quant_tensor=True)
 
         self.quant_2 = qnn.QuantIdentity(bit_width=n_bits, return_quant_tensor=True)
-        self.qconv2 = qnn.QuantConv2d(hidden_size, hidden_size, kernel_size=3, stride=1, padding=1, bias=True, weight_bit_width=n_bits)
+        self.qconv2 = qnn.QuantConv2d(hidden_size, hidden_size, kernel_size=3, stride=1, padding=1, bias=True, weight_bit_width=w_bits)
         self.qbatchn2 = qnn.BatchNorm2dToQuantScaleBias(hidden_size)
         self.qrelu2 = qnn.QuantReLU(bit_width=n_bits, return_quant_tensor=True)
 
         self.quant_3 = qnn.QuantIdentity(bit_width=n_bits, return_quant_tensor=True)
-        self.qconv3 = qnn.QuantConv2d(hidden_size, hidden_size, kernel_size=3, stride=1, padding=1, bias=True, weight_bit_width=n_bits)
+        self.qconv3 = qnn.QuantConv2d(hidden_size, hidden_size, kernel_size=3, stride=1, padding=1, bias=True, weight_bit_width=w_bits)
         self.qbatchn3 = qnn.BatchNorm2dToQuantScaleBias(hidden_size)
         self.qrelu3 = qnn.QuantReLU(bit_width=n_bits, return_quant_tensor=True)
 
         self.flatten = nn.Flatten()
 
-        self.qfc1 = qnn.QuantLinear(hidden_size * 64, 64, bias=True, weight_bit_width=n_bits)
+        self.qfc1 = qnn.QuantLinear(hidden_size * 64, 64, bias=True, weight_bit_width=w_bits)
         self.qrelu2 = qnn.QuantReLU(bit_width=n_bits, return_quant_tensor=True)
 
         # input >> source (the selected squares (64,) array)
         self.quant_inp_source = qnn.QuantIdentity(bit_width=n_bits, return_quant_tensor=True)
-        self.qinput_source = qnn.QuantLinear(64, 64, bias=True, weight_bit_width=n_bits)
+        self.qinput_source = qnn.QuantLinear(64, 64, bias=True, weight_bit_width=w_bits)
 
         self.qbatchn1d_1 = qnn.BatchNorm1dToQuantScaleBias(64)
         
         # output target (the targeted square)
-        self.qoutput_target = qnn.QuantLinear(64, 64, bias=True, weight_bit_width=n_bits)
+        self.qoutput_target = qnn.QuantLinear(64, 64, bias=True, weight_bit_width=w_bits)
 
         #self.qlast_relu = qnn.QuantReLU(bit_width=n_bits, return_quant_tensor=True)
         self.qSigmoid = qnn.QuantSigmoid(bit_width=n_bits, return_quant_tensor=True)
@@ -58,7 +58,7 @@ class QTtrgChessNET(nn.Module):
             """Enables or removes pruning."""
 
             # Maximum number of active neurons (i.e. corresponding weight != 0)
-            n_active = 12
+            n_active = 64
 
             # Go through all the convolution layers
             for layer in (self.qinp_chessboard, self.qconv2, self.qconv3):
@@ -113,13 +113,8 @@ class QTtrgChessNET(nn.Module):
         merge = chessboard + source
         merge = self.qbatchn1d_1(merge)
 
-        # nllloss crossentropyloss
-        # x_target = F.log_softmax(self.output_target(merge),dim=1)
+        x = self.qSigmoid(merge)
 
-        # mseloss
-        #x_target = F.relu(self.output_target(merge))
-
-        # sigmoid
-        x_target = self.qSigmoid(self.qoutput_target(merge))
+        x_target = self.qoutput_target(x)
 
         return x_target
