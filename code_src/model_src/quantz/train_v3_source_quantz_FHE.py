@@ -199,7 +199,6 @@ def test(model, testloader, criterion):
         # average test loss
         test_loss = test_loss/len(testloader)
         print('Test Loss: {:.6f}\n'.format(test_loss))
-
         print('\nTest Accuracy: %2d%% ' % (100 * accuracy / len(testloader)))
 
 
@@ -216,52 +215,40 @@ def test(model, testloader, criterion):
 #                    \/__/                            \/__/         \/__/  
 
 
-def test_with_concrete(quantized_module, test_loader, use_fhe, use_vl, dtype_inputs=np.int64):
+def test_with_concrete(quantized_module, test_input,dtype_inputs=np.int64):
     """Test a neural network that is quantized and compiled with Concrete-ML."""
-    print("flag_1")
+
+  
+    print("beginning of test")
     # Casting the inputs into int64 is recommended
-    all_data = np.zeros((len(test_loader)), dtype=dtype_inputs)
-    print("flag_2")
-    all_targets = np.zeros((len(test_loader)), dtype=dtype_inputs)
-    print("flag_3")
-    loop_vlfhe_test = tqdm(enumerate(test_loader), total=len(test_loader), leave=False)
-    print("flag_4")
+    # all_data = np.zeros((len(test_input)), dtype=dtype_inputs)
+    # all_targets = np.zeros((len(test_input)), dtype=dtype_inputs)
+    loop_vlfhe_test = tqdm(enumerate(test_input), total=len(test_input), leave=False)
     # Iterate over the test batches and accumulate predictions and ground truth labels in a vector
-    idx = 0
-    print("flag_5")
+
+    accuracy = 0
+    #for data, target in zip(test_input, test_target):
+    for idx, (data, target) in loop_vlfhe_test:
+      # from tensor to numpy
+      data = data.cpu().detach().numpy()
+      target = target.cpu().detach().numpy()
     
-    for data, target in loop_vlfhe_test:
-        data = data.numpy()
+      # Quantize the inputs and cast to appropriate data type
+      x_test_q = quantized_module.quantize_input(data).astype(dtype_inputs)
 
-        # Quantize the inputs and cast to appropriate data type
-        x_test_q = quantized_module.quantize_input(data).astype(dtype_inputs)
+      # Accumulate the ground truth labels
+      y_pred = quantized_module.quantized_forward(x_test_q, fhe="simulate")
+      output = quantized_module.dequantize_output(y_pred)
 
-        # Accumulate the ground truth labels
-        endidx = idx + target.shape[0]
-        all_targets[idx:endidx] = target.numpy()
+      # Take the predicted class from the outputs and store it
+      y_pred = np.argmax(output, 1)
+      y_targ = np.argmax(target, 1)
 
-        # Iterate over single inputs
-        for i in range(x_test_q.shape[0]):
-            # Inputs must have size (N, C, H, W), we add the batch dimension with N=1
-            x_q = np.expand_dims(x_test_q[i, :], 0)
+      accuracy += np.sum(y_pred == y_targ)
 
-            # Execute either in FHE (compiled or VL) or just in quantized
-            if use_fhe or use_vl:
-                out_fhe = quantized_module.forward_fhe.encrypt_run_decrypt(x_q)
-                output = quantized_module.dequantize_output(out_fhe)
-            else:
-                output = quantized_module.forward_and_dequant(x_q)
-
-            # Take the predicted class from the outputs and store it
-            y_pred = np.argmax(output, 1)
-            all_data[idx] = y_pred
-
-            accuracy = np.sum(all_targets == all_data)
-            idx += 1
-
-            wandb.log({"accuracy": 100 * accuracy / len(test_loader)})
-            loop_vlfhe_test.set_description(f"test [{idx}/{len(test_loader)}]")
-            loop_vlfhe_test.set_postfix(acc = accuracy)#acc_rate = 100 * accuracy / len(testloader))
+      wandb.log({"accuracy": 100 * accuracy / len(test_input)})
+      loop_vlfhe_test.set_description(f"test [{idx}/{len(test_input)}]")
+      loop_vlfhe_test.set_postfix(acc = accuracy)#acc_rate = 100 * accuracy / len(testloader))
 
     # closing the wandb logs
     wandb.finish()
