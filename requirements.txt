@@ -1,5 +1,4 @@
 brevitas==0.8.0
-concrete-numpy
 chess==1.9.4
 numpy==1.23.5
 pygame==2.1.2

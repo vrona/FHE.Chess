@@ -9,7 +9,7 @@ import numpy as np
 
 class QTtrgChessNET(nn.Module):
 
-    def __init__(self, n_bits = 4, w_bits=4, hidden_size=128):
+    def __init__(self, n_bits=4, w_bits=4, hidden_size=128):
 
         super(QTtrgChessNET, self).__init__()
         
@@ -41,8 +41,8 @@ class QTtrgChessNET(nn.Module):
         self.quant_inp_source = qnn.QuantIdentity(bit_width=n_bits, return_quant_tensor=True)
         self.qinput_source = qnn.QuantLinear(64, 64, bias=True, weight_bit_width=w_bits)
 
-        self.qbatchn1d_1 = qnn.BatchNorm1dToQuantScaleBias(64)
-        
+        self.qbatchn1d_merge = nn.BatchNorm1d(64)#qnn.BatchNorm2dToQuantScaleBias(64)
+
         # output target (the targeted square)
         self.qoutput_target = qnn.QuantLinear(64, 64, bias=True, weight_bit_width=w_bits)
 
@@ -111,10 +111,13 @@ class QTtrgChessNET(nn.Module):
 
         # merging chessboard (context + selected source square)
         merge = chessboard + source
-        merge = self.qbatchn1d_1(merge)
+        merge = self.qbatchn1d_merge(merge)
+        #print(merge.shape)
 
+        #merge = self.qrelu4(merge)
         x = self.qSigmoid(merge)
 
         x_target = self.qoutput_target(x)
+        #x_target = self.qSigmoid(self.qoutput_target(merge))
 
         return x_target
