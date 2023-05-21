@@ -112,12 +112,9 @@ class QTtrgChessNET(nn.Module):
         # merging chessboard (context + selected source square)
         merge = chessboard + source
         merge = self.qbatchn1d_merge(merge)
-        #print(merge.shape)
 
-        #merge = self.qrelu4(merge)
         x = self.qSigmoid(merge)
 
         x_target = self.qoutput_target(x)
-        #x_target = self.qSigmoid(self.qoutput_target(merge))
 
         return x_target

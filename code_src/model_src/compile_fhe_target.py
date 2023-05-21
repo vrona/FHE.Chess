@@ -8,17 +8,15 @@ import pandas as pd
 import sys
 from tqdm import tqdm
 
-#from concrete.numpy.compilation.configuration import Configuration
 from concrete.ml.torch.compile import compile_brevitas_qat_model
-#from concrete.ml.quantization.quantized_module import QuantizedModule
 
-#from dataset_v3_source import Chessset
-from dataset_v3_target import Chessset
+#from code_src.model_src.dataset_source import Chessset
+from code_src.model_src.dataset_target import Chessset
 
 # CLEAR #
+# sys.path.insert(1,"code_src/model_src/clear/")
 
 # source
-# sys.path.insert(1,"code_src/model_src/clear/")
 # from train_v3_source_clear import test
 # from cnn_v13_64bit_source_clear import PlainChessNET
 
@@ -27,15 +25,15 @@ from dataset_v3_target import Chessset
 # from cnn_v13_64bit_target_unfhe import PlainChessNET
 
 # QUANTIZED #
+sys.path.insert(1,"code_src/model_src/quantz/")
 
 # source
-#sys.path.insert(1,"code_src/model_src/quantz/")
-#from train_v3_source_quantz_FHE import test_with_concrete
+#from train_target_FHE import test_with_concrete
 #from cnn_v13_44bit_source_quantz import QTChessNET
 
 # quantized - target
-from train_v3_target_quantz_FHE import test_with_concrete
-from target_44cnn_quantz import QTtrgChessNET
+from code_src.model_src.quantz.test_target_FHE import test_with_concrete
+from code_src.model_src.quantz.target_44cnn_quantz import QTtrgChessNET
 
 
 """
