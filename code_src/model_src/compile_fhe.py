@@ -10,7 +10,8 @@ from tqdm import tqdm
 from concrete.ml.torch.compile import compile_brevitas_qat_model
 
 #from code_src.model_src.dataset_source import Chessset
-from dataset_target import Chessset
+from dataset_source import Chessset
+#from dataset_target import Chessset
 
 # CLEAR #
 # sys.path.insert(1,"code_src/model_src/clear/")
@@ -27,12 +28,12 @@ from dataset_target import Chessset
 sys.path.insert(1,"code_src/model_src/quantz/")
 
 # source
-#from train_target_FHE import test_with_concrete
-#from cnn_v13_44bit_source_quantz import QTChessNET
+from test_source_FHE import test_with_concrete
+from source_44cnn_quantz import QTChessNET
 
 # quantized - target
-from test_target_FHE import test_with_concrete
-from target_44cnn_quantz import QTtrgChessNET
+# from test_target_FHE import test_with_concrete
+# from target_44cnn_quantz import QTtrgChessNET
 
 
 """
@@ -88,10 +89,10 @@ test_loader = DataLoader(testset, batch_size = 1, shuffle=True, drop_last=True)
 # model instantiation zone
 
 # quantized model 1 - aka source  
-#model = QTChessNET()
+model = QTChessNET()
 
 # quantized model 2 - aka target
-model = QTtrgChessNET()
+#model = QTtrgChessNET()
 
 # loss
 criterion = nn.MSELoss()
@@ -103,10 +104,10 @@ device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cp
 
 # loading zone
 # quantized model 1 - aka source  
-#model.load_state_dict(torch.load("/server/model/source_model_quant44.pt",map_location = device))
+model.load_state_dict(torch.load("server/model/source_model_quant44.pt",map_location = device))
 
 # quantized model 2 - aka target
-model.load_state_dict(torch.load("server/model/target_model_quant44.pt",map_location = device))
+#model.load_state_dict(torch.load("server/model/target_model_quant44.pt",map_location = device))
 
 model.pruning_conv(False)
 

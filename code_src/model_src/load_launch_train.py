@@ -9,14 +9,14 @@ import pandas as pd
 sys.path.insert(1,"code_src/model_src/quantz/")
 
 #source
-from train_v3_source_quantz import train_valid
-from dataset_v3_source import Chessset
-from cnn_v13_64bit_source_quantz import QTChessNET
+from train_source_quantz import train_valid
+from dataset_source import Chessset
+from source_44cnn_quantz import QTChessNET
 
 # target
-# from train_v3_target import train_valid, test
-# from dataset_v3_target import Chessset
-# from cnn_v13_64bit_target import QTtrgChessNET
+# from train_target_quantz import train_valid, test
+# from dataset_arget import Chessset
+# from target_44cnn_quantz import QTtrgChessNET
 
 """
 LOADING SECTION

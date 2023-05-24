@@ -5,8 +5,8 @@ import numpy as np
 import pandas as pd
 import sys
 
-from dataset_v3_source import Chessset
-#from dataset_v3_target import Chessset
+from dataset_source import Chessset
+#from dataset_target import Chessset
 
 # clear - source
 # sys.path.insert(1,"code_src/model_src/clear/")
@@ -19,12 +19,12 @@ from dataset_v3_source import Chessset
 
 # quantized - source
 sys.path.insert(1,"code_src/model_src/quantz/")
-from train_v3_source_quantz import test
-from cnn_v13_64bit_source_quantz import QTChessNET
+from train_source_quantz import test
+from source_44cnn_quantz import QTChessNET
 
 # quantized - target
-# from train_v3_target import test
-# from cnn_v13_64bit_target_quantz import QTtrgChessNET
+# from train_target_quantz import test
+# from target_44cnn_quantz import QTtrgChessNET
 
 
 """

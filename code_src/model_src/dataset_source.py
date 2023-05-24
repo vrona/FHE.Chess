@@ -1,7 +1,7 @@
 from torch.utils.data import Dataset
 import numpy as np
 import chess
-from helper_chess_v7_64source import Board_State, Move_State
+from helper_chess_source import Board_State, Move_State
 
 
 #       ___           ___           ___           ___           ___           ___           ___     
