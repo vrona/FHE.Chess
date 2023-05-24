@@ -4,7 +4,7 @@ import sys
 import pickle
 
 sys.path.insert(1,"server/model")
-from inference_64bit import Inference
+from model.inference_64bit import Inference
 
 sys.path.insert(1,"client/chess_env")
 from clone_chess import Clone_Chess

@@ -1,5 +1,4 @@
 import time
-import numpy
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
@@ -11,7 +10,7 @@ from tqdm import tqdm
 from concrete.ml.torch.compile import compile_brevitas_qat_model
 
 #from code_src.model_src.dataset_source import Chessset
-from code_src.model_src.dataset_target import Chessset
+from dataset_target import Chessset
 
 # CLEAR #
 # sys.path.insert(1,"code_src/model_src/clear/")
@@ -32,8 +31,8 @@ sys.path.insert(1,"code_src/model_src/quantz/")
 #from cnn_v13_44bit_source_quantz import QTChessNET
 
 # quantized - target
-from code_src.model_src.quantz.test_target_FHE import test_with_concrete
-from code_src.model_src.quantz.target_44cnn_quantz import QTtrgChessNET
+from test_target_FHE import test_with_concrete
+from target_44cnn_quantz import QTtrgChessNET
 
 
 """
@@ -53,14 +52,14 @@ training_set = Chessset(dataset['AN'])
 #      \/__/                       \/__/                                        ~~            \/__/                       \/__/    
 
 
-game_move_set = "/content/gdrive/MyDrive/FHX/wb_2000_300.csv"
+game_move_set = "data/wb_2000_300.csv"
 wechess = pd.read_csv(game_move_set)
 
 # split dataset splitted into: training_set (80%), valid_set (20%), test_set (20%)
 #training_set, valid_set, test_set = np.split(wechess.sample(frac=1, random_state=42), [int(.6*len(wechess)), int(.8*len(wechess))])
 
 # IMPORTANT downsizing the training set size to avoid crash causes by overload computation
-training_set, valid_set, test_set = np.split(wechess.sample(frac=1, random_state=42), [int(.001*len(wechess)), int(.8*len(wechess))])
+training_set, valid_set, test_set = np.split(wechess.sample(frac=1, random_state=42), [int(.0005*len(wechess)), int(.8*len(wechess))])
 
 print(f"When compiling with concrete-ml, tthe size of training_set should be at least 100 data points, here: {len(training_set)}.")
 
@@ -166,7 +165,7 @@ def get_train_input(trainload_set, target=False):
 
 
 # instantiate the train_loader (as array of tensor) as train_input
-train_input = get_train_input(train_loader, target=True)
+train_input = get_train_input(train_loader, target=False)
 
 #1 Compile to FHE
 print("Concrete-ml is compiling")
