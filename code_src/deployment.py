@@ -6,7 +6,7 @@ import numpy
 
 from concrete.ml.torch.compile import compile_brevitas_qat_model
 from concrete.ml.deployment import FHEModelClient, FHEModelDev, FHEModelServer
-
+from code_src.model_src.compile_fhe import get_train_input
 # quantized - source
 from code_src.model_src.quantz.source_44cnn_quantz import QTChessNET
 
@@ -80,16 +80,21 @@ model_source.pruning_conv(False)
 model_target.load_state_dict(torch.load("server/model/target_model_quant44.pt",map_location = device))
 model_target.pruning_conv(False)
 
+train_input_s = get_train_input(x_train_source)
+train_input_t = get_train_input(x_train_target)
 ## model 1
-q_model_source = compile_brevitas_qat_model(model_source, train_input, n_bits={"model_inputs":4, "model_outputs":4})
+q_model_source = compile_brevitas_qat_model(model_source, train_input_s, n_bits={"model_inputs":4, "model_outputs":4})
 
 ## model 2
-q_model_target = compile_brevitas_qat_model(model_target, train_input, n_bits={"model_inputs":4, "model_outputs":4})
+q_model_target = compile_brevitas_qat_model(model_target, train_input_t, n_bits={"model_inputs":4, "model_outputs":4})
 
 
 # instantiating the network
 network = OnDiskNetwork()
 
 # Now that the model has been trained we want to save it to send it to a server
-fhemodel_dev = FHEModelDev(network.dev_dir.name, model_dev)
+fhemodel_dev = FHEModelDev(network.dev_dir.name, q_model_source)
+fhemodel_dev.save()
+
+fhemodel_dev = FHEModelDev(network.dev_dir.name, q_model_target)
 fhemodel_dev.save()
