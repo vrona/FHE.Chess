@@ -9,8 +9,6 @@ services:
     ports:
       - 8888:8888
     
-    environment:
-      - DISPLAY: 0.0.0.0:0 #host local machine
     tty: true
     
     volumes:

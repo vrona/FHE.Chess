@@ -94,9 +94,6 @@ model = QTChessNET()
 # quantized model 2 - aka target
 #model = QTtrgChessNET()
 
-# loss
-criterion = nn.MSELoss()
-
 ## TESTING and ACCURACY
 
 # defining the processor

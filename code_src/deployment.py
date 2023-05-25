@@ -1,9 +1,20 @@
 import time
+import torch
 from shutil import copyfile
 from tempfile import TemporaryDirectory
 import numpy
 
+from concrete.ml.torch.compile import compile_brevitas_qat_model
 from concrete.ml.deployment import FHEModelClient, FHEModelDev, FHEModelServer
+
+# quantized - source
+from code_src.model_src.quantz.source_44cnn_quantz import QTChessNET
+
+# quantized - target
+from code_src.model_src.quantz.target_44cnn_quantz import QTtrgChessNET
+
+# defining the processor
+device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
 class OnDiskNetwork:
     """Simulate a network on disk."""
@@ -51,3 +62,34 @@ class OnDiskNetwork:
         self.server_dir.cleanup()
         self.client_dir.cleanup()
         self.dev_dir.cleanup()
+
+
+# loading and compiling model
+# quantized model 1 - aka source  
+model_source = QTChessNET()
+
+# quantized model 2 - aka target
+model_target = QTtrgChessNET()
+
+# loading zone
+# quantized model 1 - aka source  
+model_source.load_state_dict(torch.load("server/model/source_model_quant44.pt",map_location = device))
+model_source.pruning_conv(False)
+
+# quantized model 2 - aka target
+model_target.load_state_dict(torch.load("server/model/target_model_quant44.pt",map_location = device))
+model_target.pruning_conv(False)
+
+## model 1
+q_model_source = compile_brevitas_qat_model(model_source, train_input, n_bits={"model_inputs":4, "model_outputs":4})
+
+## model 2
+q_model_target = compile_brevitas_qat_model(model_target, train_input, n_bits={"model_inputs":4, "model_outputs":4})
+
+
+# instantiating the network
+network = OnDiskNetwork()
+
+# Now that the model has been trained we want to save it to send it to a server
+fhemodel_dev = FHEModelDev(network.dev_dir.name, model_dev)
+fhemodel_dev.save()
