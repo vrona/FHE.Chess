@@ -1,4 +1,5 @@
 # global package
+import os
 import time
 import torch
 from torch.utils.data import DataLoader
@@ -13,21 +14,77 @@ from concrete.ml.deployment import FHEModelClient, FHEModelDev, FHEModelServer
 
 # internal class and method
 ## dataset management
-from code_src.model_src.dataset_source import Chessset as Chessset_src
-from code_src.model_src.dataset_target import Chessset as Chessset_trgt
+from model_src.dataset_source import Chessset as Chessset_src
+from model_src.dataset_target import Chessset as Chessset_trgt
 
 ## quantized model
 ### source
-from code_src.model_src.quantz.source_44cnn_quantz import QTChessNET
+from model_src.quantz.source_44cnn_quantz import QTChessNET
 
 ### target
-from code_src.model_src.quantz.target_44cnn_quantz import QTtrgChessNET
+from model_src.quantz.target_44cnn_quantz import QTtrgChessNET
 
 ## data compliance for concrete-ml
-from code_src.model_src.compile_fhe import get_train_input
+from model_src.data_compliance import get_train_input
 
 # defining the processor
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+
+class OnDiskNetwork:
+    """Simulate a network on disk."""
+
+    def __init__(self):
+        # Create 3 temporary folder for server, client and dev with tempfile
+        self.server_dir = "server" #TemporaryDirectory()  # pylint: disable=consider-using-with
+        self.client_dir = "client" #TemporaryDirectory()  # pylint: disable=consider-using-with
+        self.sub_model_src = "/source"
+        self.sub_model_trgt = "/target"
+        self.dev_dir = "code_src/deployme" #TemporaryDirectory()  # pylint: disable=consider-using-with
+        self.empty_dev_dir()
+
+    def empty_dev_dir(self):
+        if len(os.listdir(self.dev_dir)):
+            print("dev_dir is empty")
+        else:
+            print("dev_dir not empty")
+    
+    def client_send_evaluation_key_to_server(self, serialized_evaluation_keys, sub_model):
+        """Send the public key to the server."""
+        with open(self.server_dir + sub_model + "/serialized_evaluation_keys.ekl", "wb") as f:
+            f.write(serialized_evaluation_keys)
+
+    def client_send_input_to_server_for_prediction(self, encrypted_input, sub_model):
+        """Send the input to the server and execute on the server in FHE."""
+        with open(self.server_dir + sub_model + "/serialized_evaluation_keys.ekl", "rb") as f:
+            serialized_evaluation_keys = f.read()
+        time_begin = time.time()
+        encrypted_prediction = FHEModelServer(self.server_dir).run(
+            encrypted_input, serialized_evaluation_keys
+        )
+        time_end = time.time()
+        with open(self.server_dir + sub_model + "/encrypted_prediction.enc", "wb") as f:
+            f.write(encrypted_prediction)
+        return time_end - time_begin
+
+    def dev_send_model_to_server(self, sub_model):
+        """Send the model to the server."""
+        copyfile(self.dev_dir + sub_model + "/server.zip", self.server_dir + sub_model + "/server.zip")
+
+    def server_send_encrypted_prediction_to_client(self, sub_model):
+        """Send the encrypted prediction to the client."""
+        with open(self.server_dir + sub_model + "/encrypted_prediction.enc", "rb") as f:
+            encrypted_prediction = f.read()
+        return encrypted_prediction
+
+    def dev_send_clientspecs_and_modelspecs_to_client(self, sub_model):
+        """Send the clientspecs and evaluation key to the client."""
+        copyfile(self.dev_dir + sub_model + "/client.zip", self.client_dir + sub_model + "/client.zip")
+
+    def cleanup(self):
+        """Clean up the temporary folders."""
+        self.server_dir.cleanup()
+        self.client_dir.cleanup()
+        self.dev_dir.cleanup()
 
 """
 GET TRAINING DATA SECTION
@@ -41,7 +98,7 @@ wechess = pd.read_csv(game_move_set)
 ## IMPORTANT downsizing the training set size to avoid crash causes by overload computation
 training_set, valid_set, test_set = np.split(wechess.sample(frac=1, random_state=42), [int(.0005*len(wechess)), int(.8*len(wechess))])
 
-print(f"When compiling with concrete-ml, tthe size of training_set should be at least 100 data points, here: {len(training_set)}.")
+print(f"When compiling with concrete-ml, the size of training_set should be at least 100 data points, here: {len(training_set)}.")
 
 # loading data
 ## from dataset through Chessset class
@@ -62,52 +119,6 @@ train_trgt_loader = DataLoader(trainset_trgt, batch_size = 64, shuffle=True, dro
 train_input_src = get_train_input(train_src_loader, target=False)    # source
 train_input_trgt = get_train_input(train_trgt_loader, target=True)   # target
 
-class OnDiskNetwork:
-    """Simulate a network on disk."""
-
-    def __init__(self):
-        # Create 3 temporary folder for server, client and dev with tempfile
-        self.server_dir = TemporaryDirectory()  # pylint: disable=consider-using-with
-        self.client_dir = TemporaryDirectory()  # pylint: disable=consider-using-with
-        self.dev_dir = TemporaryDirectory()  # pylint: disable=consider-using-with
-
-    def client_send_evaluation_key_to_server(self, serialized_evaluation_keys):
-        """Send the public key to the server."""
-        with open(self.server_dir.name + "/serialized_evaluation_keys.ekl", "wb") as f:
-            f.write(serialized_evaluation_keys)
-
-    def client_send_input_to_server_for_prediction(self, encrypted_input):
-        """Send the input to the server and execute on the server in FHE."""
-        with open(self.server_dir.name + "/serialized_evaluation_keys.ekl", "rb") as f:
-            serialized_evaluation_keys = f.read()
-        time_begin = time.time()
-        encrypted_prediction = FHEModelServer(self.server_dir.name).run(
-            encrypted_input, serialized_evaluation_keys
-        )
-        time_end = time.time()
-        with open(self.server_dir.name + "/encrypted_prediction.enc", "wb") as f:
-            f.write(encrypted_prediction)
-        return time_end - time_begin
-
-    def dev_send_model_to_server(self):
-        """Send the model to the server."""
-        copyfile(self.dev_dir.name + "/server.zip", self.server_dir.name + "/server.zip")
-
-    def server_send_encrypted_prediction_to_client(self):
-        """Send the encrypted prediction to the client."""
-        with open(self.server_dir.name + "/encrypted_prediction.enc", "rb") as f:
-            encrypted_prediction = f.read()
-        return encrypted_prediction
-
-    def dev_send_clientspecs_and_modelspecs_to_client(self):
-        """Send the clientspecs and evaluation key to the client."""
-        copyfile(self.dev_dir.name + "/client.zip", self.client_dir.name + "/client.zip")
-
-    def cleanup(self):
-        """Clean up the temporary folders."""
-        self.server_dir.cleanup()
-        self.client_dir.cleanup()
-        self.dev_dir.cleanup()
 
 """
 LOADING MODEL SECTION
@@ -121,11 +132,11 @@ model_target = QTtrgChessNET()
 
 # loading zone
 # quantized model 1 - aka source  
-model_source.load_state_dict(torch.load("weights/source_model_quant44.pt",map_location = device))
+model_source.load_state_dict(torch.load("code_src/weights/source_model_quant44.pt",map_location = device))
 model_source.pruning_conv(False)
 
 # quantized model 2 - aka target
-model_target.load_state_dict(torch.load("weights/target_model_quant44.pt",map_location = device))
+model_target.load_state_dict(torch.load("code_src/weights/target_model_quant44.pt",map_location = device))
 model_target.pruning_conv(False)
 
 """
@@ -146,12 +157,56 @@ cf. zama documentation
 # instantiating the network
 network = OnDiskNetwork()
 
-# Now that the model has been trained we want to save it to send it to a server
-fhemodel_src = FHEModelDev(network.dev_dir.name, q_model_source)
+source_dev = network.dev_dir+"/source"
+target_dev = network.dev_dir+"/target"
+
+# saving trained-compiled model and sending to server
+## model source
+### Now that the model has been trained we want to save it to send it to a server
+fhemodel_src = FHEModelDev(source_dev, q_model_source)
 fhemodel_src.save()
+print("flag_model1_saved")
 
-fhemodel_trgt = FHEModelDev(network.dev_dir.name, q_model_target)
+### sending models to the server
+network.dev_send_model_to_server("/source")
+print("flag_model1_senttoserver")
+
+## model target
+fhemodel_trgt = FHEModelDev(target_dev, q_model_target)
 fhemodel_trgt.save()
+print("flag_model2_saved")
 
-# sending models to the server
-network.dev_send_model_to_server()
+network.dev_send_model_to_server("/target")
+print("flag_model2_senttoserver")
+
+# send client specifications and evaluation key to the client
+network.dev_send_clientspecs_and_modelspecs_to_client("/source")
+network.dev_send_clientspecs_and_modelspecs_to_client("/target")
+
+"""
+CLIENT SECTION
+cf. zama documentation
+"""
+source_client = network.client_dir+"/source"
+target_client = network.client_dir+"/target"
+#source
+## client creation and loading the model
+fhemodel_src_client = FHEModelClient(source_client, key_dir=source_client)
+
+## private and evaluation keys creation
+fhemodel_src_client.generate_private_and_evaluation_keys()
+
+## get the serialized evaluation keys
+serialz_eval_keys_src = fhemodel_src_client.get_serialized_evaluation_keys()
+print(f"Evaluation 'source' keys size: {len(serialz_eval_keys_src) / (10**6):.2f} MB")
+
+#target
+## client creation and loading the model
+fhemodel_trgt_client = FHEModelClient(target_client, key_dir=target_client)
+
+## private and evaluation keys creation
+fhemodel_trgt_client.generate_private_and_evaluation_keys()
+
+## get the serialized evaluation keys
+serialz_eval_keys_trgt = fhemodel_src_client.get_serialized_evaluation_keys()
+print(f"Evaluation 'target' keys size: {len(serialz_eval_keys_trgt) / (10**6):.2f} MB")

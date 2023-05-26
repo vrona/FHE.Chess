@@ -7,9 +7,10 @@ import sys
 from tqdm import tqdm
 
 from concrete.ml.torch.compile import compile_brevitas_qat_model
-
+from model_src.data_compliance import get_train_input
+## 1. DATASET
 #from code_src.model_src.dataset_source import Chessset
-from dataset_source import Chessset
+from model_src.dataset_source import Chessset
 #from dataset_target import Chessset
 
 # CLEAR #
@@ -23,6 +24,7 @@ from dataset_source import Chessset
 # from train_v3_target import test
 # from cnn_v13_64bit_target_unfhe import PlainChessNET
 
+# 2. MODEL AND TEST FUNC
 # QUANTIZED #
 sys.path.insert(1,"code_src/model_src/quantz/")
 
@@ -102,68 +104,12 @@ device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cp
 
 # loading zone
 # quantized model 1 - aka source  
-model.load_state_dict(torch.load("server/model/source_model_quant44.pt",map_location = device))
+model.load_state_dict(torch.load("weights/source_model_quant44.pt",map_location = device))
 
 # quantized model 2 - aka target
-#model.load_state_dict(torch.load("server/model/target_model_quant44.pt",map_location = device))
+#model.load_state_dict(torch.load("weights/target_model_quant44.pt",map_location = device))
 
 model.pruning_conv(False)
-
-"""
-DATA COMPLIANCE FOR CONCRETE-ML
-prepare train_input data for compilation with concrete-ml
-"""
-
-"""
-reminder
-model 1 (source): from input data (chessboard) predict selected square to be played (source)
-model 1 (source): from input data (tuple (chessboard source)) predict selected square to be played (target)
-"""
-
-def get_train_input(trainload_set, target=False):
-    
-    """If target=True, Concrete-ml compiles model 2 (target), otherwise model 1 (source).
-    
-    Goal: returning train_input as:
-        - array of tensor (mono input_data)
-        - tuple of arrays of tensor (multiple input_datas).
-    """
-
-    list_train_inputs = []
-    list_train_sources = []
-
-    if target:
-        # TARGET CASE
-        # preparation training input_data: chessboard, source
-        loop_trainset = tqdm(enumerate(trainload_set), total=len(trainload_set), leave=False)
-
-        for idx, (chessboard, sources, targets) in loop_trainset:
-            data, source, target = chessboard.clone().detach().float(),  sources.clone().detach().float(), targets.clone().detach().float() #torch.tensor(chessboard).float(), torch.tensor(targets).float() # 
-
-            list_train_inputs.append(data)
-            list_train_sources.append(source)
-
-        loop_trainset.set_description(f"datasss [{idx}/{trainload_set}]")
-
-        train_chess = np.concatenate(list_train_inputs)
-        train_source = np.concatenate(list_train_sources)
-
-        train_input = (train_chess, train_source)
-        return train_input
-    
-    else:
-        # SOURCE CASE
-        # preparation training input_data: chessboard
-        loop_trainset = tqdm(enumerate(trainload_set), total=len(trainload_set), leave=False)
-
-        for idx, (chessboard, targets) in loop_trainset:
-            data, target = chessboard.clone().detach().float(), targets.clone().detach().float()
-            list_train_sources.append(data)
-
-        loop_trainset.set_description(f"datasss [{idx}/{trainload_set}]")
-
-        train_input = np.concatenate(list_train_sources, axis=0)
-        return train_input
 
 
 # instantiate the train_loader (as array of tensor) as train_input
