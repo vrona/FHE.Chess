@@ -1,6 +1,5 @@
 import time
 import torch
-import torch.nn as nn
 from torch.utils.data import DataLoader
 import numpy as np
 import pandas as pd
@@ -28,12 +27,12 @@ from dataset_source import Chessset
 sys.path.insert(1,"code_src/model_src/quantz/")
 
 # source
-from test_source_FHE import test_with_concrete
+from test_source_FHE import test_source_concrete
 from source_44cnn_quantz import QTChessNET
 
 # quantized - target
-# from test_target_FHE import test_with_concrete
-# from target_44cnn_quantz import QTtrgChessNET
+from test_target_FHE import test_target_concrete
+from target_44cnn_quantz import QTtrgChessNET
 
 
 """
@@ -86,7 +85,9 @@ train_loader = DataLoader(trainset, batch_size = 64, shuffle=True, drop_last=Tru
 valid_loader = DataLoader(validset, batch_size = 64, shuffle=True, drop_last=True)
 test_loader = DataLoader(testset, batch_size = 1, shuffle=True, drop_last=True)
 
-# model instantiation zone
+"""
+MODEL INSTANTIATION SECTION
+"""
 
 # quantized model 1 - aka source  
 model = QTChessNET()
@@ -108,7 +109,10 @@ model.load_state_dict(torch.load("server/model/source_model_quant44.pt",map_loca
 
 model.pruning_conv(False)
 
-## Prepare train_input data for compilation with concrete-ml
+"""
+DATA COMPLIANCE FOR CONCRETE-ML
+prepare train_input data for compilation with concrete-ml
+"""
 
 """
 reminder
@@ -190,5 +194,5 @@ print(
 print("Test with concrete")
 start_time_encrypt = time.time()
 
-test_with_concrete(q_module_vl,test_loader)
+test_source_concrete(q_module_vl,test_loader)
 print("Time per inference under FHE context:", (time.time()-start_time_encrypt/len(test_loader)))

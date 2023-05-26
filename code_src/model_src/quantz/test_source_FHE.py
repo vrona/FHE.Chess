@@ -46,7 +46,7 @@ wb_config = wandb.config
 #                    \/__/                            \/__/         \/__/  
 
 
-def test_with_concrete(quantized_module, test_input,dtype_inputs=np.int64):
+def test_source_concrete(quantized_module, test_input,dtype_inputs=np.int64):
     """Test a neural network that is quantized and compiled with Concrete-ML."""
 
   
