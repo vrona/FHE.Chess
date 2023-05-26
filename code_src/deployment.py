@@ -39,7 +39,7 @@ class OnDiskNetwork:
         self.client_dir = "client" #TemporaryDirectory()  # pylint: disable=consider-using-with
         self.sub_model_src = "/source"
         self.sub_model_trgt = "/target"
-        self.dev_dir = "code_src/deployme" #TemporaryDirectory()  # pylint: disable=consider-using-with
+        self.dev_dir = "code_src/deploy" #TemporaryDirectory()  # pylint: disable=consider-using-with
         self.empty_dev_dir()
 
     def empty_dev_dir(self):
@@ -96,7 +96,7 @@ wechess = pd.read_csv(game_move_set)
 
 # split dataset to get only a small random fraction of training_set
 ## IMPORTANT downsizing the training set size to avoid crash causes by overload computation
-training_set, valid_set, test_set = np.split(wechess.sample(frac=1, random_state=42), [int(.0005*len(wechess)), int(.8*len(wechess))])
+training_set, valid_set, test_set = np.split(wechess.sample(frac=1, random_state=42), [int(.0002*len(wechess)), int(.8*len(wechess))])
 
 print(f"When compiling with concrete-ml, the size of training_set should be at least 100 data points, here: {len(training_set)}.")
 
@@ -183,30 +183,30 @@ print("flag_model2_senttoserver")
 network.dev_send_clientspecs_and_modelspecs_to_client("/source")
 network.dev_send_clientspecs_and_modelspecs_to_client("/target")
 
-"""
-CLIENT SECTION
-cf. zama documentation
-"""
-source_client = network.client_dir+"/source"
-target_client = network.client_dir+"/target"
-#source
-## client creation and loading the model
-fhemodel_src_client = FHEModelClient(source_client, key_dir=source_client)
+# """
+# CLIENT SECTION
+# cf. zama documentation
+# """
+# source_client = network.client_dir+"/source"
+# target_client = network.client_dir+"/target"
+# #source
+# ## client creation and loading the model
+# fhemodel_src_client = FHEModelClient(source_client, key_dir=source_client)
 
-## private and evaluation keys creation
-fhemodel_src_client.generate_private_and_evaluation_keys()
+# ## private and evaluation keys creation
+# fhemodel_src_client.generate_private_and_evaluation_keys()
 
-## get the serialized evaluation keys
-serialz_eval_keys_src = fhemodel_src_client.get_serialized_evaluation_keys()
-print(f"Evaluation 'source' keys size: {len(serialz_eval_keys_src) / (10**6):.2f} MB")
+# ## get the serialized evaluation keys
+# serialz_eval_keys_src = fhemodel_src_client.get_serialized_evaluation_keys()
+# print(f"Evaluation 'source' keys size: {len(serialz_eval_keys_src) / (10**6):.2f} MB")
 
-#target
-## client creation and loading the model
-fhemodel_trgt_client = FHEModelClient(target_client, key_dir=target_client)
+# #target
+# ## client creation and loading the model
+# fhemodel_trgt_client = FHEModelClient(target_client, key_dir=target_client)
 
-## private and evaluation keys creation
-fhemodel_trgt_client.generate_private_and_evaluation_keys()
+# ## private and evaluation keys creation
+# fhemodel_trgt_client.generate_private_and_evaluation_keys()
 
-## get the serialized evaluation keys
-serialz_eval_keys_trgt = fhemodel_src_client.get_serialized_evaluation_keys()
-print(f"Evaluation 'target' keys size: {len(serialz_eval_keys_trgt) / (10**6):.2f} MB")
+# ## get the serialized evaluation keys
+# serialz_eval_keys_trgt = fhemodel_src_client.get_serialized_evaluation_keys()
+# print(f"Evaluation 'target' keys size: {len(serialz_eval_keys_trgt) / (10**6):.2f} MB")

@@ -58,7 +58,7 @@ def get_train_input(trainload_set, target=False):
             data, target = chessboard.clone().detach().float(), targets.clone().detach().float()
             list_train_sources.append(data)
 
-        loop_trainset.set_description(f"datasss [{idx}/{trainload_set}]")
+        loop_trainset.set_description(f"data [{idx}/{trainload_set}]")
 
         train_input = np.concatenate(list_train_sources, axis=0)
         return train_input
