@@ -1,8 +1,7 @@
 import torch
-import sys
-import numpy as np
 import chess
 
+from concrete.ml.deployment import FHEModelServer
 #sys.path.insert(1,"src/model_src_v2")
 from cnn_v13_64bit_source_clear import PlainChessNET as source_net
 from cnn_v13_64bit_target_clear import PlainChessNET as target_net
