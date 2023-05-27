@@ -2,6 +2,8 @@ import socket
 from _thread import *
 import sys
 import pickle
+#from concrete.ml.deployment.fhe_client_server import FHEModelServer
+
 
 sys.path.insert(1,"server/model")
 from model.inference_64bit import Inference
@@ -35,6 +37,8 @@ def threaded_client(conn):
     # initialization of reply NOT EFFICIENT HERE
     conn.send(pickle.dumps(board_from_space))
     reply = ""
+    # fhesource_server = FHEModelServer(path_dir=network.server_dir.name)
+    # fhetarget_server = FHEModelServer(path_dir=network.server_dir.name)
 
     while True:
         try:
@@ -42,6 +46,7 @@ def threaded_client(conn):
             data = pickle.loads(conn.recv(2048*3))
             # reply from the server
             reply = inference.predict(data)
+            #reply_fhe = 
 
             if not data:
                 print("disconnected")

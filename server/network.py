@@ -2,7 +2,7 @@ import sys
 import time
 import socket
 import pickle
-from concrete.ml.deployment import FHEModelServer
+from concrete.ml.deployment.fhe_client_server import FHEModelServer
 
 sys.path.insert(1,"client/chess_env")
 from clone_chess import Clone_Chess

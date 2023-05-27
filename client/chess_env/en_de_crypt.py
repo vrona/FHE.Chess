@@ -1,7 +1,7 @@
 import sys
 import chess
 import torch
-from concrete.ml.deployment import FHEModelClient
+from concrete.ml.deployment.fhe_client_server import FHEModelClient
 
 sys.path.insert(1,"client/")
 from helper_chess_target import Board_State, Move_State
@@ -17,14 +17,22 @@ class EnDe_crypt:
         self.fhesource_client = FHEModelClient(path_dir=self.source_client, key_dir=self.source_client)
         self.fhesource_client.load()
 
-        self.fhetarget_client  = FHEModelClient(path_dir=self.target_client , key_dir=self.target_client )
-        self.fhetarget_client .load()
+        self.fhetarget_client = FHEModelClient(path_dir=self.target_client , key_dir=self.target_client)
+        self.fhetarget_client.load()
 
         self.board_to_tensor = Board_State()
         self.move_to_tensor = Move_State()
 
         self.net_fhe_work = OnDiskNetwork()
 
+        # self.source_server = "server/source"
+        # self.target_server = "server/target"
+
+        # self.fhesource_server = FHEModelServer(path_dir=self.source_server, key_dir=self.source_server)
+        # self.fhesource_server.load()
+
+        # self.fhetarget_server = FHEModelServer(path_dir=self.target_server , key_dir=self.target_server)
+        # self.fhetarget_server.load()
 
     """
     input: float --> quantization --> encryption
@@ -103,6 +111,7 @@ class EnDe_crypt:
 
         # sending encrypted source for inference 1/2
         self.net_fhe_work.client_send_input_to_server_for_prediction(encrypted_chessboard, "/source")
+
         source_output_encrypted = self.net_fhe_work.server_send_encrypted_prediction_to_client("/source")
         source_output_decrypted = self.decrypt(source_output_encrypted)
 
