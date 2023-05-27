@@ -37,8 +37,6 @@ class OnDiskNetwork:
         # Create 3 temporary folder for server, client and dev with tempfile
         self.server_dir = "server" #TemporaryDirectory()  # pylint: disable=consider-using-with
         self.client_dir = "client" #TemporaryDirectory()  # pylint: disable=consider-using-with
-        self.sub_model_src = "/source"
-        self.sub_model_trgt = "/target"
         self.dev_dir = "code_src/deploy" #TemporaryDirectory()  # pylint: disable=consider-using-with
         self.empty_dev_dir()
 

@@ -1,13 +1,9 @@
 # global package
 import os
-import gc
 import time
-import torch
-from torch.utils.data import DataLoader
 from shutil import copyfile
 
 # zama packages
-from concrete.ml.torch.compile import compile_brevitas_qat_model
 from concrete.ml.deployment import FHEModelClient, FHEModelServer
 
 class OnDiskNetwork:

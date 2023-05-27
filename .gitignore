@@ -2,3 +2,8 @@
 data/
 wb_2000_300.csv
 compile-ml_bugsol.md
+client/source/
+client/target/
+code_src/deploy/
+server/model/source/
+server/model/target/
