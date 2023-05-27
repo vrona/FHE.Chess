@@ -4,8 +4,8 @@ import socket
 import pickle
 from concrete.ml.deployment import FHEModelServer
 
-sys.path.insert(1,"client/chess_env")
-from clone_chess import Clone_Chess
+#sys.path.insert(1,"client/chess_env")
+from client.chess_env.clone_chess import Clone_Chess
 
 
 class Network:
@@ -43,9 +43,9 @@ class OnDiskNetwork:
     """Simulate a network on disk."""
 
     def __init__(self):
-        # folder for server, client
-        self.server_dir = "server"
-        self.client_dir = "client"
+        # Create 3 temporary folder for server, client and dev with tempfile
+        self.server_dir = "server" #TemporaryDirectory()  # pylint: disable=consider-using-with
+        self.client_dir = "client" #TemporaryDirectory()  # pylint: disable=consider-using-with
         
 
     def client_send_input_to_server_for_prediction(self, encrypted_input, sub_model):
@@ -66,3 +66,22 @@ class OnDiskNetwork:
         with open(self.server_dir + sub_model + "/encrypted_prediction.enc", "rb") as f:
             encrypted_prediction = f.read()
         return encrypted_prediction
+
+    # def dev_send_model_to_server(self, sub_model):
+    #     """Send the model to the server."""
+    #     copyfile(self.dev_dir + sub_model + "/server.zip", self.server_dir + sub_model + "/server.zip")
+
+    # def dev_send_clientspecs_and_modelspecs_to_client(self, sub_model):
+    #     """Send the clientspecs and evaluation key to the client."""
+    #     copyfile(self.dev_dir + sub_model + "/client.zip", self.client_dir + sub_model + "/client.zip")
+
+        # def client_send_evaluation_key_to_server(self, serialized_evaluation_keys, sub_model):
+    #     """Send the public key to the server."""
+    #     with open(self.server_dir + sub_model + "/serialized_evaluation_keys.ekl", "wb") as f:
+    #         f.write(serialized_evaluation_keys)
+
+    # def cleanup(self):
+    #     """Clean up the temporary folders."""
+    #     self.server_dir.cleanup()
+    #     self.client_dir.cleanup()
+    #     self.dev_dir.cleanup()

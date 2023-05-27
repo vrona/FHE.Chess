@@ -4,6 +4,7 @@ import sys
 sys.path.insert(1,"server/")
 from network import Network
 
+from en_de_crypt import EnDe_crypt
 # sys.path.insert(1,"client/chess_env")
 from base import sp_width, sp_height, sqsize
 from game import Game
@@ -27,7 +28,7 @@ class Main:
         self.clone_chess = Clone_Chess()
         #self.inference = Inference() in case to debug inference
         self.cs_network = Network()
-
+        self.ende_crypt = EnDe_crypt()
 
     def mainloop(self):
         
@@ -39,6 +40,7 @@ class Main:
         clone_chess = self.clone_chess
         #inference = self.inference
         cs_network = self.cs_network
+        ende_crypt = self.ende_crypt
 
         while True:
             # display chess board
@@ -68,8 +70,11 @@ class Main:
 
                 # get the snapshot of the board and use it as input_data to AI via server
                 # get reply from server as list of tuples of moves
-                listoftuplesofmoves = cs_network.send(clone_chess.get_board())
+                chessboard = clone_chess.get_board()
+                listoftuplesofmoves = cs_network.send(chessboard)
                 
+                print("FHE MOVE:",ende_crypt.predict(chessboard))
+
                 selected_square_row = listoftuplesofmoves[0][0][1]
                 selected_square_col = listoftuplesofmoves[0][0][0]
                 targeted_square_row = listoftuplesofmoves[0][1][1]

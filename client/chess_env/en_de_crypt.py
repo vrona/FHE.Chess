@@ -1,8 +1,14 @@
+import sys
 import chess
 import torch
 from concrete.ml.deployment import FHEModelClient
+
+sys.path.insert(1,"client/")
 from helper_chess_target import Board_State, Move_State
-from server.network import OnDiskNetwork
+
+sys.path.insert(1,"server/")
+from network import OnDiskNetwork
+
 class EnDe_crypt:
     def __init__(self) -> None:
         self.source_client = "client/source"
@@ -28,12 +34,12 @@ class EnDe_crypt:
         if target:
             
             # quantized and encryption of clear target model inputs
-            encrypted_input = self.fhetarget_client.quantize_encrypt_serialize(board, source_square_bit)
+            encrypted_input = self.fhetarget_client.quantize_encrypt_serialize(clear_chessboard, clear_source)
             return encrypted_input
         else:
 
             # quantized and encryption of clear source model input
-            encrypted_input = self.fhesource_client.quantize_encrypt_serialize(board)
+            encrypted_input = self.fhesource_client.quantize_encrypt_serialize(clear_chessboard)
             return encrypted_input
     
     """
