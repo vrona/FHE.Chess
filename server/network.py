@@ -44,21 +44,28 @@ class OnDiskNetwork:
 
     def __init__(self):
         # folder for server, client
-        self.server_dir = "server"
-        self.client_dir = "client"
-        
+        self.server_dir = "server/model"
 
     def client_send_input_to_server_for_prediction(self, encrypted_input, sub_model):
         """Send the input to the server and execute on the server in FHE."""
+        print("FLAG 1")
         with open(self.server_dir + sub_model + "/serialized_evaluation_keys.ekl", "rb") as f:
             serialized_evaluation_keys = f.read()
+        print("FLAG 2")
         time_begin = time.time()
-        encrypted_prediction = FHEModelServer(self.server_dir).run(
+        print("FLAG 3")
+        self.fhemodel_server = FHEModelServer(self.server_dir + sub_model)
+        self.fhemodel_server.load()
+        print("FLAG 3.5")
+        encrypted_prediction = self.fhemodel_server.run(
             encrypted_input, serialized_evaluation_keys
         )
+        print("FLAG 4")
         time_end = time.time()
+        print("FLAG 5")
         with open(self.server_dir + sub_model + "/encrypted_prediction.enc", "wb") as f:
             f.write(encrypted_prediction)
+        print("FLAG 5")
         return time_end - time_begin
 
     def server_send_encrypted_prediction_to_client(self, sub_model):

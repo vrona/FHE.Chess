@@ -14,8 +14,7 @@ class EnDe_crypt:
         self.source_client = "client/source"
         self.target_client = "client/target"
 
-        self.fhesource_client = FHEModelClient(path_dir=self.source_client, key_dir=self.source_client)
-        self.fhesource_client.load()
+        
 
         self.fhetarget_client = FHEModelClient(path_dir=self.target_client , key_dir=self.target_client)
         self.fhetarget_client.load()
@@ -37,7 +36,7 @@ class EnDe_crypt:
     """
     input: float --> quantization --> encryption
     """
-    def encrypt(self, clear_chessboard, clear_source=None, target=False):
+    def encrypt_app(self, clear_chessboard, clear_source=None, target=False):
         
         if target:
             
@@ -45,7 +44,19 @@ class EnDe_crypt:
             encrypted_input = self.fhetarget_client.quantize_encrypt_serialize(clear_chessboard, clear_source)
             return encrypted_input
         else:
+            self.fhesource_client = FHEModelClient(path_dir=self.source_client, key_dir=self.source_client)
+            self.fhesource_client.load()
+            # # Quantize the values
+            # quantized_x = self.fhesource_client.model.quantize_input(clear_chessboard)
 
+            # # Encrypt the values
+            # model_source = self.fhesource_client.load()
+            # print(type(model_source))
+            # enc_qx = model_source.encrypt(quantized_x)
+
+            # # Serialize the encrypted values to be sent to the server
+            # serialized_enc_qx = model_source.specs.serialize_public_args(enc_qx)
+            # return serialized_enc_qx
             # quantized and encryption of clear source model input
             encrypted_input = self.fhesource_client.quantize_encrypt_serialize(clear_chessboard)
             return encrypted_input
@@ -102,12 +113,13 @@ class EnDe_crypt:
         """
         Prediction of source square
         """
-        
+
         # from torch tensor to numpy to encryption (which includes quantization)
         chessboard = torch.tensor(board).unsqueeze(0).to(torch.float).to(device)
         chessboard = chessboard.cpu().detach().numpy()
+
         # encryption
-        encrypted_chessboard = self.encrypt(chessboard)
+        encrypted_chessboard = self.encrypt_app(chessboard)
 
         # sending encrypted source for inference 1/2
         self.net_fhe_work.client_send_input_to_server_for_prediction(encrypted_chessboard, "/source")
@@ -127,7 +139,7 @@ class EnDe_crypt:
         chessboard, source_square_bit = torch.tensor(board).unsqueeze(0).to(torch.float).to(device), torch.tensor(source_square_bit).unsqueeze(0).to(torch.float).to(device)
         chessboard, source_square_bit = chessboard.cpu().detach().numpy(), source_square_bit.cpu().detach().numpy()
         # encryption
-        enc_chessboard, enc_source_square = self.encrypt(chessboard, source_square_bit, target=True)
+        enc_chessboard, enc_source_square = self.encrypt_app(chessboard, source_square_bit, target=True)
         
         # sending encrypted tar for inference 2/2
         self.net_fhe_work.client_send_input_to_server_for_prediction((enc_chessboard, enc_source_square), "/target")

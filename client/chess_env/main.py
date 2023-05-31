@@ -71,9 +71,9 @@ class Main:
                 # get the snapshot of the board and use it as input_data to AI via server
                 # get reply from server as list of tuples of moves
                 chessboard = clone_chess.get_board()
-                listoftuplesofmoves = cs_network.send(chessboard)
-                
-                print("FHE MOVE:",ende_crypt.predict(chessboard))
+                #listoftuplesofmoves = cs_network.send(chessboard)
+                ende_crypt.predict(chessboard)
+
 
                 selected_square_row = listoftuplesofmoves[0][0][1]
                 selected_square_col = listoftuplesofmoves[0][0][0]
