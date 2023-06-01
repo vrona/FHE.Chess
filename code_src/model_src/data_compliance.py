@@ -29,11 +29,12 @@ def get_train_input(trainload_set, target=False):
 
     list_train_inputs = []
     list_train_sources = []
+    
+    loop_trainset = tqdm(enumerate(trainload_set), total=len(trainload_set), leave=False)
 
     if target:
         # TARGET CASE
         # preparation training input_data: chessboard, source
-        loop_trainset = tqdm(enumerate(trainload_set), total=len(trainload_set), leave=False)
 
         for idx, (chessboard, sources, targets) in loop_trainset:
             data, source, target = chessboard.clone().detach().float(),  sources.clone().detach().float(), targets.clone().detach().float() #torch.tensor(chessboard).float(), torch.tensor(targets).float() # 
@@ -52,9 +53,9 @@ def get_train_input(trainload_set, target=False):
     else:
         # SOURCE CASE
         # preparation training input_data: chessboard
-        loop_trainset = tqdm(enumerate(trainload_set), total=len(trainload_set), leave=False)
 
         for idx, (chessboard, targets) in loop_trainset:
+
             data, target = chessboard.clone().detach().float(), targets.clone().detach().float()
             list_train_sources.append(data)
 

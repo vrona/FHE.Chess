@@ -58,8 +58,8 @@ class OnDiskNetwork:
 
     def cleanup(self):
         """Clean up the temporary folders."""
-        self.server_dir.cleanup()
-        self.client_dir.cleanup()
+        #self.server_dir.cleanup()
+        #self.client_dir.cleanup()
         self.dev_dir.cleanup()
 
 
@@ -72,28 +72,29 @@ network = OnDiskNetwork()
 
 source_client = network.client_dir+"/source"
 target_client = network.client_dir+"/target"
-#source
-## client creation and loading the model
-fhemodel_src_client = FHEModelClient(source_client, key_dir=source_client)
-print("flag_source_loaded")
-## private and evaluation keys creation
-fhemodel_src_client.generate_private_and_evaluation_keys(force=True)
-print("flag_source_keys")
-
-time.sleep(10)
-## get the serialized evaluation keys
-serialz_eval_keys_src = fhemodel_src_client.get_serialized_evaluation_keys()
-print(f"Evaluation 'source' keys size: {len(serialz_eval_keys_src) / (10**6):.2f} MB")
-
-
-# #target
+# #source
 # ## client creation and loading the model
-# fhemodel_trgt_client = FHEModelClient(target_client, key_dir=target_client)
-# print("flag_target_loaded")
+# fhemodel_src_client = FHEModelClient(source_client, key_dir=source_client)
+# print("flag_source_loaded")
 # ## private and evaluation keys creation
-# fhemodel_trgt_client.generate_private_and_evaluation_keys(force=True)
-# print("flag_target_keys")
+# fhemodel_src_client.generate_private_and_evaluation_keys()
+# print("flag_source_keys")
 
+# time.sleep(10)
 # ## get the serialized evaluation keys
-# serialz_eval_keys_trgt = fhemodel_trgt_client.get_serialized_evaluation_keys()
-# print(f"Evaluation 'target' keys size: {len(serialz_eval_keys_trgt) / (10**6):.2f} MB")
+# serialz_eval_keys_src = fhemodel_src_client.get_serialized_evaluation_keys()
+# print(f"Evaluation 'source' keys size: {len(serialz_eval_keys_src) / (10**6):.2f} MB")
+
+
+#target
+## client creation and loading the model
+fhemodel_trgt_client = FHEModelClient(target_client, key_dir=target_client)
+print("flag_target_loaded")
+## private and evaluation keys creation
+fhemodel_trgt_client.generate_private_and_evaluation_keys()
+print("flag_target_keys")
+
+## get the serialized evaluation keys
+serialz_eval_keys_trgt = fhemodel_trgt_client.get_serialized_evaluation_keys()
+print(f"Evaluation 'target' keys size: {len(serialz_eval_keys_trgt) / (10**6):.2f} MB")
+

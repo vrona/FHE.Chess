@@ -35,9 +35,9 @@ class OnDiskNetwork:
 
     def __init__(self):
         # Create 3 temporary folder for server, client and dev with tempfile
-        self.server_dir = "server/model" #TemporaryDirectory()  # pylint: disable=consider-using-with
+        self.server_dir = "server" #TemporaryDirectory()  # pylint: disable=consider-using-with
         self.client_dir = "client" #TemporaryDirectory()  # pylint: disable=consider-using-with
-        self.dev_dir = "code_src/deep_oy" #TemporaryDirectory()  # pylint: disable=consider-using-with
+        self.dev_dir = "code_src/deploy" #TemporaryDirectory()  # pylint: disable=consider-using-with
         self.empty_dev_dir()
 
     def empty_dev_dir(self):
@@ -94,9 +94,7 @@ wechess = pd.read_csv(game_move_set)
 
 # split dataset to get only a small random fraction of training_set
 ## IMPORTANT downsizing the training set size to avoid crash causes by overload computation
-training_set = wechess.sample(frac=.00022, random_state=42)
-
-#training_set, valid_set, test_set = np.split(wechess.sample(frac=1, random_state=42), [int(.002*len(wechess)), int(.8*len(wechess))])
+training_set, valid_set, test_set = np.split(wechess.sample(frac=1, random_state=42), [int(.00002*len(wechess)), int(.8*len(wechess))])
 
 print(f"When compiling with concrete-ml, the size of training_set should be at least 100 data points, here: {len(training_set)}.")
 

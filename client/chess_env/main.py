@@ -28,7 +28,7 @@ class Main:
         self.clone_chess = Clone_Chess()
         #self.inference = Inference() in case to debug inference
         self.cs_network = Network()
-        self.ende_crypt = EnDe_crypt()
+        #self.ende_crypt = EnDe_crypt()
 
     def mainloop(self):
         
@@ -40,7 +40,7 @@ class Main:
         clone_chess = self.clone_chess
         #inference = self.inference
         cs_network = self.cs_network
-        ende_crypt = self.ende_crypt
+        #ende_crypt = self.ende_crypt
 
         while True:
             # display chess board
@@ -72,7 +72,8 @@ class Main:
                 # get reply from server as list of tuples of moves
                 chessboard = clone_chess.get_board()
                 #listoftuplesofmoves = cs_network.send(chessboard)
-                ende_crypt.predict(chessboard)
+                get_chessboard = EnDe_crypt(chessboard)
+                get_chessboard.predict()
 
 
                 selected_square_row = listoftuplesofmoves[0][0][1]
