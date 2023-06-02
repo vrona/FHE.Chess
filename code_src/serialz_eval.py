@@ -11,10 +11,8 @@ class OnDiskNetwork:
 
     def __init__(self):
         # Create 3 temporary folder for server, client and dev with tempfile
-        self.server_dir = "server" #TemporaryDirectory()  # pylint: disable=consider-using-with
+        self.server_dir = "server/model" #TemporaryDirectory()  # pylint: disable=consider-using-with
         self.client_dir = "client" #TemporaryDirectory()  # pylint: disable=consider-using-with
-        self.sub_model_src = "/source"
-        self.sub_model_trgt = "/target"
         self.dev_dir = "code_src/deploy" #TemporaryDirectory()  # pylint: disable=consider-using-with
         # self.empty_dev_dir()
 
@@ -72,6 +70,7 @@ network = OnDiskNetwork()
 
 source_client = network.client_dir+"/source"
 target_client = network.client_dir+"/target"
+
 # #source
 # ## client creation and loading the model
 # fhemodel_src_client = FHEModelClient(source_client, key_dir=source_client)
@@ -80,10 +79,12 @@ target_client = network.client_dir+"/target"
 # fhemodel_src_client.generate_private_and_evaluation_keys()
 # print("flag_source_keys")
 
-# time.sleep(10)
 # ## get the serialized evaluation keys
 # serialz_eval_keys_src = fhemodel_src_client.get_serialized_evaluation_keys()
 # print(f"Evaluation 'source' keys size: {len(serialz_eval_keys_src) / (10**6):.2f} MB")
+
+# network.client_send_evaluation_key_to_server(serialz_eval_keys_src, "/source")
+# print("flat_eval_key_sent")
 
 
 #target
@@ -98,3 +99,5 @@ print("flag_target_keys")
 serialz_eval_keys_trgt = fhemodel_trgt_client.get_serialized_evaluation_keys()
 print(f"Evaluation 'target' keys size: {len(serialz_eval_keys_trgt) / (10**6):.2f} MB")
 
+network.client_send_evaluation_key_to_server(serialz_eval_keys_trgt, "/target")
+print("flat_eval_key_sent")

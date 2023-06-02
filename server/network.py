@@ -51,6 +51,7 @@ class OnDiskNetwork:
         self.fhesource_client = FHEModelClient(path_dir=self.source_client, key_dir=self.source_client)
         self.fhesource_client.load()
 
+
     def run_fhe_inference(self, serialized_qx_new_encrypted, sub_model):
         print("INSIDE FLAG 8.5")
         self.fhemodel_server = FHEModelServer(self.server_dir + sub_model)
@@ -61,27 +62,27 @@ class OnDiskNetwork:
         serialized_evaluation_keys = self.fhesource_client.get_serialized_evaluation_keys()
         print("FLAG 10.5")
         serialized_result = self.fhemodel_server.run(serialized_qx_new_encrypted, serialized_evaluation_keys)
+
         return serialized_result
 
     def client_send_input_to_server_for_prediction(self, encrypted_input, sub_model):
         """Send the input to the server and execute on the server in FHE."""
-        print("FLAG 1")
+        self.fhemodel_server = FHEModelServer(self.server_dir + sub_model)
+        self.fhemodel_server.load()
+        print("NETW client FLAG 1")
         with open(self.server_dir + sub_model + "/serialized_evaluation_keys.ekl", "rb") as f:
             serialized_evaluation_keys = f.read()
-        print("FLAG 2")
+        print("NETW client FLAG 2")
         time_begin = time.time()
-        print("FLAG 3")
+        print("NETW client FLAG 3")
 
-        print("FLAG 3.5")
-        encrypted_prediction = self.fhemodel_server.run(
-            encrypted_input, serialized_evaluation_keys
-        )
-        print("FLAG 4")
+        print("NETW client FLAG 3.5")
+        encrypted_prediction = self.fhemodel_server.run(encrypted_input, serialized_evaluation_keys)
+        print("NETW client FLAG 4")
         time_end = time.time()
-        print("FLAG 5")
         with open(self.server_dir + sub_model + "/encrypted_prediction.enc", "wb") as f:
             f.write(encrypted_prediction)
-        print("FLAG 5")
+        print("NETW client FLAG 5")
         return time_end - time_begin
 
     def server_send_encrypted_prediction_to_client(self, sub_model):

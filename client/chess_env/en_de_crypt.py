@@ -130,10 +130,10 @@ class EnDe_crypt:
         serialized_encrypted_chessboard = self.encrypt_app(chessboard)
         print("FLAG 1")
         # sending encrypted source for inference 1/2
-        source_output_encrypted = self.net_fhe_work.run_fhe_inference(serialized_encrypted_chessboard, "/source")
-        #self.net_fhe_work.client_send_input_to_server_for_prediction(serialized_encrypted_chessboard, "/source")
-
-        #source_output_encrypted = self.net_fhe_work.server_send_encrypted_prediction_to_client("/source")
+        #source_output_encrypted = self.net_fhe_work.run_fhe_inference(serialized_encrypted_chessboard, "/source")
+        self.net_fhe_work.client_send_input_to_server_for_prediction(serialized_encrypted_chessboard, "/source")
+        print("FLAG 1.5")
+        source_output_encrypted = self.net_fhe_work.server_send_encrypted_prediction_to_client("/source")
         print("FLAG 2")
         source_output_decrypted = self.decrypt(source_output_encrypted)
 
