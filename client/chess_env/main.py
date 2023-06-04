@@ -1,10 +1,10 @@
 import pygame
 import sys
 
-sys.path.insert(1,"server/")
-from network import Network
+sys.path.insert(1,"/Volumes/vrona_SSD/FHE.Chess/client/")
+from chess_client_netwk import Network
 
-from en_de_crypt import EnDe_crypt
+#from en_de_crypt import EnDe_crypt
 # sys.path.insert(1,"client/chess_env")
 from base import sp_width, sp_height, sqsize
 from game import Game
@@ -71,9 +71,9 @@ class Main:
                 # get the snapshot of the board and use it as input_data to AI via server
                 # get reply from server as list of tuples of moves
                 chessboard = clone_chess.get_board()
-                #listoftuplesofmoves = cs_network.send(chessboard)
-                get_chessboard = EnDe_crypt(chessboard)
-                get_chessboard.predict()
+                listoftuplesofmoves = cs_network.send(chessboard)
+                # get_chessboard = EnDe_crypt(chessboard)
+                # get_chessboard.predict()
 
 
                 selected_square_row = listoftuplesofmoves[0][0][1]
