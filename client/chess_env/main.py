@@ -38,8 +38,8 @@ class Main:
         board = self.game.board
         dragger = self.game.dragger
         clone_chess = self.clone_chess
-        #inference = self.inference
         cs_network = self.cs_network
+        #cs_network.send(clone_chess.get_board())
         #ende_crypt = self.ende_crypt
 
         while True:
