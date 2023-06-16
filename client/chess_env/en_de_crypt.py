@@ -10,7 +10,7 @@ sys.path.insert(1,"server/")
 from network import OnDiskNetwork
 
 class EnDe_crypt:
-    def __init__(self, input_board):
+    def __init__(self):
         self.source_client = "client/source"
         self.target_client = "client/target"
 
@@ -25,8 +25,6 @@ class EnDe_crypt:
 
         self.net_fhe_work = OnDiskNetwork()
 
-        # convert chessboard to tensor (12,8,8)
-        self.board = self.board_to_tensor.board_tensor_12(input_board)
 
         # self.source_server = "server/source"
         # self.target_server = "server/target"
@@ -105,7 +103,7 @@ class EnDe_crypt:
     #     return board
     
     # inference function
-    def predict(self, topf=2, topt=3):
+    def predict(self, input_board, topf=2, topt=3):
         """
         Recall: 2 disctinct models (source & target)
         input source : 12,8,8 board -> output source : selected Square number to move FROM as 1D array of shape (64,)
@@ -117,7 +115,8 @@ class EnDe_crypt:
         # defining the processor
         device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu") 
 
-        
+        # convert chessboard to tensor (12,8,8)
+        self.board = self.board_to_tensor.board_tensor_12(input_board)
         """
         Prediction of source square
         """
@@ -130,10 +129,10 @@ class EnDe_crypt:
         serialized_encrypted_chessboard = self.encrypt_app(chessboard)
         print("FLAG 1")
         # sending encrypted source for inference 1/2
-        #source_output_encrypted = self.net_fhe_work.run_fhe_inference(serialized_encrypted_chessboard, "/source")
-        self.net_fhe_work.client_send_input_to_server_for_prediction(serialized_encrypted_chessboard, "/source")
+        source_output_encrypted = self.net_fhe_work.run_fhe_inference(serialized_encrypted_chessboard, "/source")
+        #self.net_fhe_work.client_send_input_to_server_for_prediction(serialized_encrypted_chessboard, "/source")
         print("FLAG 1.5")
-        source_output_encrypted = self.net_fhe_work.server_send_encrypted_prediction_to_client("/source")
+        #source_output_encrypted = self.net_fhe_work.server_send_encrypted_prediction_to_client("/source")
         print("FLAG 2")
         source_output_decrypted = self.decrypt(source_output_encrypted)
 
@@ -157,7 +156,6 @@ class EnDe_crypt:
         # self.net_fhe_work.client_send_input_to_server_for_prediction((enc_chessboard, enc_source_square), "/target")
         # target_output_encrypted = self.net_fhe_work.server_send_encrypted_prediction_to_client("/target")
         target_output_decrypted = self.decrypt(target_output_encrypted)
-
 
         print(source_output_decrypted, target_output_decrypted)
 
