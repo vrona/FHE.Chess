@@ -4,7 +4,6 @@ import time
 import torch
 from torch.utils.data import DataLoader
 from shutil import copyfile
-from tempfile import TemporaryDirectory
 import numpy as np
 import pandas as pd
 

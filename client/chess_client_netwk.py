@@ -11,7 +11,7 @@ from clone_chess import Clone_Chess
 class Network:
     def __init__(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server = '35.233.107.163' #'0.0.0.0' #'127.0.0.1'
+        self.server = '35.187.182.103' #'0.0.0.0' #'127.0.0.1'
         self.port = 3389 #5555
         self.addr = (self.server, self.port)
         self.clone_chess = Clone_Chess()

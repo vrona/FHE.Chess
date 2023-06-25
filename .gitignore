@@ -7,3 +7,4 @@ client/target/
 code_src/deploy/
 server/model/source/
 server/model/target/
+.DS_Store
