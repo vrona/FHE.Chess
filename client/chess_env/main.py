@@ -78,8 +78,7 @@ class Main:
                 # get reply from server as list of tuples of moves
                 chessboard = clone_chess.get_board()
                 listoftuplesofmoves = cs_network.send(chessboard)
-                if listoftuplesofmoves is None:
-                    print("Crashes")
+
                 # get_chessboard = EnDe_crypt(chessboard)
                 # get_chessboard.predict()
 
@@ -164,7 +163,7 @@ class Main:
                             
                             board.set_true_en_passant(dragger.piece)
                             
-                            print(clone_chess.get_fen())
+                            print("HUMAN FEN output: ",clone_chess.get_fen())
                             game.display_chessboard(screenplay)
                             game.display_lastmove(screenplay)
                             game.display_pieces(screenplay)
@@ -225,8 +224,8 @@ class Main:
                     
                     board.set_true_en_passant(piece)
 
-                    print(piece.name, "from",source_col, source_row,"to",target_col, target_row)
-                    print(clone_chess.get_fen())
+                    print(piece.name, "AUTONOMOUS from",source_col, source_row,"to",target_col, target_row)
+                    print("AUTONOMOUS FEN output: ",clone_chess.get_fen())
 
                     game.display_chessboard(surface)
                     game.display_lastmove(surface)

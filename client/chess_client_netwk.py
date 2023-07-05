@@ -1,6 +1,7 @@
 import sys
 import argparse
 import socket
+import struct
 import pickle
 #from concrete.ml.deployment.fhe_client_server import FHEModelServer, FHEModelClient
 
@@ -48,9 +49,12 @@ class Network:
     def send(self, data):
 
         try:
-            self.client.send(pickle.dumps(data))
-            prediction = pickle.loads(self.client.recv(2048*8))
-            print(type(prediction))
+            data_bytes= pickle.dumps(data)
+            print("SIZE OF SENT DATA:",len(data_bytes))
+            self.client.sendall(struct.pack('q', len(data_bytes)))
+            self.client.sendall(data_bytes)
+            
+            prediction = pickle.loads(self.client.recv(4096))
             return prediction
         except socket.error as e:
             print(e)
