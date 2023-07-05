@@ -1,5 +1,5 @@
 import sys
-import time
+import argparse
 import socket
 import pickle
 #from concrete.ml.deployment.fhe_client_server import FHEModelServer, FHEModelClient
@@ -11,8 +11,13 @@ from clone_chess import Clone_Chess
 class Network:
     def __init__(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server = '34.76.74.61' #'0.0.0.0' #'127.0.0.1'
-        self.port = 3389 #5555
+
+        self.parser = argparse.ArgumentParser()
+        self.parser.add_argument("--Server", help = "Server IP Address")
+        self.server = str(self.parser.parse_args()) #'0.0.0.0' #'127.0.0.1'
+
+        self.port = 3389
+        
         self.addr = (self.server, self.port)
         self.clone_chess = Clone_Chess()
         self.connect()
