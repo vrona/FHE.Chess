@@ -78,6 +78,8 @@ class Main:
                 # get reply from server as list of tuples of moves
                 chessboard = clone_chess.get_board()
                 listoftuplesofmoves = cs_network.send(chessboard)
+                if listoftuplesofmoves is None:
+                    print("Crashes")
                 # get_chessboard = EnDe_crypt(chessboard)
                 # get_chessboard.predict()
 

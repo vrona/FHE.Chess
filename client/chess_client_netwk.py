@@ -12,12 +12,19 @@ class Network:
     def __init__(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-        self.parser = argparse.ArgumentParser()
-        self.parser.add_argument("--Server", help = "Server IP Address")
-        self.server = str(self.parser.parse_args()) #'0.0.0.0' #'127.0.0.1'
+        parser = argparse.ArgumentParser(description='provide Server IP address')
+        parser.add_argument('--server', type=str)
+        parser.add_argument('--port', type=int)
+        #self.parser.add_argument('-s', action= 'provide Server IP address')
+        args = parser.parse_args()
+        self.server = str(args.server) # 34.76.213.79 '0.0.0.0' #'127.0.0.1'
+        self.port = int(args.port) # 3389
 
-        self.port = 3389
-        
+        if not self.server:
+            print("The server's IP address is disfunctional.")
+            raise SystemExit(1)
+
+        #self.port = 3389        
         self.addr = (self.server, self.port)
         self.clone_chess = Clone_Chess()
         self.connect()
