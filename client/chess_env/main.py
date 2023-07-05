@@ -1,12 +1,13 @@
 import pygame
 import sys
+import chess
 
 sys.path.insert(1,"/Volumes/vrona_SSD/FHE.Chess/client/")
 from chess_client_netwk import Network
 
 #from en_de_crypt import EnDe_crypt
 # sys.path.insert(1,"client/chess_env")
-from base import sp_width, sp_height, sqsize
+from base import sp_width, sp_height, sqsize, bitboard
 from game import Game
 from square import Square
 from move import Move
@@ -22,13 +23,17 @@ class Main:
     def __init__(self):
         pygame.init()
         self.screenplay = pygame.display.set_mode((sp_width, sp_height))
-        pygame.display.set_caption('Zama (not FHE yet) Chess')
+        pygame.display.set_caption('Zama FHE.Chess App.')
         self.game = Game()
         self.button = Button()
         self.clone_chess = Clone_Chess()
         #self.inference = Inference() in case to debug inference
         self.cs_network = Network()
         #self.ende_crypt = EnDe_crypt()
+
+    def pawn_promotion(self, source_row, source_col, target_row, target_col):
+            print(bitboard[source_row, source_col], bitboard[target_row, target_col])
+            self.clone_chess.move_clone_promotion(bitboard[source_row, source_col], bitboard[target_row, target_col], chess.QUEEN)
 
     def mainloop(self):
         
@@ -41,6 +46,7 @@ class Main:
         cs_network = self.cs_network
         #cs_network.send(clone_chess.get_board())
         #ende_crypt = self.ende_crypt
+
 
         while True:
             # display chess board
@@ -143,14 +149,20 @@ class Main:
 
                         # check move ok ?
                         if board.valid_move(dragger.piece, move):
-                            
-                            board.move(dragger.piece, move)
 
-                            # BRIDGE HERE cloning move from app to python-chess
-                            clone_chess.move_clone_board(move)
+                            board.move(dragger.piece, move)
+                            if dragger.piece.type == chess.PAWN and game.board.squares[released_row][released_col].piece.type == chess.QUEEN:
+                                
+                                # BRIDGE HERE cloning move from app to python-chess
+                                self.pawn_promotion(dragger.source_row, dragger.source_col, released_row, released_col)
+
+                            else:
+                                # BRIDGE HERE cloning move from app to python-chess
+                                clone_chess.move_clone_board(move)
                             
                             board.set_true_en_passant(dragger.piece)
-
+                            
+                            print(clone_chess.get_fen())
                             game.display_chessboard(screenplay)
                             game.display_lastmove(screenplay)
                             game.display_pieces(screenplay)
@@ -197,14 +209,22 @@ class Main:
 
                 #  check move ok ?
                 if game.board.valid_move(piece, move):
-                    
-                    print(piece.name, "from",source_col, source_row,"to",target_col, target_row)
+
                     board.move(piece, move)
 
-                    # BRIDGE HERE cloning move from app to python-chess
+                    """if piece.type == chess.PAWN and game.board.squares[target_row][target_col].piece.type == chess.QUEEN:
+                        print("OKKDO")
+                         # BRIDGE HERE cloning move from app to python-chess
+                        self.pawn_promotion(source_row, source_col, target_row, target_col)
+
+                    else:
+                                # BRIDGE HERE cloning move from app to python-chess"""
                     clone_chess.move_clone_board(move)
                     
                     board.set_true_en_passant(piece)
+
+                    print(piece.name, "from",source_col, source_row,"to",target_col, target_row)
+                    print(clone_chess.get_fen())
 
                     game.display_chessboard(surface)
                     game.display_lastmove(surface)

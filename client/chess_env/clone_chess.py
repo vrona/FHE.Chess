@@ -24,8 +24,11 @@ class Clone_Chess:
         uci_format = self.convert_move_2_string(move)
         self.board.push_san(uci_format)
 
+    def move_clone_promotion(self, sq_s, sq_t, promotion):
+        chess.Move(sq_s, sq_t, promotion)
+
     def undo_move(self):
-            self.board.pop()
+        self.board.pop()
 
     # clearing the board
     def clear_board(self):
@@ -37,6 +40,10 @@ class Clone_Chess:
     def get_board(self):
         return self.board
     
+    # get a FEN representation of the position
+    def get_fen(self):
+        return self.board.fen()
+
     # get the legal moves for a given position
     def legal_moves(self):
         return self.board.legal_moves

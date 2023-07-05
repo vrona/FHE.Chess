@@ -11,7 +11,7 @@ from clone_chess import Clone_Chess
 class Network:
     def __init__(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server = '35.187.182.103' #'0.0.0.0' #'127.0.0.1'
+        self.server = '34.76.74.61' #'0.0.0.0' #'127.0.0.1'
         self.port = 3389 #5555
         self.addr = (self.server, self.port)
         self.clone_chess = Clone_Chess()
@@ -37,8 +37,9 @@ class Network:
 
         try:
             self.client.send(pickle.dumps(data))
-
-            return pickle.loads(self.client.recv(2048*4))
+            prediction = pickle.loads(self.client.recv(2048*8))
+            print(type(prediction))
+            return prediction
         except socket.error as e:
             print(e)
 

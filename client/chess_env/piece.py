@@ -21,8 +21,11 @@ class Piece:
 
 
     def add_ok_move(self, move):
+        #if self.clone_chess.check_legal_move(move):
         self.ok_moves.append(move)
 
+    def check_moves(self, move):
+        print("OK MOVES: ", self.clone_chess.check_legal_move(move))
 
     def clear_moves(self):
         self.ok_moves = []
@@ -33,6 +36,7 @@ class Pawn(Piece):
     def __init__(self, color):
         self.dir = -1 if color == 'white' else 1
         self.en_passant = False
+        self.promoted = False
         self.pname = chess.WHITE if color == 'white' else chess.BLACK
         self.type = chess.PAWN
         super().__init__('pawn', color)
@@ -67,6 +71,7 @@ class Queen(Piece):
     def __init__(self, color):
         self.pname = chess.WHITE if color == 'white' else chess.BLACK
         self.type = chess.QUEEN
+        self.is_promotion = False
         super().__init__('queen', color)
 
 

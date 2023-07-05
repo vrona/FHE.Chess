@@ -27,7 +27,6 @@ class Board:
         self.squares[source.row][source.col].piece = None
         self.squares[target.row][target.col].piece = piece
 
-
         # check for pawn promotion
         if isinstance(piece, Pawn):
             # en_passant capture
@@ -41,6 +40,7 @@ class Board:
             else:
                 # promotion check
                 self.check_pawn_promotion(piece, target)
+                #self.squares[source.row][source.col].piece.promoted = True
 
         # check king castling
         if isinstance(piece, King):
@@ -63,6 +63,7 @@ class Board:
     def check_pawn_promotion(self, piece, target):
         if target.row == 0 or target.row == 7:
             self.squares[target.row][target.col].piece= Queen(piece.color)
+            self.squares[target.row][target.col].piece.is_promotion = True
 
     def castling(self, source, target):
         return abs(source.col - target.col) == 2
@@ -89,7 +90,7 @@ class Board:
  
     # here it simulate if King is check, thus it blocks any movement that lead king to be checked.
     # improvements needed cause some deadends.
-    def check_simulation(self, piece, move):
+    def king_check_sim(self, piece, move):
         
         """"for simulation"""
         temppiece = copy.deepcopy(piece)
@@ -135,8 +136,9 @@ class Board:
                         # piece.add_ok_move(move)
                         
                         if bool:
-                            if not self.check_simulation(piece, move): # if not in check go ahead
+                            if not self.king_check_sim(piece, move): # if not in check go ahead
                                 piece.add_ok_move(move)
+
  
                         else:
                             piece.add_ok_move(move) # if not in check go ahead
@@ -162,8 +164,9 @@ class Board:
                         move = Move(source, target)
 
                         if bool:
-                            if not self.check_simulation(piece, move): # if not in check go ahead
+                            if not self.king_check_sim(piece, move): # if not in check go ahead
                                 piece.add_ok_move(move)
+
 
                         else:
                             piece.add_ok_move(move) # if not in check go ahead
@@ -190,11 +193,13 @@ class Board:
                             move = Move(source, target)
 
                             if bool:
-                                if not self.check_simulation(piece, move): # if not in check go ahead
+                                if not self.king_check_sim(piece, move): # if not in check go ahead
                                     piece.add_ok_move(move)
+    
 
                             else:
                                 piece.add_ok_move(move) # if not in check go ahead
+
     
 
             # right juxtapose square
@@ -213,11 +218,13 @@ class Board:
                             move = Move(source, target)
 
                             if bool:
-                                if not self.check_simulation(piece, move): # if not in check go ahead
+                                if not self.king_check_sim(piece, move): # if not in check go ahead
                                     piece.add_ok_move(move)
+    
                                     
                             else:
                                 piece.add_ok_move(move) # if not in check go ahead
+
 
 
         def kight_moves():
@@ -246,7 +253,7 @@ class Board:
                         move = Move(source, target)
 
                         if bool:
-                            if not self.check_simulation(piece, move): # if not in check go ahead
+                            if not self.king_check_sim(piece, move): # if not in check go ahead
                                 piece.add_ok_move(move)
                                 
                         else:
@@ -276,7 +283,7 @@ class Board:
                         if self.squares[possible_move_row][possible_move_col].empty():
 
                             if bool:
-                                if not self.check_simulation(piece, move): # if not in check go ahead
+                                if not self.king_check_sim(piece, move): # if not in check go ahead
                                     piece.add_ok_move(move)
 
                             else:
@@ -288,7 +295,7 @@ class Board:
                         elif self.squares[possible_move_row][possible_move_col].opponent_presence(piece.color):
                             
                             if bool:
-                                if not self.check_simulation(piece, move): # if not in check go ahead
+                                if not self.king_check_sim(piece, move): # if not in check go ahead
                                     piece.add_ok_move(move)
                                     
                             else:
@@ -330,7 +337,7 @@ class Board:
                         move = Move(source, target)
 
                         if bool:
-                            if not self.check_simulation(piece, move): # if not in check go ahead
+                            if not self.king_check_sim(piece, move): # if not in check go ahead
                                 piece.add_ok_move(move)
 
                             else: break
@@ -371,7 +378,7 @@ class Board:
                                 king_move = Move(source, target)
                                 
                                 if bool:
-                                    if not self.check_simulation(left_rook, rook_move) and not self.check_simulation(piece, king_move): # if not in check go ahead
+                                    if not self.king_check_sim(left_rook, rook_move) and not self.king_check_sim(piece, king_move): # if not in check go ahead
                                         left_rook.add_ok_move(rook_move)
                                         piece.add_ok_move(king_move)
                                 else:
@@ -408,7 +415,7 @@ class Board:
                                 king_move = Move(source, target)
                                 
                                 if bool:
-                                    if not self.check_simulation(right_rook, rook_move) and not self.check_simulation(piece, king_move): # if not in check go ahead
+                                    if not self.king_check_sim(right_rook, rook_move) and not self.king_check_sim(piece, king_move): # if not in check go ahead
                                         right_rook.add_ok_move(rook_move)
                                         piece.add_ok_move(king_move)
                                 else:
