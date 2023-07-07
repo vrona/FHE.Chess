@@ -85,10 +85,42 @@ class Board:
         return move in piece.ok_moves  
     
 
-    def check_situation(self):
-        return Clone_Chess.check_check()
+    def check_termination(self, board):
+
+        # print the Outcome of the game
+        #if self.clone_chess.get_board().outcome() is not None:
+        if board.outcome() is not None:
+            print("Game outcome", board.outcome())
+            return True
+        
+        elif board.is_checkmate():
+            print("is Check: %s" %board.is_checkmate())
+            return True
+        
+        elif board.is_stalemate():
+            print("is Stalemate: %s" %board.is_stalemate())
+            return True
+
+        elif board.is_insufficient_material():
+            print("Insufficient_material: %s" %board.is_insufficient_material())
+            return True
+        
+        elif board.is_game_over():
+            print("Game_over: %s" %board.is_game_over())
+            return True
+
+        elif board.is_fivefold_repetition():
+            print("Repetition 5: %s" %board.is_fivefold_repetition())
+            return True
+        
+        elif board.is_seventyfive_moves():
+            print("Repetition 75: %s" %board.is_seventyfive_moves())
+            return True
+
+        else:
+            return False
  
-    # here it simulate if King is check, thus it blocks any movement that lead king to be checked.
+    # here it simulates if King is check, thus it blocks any movement that lead king to be check.
     # improvements needed cause some deadends.
     def king_check_sim(self, piece, move):
         
@@ -139,7 +171,6 @@ class Board:
                             if not self.king_check_sim(piece, move): # if not in check go ahead
                                 piece.add_ok_move(move)
 
- 
                         else:
                             piece.add_ok_move(move) # if not in check go ahead
                             
@@ -194,8 +225,7 @@ class Board:
 
                             if bool:
                                 if not self.king_check_sim(piece, move): # if not in check go ahead
-                                    piece.add_ok_move(move)
-    
+                                    piece.add_ok_move(move)    
 
                             else:
                                 piece.add_ok_move(move) # if not in check go ahead
@@ -340,8 +370,10 @@ class Board:
                             if not self.king_check_sim(piece, move): # if not in check go ahead
                                 piece.add_ok_move(move)
 
-                            else: break
+                            #else: break
+                                
                         else:
+
                             piece.add_ok_move(move) # if not in check go ahead
 
 

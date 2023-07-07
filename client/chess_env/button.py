@@ -3,9 +3,9 @@ from base import *
 
 class Button:
 	
-    def __init__(self, y = sp_height/2 -30):
+    def __init__(self, normal = True, y = sp_height/2 -30):
 
-        self.normal = True
+        self.normal = normal
         self.y_pos = y
         self.ai_mode = False
         self.name_mode = ' White H'
@@ -50,6 +50,22 @@ class Button:
         if self.normal:
             self.draw(surface,'white', self.button_name,220)
 
+    
+    def button_HH(self, surface):
+        self.button_name = ' White H'
+        self.ckeck_click(445, self.button_name)
+        if self.normal:
+            self.draw(surface,'white', self.button_name,445)
+
+
+    # def button_reset(self, surface, on = True):
+        
+    #     self. normal = on
+    #     self.button_name = 'reset'
+    #     self.ckeck_click(332.5, self.button_name)
+    #     if self.normal:
+    #         self.draw(surface,'white', self.button_name,332.5)
+
 
     # def button_blackAI(self, surface):
     #     self.button_name = 'BLACK AI'
@@ -65,13 +81,6 @@ class Button:
     #     self.ckeck_click(566.25, self.button_name)
     #     if self.normal:
     #         self.draw(surface,'white', self.button_name, 566.25)
-
-
-    def button_HH(self, surface):
-        self.button_name = ' White H'
-        self.ckeck_click(445, self.button_name)
-        if self.normal:
-            self.draw(surface,'white', self.button_name,445)
 
 
     # def button_start(self, surface):

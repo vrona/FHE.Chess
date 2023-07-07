@@ -3,7 +3,7 @@ import sys
 import chess
 
 sys.path.insert(1,"/Volumes/vrona_SSD/FHE.Chess/client/")
-from chess_client_netwk import Network
+from chess_network import Network
 
 #from en_de_crypt import EnDe_crypt
 # sys.path.insert(1,"client/chess_env")
@@ -35,6 +35,8 @@ class Main:
             print(bitboard[source_row, source_col], bitboard[target_row, target_col])
             self.clone_chess.move_clone_promotion(bitboard[source_row, source_col], bitboard[target_row, target_col], chess.QUEEN)
 
+    
+
     def mainloop(self):
         
         screenplay = self.screenplay
@@ -64,6 +66,7 @@ class Main:
             # display user experience hover
             game.display_hover(screenplay)
 
+
             button.button_whiteAI(screenplay)
             # button.button_blackAI(screenplay)
             # button.button_bothAI(screenplay)
@@ -73,6 +76,10 @@ class Main:
 
             # AI PART
             if button.get_ai_mode() and game.player_turn=="white":
+
+                # print the Outcome of the game
+                if board.check_termination(clone_chess.get_board()):
+                    button.button_reset(screenplay)
 
                 # get the snapshot of the board and use it as input_data to AI via server
                 # get reply from server as list of tuples of moves
@@ -112,6 +119,10 @@ class Main:
 
                         if piece.color == game.player_turn:
                             
+                            # print the Outcome of the game
+                            #if board.check_termination(clone_chess.get_board()):
+                            #    button.button_reset(screenplay)
+
                             board.compute_move(piece, selected_square_row, selected_square_col, bool=True)
                             dragger.save_source(event.pos)
                             dragger.drag_piece(piece)
@@ -163,18 +174,22 @@ class Main:
                             
                             board.set_true_en_passant(dragger.piece)
                             
+                            # uncomment to get FEN output
+                            print(clone_chess.convert_move_2_string(move))
                             print("HUMAN FEN output: ",clone_chess.get_fen())
                             game.display_chessboard(screenplay)
                             game.display_lastmove(screenplay)
                             game.display_pieces(screenplay)
                             game.next_player()
                         
-                        # print the Outcome of the game
-                        if clone_chess.outcome(clone_chess.get_board()) is not None:
-
-                            print(clone_chess.outcome(clone_chess.get_board()))
 
                     dragger.undrag_piece()
+                    
+                    # print the Outcome of the game
+                    if board.check_termination(clone_chess.get_board()):
+                        button.button_reset(screenplay)
+                    
+                    #print("Game outcome from Human", self.clone_chess.get_board().outcome())
                 
                 # reset app
                 elif event.type == pygame.KEYDOWN:
@@ -191,7 +206,7 @@ class Main:
 
             pygame.display.update()
 
-    
+
     def autonomous_piece(self,source_row, source_col, target_row, target_col, board, game, clone_chess, surface):
         # presence of piece within selected square
         
@@ -225,7 +240,9 @@ class Main:
                     board.set_true_en_passant(piece)
 
                     print(piece.name, "AUTONOMOUS from",source_col, source_row,"to",target_col, target_row)
-                    print("AUTONOMOUS FEN output: ",clone_chess.get_fen())
+                    
+                    # uncomment to get FEN output
+                    #print("AUTONOMOUS FEN output: ",clone_chess.get_fen())
 
                     game.display_chessboard(surface)
                     game.display_lastmove(surface)
@@ -233,8 +250,9 @@ class Main:
                     game.next_player()
 
                 # print the Outcome of the game
-                if clone_chess.outcome(clone_chess.get_board()) is not None:
-                    print("Game outcome", clone_chess.outcome(clone_chess.get_board()))
+                if board.check_termination(clone_chess.get_board()):
+                    self.button.button_reset(surface)
+                #print("Game outcome from AUTONOMOUS", self.clone_chess.get_board().outcome())
 
         else:
             print("No piece")

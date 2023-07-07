@@ -51,7 +51,7 @@ class Network:
         try:
             data_bytes= pickle.dumps(data)
             print("SIZE OF SENT DATA:",len(data_bytes))
-            self.client.sendall(struct.pack('q', len(data_bytes)))
+            self.client.sendall(struct.pack('I', len(data_bytes)))
             self.client.sendall(data_bytes)
             
             prediction = pickle.loads(self.client.recv(4096))

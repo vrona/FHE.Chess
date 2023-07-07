@@ -21,7 +21,6 @@ class Piece:
 
 
     def add_ok_move(self, move):
-        #if self.clone_chess.check_legal_move(move):
         self.ok_moves.append(move)
 
     def check_moves(self, move):

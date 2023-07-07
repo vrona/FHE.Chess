@@ -78,10 +78,6 @@ class Clone_Chess:
     def checkmate_check(self):
         return self.board.is_checkmate()
     
-    # check check?
-    def check_check(self):
-        return self.board.is_checkmate()
-    
     # check stalemate?
     def check_stalemate(self):
         return self.board.is_stalemate()
