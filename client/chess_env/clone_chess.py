@@ -1,4 +1,5 @@
 import chess
+import chess.engine
 from square import Square
 from base import *
 #-----python-chess-----#
@@ -60,6 +61,11 @@ class Clone_Chess:
     def outcome(self, board):
         return board.outcome()
 
+
+    def stockfish_evaluation(board, time_limit = 0.01):
+        engine = chess.engine.SimpleEngine.popen_uci("/usr/local/Cellar/stockfish/16/bin/stockfish")
+        result = engine.analyse(board, chess.engine.Limit(time=time_limit))
+        return result['score']
 
     #  __       __  __             __   __ 
     # /   |__| |_  /   |_/ | |\ | / _  (_  

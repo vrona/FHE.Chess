@@ -141,6 +141,7 @@ class Board:
                         if isinstance(mvmt.target.piece, King):
                             return True
         return False
+    
 
     def compute_move(self, piece, row, col, bool=True):
         """

@@ -1,7 +1,8 @@
 import pygame
 import sys
+import copy
 import chess
-
+#import chess.engine
 sys.path.insert(1,"/Volumes/vrona_SSD/FHE.Chess/client/")
 from chess_network import Network
 
@@ -30,11 +31,11 @@ class Main:
         #self.inference = Inference() in case to debug inference
         self.cs_network = Network()
         #self.ende_crypt = EnDe_crypt()
+    
 
     def pawn_promotion(self, source_row, source_col, target_row, target_col):
-            print(bitboard[source_row, source_col], bitboard[target_row, target_col])
+            """ this is specific to chess-python library: let pawn promoted"""
             self.clone_chess.move_clone_promotion(bitboard[source_row, source_col], bitboard[target_row, target_col], chess.QUEEN)
-
     
 
     def mainloop(self):
@@ -46,6 +47,7 @@ class Main:
         dragger = self.game.dragger
         clone_chess = self.clone_chess
         cs_network = self.cs_network
+
         #cs_network.send(clone_chess.get_board())
         #ende_crypt = self.ende_crypt
 
@@ -78,26 +80,46 @@ class Main:
             if button.get_ai_mode() and game.player_turn=="white":
 
                 # print the Outcome of the game
-                if board.check_termination(clone_chess.get_board()):
-                    button.button_reset(screenplay)
+                if board.check_termination(clone_chess.get_board()): break
 
                 # get the snapshot of the board and use it as input_data to AI via server
                 # get reply from server as list of tuples of moves
                 chessboard = clone_chess.get_board()
+                """ fen = clone_chess.get_fen()
+                myboard = chess.Board(str(fen))
+
+                engine = chess.engine.SimpleEngine.popen_uci("/usr/local/Cellar/stockfish/16/bin/stockfish")
+                result = engine.analyse(myboard, chess.engine.Limit(depth=2), multipv=3)
+                #print(result['score'])
+                #best_move = result.BestMove()
+                #print(result)"""
                 listoftuplesofmoves = cs_network.send(chessboard)
+
+                # if result['pv'][0] in listoftuplesofmoves:
+                #     print("")
+                
+                """###### TO DELETE
+                for i in listoftuplesofmoves:
+                    #clone_chess.convert_move_2_string_bis(i[0][1])
+                    print("Choix Multiple:",i)#,"-->",clone_chess.convert_move_2_string_bis(i[0][0], 7-i[0][1], i[1][0], 7 -i[1][1]))
+                """
+
 
                 # get_chessboard = EnDe_crypt(chessboard)
                 # get_chessboard.predict()
 
-
+                #source_r, source_c, target_r, target_c = self.autonomous_check_sim(listoftuplesofmoves)
+                
                 selected_square_row = listoftuplesofmoves[0][0][1]
                 selected_square_col = listoftuplesofmoves[0][0][0]
                 targeted_square_row = listoftuplesofmoves[0][1][1]
                 targeted_square_col = listoftuplesofmoves[0][1][0]
                 
+
                 # making the move
+                #self.autonomous_piece(source_r, source_c, target_r, target_c, board, game, clone_chess, screenplay)
                 self.autonomous_piece(7-selected_square_row, selected_square_col, 7-targeted_square_row, targeted_square_col, board, game, clone_chess, screenplay)
-            
+                
             # HUMAN PART
             if dragger.dragging:
                 dragger.update_blit(screenplay)
@@ -175,13 +197,13 @@ class Main:
                             board.set_true_en_passant(dragger.piece)
                             
                             # uncomment to get FEN output
-                            print(clone_chess.convert_move_2_string(move))
-                            print("HUMAN FEN output: ",clone_chess.get_fen())
+                            #print("main.py",clone_chess.convert_move_2_string(move))
+                            #print("HUMAN FEN output: ",clone_chess.get_fen())
                             game.display_chessboard(screenplay)
                             game.display_lastmove(screenplay)
                             game.display_pieces(screenplay)
                             game.next_player()
-                        
+
 
                     dragger.undrag_piece()
                     
@@ -206,7 +228,89 @@ class Main:
 
             pygame.display.update()
 
+    def clonomous_check_sim(self, listofmove):
+            
+            """"for simulation"""
+            #temppiece = copy.deepcopy(piece)
+            #tempgame = copy.deepcopy(self.game)
+            tempboard = copy.deepcopy(self.game.board)
+            #tempboard.move(temppiece, move, simulation=True) # move virtually one piece
+            print(listofmove)
+            for move in listofmove:
+                #move = listofmove[0]
 
+                source_row = 7 - move[0][1]
+                source_col = move[0][0]
+                target_row = 7 - move[1][1]
+                target_col = move[1][0]
+
+                if tempboard.squares[source_row][source_col].piece_presence():
+                    piece = tempboard.squares[source_row][source_col].piece
+
+                    if piece.color == self.game.player_turn:    
+                        tempboard.compute_move(piece, source_row, source_col, bool=False)
+
+                        # get the squares for move
+                        source = Square(source_row, source_col)
+                        target = Square(target_row, target_col)
+
+                        move = Move(source, target)
+
+                        #  check move ok ?
+
+                        if not tempboard.valid_move(piece, move):
+                            listofmove.pop(listofmove.index(listofmove[0]))
+                            print("%s poped out" % self.clone_chess.convert_move_2_string(move))
+                            
+                        else:
+                            print("find move", self.clone_chess.convert_move_2_string(move))
+                            return source_row, source_col, target_row, target_col
+                            #self.autonomous_check_sim(piece, listofmove)
+
+    def autonomous_check_sim(self, listofmove):
+        
+        """"for simulation"""
+        #temppiece = copy.deepcopy(piece)
+        #tempgame = copy.deepcopy(self.game)
+        tempboard = copy.deepcopy(self.game.board)
+        #tempboard.move(temppiece, move, simulation=True) # move virtually one piece
+        
+        if listofmove == 0:
+            pass
+        
+        else:
+            move = listofmove[0]
+
+            source_row = 7 - move[0][1]
+            source_col = move[0][0]
+            target_row = 7 - move[1][1]
+            target_col = move[1][0]
+
+            if tempboard.squares[source_row][source_col].piece_presence():
+                piece = tempboard.squares[source_row][source_col].piece
+
+                if piece.color == self.game.player_turn:    
+                    tempboard.compute_move(piece, source_row, source_col, bool=False)
+
+                    # get the squares for move
+                    source = Square(source_row, source_col)
+                    target = Square(target_row, target_col)
+
+                    move = Move(source, target)
+
+                    #  check move ok ?
+
+                    if not tempboard.valid_move(piece, move):
+                        listofmove.pop(listofmove.index(listofmove[0]))
+                        print("%s poped out" % self.clone_chess.convert_move_2_string(move))
+                        self.autonomous_check_sim(piece, listofmove)
+                    
+                    else:
+                        print("find move", self.clone_chess.convert_move_2_string(move))
+                        return source_row, source_col, target_row, target_col
+
+                        
+    
     def autonomous_piece(self,source_row, source_col, target_row, target_col, board, game, clone_chess, surface):
         # presence of piece within selected square
         
@@ -228,15 +332,15 @@ class Main:
 
                     board.move(piece, move)
 
-                    """if piece.type == chess.PAWN and game.board.squares[target_row][target_col].piece.type == chess.QUEEN:
-                        print("OKKDO")
+                    if piece.type == chess.PAWN and game.board.squares[target_row][target_col].piece.type == chess.QUEEN:
+
                          # BRIDGE HERE cloning move from app to python-chess
                         self.pawn_promotion(source_row, source_col, target_row, target_col)
 
                     else:
-                                # BRIDGE HERE cloning move from app to python-chess"""
-                    clone_chess.move_clone_board(move)
-                    
+                            # BRIDGE HERE cloning move from app to python-chess"""
+                        clone_chess.move_clone_board(move)
+
                     board.set_true_en_passant(piece)
 
                     print(piece.name, "AUTONOMOUS from",source_col, source_row,"to",target_col, target_row)
@@ -247,12 +351,14 @@ class Main:
                     game.display_chessboard(surface)
                     game.display_lastmove(surface)
                     game.display_pieces(surface)
-                    game.next_player()
+                    # print the Outcome of the game
+                    board.check_termination(clone_chess.get_board())
 
-                # print the Outcome of the game
-                if board.check_termination(clone_chess.get_board()):
-                    self.button.button_reset(surface)
-                #print("Game outcome from AUTONOMOUS", self.clone_chess.get_board().outcome())
+                    game.next_player()
+                
+                else:
+                    print("DEAD GAME")
+                    game.reset()
 
         else:
             print("No piece")
