@@ -14,7 +14,6 @@ from square import Square
 from move import Move
 from clone_chess import Clone_Chess
 from button import Button
-from piece_square_table import Piece_Square
 
 # sys.path.insert(1,"server/model")
 # from inference_64bit import Inference
@@ -32,7 +31,6 @@ class Main:
         #self.inference = Inference() in case to debug inference
         self.cs_network = Network()
         #self.ende_crypt = EnDe_crypt()
-        self.piece_square = Piece_Square()
     
 
     def pawn_promotion(self, source_row, source_col, target_row, target_col):
@@ -49,7 +47,7 @@ class Main:
         dragger = self.game.dragger
         clone_chess = self.clone_chess
         cs_network = self.cs_network
-        piece_square = self.piece_square
+
 
         #cs_network.send(clone_chess.get_board())
         #ende_crypt = self.ende_crypt
@@ -235,6 +233,66 @@ class Main:
 
             pygame.display.update()
 
+    def autonomous_check_sim(self, listofmove):
+            
+        move_eval = {}
+
+        """ if listofmove == 0:
+            pass
+            else:
+        """
+
+        for i in range(len(listofmove)):
+            """"for simulation"""
+
+            tempboard = copy.deepcopy(self.game.board)
+            #tempboard.move(temppiece, move, simulation=True) # move virtually one piece
+            temp_cloneboard = self.clone_chess.copy_board()
+            
+            self.clone_chess.piece_square_eval(temp_cloneboard)
+
+            move = listofmove[i]
+
+            source_row = 7 - move[0][1]
+            source_col = move[0][0]
+            target_row = 7 - move[1][1]
+            target_col = move[1][0]
+
+            if tempboard.squares[source_row][source_col].piece_presence():
+                piece = tempboard.squares[source_row][source_col].piece
+
+                if piece.color == self.game.player_turn:    
+                    tempboard.compute_move(piece, source_row, source_col, bool=False)
+
+                    # get the squares for move
+                    source = Square(source_row, source_col)
+                    target = Square(target_row, target_col)
+
+                    move = Move(source, target)
+
+                    #  check move ok ?
+                    if not tempboard.valid_move(piece, move):
+                        listofmove.pop(listofmove.index(listofmove[0]))
+                        print("%s poped out" % self.clone_chess.convert_move_2_string(move))
+                        self.autonomous_check_sim(piece, listofmove)
+                    
+                    else:
+                        self.clone_chess.move_into_copy(move,temp_cloneboard)
+                        print("find move", self.clone_chess.convert_move_2_string(move))
+
+                        move_eval[source_row, source_col, target_row, target_col] = self.clone_chess.piece_square_eval(temp_cloneboard)
+                        self.clone_chess.clear_copy_board(temp_cloneboard)
+
+
+        vlist = []
+        klist = []            
+        while len(move_eval) > 0:
+            vlist.append(max(move_eval.values()))
+            klist.append(max(move_eval,key=move_eval.get))
+            move_eval.pop(max(move_eval,key=move_eval.get))
+
+        return klist[0][0], klist[0][1], klist[0][2], klist[0][3]
+
     def clonomous_check_sim(self, listofmove):
             
             """"for simulation"""
@@ -274,52 +332,7 @@ class Main:
                             return source_row, source_col, target_row, target_col
                             #self.autonomous_check_sim(piece, listofmove)
 
-    def autonomous_check_sim(self, listofmove):
-        
-        """"for simulation"""
-        #temppiece = copy.deepcopy(piece)
-        #tempgame = copy.deepcopy(self.game)
-        tempboard = copy.deepcopy(self.game.board)
-        #tempboard.move(temppiece, move, simulation=True) # move virtually one piece
-        temp_cloneboard = self.clone_chess.get_board().copy()
-        self.piece_square(temp_cloneboard)
-
-        if listofmove == 0:
-            pass
-        
-        else:
-
-            move = listofmove[0]
-
-            source_row = 7 - move[0][1]
-            source_col = move[0][0]
-            target_row = 7 - move[1][1]
-            target_col = move[1][0]
-
-            if tempboard.squares[source_row][source_col].piece_presence():
-                piece = tempboard.squares[source_row][source_col].piece
-
-                if piece.color == self.game.player_turn:    
-                    tempboard.compute_move(piece, source_row, source_col, bool=False)
-
-                    # get the squares for move
-                    source = Square(source_row, source_col)
-                    target = Square(target_row, target_col)
-
-                    move = Move(source, target)
-
-                    #  check move ok ?
-                    if not tempboard.valid_move(piece, move):
-                        listofmove.pop(listofmove.index(listofmove[0]))
-                        print("%s poped out" % self.clone_chess.convert_move_2_string(move))
-                        self.autonomous_check_sim(piece, listofmove)
-                    
-                    else:
-                        temp_cloneboard.move_clone_board(move)
-                        print("find move", self.clone_chess.convert_move_2_string(move))
-                        self.piece_square(temp_cloneboard)
-
-                        return source_row, source_col, target_row, target_col
+    
 
                         
     

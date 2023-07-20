@@ -12,6 +12,36 @@ class Clone_Chess:
     def __init__(self):
         self.board = chess.Board()
 
+        self.pawn_ps = np.array([
+            0,  0,  0,  0,  0,  0,  0,  0,5, 10, 10,-20,-20, 10, 10,  5,5, -5,-10,  0,  0,-10, -5,  5,0,  0,  0, 20, 20,  0,  0,  0,5,  5, 10, 25, 25, 10,  5,  5,10, 10, 20, 30, 30, 20, 10, 10,50, 50, 50, 50, 50, 50, 50, 50,0,  0,  0,  0,  0,  0,  0,  0
+            ])
+
+        self.knight_ps = np.array([
+            -50,-40,-30,-30,-30,-30,-40,-50,-40,-20,  0,  5,  5,  0,-20,-40,-30,  5, 10, 15, 15, 10,  5,-30,-30,  0, 15, 20, 20, 15,  0,-30,-30,  5, 15, 20, 20, 15,  5,-30,-30,  0, 10, 15, 15, 10,  0,-30,-40,-20,  0,  0,  0,  0,-20,-40,-50,-40,-30,-30,-30,-30,-40,-50,
+            ])
+
+        self.bishop_ps = np.array([
+            -20,-10,-10,-10,-10,-10,-10,-20,-10,  5,  0,  0,  0,  0,  5,-10,-10, 10, 10, 10, 10, 10, 10,-10,-10,  0, 10, 10, 10, 10,  0,-10,-10,  5,  5, 10, 10,  5,  5,-10,-10,  0,  5, 10, 10,  5,  0,-10,-10,  0,  0,  0,  0,  0,  0,-10,-20,-10,-10,-10,-10,-10,-10,-20,
+            ])
+
+        self.rooks_ps = np.array([
+            0,  0,  0,  5,  5,  0,  0,  0, -5,  0,  0,  0,  0,  0,  0, -5, -5,  0,  0,  0,  0,  0,  0, -5, -5,  0,  0,  0,  0,  0,  0, -5, -5,  0,  0,  0,  0,  0,  0, -5, -5,  0,  0,  0,  0,  0,  0, -5, 5, 10, 10, 10, 10, 10, 10,  5, 0,  0,  0,  0,  0,  0,  0,  0,
+            ])
+
+        self.queen_ps = np.array([
+            -20,-10,-10, -5, -5,-10,-10,-20,-10,  0,  5,  0,  0,  0,  0,-10,-10,  5,  5,  5,  5,  5,  0,-10,0,  0,  5,  5,  5,  5,  0, -5,-5,  0,  5,  5,  5,  5,  0, -5,-10,  0,  5,  5,  5,  5,  0,-10,-10,  0,  0,  0,  0,  0,  0,-10,-20,-10,-10, -5, -5,-10,-10,-20,
+            ])
+
+        self.king_game_ps = np.array([
+            20, 30, 10,  0,  0, 10, 30, 20,20, 20,  0,  0,  0,  0, 20, 20, -10,-20,-20,-20,-20,-20,-20,-10,-20,-30,-30,-40,-40,-30,-30,-20,-30,-40,-40,-50,-50,-40,-40,-30,-30,-40,-40,-50,-50,-40,-40,-30,-30,-40,-40,-50,-50,-40,-40,-30,-30,-40,-40,-50,-50,-40,-40,-30
+            ])
+
+        self.king_end_ps = np.array([
+            -50,-30,-30,-30,-30,-30,-30,-50,-30,-30,  0,  0,  0,  0,-30,-30,-30,-10, 20, 30, 30, 20,-10,-30,-30,-10, 30, 40, 40, 30,-10,-30,-30,-10, 30, 40, 40, 30,-10,-30,-30,-10, 20, 30, 30, 20,-10,-30,-30,-20,-10,  0,  0,-10,-20,-30,-50,-40,-30,-20,-20,-30,-40,-50,
+            ])
+
+        self.piece_value = {"P":[100, self.pawn_ps], "N":[320, self.knight_ps], "B":[330, self.bishop_ps], "R":[500, self.rooks_ps], "Q":[900, self.queen_ps], "K":[10000, self.king_game_ps]}
+
     #       __ ___    __        __ 
     #  /\  /    |  | /  \ |\ | (_  
     # /--\ \__  |  | \__/ | \| __) 
@@ -28,13 +58,29 @@ class Clone_Chess:
     def move_clone_promotion(self, sq_s, sq_t, promotion):
         chess.Move(sq_s, sq_t, promotion)
 
-    def undo_move(self):
-        self.board.pop()
-
     # clearing the board
     def clear_board(self):
         self.board.clear_board()
+    
+    def copy_board(self):
+        return self.board.copy()
+    
+    def move_into_copy(self, move, copy_board):
+        uci_format = self.convert_move_2_string(move)
+        copy_board.push_san(uci_format)
+    
+    def clear_copy_board(self, copy_board):
+        copy_board.clear_board()
 
+    def piece_square_eval(self, copy_board):
+
+        white_eval = 0
+        for i in range(64):
+            for k in self.piece_value.keys():
+                if str(copy_board.piece_at(i)) == k:
+                    white_eval += self.piece_value[k][0]+ self.piece_value[k][1][i]
+
+        return white_eval
 
     #### GETS ####
     # get a snapshot of board
