@@ -86,6 +86,8 @@ class Board:
     
 
     def check_termination(self, board):
+        
+        print(board)
 
         # print the Outcome of the game
         #if self.clone_chess.get_board().outcome() is not None:
