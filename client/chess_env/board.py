@@ -360,25 +360,30 @@ class Board:
 
                 # macro location
                 if Square.in_board(ok_move_row, ok_move_col):
+                    
+                        
+                    # micro location
+                    source = Square(row, col)
+                    target = Square(ok_move_row, ok_move_col)
+                    
+                    # move at micro
+                    move = Move(source, target)
+                
                     if self.squares[ok_move_row][ok_move_col].empty_occupied(piece.color):
-                        
-                        # micro location
-                        source = Square(row, col)
-                        target = Square(ok_move_row, ok_move_col)
-                        
-                        # move at micro
-                        move = Move(source, target)
-
                         if bool:
                             if not self.king_check_sim(piece, move): # if not in check go ahead
                                 piece.add_ok_move(move)
-
-                            #else: break
-                                
+                            #else: break   
                         else:
-
                             piece.add_ok_move(move) # if not in check go ahead
 
+                    elif self.squares[ok_move_row][ok_move_col].opponent_presence(piece.color):
+                        if bool:
+                            if not self.king_check_sim(piece, move): # if not in check go ahead
+                                piece.add_ok_move(move)
+                            #else: break   
+                        else:
+                            piece.add_ok_move(move) # if not in check go ahead
 
 
             # castling

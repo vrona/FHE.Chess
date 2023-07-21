@@ -74,8 +74,6 @@ class Main:
             # button.button_blackAI(screenplay)
             # button.button_bothAI(screenplay)
             button.button_HH(screenplay)
-            
-
 
             # AI PART
             if button.get_ai_mode() and game.player_turn=="white":
@@ -109,18 +107,17 @@ class Main:
 
                 # get_chessboard = EnDe_crypt(chessboard)
                 # get_chessboard.predict()
-            
-                source_r, source_c, target_r, target_c = self.autonomous_check_sim(listoftuplesofmoves)
-                
-                """selected_square_row = listoftuplesofmoves[0][0][1]
+
+                selected_square_row = listoftuplesofmoves[0][0][1]
                 selected_square_col = listoftuplesofmoves[0][0][0]
                 targeted_square_row = listoftuplesofmoves[0][1][1]
-                targeted_square_col = listoftuplesofmoves[0][1][0]"""
-                
+                targeted_square_col = listoftuplesofmoves[0][1][0]
+
+                #source_r, source_c, target_r, target_c = self.autonomous_check_sim(listoftuplesofmoves)
 
                 # making the move
-                self.autonomous_piece(source_r, source_c, target_r, target_c, board, game, clone_chess, screenplay)
-                #self.autonomous_piece(7-selected_square_row, selected_square_col, 7-targeted_square_row, targeted_square_col, board, game, clone_chess, screenplay)
+                #self.autonomous_piece(source_r, source_c, target_r, target_c, board, game, clone_chess, screenplay)
+                self.autonomous_piece(7-selected_square_row, selected_square_col, 7-targeted_square_row, targeted_square_col, board, game, clone_chess, screenplay)
                 
             # HUMAN PART
             if dragger.dragging:
@@ -187,6 +184,8 @@ class Main:
                         if board.valid_move(dragger.piece, move):
 
                             board.move(dragger.piece, move)
+                            
+                            # pawn promotion to queen
                             if dragger.piece.type == chess.PAWN and game.board.squares[released_row][released_col].piece.type == chess.QUEEN:
                                 
                                 # BRIDGE HERE cloning move from app to python-chess
@@ -272,20 +271,19 @@ class Main:
 
                     #  check move ok ?
                     if not tempboard.valid_move(piece, move):
-                        listofmove.pop(listofmove.index(listofmove[0]))
+                        listofmove.pop(listofmove.index(listofmove[i]))
                         print("%s poped out" % self.clone_chess.convert_move_2_string(move))
-                        self.autonomous_check_sim(piece, listofmove)
                     
                     else:
                         self.clone_chess.move_into_copy(move,temp_cloneboard)
                         print("find move", self.clone_chess.convert_move_2_string(move))
 
                         move_eval[source_row, source_col, target_row, target_col] = self.clone_chess.piece_square_eval(temp_cloneboard)
-                        self.clone_chess.clear_copy_board(temp_cloneboard)
+                        #self.clone_chess.clear_copy_board(temp_cloneboard)
 
 
         vlist = []
-        klist = []            
+        klist = []
         while len(move_eval) > 0:
             vlist.append(max(move_eval.values()))
             klist.append(max(move_eval,key=move_eval.get))
