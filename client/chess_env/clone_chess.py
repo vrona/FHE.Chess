@@ -55,10 +55,20 @@ class Clone_Chess:
        # checking the moves
        #if self.check_legal_move(move):
         uci_format = self.convert_move_2_string(move)
-        self.board.push_san(uci_format)
+        
+        try:
+
+            self.board.push_san(uci_format)
+
+        except chess.IllegalMoveError:
+            self.check_termination(self.get_board())
+            
 
     def move_clone_promotion(self, sq_s, sq_t, promotion):
         chess.Move(sq_s, sq_t, promotion)
+
+    def reset_board(self):
+        return self.board.reset()
 
     # clearing the board
     def clear_board(self):
@@ -148,6 +158,40 @@ class Clone_Chess:
     def check_repetitions(self):
         return (self.board.is_fivefold_repetition(), self.board.is_seventyfive_moves())
 
+    def check_termination(self, current_board):
+        
+        # print the Outcome of the game
+        #if self.clone_chess.get_board().outcome() is not None:
+        if current_board.outcome() is not None:
+            print("Game outcome", current_board.outcome())
+            return True
+        
+        elif self.board.is_checkmate():
+            print("is Check: %s" % current_board.is_checkmate())
+            return True
+        
+        elif current_board.is_stalemate():
+            print("is Stalemate: %s" % current_board.is_stalemate())
+            return True
+
+        elif current_board.is_insufficient_material():
+            print("Insufficient_material: %s" % current_board.is_insufficient_material())
+            return True
+        
+        elif current_board.is_game_over():
+            print("Game_over: %s" % current_board.is_game_over())
+            return True
+
+        elif current_board.is_fivefold_repetition():
+            print("Repetition 5: %s" % current_board.is_fivefold_repetition())
+            return True
+        
+        elif current_board.is_seventyfive_moves():
+            print("Repetition 75: %s" % current_board.is_seventyfive_moves())
+            return True
+
+        else:
+            return False
 
     #  __                         __   __ 
     # /   |    /\  | |\/| | |\ | / _  (_  

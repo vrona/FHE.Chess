@@ -32,6 +32,7 @@ class Main:
         self.cs_network = Network()
         #self.ende_crypt = EnDe_crypt()
     
+        self.game_count = 0
 
     def pawn_promotion(self, source_row, source_col, target_row, target_col):
             """ this is specific to chess-python library: let pawn promoted"""
@@ -52,8 +53,12 @@ class Main:
         #cs_network.send(clone_chess.get_board())
         #ende_crypt = self.ende_crypt
 
+        
+        self.game_count += 1
+        print("\n--Game %s has started--\n"%self.game_count)
 
         while True:
+
             # display chess board
             game.display_chessboard(screenplay)
 
@@ -79,7 +84,7 @@ class Main:
             if button.get_ai_mode() and game.player_turn=="white":
 
                 # print the Outcome of the game
-                #if board.check_termination(clone_chess.get_board()): break
+                #if clone_chess.check_termination(): break
 
                 # get the snapshot of the board and use it as input_data to AI via server
                 # get reply from server as list of tuples of moves
@@ -123,7 +128,7 @@ class Main:
                         if piece.color == game.player_turn:
                             
                             # print the Outcome of the game
-                            #if board.check_termination(clone_chess.get_board()):
+                            #if clone_chess.check_termination():
                             #    button.button_reset(screenplay)
 
                             board.compute_move(piece, selected_square_row, selected_square_col, bool=True)
@@ -176,7 +181,7 @@ class Main:
                             else:
                                 # BRIDGE HERE cloning move from app to python-chess
                                 clone_chess.move_clone_board(move)
-                                print("\nHUMAN %s col: %s row:%s to col:%s row:%s" % (piece.name,dragger.source_col, 7-dragger.source_row,released_col, 7-released_row))
+                                print("\nHUMAN - %s %s col:%s row:%s to col:%s row:%s" % (piece.color,piece.name,dragger.source_col, 7-dragger.source_row,released_col, 7-released_row))
                                 print("\n")
                                 print(clone_chess.get_board())
                                 print("---------------")
@@ -191,7 +196,7 @@ class Main:
                             game.display_pieces(screenplay)
                                 # print the Outcome of the game
 
-                            if board.check_termination(clone_chess.get_board()): break
+                            if clone_chess.check_termination(clone_chess.get_board()): break
 
                             game.next_player()
 
@@ -209,10 +214,16 @@ class Main:
                         game = self.game
                         board = self.game.board
                         dragger = self.game.dragger
+                        clone_chess.reset_board()
+                        print("\n^^Game %s has been reseted^^\n"%self.game_count)
+                        self.game_count += 1
+                        print("\n--Game %s has started--\n"%self.game_count)
                         
                 # close app
                 elif event.type == pygame.QUIT:
+                    print("\n**You have asked to quit**\n")
                     pygame.quit()
+                    
                     sys.exit()
 
             pygame.display.update()
@@ -314,9 +325,6 @@ class Main:
                             print("find move", self.clone_chess.convert_move_2_string(move))
                             return source_row, source_col, target_row, target_col
                             #self.autonomous_check_sim(piece, listofmove)
-
-    
-
                         
     
     def autonomous_piece(self,source_row, source_col, target_row, target_col, board, game, clone_chess, surface):
@@ -351,7 +359,7 @@ class Main:
 
                     board.set_true_en_passant(piece)
 
-                    print("\nAUTONOMOUS %s col:%s row:%s to col:%s row:%s" % (piece.name,source_col, 7-source_row,target_col, 7-target_row))
+                    print("\nAUTONOMOUS - %s %s col:%s row:%s to col:%s row:%s" % (piece.color,piece.name,source_col, 7-source_row,target_col, 7-target_row))
                     
                     # uncomment to get FEN output
                     #print("AUTONOMOUS FEN output: ",clone_chess.get_fen())
@@ -360,13 +368,13 @@ class Main:
                     game.display_lastmove(surface)
                     game.display_pieces(surface)
                     # print the Outcome of the game
-                    board.check_termination(clone_chess.get_board())
+                    clone_chess.check_termination()
 
                     game.next_player()
                 
                 else:
                     print("DEAD GAME ZONE--")
-                    board.check_termination(clone_chess.get_board())
+                    clone_chess.check_termination()
                     game.reset()
 
         else:
