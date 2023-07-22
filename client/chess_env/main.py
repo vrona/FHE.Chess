@@ -84,25 +84,7 @@ class Main:
                 # get the snapshot of the board and use it as input_data to AI via server
                 # get reply from server as list of tuples of moves
                 chessboard = clone_chess.get_board()
-                """ fen = clone_chess.get_fen()
-                myboard = chess.Board(str(fen))
-
-                engine = chess.engine.SimpleEngine.popen_uci("/usr/local/Cellar/stockfish/16/bin/stockfish")
-                result = engine.analyse(myboard, chess.engine.Limit(depth=2), multipv=3)
-                #print(result['score'])
-                #best_move = result.BestMove()
-                #print(result)"""
                 listoftuplesofmoves = cs_network.send(chessboard)
-
-
-                # if result['pv'][0] in listoftuplesofmoves:
-                #     print("")
-                
-                """###### TO DELETE
-                for i in listoftuplesofmoves:
-                    #clone_chess.convert_move_2_string_bis(i[0][1])
-                    print("Choix Multiple:",i)#,"-->",clone_chess.convert_move_2_string_bis(i[0][0], 7-i[0][1], i[1][0], 7 -i[1][1]))
-                """
 
 
                 # get_chessboard = EnDe_crypt(chessboard)
@@ -194,7 +176,10 @@ class Main:
                             else:
                                 # BRIDGE HERE cloning move from app to python-chess
                                 clone_chess.move_clone_board(move)
-                                print("SEE HUMAN Record:\n",clone_chess.get_board())
+                                print("\nHUMAN %s col: %s row:%s to col:%s row:%s" % (piece.name,dragger.source_col, 7-dragger.source_row,released_col, 7-released_row))
+                                print("\n")
+                                print(clone_chess.get_board())
+                                print("---------------")
                             
                             board.set_true_en_passant(dragger.piece)
                             
@@ -205,7 +190,7 @@ class Main:
                             game.display_lastmove(screenplay)
                             game.display_pieces(screenplay)
                                 # print the Outcome of the game
-                            print("Human ZONE --")
+
                             if board.check_termination(clone_chess.get_board()): break
 
                             game.next_player()
@@ -352,7 +337,7 @@ class Main:
 
                 #  check move ok ?
                 if game.board.valid_move(piece, move):
-                    print("AUTONO OK MOVE ZONE--")
+
                     board.move(piece, move)
 
                     if piece.type == chess.PAWN and game.board.squares[target_row][target_col].piece.type == chess.QUEEN:
@@ -366,7 +351,7 @@ class Main:
 
                     board.set_true_en_passant(piece)
 
-                    print(piece.name, "AUTONOMOUS from",source_col, 7-source_row,"to",target_col, 7-target_row)
+                    print("\nAUTONOMOUS %s col:%s row:%s to col:%s row:%s" % (piece.name,source_col, 7-source_row,target_col, 7-target_row))
                     
                     # uncomment to get FEN output
                     #print("AUTONOMOUS FEN output: ",clone_chess.get_fen())
