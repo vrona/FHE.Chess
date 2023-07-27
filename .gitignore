@@ -11,8 +11,8 @@ client/target/
 code_src/deploy/
 server/model/source/
 server/model/target/
-.DS_Store
-.o
+*.DS_Store
+*.o
 node_modules
 *.log
 __pycache__
