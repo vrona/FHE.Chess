@@ -1,12 +1,10 @@
 /app_src/data/
 data/
-cloud/client/source//10868118508151244911/0_0/
-cloud/client/target/16067062207993741669/0_0/
 ksKey_0*
 pbsKey_0*
 pksKey_0*
 secretKey_0*
-secretKey_0*
+secretKey_1*
 *.ekl
 wb_2000_300.csv
 compile-ml_bugsol.md
