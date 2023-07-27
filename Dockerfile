@@ -1,4 +1,4 @@
-FROM zamafhe/concrete-ml:latest
+FROM zamafhe/concrete-ml:1.0.3
 
 RUN mkdir /app_src
 COPY ./requirements.txt /app_src/requirements.txt

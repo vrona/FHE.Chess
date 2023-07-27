@@ -1,5 +1,9 @@
 /app_src/data/
 data/
+cloud/client/source//10868118508151244911/0_0/
+cloud/client/target/16067062207993741669/0_0/
+cloud/server/model/source
+*.ekl
 wb_2000_300.csv
 compile-ml_bugsol.md
 client/source/
@@ -8,3 +12,12 @@ code_src/deploy/
 server/model/source/
 server/model/target/
 .DS_Store
+.o
+node_modules
+*.log
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+.cache
