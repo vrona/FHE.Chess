@@ -53,8 +53,8 @@ class Game:
             piece = self.dragger.piece
 
             # ok moves show as image
-            black_dots = pygame.image.load("client/content/imgdot/black_dots.png")
-            white_dots = pygame.image.load("client/content/imgdot/white_dots.png")
+            black_dots = pygame.image.load("client_local/content/imgdot/black_dots.png")
+            white_dots = pygame.image.load("client_local/content/imgdot/white_dots.png")
 
             for move in piece.ok_moves:
 

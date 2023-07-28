@@ -3,11 +3,11 @@ import sys
 import copy
 import chess
 
-sys.path.insert(1,"/Volumes/vrona_SSD/FHE.Chess/client/")
+sys.path.append("client_local/") #
 from chess_network import Network
 
 #from en_de_crypt import EnDe_crypt
-# sys.path.insert(1,"client/chess_env")
+# sys.path.append("client/chess_env")
 from base import sp_width, sp_height, sqsize, bitboard
 from game import Game
 from square import Square
@@ -15,7 +15,7 @@ from move import Move
 from clone_chess import Clone_Chess
 from button import Button
 
-# sys.path.insert(1,"server/model")
+# sys.path.append("server/model")
 # from inference_64bit import Inference
 
 
@@ -368,13 +368,13 @@ class Main:
                     game.display_lastmove(surface)
                     game.display_pieces(surface)
                     # print the Outcome of the game
-                    clone_chess.check_termination()
+                    clone_chess.check_termination(clone_chess.get_board())
 
                     game.next_player()
                 
                 else:
                     print("DEAD GAME ZONE--")
-                    clone_chess.check_termination()
+                    clone_chess.check_termination(clone_chess.get_board())
                     game.reset()
 
         else:

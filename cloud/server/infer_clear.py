@@ -49,8 +49,8 @@ class Inference_clear:
         device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
         # loading the checkpoint
-        source_state_dict = torch.load("server/model/source_clear.pt",map_location = device)
-        target_state_dict = torch.load("server/model/target_clear.pt",map_location = device)
+        source_state_dict = torch.load("weights/source_clear.pt",map_location = device)
+        target_state_dict = torch.load("weights/target_clear.pt",map_location = device)
 
         # loading models
         ## source
