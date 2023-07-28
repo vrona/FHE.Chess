@@ -1,5 +1,4 @@
 import os
-import sys
 import time
 import torch
 from torch.utils.data import DataLoader
@@ -77,11 +76,6 @@ class OnDiskNetwork:
         """Send the clientspecs and evaluation key to the client."""
         copyfile(self.dev_dir + sub_model + "/client.zip", self.client_dir + sub_model + "/client.zip")
 
-    def cleanup(self):
-        """Clean up the temporary folders."""
-        self.server_dir.cleanup()
-        self.client_dir.cleanup()
-        self.dev_dir.cleanup()
 
 """
 GET TRAINING DATA SECTION

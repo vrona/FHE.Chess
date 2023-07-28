@@ -12,33 +12,24 @@ sys.path.append("server/")
 from data_compliance import get_train_input
 
 ## 1. DATASET
-#from code_src.model_src.dataset_source import Chessset
-#from model_src.dataset_source import Chessset
 sys.path.append("model_src/")
-from dataset_target import Chessset
 
-# CLEAR #
-# sys.path.append(1,"code_src/model_src/clear/")
-
-# source
-# from train_v3_source_clear import test
-# from cnn_v13_64bit_source_clear import PlainChessNET
-
-# target
-# from train_v3_target import test
-# from cnn_v13_64bit_target_unfhe import PlainChessNET
+#source
+from dataset_source import Chessset
+#target
+#from dataset_target import Chessset
 
 # 2. MODEL AND TEST FUNC
 # QUANTIZED #
 sys.path.append("model_src/quantz/")
 
 # source
-#from test_source_FHE import test_source_concrete
-#from source_44cnn_quantz import QTChessNET
+from test_source_FHE import test_source_concrete
+from source_44cnn_quantz import QTChessNET
 
 # quantized - target
-from test_target_FHE import test_target_concrete
-from target_44cnn_quantz_eval import QTtrgChessNET
+#from test_target_FHE import test_target_concrete
+#from target_44cnn_quantz_eval import QTtrgChessNET
 
 
 """
@@ -96,10 +87,10 @@ MODEL INSTANTIATION SECTION
 """
 
 # quantized model 1 - aka source  
-#model = QTChessNET()
+model = QTChessNET()
 
 # quantized model 2 - aka target
-model = QTtrgChessNET()
+#model = QTtrgChessNET()
 
 ## TESTING and ACCURACY
 
@@ -108,16 +99,20 @@ device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cp
 
 # loading zone
 # quantized model 1 - aka source  
-model.load_state_dict(torch.load("resulttrain/target_pure_quant9.pt",map_location = device))
+model.load_state_dict(torch.load("resulttrain/source_quant7.pt",map_location = device))
 
 # quantized model 2 - aka target
-#model.load_state_dict(torch.load("weights/target_model_quant44.pt",map_location = device))
+#model.load_state_dict(torch.load("resulttrain/target_4484_quant9.pt",map_location = device))
 
 model.pruning_conv(False)
 
 
 # instantiate the train_loader (as array of tensor) as train_input
-train_input = get_train_input(train_loader, target=True)
+#source
+train_input = get_train_input(train_loader)
+
+#train
+#train_input = get_train_input(train_loader, target=True)
 
 #1 Compile to FHE
 print("Concrete-ml is compiling")
@@ -144,5 +139,8 @@ print(
 print("Test with concrete")
 start_time_encrypt = time.time()
 
-test_target_concrete(q_module_vl,test_loader)
+#source
+test_source_concrete(q_module_vl,test_loader)
+#target
+#test_target_concrete(q_module_vl,test_loader)
 print("Time per inference under FHE context:", (time.time()-start_time_encrypt/len(test_loader)))
