@@ -1,7 +1,6 @@
 import torch
 import numpy as np
 import wandb
-from torch import optim
 from tqdm import tqdm
 
 torch.manual_seed(42)

@@ -4,7 +4,6 @@ from torch.utils.data import DataLoader
 import numpy as np
 import pandas as pd
 import sys
-from tqdm import tqdm
 
 from concrete.ml.torch.compile import compile_brevitas_qat_model
 
@@ -99,10 +98,10 @@ device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cp
 
 # loading zone
 # quantized model 1 - aka source  
-model.load_state_dict(torch.load("resulttrain/source_quant7.pt",map_location = device))
+model.load_state_dict(torch.load("weights/source_quantz.pt",map_location = device))
 
 # quantized model 2 - aka target
-#model.load_state_dict(torch.load("resulttrain/target_4484_quant9.pt",map_location = device))
+#model.load_state_dict(torch.load("weights/target_quantz.pt",map_location = device))
 
 model.pruning_conv(False)
 
@@ -141,6 +140,8 @@ start_time_encrypt = time.time()
 
 #source
 test_source_concrete(q_module_vl,test_loader)
+
 #target
 #test_target_concrete(q_module_vl,test_loader)
+
 print("Time per inference under FHE context:", (time.time()-start_time_encrypt/len(test_loader)))
