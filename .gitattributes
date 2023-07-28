@@ -2,5 +2,4 @@
 ksKey_0* filter=lfs diff=lfs merge=lfs -text
 pbsKey_0* filter=lfs diff=lfs merge=lfs -text
 pksKey_0* filter=lfs diff=lfs merge=lfs -text
-secretKey_0* filter=lfs diff=lfs merge=lfs -text
-secretKey_1* filter=lfs diff=lfs merge=lfs -text
+
