@@ -1,6 +1,6 @@
+import sys
 import torch
 import chess
-import sys
 import numpy as np
 
 sys.path.append("client/")
@@ -40,60 +40,41 @@ class Inference_deepfhe:
         dictofproposal = {}
         legal_proposal_moves = []
         pseudo_legal_propmoves = []
-        #source_model = self.source_model
-        #target_model = self.target_model
         white_pieces = ["P","N","B","R","Q","K"]
 
         # defining the processor
         #device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
         device = torch.device("cpu")
-        
-        # loading the checkpoint
-        #source_state_dict = torch.load("server/model/source_clear.pt",map_location = device)
-        #target_state_dict = torch.load("server/model/target_clear.pt",map_location = device)
-
-        # loading models
-        ## source
-        #source_model.load_state_dict(source_state_dict)
-        #source_model.eval()
-
-        ## target
-        #target_model.load_state_dict(target_state_dict)
-        #target_model.eval()
 
         # chessboard
         board = self.board_to_tensor.board_tensor_12(input_board)
-        #print(type(board), board.shape)
-        # Prediction of source square
-        #print(torch.tensor(board).unsqueeze(0).shape)
         
-        #the_model.to(device)
+        # Prediction of source square
+        # adding dim + from torch to numpy type
+       
         source_input  = torch.tensor(board).unsqueeze(0).to(torch.float).to(device)
 
         source_input = source_input.cpu().detach().numpy()
        
-        ## source sim fhe
-        #source_input_q = self.source_model.quantize_input(source_input)
-        #source_pred = self.source_model.quantized_forward(source_input_q, fhe="simulate")
-        #source_output = self.source_model.dequantize_output(source_pred)
-        
-        ## source deep fhe
+        # zama fhe for real with FHEModelClient FHEModelServer quantization --> encryptions, keys check --> inference
         source_encrypted, source_keys = self.fhe_chess.encrypt_keys(source_input)
         source_serial_result = self.fhe_chess.fhesource_server.run(source_encrypted, source_keys)
+
+        # dequantization <-- decryptions <-- inference
         source_output = self.fhe_chess.decrypt(source_serial_result)
 
-        # 3 topf source square
-        #_, source_square = torch.topk(source_output, topf)
-        #source_square = np.argpartition(source_output, -topf)[-topf:]
+        # topf source square
         source_squares = np.argsort(source_output)
 
         source_square = source_squares[:,-topf:] # getting the indices of the top values but needs to flip them
         source_square = np.flip(source_square) # re-sorted to match source_squares values
 
-        indices_to_remove = []
         # checking source_square prediction is white pieces, if not deletation
+        indices_to_remove = []
+
         for d in range(topf):
 
+            # thanks to chess lib, provide the #number of the square and return type :P, ...
             if str(input_board.piece_at(source_square[:,d][0])) not in white_pieces:
                 indices_to_remove.append(d)
 
@@ -105,32 +86,22 @@ class Inference_deepfhe:
 
         # Prediction of target square of each topf source square
 
-            # TENSOR CASE
-            # convert source square number into 64 array
-            # source_square_bit = self.move_to_tensor.source_flat_bit(source_square.data[0][s].item())
-            
-            # NUMPY CASE
             # convert source square number into 64 array
             source_square_bit = self.move_to_tensor.source_flat_bit(source_square[s]) #[:,s][0]
 
             # convert to tensor
+            # adding dim + from torch to numpy type
             chessboard, source_square_bit = torch.tensor(board).unsqueeze(0).to(torch.float).to(device), torch.tensor(source_square_bit).unsqueeze(0).to(torch.float).to(device)
-            
             chessboard, source_square_bit = chessboard.cpu().detach().numpy(), source_square_bit.cpu().detach().numpy()
             
-            ## target sim fhe
-            #chessboard_q, source_square_q = self.target_model.quantize_input(chessboard, source_square_bit)
-            #target_pred = self.target_model.quantized_forward(chessboard_q, source_square_q, fhe="simulate")
-            #target_output = self.target_model.dequantize_output(target_pred)
-            ##target_square = torch.argmax(target_output)
-            
-            ## source deep fhe
+            # zama fhe for real with FHEModelClient FHEModelServer quantization --> encryptions, keys check --> inference
             target_chessb_encrypt, target_source_encrypt, target_keys = self.fhe_chess.encrypt_keys(chessboard, clear_source=source_square_bit, target=True)
             target_serial_result = self.fhe_chess.fhetarget_server.run(target_chessb_encrypt, target_source_encrypt, target_keys)
+            
+            # dequantization <-- decryptions <-- inference
             target_output = self.fhe_chess.decrypt(target_serial_result, target=True)
 
             # topt target square
-            #_, target_square = torch.topk(target_output, topt)
             target_squares = np.argsort(target_output)
 
             target_square = target_squares[:,-topt:] # getting the indices of the top values but needs to flip them
@@ -138,26 +109,20 @@ class Inference_deepfhe:
 
             # proposal moves without legal move filter
             for t in range(topt):
-                #proposal_moves.append(self.square_to_alpha(source_square.data[0][s].item(), target_square.data[0][t].item()))
-                # TENSOR CASE
-                #keys_prop,  values_digit = self.square_to_alpha(source_square.data[0][s].item(), target_square.data[0][t].item())
-                
-                # NUMPY CASE
                 keys_prop,  values_digit = self.square_to_alpha(source_square[s], target_square[:,t][0])
+                
                 #feeding the dict of proposal with uci format as keys and digit equivalent as values
                 dictofproposal[keys_prop] = values_digit
        
         # from raw proposal to legal propose
-        #print("RAW PROPOSAL:",dictofproposal)
         for i, (prop, values) in enumerate(dictofproposal.items()):
-            #legal_proposal_moves.append(values)
         
             if chess.Move.from_uci(prop) in input_board.legal_moves:
                 #print("Move %s -- %s legal" %(i,prop))
                 legal_proposal_moves.append(values)
+    
             elif chess.Move.from_uci(prop) in input_board.pseudo_legal_moves:
                 pseudo_legal_propmoves.append(values)
-
 
         if len(legal_proposal_moves)== 0 and len(pseudo_legal_propmoves)>0:
            print("pseudo legal moves available")

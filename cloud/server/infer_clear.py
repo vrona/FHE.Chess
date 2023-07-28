@@ -29,8 +29,8 @@ class Inference_clear:
         self.move_to_tensor = Move_State()
         
         # instantiate the model
-        self.source_model = source_net() #PlainChessNET()
-        self.target_model = target_net() #PlainChessNET()
+        self.source_model = source_net()
+        self.target_model = target_net()
 
 
     # inference function

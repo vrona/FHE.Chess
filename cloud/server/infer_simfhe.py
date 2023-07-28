@@ -57,11 +57,11 @@ class Inference_simfhe:
         source_input = source_input.cpu().detach().numpy()
 
         # zama fhe simulation quantization --> encryptions, keys check --> inference
-        source_input_q = self.source_model.quantize_input(source_input)
-        source_pred = self.source_model.quantized_forward(source_input_q, fhe="simulate")
+        source_input_q = source_model.quantize_input(source_input)
+        source_pred = source_model.quantized_forward(source_input_q, fhe="simulate")
         
         # dequantization <-- decryptions <-- inference
-        source_output = self.source_model.dequantize_output(source_pred)
+        source_output = source_model.dequantize_output(source_pred)
 
         # topf source square
         source_squares = np.argsort(source_output)
@@ -73,7 +73,7 @@ class Inference_simfhe:
         indices_to_remove = []
 
         for d in range(topf):
-            
+
             # thanks to chess lib, provide the #number of the square and return type :P, ...
             if str(input_board.piece_at(source_square[:,d][0])) not in white_pieces:
                 indices_to_remove.append(d)
@@ -95,11 +95,11 @@ class Inference_simfhe:
             chessboard, source_square_bit = chessboard.cpu().detach().numpy(), source_square_bit.cpu().detach().numpy()
             
             # zama fhe simulation quantization --> encryptions, keys check --> inference
-            chessboard_q, source_square_q = self.target_model.quantize_input(chessboard, source_square_bit)
-            target_pred = self.target_model.quantized_forward(chessboard_q, source_square_q, fhe="simulate")
+            chessboard_q, source_square_q = target_model.quantize_input(chessboard, source_square_bit)
+            target_pred = target_model.quantized_forward(chessboard_q, source_square_q, fhe="simulate")
             
             # dequantization <-- decryptions <-- inference
-            target_output = self.target_model.dequantize_output(target_pred)
+            target_output = target_model.dequantize_output(target_pred)
 
             # topt target square
             target_squares = np.argsort(target_output)
@@ -120,7 +120,7 @@ class Inference_simfhe:
             if chess.Move.from_uci(prop) in input_board.legal_moves:
                 #print("Move %s -- %s legal" %(i,prop))
                 legal_proposal_moves.append(values)
-            
+    
             elif chess.Move.from_uci(prop) in input_board.pseudo_legal_moves:
                 pseudo_legal_propmoves.append(values)
 
