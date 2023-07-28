@@ -89,7 +89,6 @@ def main():
 
                 except :#socket.error as e:
                     #print(e)
-                    
                     break
             
             print("Lost connection")
