@@ -1,7 +1,7 @@
 import torch
-from torch import optim
 import numpy as np
 import wandb
+from torch import optim
 from tqdm import tqdm
 
 #torch.manual_seed(498846564)
@@ -14,7 +14,6 @@ ASCII SET isometric1 http://asciiset.com/figletserver.html
 # CUDA's availability
 
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-#device = torch.device("cpu")
 
 
 wandb.init(
@@ -34,9 +33,8 @@ wb_config = wandb.config
 def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.epochs):
 
     # loss function
-    
     optimizer = optim.Adam(model.parameters(), lr = wb_config.learning_rate) #weight_decay=wb_config.weight_decay
-    valid_loss_min = np.Inf # track change in validate loss
+    valid_loss_min = np.Inf # track change in training loss
 
     for epoch in range(n_epochs):
 
@@ -45,7 +43,7 @@ def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.
 
         train_acc = 0
         valid_acc = 0
-
+        
         avg_train_acc = 0
         avg_valid_acc = 0
 
@@ -66,23 +64,25 @@ def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.
         # model in training mode
         model.train().to(device)
         
-        for batch_idx, (data, target) in loop:
+        for batch_idx, (chessboard, source, target) in loop:
 
-            data, target = data.to(torch.float).to(device), target.to(torch.float).to(device)
+            chessboard, source, target = chessboard.to(torch.float).to(device), source.to(torch.float).to(device), target.to(torch.float).to(device)
 
             # clear the gradients from all variable
             optimizer.zero_grad()
 
             # forward
-            output = model(data)
-            
+            output = model(chessboard, source)
+             
             # accuracy
-            
+            #print(output.shape,"||",target.shape)
             outdix = output.argmax(1)
             tardix = target.argmax(1)
+            #train_acc += (outdix == tardix).sum().item()
             train_acc = (outdix == tardix).sum().item()
-            
-            monitor_train_acc = 100 * (train_acc / 64) #len(trainloader)
+            #print(outdix.shape,"||",tardix.shape,"\n",train_acc)
+            #monitor_train_acc = 100 * (train_acc /len(trainloader))
+            monitor_train_acc = 100 * (train_acc /64)
             
             # batch loss
             loss = criterion(output, target)
@@ -94,7 +94,7 @@ def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.
 
             # train_loss & avg_train_acc update
             train_loss += loss.item()
-
+            
             avg_train_acc += monitor_train_acc
 
             wandb.log({"loss": loss.item(), "train_accuracy" : monitor_train_acc})
@@ -103,7 +103,9 @@ def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.
             loop.set_postfix(loss = loss.item(), train_accuracy = monitor_train_acc)
 
 
-
+        ### experimental
+        #torch.save(model.state_dict(), "resulttrain/target_experiment.pt")
+        
         #        ___           ___           ___                   ___           ___           ___           ___     
         #       /\__\         /\  \         /\__\      ___        /\  \         /\  \         /\  \         /\  \    
         #      /:/  /        /::\  \       /:/  /     /\  \      /::\  \       /::\  \        \:\  \       /::\  \   
@@ -120,21 +122,22 @@ def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.
 
         model.eval().to(device)
 
-        for batch_idx, (data, target) in loop_valid:
+        for batch_idx, (chessboard, source, target) in loop_valid:
 
-            data, target = data.to(torch.float).to(device), target.to(torch.float).to(device)
+            chessboard, source, target = chessboard.to(torch.float).to(device), source.to(torch.float).to(device), target.to(torch.float).to(device)
 
             # forward
-            output = model(data)
-
-            # batch loss & accuracy
-
+            output = model(chessboard, source)
+            
+            # accuracies
             outdix = output.argmax(1)
             tardix = target.argmax(1)
             valid_acc = (outdix == tardix).sum().item()
             
-            monitoring_val_acc = 100 * (valid_acc / 64) #len(validloader)
+            monitoring_val_acc = 100 * valid_acc / 64 #len(validloader)
 
+
+            # batch loss
             loss = criterion(output, target)
 
             # valid_loss update
@@ -151,19 +154,20 @@ def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.
 
         avg_train_acc = avg_train_acc / len(trainloader)
         avg_valid_acc = avg_valid_acc / len(validloader)
-        
+
         wandb.log({"Epoch train_acc": avg_train_acc, "Epoch valid_acc" : avg_valid_acc})
 
         # print training/validation statistics 
         print('Epoch: {} \tTraining Loss: {:.6f} \tValidate Loss: {:.6f}, \tTrain Acc: {:.6f}, \tValid Acc: {:.6f}'.format(
             epoch, train_loss, valid_loss, train_acc, valid_acc))
+        #print('Epoch: {} \tTraining Loss: {:.6f} \tValidate Loss: {:.6f}'.format(epoch, train_loss, valid_loss))
 
         # save model if validation loss has decreased
         if valid_loss <= valid_loss_min:
             print('Validate loss decreased ({:.6f} --> {:.6f}).  Saving model ...'.format(
             valid_loss_min, valid_loss))
 
-            torch.save(model.state_dict(), "resulttrain/source_quant{}.pt".format(epoch))
+            torch.save(model.state_dict(), "resulttrain/target_quant{%s}.pt" % epoch)
             valid_loss_min = valid_loss
 
     model.pruning_conv(False)
@@ -185,7 +189,7 @@ def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.
 
 def test(model, testloader, criterion):
 
-    model.pruning_conv(False)
+
     test_loss = 0.0
     accuracy = 0
     
@@ -196,13 +200,13 @@ def test(model, testloader, criterion):
     
     with torch.no_grad():
         
-        for batch_idx, (data, target) in loop_test:
+        for batch_idx, (chessboard, source, target) in loop_test:
 
-            data, target = data.to(torch.float).to(device), target.to(torch.float).to(device)
+            chessboard, source, target = chessboard.to(torch.float).to(device), source.to(torch.float).to(device), target.to(torch.float).to(device)
             # forward
-            output = model(data)
+            output = model(chessboard, source)
 
-            # batch loss
+             # batch loss
             loss = criterion(output, target)
 
             # test_loss update
@@ -210,7 +214,7 @@ def test(model, testloader, criterion):
             
             outdix = output.argmax(1)
             tardix = target.argmax(1)
-
+     
             accuracy += (outdix == tardix).sum().item()
 
             wandb.log({"test_loss": loss.item(), "accuracy": 100 * accuracy / len(testloader)})
