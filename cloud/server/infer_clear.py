@@ -1,6 +1,5 @@
-import torch
 import sys
-import numpy as np
+import torch
 import chess
 
 sys.path.append("model_src/")
