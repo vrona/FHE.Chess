@@ -15,16 +15,16 @@ sys.path.append("model_src/")
 from dataset_source import Chessset
 
 # target
-#from train_v3_target_quantz import train_valid
-#from dataset_v3_target import Chessset
+#from train_target_quantz import train_valid
+#from dataset_target import Chessset
 
 # quantz
 sys.path.append("model_src/quantz/")
 # source
-from source_44cnn_quantz_v2 import QTChessNET
+from source_44cnn_quantz import QTChessNET
 
-# target (for training only - not eval)
-#from target_44cnn_quantz import QTtrgChessNET
+# target (for training only) 
+#from target_44cnn_quantz import QTtrgChessNET # CAUTION "target_44cnn_quantz_EVAL" is for Inference
 
 """
 LOADING SECTION
