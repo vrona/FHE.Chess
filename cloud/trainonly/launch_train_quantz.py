@@ -7,7 +7,7 @@ import pandas as pd
 
 """
 Training Only here
-Recall for TESTING, please run compile_fhe.py
+Recall for TESTING, please run launch_(test)_compile_fhe.py
 """
 
 #source
