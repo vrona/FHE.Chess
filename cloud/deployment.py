@@ -132,11 +132,11 @@ model_target = QTtrgChessNET()
 
 # loading zone
 # quantized model 1 - aka source  
-model_source.load_state_dict(torch.load("weights/source_quant7.pt",map_location = device))
+model_source.load_state_dict(torch.load("weights/source_quantz.pt",map_location = device))
 model_source.pruning_conv(False)
 
 # quantized model 2 - aka target
-model_target.load_state_dict(torch.load("weights/target_4484_quant9.pt",map_location = device))
+model_target.load_state_dict(torch.load("weights/target_quantz.pt",map_location = device))
 model_target.pruning_conv(False)
 
 """

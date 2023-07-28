@@ -81,11 +81,11 @@ class CompileModel:
 
              # loading zone
              # quantized model 1 - aka source  
-             source_model.load_state_dict(torch.load("resulttrain/source_quant7.pt",map_location = device))
+             source_model.load_state_dict(torch.load("weights/source_quantz.pt",map_location = device))
              source_model.pruning_conv(False)
 
              # quantized model 2 - aka target
-             target_model.load_state_dict(torch.load("resulttrain/target_4484_quant9.pt",map_location = device))
+             target_model.load_state_dict(torch.load("weights/target_quantz.pt",map_location = device))
 
              target_model.pruning_conv(False)
 
