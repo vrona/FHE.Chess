@@ -2,14 +2,12 @@ import socket
 import struct
 import pickle
 
-from infer_deepfhe import Inference
+from infer_clear import Inference_clear
 
 HOST = ""  # Standard loopback interface address (localhost)
 PORT = 3389  # Port to listen on (non-privileged ports are > 1023)
 
-#compiled_models = CompileModel()
-#inference = Inference(compiled_models.compiled_source, compiled_models.compiled_target)
-inference = Inference()
+inference = Inference_clear()
 
 def recvall(conn, size):
     """letting all bytes to be received as small parts of bytes."""
@@ -69,10 +67,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
                     conn.sendall(pickle.dumps(reply))
 
-            except socket.error as e:
-                print(e)
+            except :#socket.error as e:
+                #print(e)
                 
-                #break
+                break
         
         print("Lost connection")
         conn.close()

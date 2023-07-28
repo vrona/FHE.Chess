@@ -1,12 +1,9 @@
 import socket
 import struct
 import pickle
-import sys
+
 from compile_fhe_inprod import CompileModel
 from infer_simfhe import Inference
-
-#sys.path.append("client/")
-#from en_de_crypt import EnDe_crypt
 
 HOST = ""  # Standard loopback interface address (localhost)
 PORT = 3389  # Port to listen on (non-privileged ports are > 1023)

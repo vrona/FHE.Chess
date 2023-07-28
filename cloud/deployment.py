@@ -4,7 +4,6 @@ import time
 import torch
 from torch.utils.data import DataLoader
 from shutil import copyfile
-from tempfile import TemporaryDirectory
 import numpy as np
 import pandas as pd
 
@@ -35,9 +34,9 @@ class OnDiskNetwork:
 
     def __init__(self):
         # Create 3 temporary folder for server, client and dev with tempfile
-        self.server_dir = "server/model" #TemporaryDirectory()  # pylint: disable=consider-using-with
-        self.client_dir = "client" #TemporaryDirectory()  # pylint: disable=consider-using-with
-        self.dev_dir = "deploy" #TemporaryDirectory()  # pylint: disable=consider-using-with
+        self.server_dir = "server/model" # pylint: disable=consider-using-with
+        self.client_dir = "client" # pylint: disable=consider-using-with
+        self.dev_dir = "deploy" # pylint: disable=consider-using-with
         self.empty_dev_dir()
 
     def empty_dev_dir(self):
