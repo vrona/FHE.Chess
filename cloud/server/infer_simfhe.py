@@ -18,7 +18,7 @@ from helper_chess_target import Board_State, Move_State
     #    a  b  c  d  e  f  g  h
 
 
-class Inference:
+class Inference_simfhe:
 
 
     def __init__(self, q_source, q_target):

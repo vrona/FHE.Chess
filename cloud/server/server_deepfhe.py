@@ -2,14 +2,14 @@ import socket
 import struct
 import pickle
 
-from infer_deepfhe import Inference
+from infer_deepfhe import Inference_deepfhe
 
 HOST = ""  # Standard loopback interface address (localhost)
 PORT = 3389  # Port to listen on (non-privileged ports are > 1023)
 
 #compiled_models = CompileModel()
 #inference = Inference(compiled_models.compiled_source, compiled_models.compiled_target)
-inference = Inference()
+inference = Inference_deepfhe()
 
 def recvall(conn, size):
     """letting all bytes to be received as small parts of bytes."""

@@ -21,7 +21,7 @@ from helper_chess_target import Board_State, Move_State
     #    a  b  c  d  e  f  g  h
 
 
-class Inference:
+class Inference_deepfhe:
 
     def __init__(self):
         self.board_to_tensor = Board_State()

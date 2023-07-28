@@ -3,13 +3,13 @@ import struct
 import pickle
 
 from compile_fhe_inprod import CompileModel
-from infer_simfhe import Inference
+from infer_simfhe import Inference_simfhe
 
 HOST = ""  # Standard loopback interface address (localhost)
 PORT = 3389  # Port to listen on (non-privileged ports are > 1023)
 
 compiled_models = CompileModel()
-inference = Inference(compiled_models.compiled_source, compiled_models.compiled_target)
+inference = Inference_simfhe(compiled_models.compiled_source, compiled_models.compiled_target)
 
 def recvall(conn, size):
     """letting all bytes to be received as small parts of bytes."""
