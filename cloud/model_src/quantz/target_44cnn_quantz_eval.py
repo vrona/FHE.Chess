@@ -1,9 +1,6 @@
 import brevitas.nn as qnn
-import torch
-import onnx
 import torch.nn as nn
 from torch.nn.utils import prune
-import torch.nn.functional as F
 import numpy as np
 
 
@@ -125,32 +122,23 @@ class QTtrgChessNET(nn.Module):
         chessboard = self.qrelu5(chessboard)
         
         chessboard = self.flatten(chessboard)
-        #print("\nchessboard\n",type(chessboard),"\n",chessboard)
         
         chessboard = self.qfc1(chessboard)
         #chessboard = self.q_flat_chess_relu(chessboard)
-        #print("\nchessboard\n",type(chessboard),"\n",chessboard)
 
         #source = self.quant_source1(source)
         source = self.qinput_source(source)
         #source = self.q_source_relu1(source)
-
-        #print("\nsource\n",type(source),"\n",source)
-        
+    
         # merging chessboard (context + selected source square)
-        #merge = torch.add(chessboard, source)
         self.quant_merge.eval()
         chessboard_eval = self.quant_merge(chessboard)
         source_eval = self.quant_merge(source)
-        
-        #merge = torch.add(chessboard, source)
+
         #print("SCALE -->",chessboard.scale.item()-source.scale.item())
         merge = chessboard_eval + source_eval
-        
         merge = self.qbatchn1d_merge(merge)
         merge = self.q_merge_relu(merge)     
-
-        #print("\nmerge\n",type(merge),"\n",merge)
 
         ## not good
         #x = self.qSigmoid(merge)

@@ -1,8 +1,6 @@
 import brevitas.nn as qnn
-import torch
 import torch.nn as nn
 from torch.nn.utils import prune
-import torch.nn.functional as F
 import numpy as np
 
 
