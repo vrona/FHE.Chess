@@ -23,11 +23,10 @@ from dataset_source import Chessset
 sys.path.append("model_src/quantz/")
 
 # source
-from test_source_FHE import test_source_concrete
+from test_model_FHE import test_source_concrete, test_target_concrete
 from source_44cnn_quantz import QTChessNET
 
 # quantized - target
-#from test_target_FHE import test_target_concrete
 #from target_44cnn_quantz_eval import QTtrgChessNET
 
 
