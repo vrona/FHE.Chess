@@ -3,3 +3,4 @@ ksKey_0* filter=lfs diff=lfs merge=lfs -text
 pbsKey_0* filter=lfs diff=lfs merge=lfs -text
 pksKey_0* filter=lfs diff=lfs merge=lfs -text
 wb_2000_300* filter=lfs diff=lfs merge=lfs -text
+*.ipynb filter=lfs diff=lfs merge=lfs -text
