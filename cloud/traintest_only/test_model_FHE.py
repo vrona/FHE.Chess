@@ -3,12 +3,7 @@ import numpy as np
 import wandb
 from tqdm import tqdm
 
-torch.manual_seed(42)
-
-"""
-ASCII SET isometric1 http://asciiset.com/figletserver.html
-"""
-
+#torch.manual_seed(42)
 
 # CUDA's availability
 
@@ -30,7 +25,7 @@ wandb.init(
 wb_config = wandb.config
 
 
-# 🅥🅛 🅕🅗🅔
+# 🅥🅘🅡🅣🅤🅐🅛 🅕🅗🅔
 
 ## source
 def test_source_concrete(quantized_module, test_input,dtype_inputs=np.int64):
