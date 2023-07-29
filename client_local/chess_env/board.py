@@ -106,7 +106,24 @@ class Board:
                         if isinstance(mvmt.target.piece, King):
                             return True
         return False
-    
+
+
+    def sim_kingcheck_okmoves(self, piece, move, bool):
+        """adds move into ok_move list if my King is not in check"""
+        if bool:
+            if not self.king_check_sim(piece, move): # if not in check go ahead
+                piece.add_ok_move(move)
+
+        else:
+            piece.add_ok_move(move) # if not in check go ahead
+
+
+    def move_kingchecksim(self, source, target, piece, bool):
+        """integrates move into sim_kingcheck_okmoves()"""
+        # move at micro
+        move = Move(source, target)
+        self.sim_kingcheck_okmoves(piece, move, bool)
+        
 
     def compute_move(self, piece, row, col, bool=True):
         """
@@ -129,15 +146,7 @@ class Board:
                         source = Square(row, col) 
                         target = Square(possible_move_row, col)
                         
-                        # move at micro
-                        move = Move(source, target)
-                        
-                        if bool:
-                            if not self.king_check_sim(piece, move): # if not in check go ahead
-                                piece.add_ok_move(move)
-
-                        else:
-                            piece.add_ok_move(move) # if not in check go ahead
+                        self.move_kingchecksim(source, target, piece, bool)
                             
                     else: break # move done
                 else: break # outside chessboard
@@ -154,17 +163,7 @@ class Board:
                         piece_target = self.squares[possible_move_row][move_col].piece # get piece at target aka king check
                         target = Square(possible_move_row, move_col, piece_target)
                         
-                        # move at micro
-                        move = Move(source, target)
-
-                        if bool:
-                            if not self.king_check_sim(piece, move): # if not in check go ahead
-                                piece.add_ok_move(move)
-
-                        else:
-                            piece.add_ok_move(move) # if not in check go ahead
-
-
+                        self.move_kingchecksim(source, target, piece, bool)
 
             # en_passant
             attacker_ini_row = 3 if piece.color == 'white' else 4
@@ -182,17 +181,7 @@ class Board:
                             source = Square(row, col)
                             target = Square(attacker_desti_row, col-1, p)
 
-                            # move at micro
-                            move = Move(source, target)
-
-                            if bool:
-                                if not self.king_check_sim(piece, move): # if not in check go ahead
-                                    piece.add_ok_move(move)    
-
-                            else:
-                                piece.add_ok_move(move) # if not in check go ahead
-
-    
+                            self.move_kingchecksim(source, target, piece, bool)
 
             # right juxtapose square
             if Square.in_board(col+1) and row == attacker_ini_row:
@@ -206,16 +195,7 @@ class Board:
                             source = Square(row, col)
                             target = Square(attacker_desti_row, col+1, p)
 
-                            # move at micro
-                            move = Move(source, target)
-
-                            if bool:
-                                if not self.king_check_sim(piece, move): # if not in check go ahead
-                                    piece.add_ok_move(move)
-    
-                            else:
-                                piece.add_ok_move(move) # if not in check go ahead
-
+                            self.move_kingchecksim(source, target, piece, bool)
 
 
         def kight_moves():
@@ -240,16 +220,7 @@ class Board:
                         piece_target = self.squares[ok_move_row][ok_move_col].piece # get piece at target aka king check
                         target = Square(ok_move_row, ok_move_col, piece_target)
 
-                        # move at micro
-                        move = Move(source, target)
-
-                        if bool:
-                            if not self.king_check_sim(piece, move): # if not in check go ahead
-                                piece.add_ok_move(move)
-                                
-                        else:
-                            piece.add_ok_move(move) # if not in check go ahead
-
+                        self.move_kingchecksim(source, target, piece, bool)
 
 
 
@@ -272,25 +243,14 @@ class Board:
                         
                         # empty square
                         if self.squares[possible_move_row][possible_move_col].empty():
-
-                            if bool:
-                                if not self.king_check_sim(piece, move): # if not in check go ahead
-                                    piece.add_ok_move(move)
-
-                            else:
-                                piece.add_ok_move(move) # if not in check go ahead
-
-    
+                            
+                            self.sim_kingcheck_okmoves(piece,move,bool)
 
                         # opponent presence
                         elif self.squares[possible_move_row][possible_move_col].opponent_presence(piece.color):
                             
-                            if bool:
-                                if not self.king_check_sim(piece, move): # if not in check go ahead
-                                    piece.add_ok_move(move)
-                                    
-                            else:
-                                piece.add_ok_move(move) # if not in check go ahead
+                            self.sim_kingcheck_okmoves(piece,move,bool)
+
                             break
                     
                         # player presence
@@ -328,12 +288,7 @@ class Board:
                     move = Move(source, target)
                 
                     if self.squares[ok_move_row][ok_move_col].empty_occupied(piece.color):
-                        if bool:
-                            if not self.king_check_sim(piece, move): # if not in check go ahead
-                                piece.add_ok_move(move)
-                            #else: break
-                        else:
-                            piece.add_ok_move(move) # if not in check go ahead
+                        self.sim_kingcheck_okmoves(piece,move,bool)
 
             # castling
             if not piece.moved:
