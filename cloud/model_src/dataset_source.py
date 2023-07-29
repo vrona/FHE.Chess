@@ -4,7 +4,7 @@ import numpy as np
 from torch.utils.data import Dataset
 
 sys.path.append("model_src/")
-from helper_chess_source import Board_State, Move_State
+from helper_chessset import Board_State, Move_State
 
 
 # ⒹⒶⓉⒶⓈⒺⓉ 🅓🅐🅣🅐🅢🅔🅣 ⒹⒶⓉⒶⓈⒺⓉ         
@@ -49,7 +49,7 @@ class Chessset(Dataset):
 
         x = helper_board_state.board_tensor_12(board)          # shape(6,8,8) or shape(12,8,8)
         
-        y = helper_move_state.from_to_bitboards(next_move, board) # shape (1)
+        y, _ = helper_move_state.from_to_bitboards(next_move, board) # shape (1)
 
         # determine white or black turn (1 for w, -1 for b) and then the one to play has always positive value
         if game_state_i %2 == 1:
