@@ -1,9 +1,16 @@
 import numpy as np
+
 # screenplay dimension
 sp_width = 800
 sp_height = 800
 
-# chess board
+"""
+RECALL:
+homemade chessboard row starts at 0 from top // col starts at 0 from left
+python-chess library (https://python-chess.readthedocs.io): within chessboard, rows start at "1" from bottom  // cols start at "a" from left // bitboard from 0 to 63 squares (see below)
+"""
+
+# homemade chessboard
 cb_cols = 8
 cb_rows = 8
 sqsize = sp_width // cb_cols
@@ -19,8 +26,3 @@ bitboard = np.array([
     [8,9,10,11,12,13,14,15],
     [0,1,2,3,4,5,6,7],
     ])
-
-"""
-homemade chessboard row starts at 0 from top // col starts at 0 from left
-chess lib chessboard row starts at 1 from bottom // col starts at a from left or bitboard from 0 to 63 squares
-"""

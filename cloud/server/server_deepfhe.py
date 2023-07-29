@@ -46,7 +46,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 data_size = struct.unpack('I', conn.recv(4))[0] 
                 byte_data = recvall(conn, data_size)
 
-            
                 #print("Server side len data:",len(byte_data))
 
                 data = pickle.loads(byte_data)

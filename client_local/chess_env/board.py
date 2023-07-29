@@ -1,9 +1,9 @@
 from base import *
-from clone_chess import Clone_Chess
-from square import Square
 from piece import *
 from move import *
 import copy
+from square import Square
+from clone_chess import Clone_Chess
 
 class Board:
 
@@ -88,7 +88,7 @@ class Board:
     # here it simulates if King is check, thus it blocks any movement that lead king to be check.
     # improvements needed cause some deadends.
     def king_check_sim(self, piece, move):
-        
+
         """"for simulation"""
         temppiece = copy.deepcopy(piece)
         tempboard = copy.deepcopy(self)
@@ -164,7 +164,6 @@ class Board:
                             if not self.king_check_sim(piece, move): # if not in check go ahead
                                 piece.add_ok_move(move)
 
-
                         else:
                             piece.add_ok_move(move) # if not in check go ahead
 
@@ -217,7 +216,6 @@ class Board:
                                 if not self.king_check_sim(piece, move): # if not in check go ahead
                                     piece.add_ok_move(move)
     
-                                    
                             else:
                                 piece.add_ok_move(move) # if not in check go ahead
 
@@ -473,17 +471,13 @@ class Board:
         # bishops
         self.squares[row_other][2] = Square(row_other, 2, Bishop(color))
         self.squares[row_other][5] = Square(row_other, 5, Bishop(color))
-
         
         # rooks
         self.squares[row_other][0] = Square(row_other, 0, Rook(color))
         self.squares[row_other][7] = Square(row_other, 7, Rook(color))
-
         
         # queen
         self.squares[row_other][3] = Square(row_other, 3, Queen(color))
 
-
         # king
         self.squares[row_other][4] = Square(row_other, 4, King(color))
-        # testself.squares[2][4] = Square(2, 4, King(color))

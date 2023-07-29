@@ -101,6 +101,5 @@ class Game:
     def get_turn_color(self):
         print(self.player_turn)
 
-
     def reset(self):
         self.__init__()

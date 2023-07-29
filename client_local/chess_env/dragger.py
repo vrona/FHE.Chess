@@ -1,7 +1,7 @@
 import pygame
 from base import *
 
-# class to let pygame mouse grab pieces
+# class to let pygame's mouse grabs pieces
 class Dragger:
 
     def __init__(self):

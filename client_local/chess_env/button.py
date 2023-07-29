@@ -58,18 +58,8 @@ class Button:
             self.draw(surface,'white', self.button_name,445)
 
 
-    # def button_reset(self, surface, on = True):
-        
-    #     self. normal = on
-    #     self.button_name = 'reset'
-    #     self.ckeck_click(332.5, self.button_name)
-    #     if self.normal:
-    #         self.draw(surface,'white', self.button_name,332.5)
-
-
     # def button_blackAI(self, surface):
     #     self.button_name = 'BLACK AI'
-    #  
     #     self.ckeck_click(332.5, self.button_name)
     #     if self.normal:
     #         self.draw(surface, 'white', self.button_name, 332.5)
@@ -77,11 +67,6 @@ class Button:
 
     # def button_bothAI(self, surface):
     #     self.button_name = 'AI vs AI'
-    #  
     #     self.ckeck_click(566.25, self.button_name)
     #     if self.normal:
     #         self.draw(surface,'white', self.button_name, 566.25)
-
-
-    # def button_start(self, surface):
-    #     self.draw(surface,'#ffebc6', 'START', 332.5, 450)
