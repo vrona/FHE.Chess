@@ -131,7 +131,6 @@ class Board:
                         
                         # move at micro
                         move = Move(source, target)
-                        # piece.add_ok_move(move)
                         
                         if bool:
                             if not self.king_check_sim(piece, move): # if not in check go ahead
@@ -139,8 +138,6 @@ class Board:
 
                         else:
                             piece.add_ok_move(move) # if not in check go ahead
-                            
-
                             
                     else: break # move done
                 else: break # outside chessboard
@@ -451,13 +448,15 @@ class Board:
 
 
     def _create(self):
-        
+        """At step 0 (beginning or reset), board is created"""
         for row in range(cb_rows):
             for col in range(cb_cols):
                 self.squares[row][col] = Square(row, col)
     
 
     def _add_pieces(self, color):
+        """At step 0 (beginning or reset), pieces are created"""
+
         row_pawn, row_other = (6,7) if color == 'white' else (1,0)
 
         # pawns
