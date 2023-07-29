@@ -80,9 +80,9 @@ def main():
                         #print("failed at reply --> disconnected")
 
                     else:
-                        print("input_data as chessboard")
+                        print("\ninput_data as chessboard\n")
                         print(data)
-                        print("inference list of moves")
+                        print("\ninference list of moves\n")
                         print(reply)
 
                         conn.sendall(pickle.dumps(reply))

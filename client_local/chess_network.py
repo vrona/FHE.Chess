@@ -31,7 +31,7 @@ class Network:
 
 
     def connect(self):
-        """client connect to network, return loads data"""
+        """client connect to network"""
         try:
             self.client.connect(self.addr)
         except socket.error as e:
