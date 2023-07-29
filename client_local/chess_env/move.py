@@ -1,5 +1,5 @@
-from square import Square
 from piece import *
+from square import Square
 
 class Move:
 
