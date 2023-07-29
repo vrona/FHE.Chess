@@ -2,7 +2,6 @@ import re
 import numpy as np
 
 # dictionary of algebraic(string) = digit
-#num_to_alpha = {0:"a", 1:"b", 2:"c",  3:"d",  4:"e",  5:"f",  6:"g",  7:"h"}
 alpha_to_num = {"a":0, "b":1, "c":2,  "d":3,  "e":4,  "f":5,  "g":6,  "h":7}
 
 
@@ -99,7 +98,10 @@ class Move_State():
     
 
     def from_to_bitboards(self, move, board):
-        """choosing the adequate square to target"""
+        """
+        helper to transform data from dataset > UCI > Square number
+        choosing the adequate square to target
+        """
         board.push_san(move).uci() # 1st needs to convert the dataset from algebraic to uci format
 
         from_to_move = str(board.pop())
@@ -128,6 +130,7 @@ class Move_State():
     
     def source_flat_bit(self, source_square):
         """
+        For Inference only
         convert source square into flat (64,) array
         """
         source_flat_bit = np.zeros((64,))

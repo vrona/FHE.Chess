@@ -4,19 +4,7 @@ from torch.utils.data import Dataset
 from helper_chess_target import Board_State, Move_State
 
 
-#       ___           ___           ___           ___           ___           ___           ___     
-#      /\  \         /\  \         /\  \         /\  \         /\  \         /\  \         /\  \    
-#     /::\  \       /::\  \        \:\  \       /::\  \       /::\  \       /::\  \        \:\  \   
-#    /:/\:\  \     /:/\:\  \        \:\  \     /:/\:\  \     /:/\ \  \     /:/\:\  \        \:\  \  
-#   /:/  \:\__\   /::\~\:\  \       /::\  \   /::\~\:\  \   _\:\~\ \  \   /::\~\:\  \       /::\  \ 
-#  /:/__/ \:|__| /:/\:\ \:\__\     /:/\:\__\ /:/\:\ \:\__\ /\ \:\ \ \__\ /:/\:\ \:\__\     /:/\:\__\
-#  \:\  \ /:/  / \/__\:\/:/  /    /:/  \/__/ \/__\:\/:/  / \:\ \:\ \/__/ \:\~\:\ \/__/    /:/  \/__/
-#   \:\  /:/  /       \::/  /    /:/  /           \::/  /   \:\ \:\__\    \:\ \:\__\     /:/  /     
-#    \:\/:/  /        /:/  /     \/__/            /:/  /     \:\/:/  /     \:\ \/__/     \/__/      
-#     \::/__/        /:/  /                      /:/  /       \::/  /       \:\__\                  
-#      ~~            \/__/                       \/__/         \/__/         \/__/                
-
-
+# # ⒹⒶⓉⒶⓈⒺⓉ 🅓🅐🅣🅐🅢🅔🅣 ⒹⒶⓉⒶⓈⒺⓉ    
 
 helper_board_state = Board_State() 
 helper_move_state = Move_State() 
@@ -58,10 +46,6 @@ class Chessset(Dataset):
         chessboard = helper_board_state.board_tensor_12(board)          # shape(6,8,8) or shape(12,8,8)
         
         source,target = helper_move_state.from_to_bitboards(next_move, board) # shape (1)
-
-        # get the eval
-        # xx = get_eval() of piece_pos
-        # yy = get_eval() of move_pos
 
         # determine white or black turn (1 for w, -1 for b) and then the one to play has always positive value
         if game_state_i %2 == 1:
