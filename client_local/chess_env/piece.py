@@ -19,11 +19,14 @@ class Piece:
         self.img_uri = os.path.join(
             f'client_local/content/pieces/pieces_{size}px/{self.color}_{self.name}.png')
 
-
     def add_ok_move(self, move):
+        """adds to each piece its ok_moves based on its behaviour"""
         self.ok_moves.append(move)
 
     def check_moves(self, move):
+        """for test
+        NB: Python_Chess legal_move() generator is different from homemade chessboard add_ok_move().
+        """
         print("OK MOVES: ", self.clone_chess.check_legal_move(move))
 
     def clear_moves(self):
