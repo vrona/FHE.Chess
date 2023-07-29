@@ -79,21 +79,31 @@ class Main:
                 chessboard = clone_chess.get_board()
                 listoftuplesofmoves = cs_network.send(chessboard)
 
-
-                # get_chessboard = EnDe_crypt(chessboard)
-                # get_chessboard.predict()
-
+                """
+                Case 1: INFERENCE WITHOUT FILTER
+                Uses only the 1st tuple in listoftuplesofmoves as it supposed to be the best inferred move.
+                """
                 selected_square_row = listoftuplesofmoves[0][0][1]
                 selected_square_col = listoftuplesofmoves[0][0][0]
                 targeted_square_row = listoftuplesofmoves[0][1][1]
                 targeted_square_col = listoftuplesofmoves[0][1][0]
 
-                #source_r, source_c, target_r, target_c = self.autonomous_check_sim(listoftuplesofmoves)
-
-                # making the move
-                #self.autonomous_piece(source_r, source_c, target_r, target_c, board, game, clone_chess, screenplay)
+                # apply the move
                 self.autonomous_piece(7-selected_square_row, selected_square_col, 7-targeted_square_row, targeted_square_col, board, game, clone_chess, screenplay)
 
+                """
+                Case2: INFERENCE WITH PSEUDO EVALUATION WHITE VALUE FILTER
+                        ** value of white position and material **
+                        Note: black values not taken into consideration
+
+                Uses autonomous_check_sim() to simulate all inferred moves from listoftuplesofmoves to return the one with the higher value of white.
+                
+                # get the move with highest white value position/material
+                # source_r, source_c, target_r, target_c = self.autonomous_check_sim(listoftuplesofmoves)
+
+                # apply the move
+                # self.autonomous_piece(source_r, source_c, target_r, target_c, board, game, clone_chess, screenplay)
+                """
 
             # ⒽⓊⓂⒶⓃ 🅗🅤🅜🅐🅝 ⒽⓊⓂⒶⓃ
 
@@ -177,8 +187,7 @@ class Main:
                             board.set_true_en_passant(dragger.piece)
                             
                             # uncomment to get FEN output
-                            #print("main.py",clone_chess.convert_move_2_string(move))
-                            #print("HUMAN FEN output: ",clone_chess.get_fen())
+                            #print("\nHUMAN FEN: ",clone_chess.get_fen())
                             game.display_chessboard(screenplay)
                             game.display_lastmove(screenplay)
                             game.display_pieces(screenplay)
@@ -213,21 +222,77 @@ class Main:
                     sys.exit()
 
             pygame.display.update()
+                        
+
+    def autonomous_piece(self,source_row, source_col, target_row, target_col, board, game, clone_chess, surface):
+        """Makes the AI's move inference applied into homemade chessboard environment"""
+
+        # presence of piece within selected square
+        if self.game.board.squares[source_row][source_col].piece_presence():
+            piece = self.game.board.squares[source_row][source_col].piece
+
+            if piece.color == self.game.player_turn:
+
+                board.compute_move(piece, source_row, source_col, bool=True)
+
+                # get the squares for move
+                source = Square(source_row, source_col)
+                target = Square(target_row, target_col)
+
+                move = Move(source, target)
+
+                #  check move ok ?
+                if game.board.valid_move(piece, move):
+
+                    board.move(piece, move)
+
+                    if piece.type == chess.PAWN and game.board.squares[target_row][target_col].piece.type == chess.QUEEN:
+
+                         # BRIDGE HERE cloning move from app to python-chess
+                        self.pawn_promotion(source_row, source_col, target_row, target_col)
+
+                    else:
+                            # BRIDGE HERE cloning move from app to python-chess"""
+                        clone_chess.move_clone_board(move)
+
+                    board.set_true_en_passant(piece)
+
+                    print("\nAUTONOMOUS - %s %s col:%s row:%s to col:%s row:%s" % (piece.color,piece.name,source_col, 7-source_row,target_col, 7-target_row))
+                    
+                    # uncomment to get FEN output
+                    #print("\nAUTONOMOUS FEN: ",clone_chess.get_fen())
+
+                    game.display_chessboard(surface)
+                    game.display_lastmove(surface)
+                    game.display_pieces(surface)
+                    # print the Outcome of the game
+                    clone_chess.check_termination(clone_chess.get_board())
+
+                    game.next_player()
+                
+                else:
+                    print("\nDEAD GAME ZONE")
+                    clone_chess.check_termination(clone_chess.get_board())
+                    game.reset()
+
+        else:
+            print("No piece")
+
 
     def autonomous_check_sim(self, listofmove):
-            
-        move_eval = {}
-
-        """ if listofmove == 0:
-            pass
-            else:
         """
+        Checks all the AI's moves inferences and return the one with the higher value of white piece position + material value
+        DOES NOT TAKE blacks INTO CONSIDERATION
+        """
+        move_eval = {}
 
         for i in range(len(listofmove)):
             """"for simulation"""
 
+            # copy current homemade chessboard with current pieces
             tempboard = copy.deepcopy(self.game.board)
-            #tempboard.move(temppiece, move, simulation=True) # move virtually one piece
+            
+            # copy current Python-Chess chess.Board() with current pieces
             temp_cloneboard = self.clone_chess.copy_board()
             
             self.clone_chess.piece_square_eval(temp_cloneboard)
@@ -263,7 +328,6 @@ class Main:
                         move_eval[source_row, source_col, target_row, target_col] = self.clone_chess.piece_square_eval(temp_cloneboard)
                         #self.clone_chess.clear_copy_board(temp_cloneboard)
 
-
         vlist = []
         klist = []
         while len(move_eval) > 0:
@@ -272,60 +336,6 @@ class Main:
             move_eval.pop(max(move_eval,key=move_eval.get))
 
         return klist[0][0], klist[0][1], klist[0][2], klist[0][3]
-                        
-    
-    def autonomous_piece(self,source_row, source_col, target_row, target_col, board, game, clone_chess, surface):
-        # presence of piece within selected square
-        
-        if self.game.board.squares[source_row][source_col].piece_presence():
-            piece = self.game.board.squares[source_row][source_col].piece
-
-            if piece.color == self.game.player_turn:
-
-                board.compute_move(piece, source_row, source_col, bool=True)
-
-                # get the squares for move
-                source = Square(source_row, source_col)
-                target = Square(target_row, target_col)
-
-                move = Move(source, target)
-
-                #  check move ok ?
-                if game.board.valid_move(piece, move):
-
-                    board.move(piece, move)
-
-                    if piece.type == chess.PAWN and game.board.squares[target_row][target_col].piece.type == chess.QUEEN:
-
-                         # BRIDGE HERE cloning move from app to python-chess
-                        self.pawn_promotion(source_row, source_col, target_row, target_col)
-
-                    else:
-                            # BRIDGE HERE cloning move from app to python-chess"""
-                        clone_chess.move_clone_board(move)
-
-                    board.set_true_en_passant(piece)
-
-                    print("\nAUTONOMOUS - %s %s col:%s row:%s to col:%s row:%s" % (piece.color,piece.name,source_col, 7-source_row,target_col, 7-target_row))
-                    
-                    # uncomment to get FEN output
-                    #print("AUTONOMOUS FEN output: ",clone_chess.get_fen())
-
-                    game.display_chessboard(surface)
-                    game.display_lastmove(surface)
-                    game.display_pieces(surface)
-                    # print the Outcome of the game
-                    clone_chess.check_termination(clone_chess.get_board())
-
-                    game.next_player()
-                
-                else:
-                    print("DEAD GAME ZONE--")
-                    clone_chess.check_termination(clone_chess.get_board())
-                    game.reset()
-
-        else:
-            print("No piece")
 
 main = Main()
 main.mainloop()
