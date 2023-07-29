@@ -78,7 +78,7 @@ class OnDiskNetwork:
 
 
 """
-GET TRAINING DATA SECTION
+🅓🅐🅣🅐🅢🅔🅣
 from data file to data compliance for concrete-ml
 """
 # instantiation from data file
@@ -113,9 +113,8 @@ train_input_src = get_train_input(train_src_loader, target=False)    # source
 train_input_trgt = get_train_input(train_trgt_loader, target=True)   # target
 
 
-"""
-LOADING MODEL SECTION
-"""
+# 🅜🅞🅓🅔🅛
+
 # loading and compiling model
 # quantized model 1 - aka source  
 model_source = QTChessNET()
@@ -133,7 +132,7 @@ model_target.load_state_dict(torch.load("weights/target_quantz.pt",map_location 
 model_target.pruning_conv(False)
 
 """
-COMPILATION SECTION
+🅒🅞🅜🅟🅘🅛🅐🅣🅘🅞🅝
 get the quantized model
 """
 ## model 1
@@ -147,8 +146,9 @@ q_model_target = compile_brevitas_qat_model(model_target, train_input_trgt, n_bi
 
 with open("mlir_target.txt", "w") as mlir:
     mlir.write(q_model_target.fhe_circuit.mlir)
+
 """
-NETWORK/SAVING/SERVER SECTION
+🅝🅔🅣🅦🅞🅡🅚/🅢🅐🅥🅘🅝🅖/🅢🅔🅡🅥🅔🅡 🅢🅔🅒🅣🅘🅞🅝
 cf. zama documentation
 """
 # instantiating the network
@@ -182,7 +182,7 @@ network.dev_send_clientspecs_and_modelspecs_to_client("/target")
 
 
 """
-CLIENT SECTION
+🅒🅛🅘🅔🅝🅣
 cf. zama documentation
 """
 source_client = network.client_dir+"/source"

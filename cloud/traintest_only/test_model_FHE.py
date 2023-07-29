@@ -30,17 +30,7 @@ wandb.init(
 wb_config = wandb.config
 
 
-#       ___           ___                ___           ___           ___     
-#      /\__\         /\__\              /\  \         /\__\         /\  \    
-#     /:/  /        /:/  /             /::\  \       /:/  /        /::\  \   
-#    /:/  /        /:/  /             /:/\:\  \     /:/__/        /:/\:\  \  
-#   /:/__/  ___   /:/  /             /::\~\:\  \   /::\  \ ___   /::\~\:\  \ 
-#   |:|  | /\__\ /:/__/             /:/\:\ \:\__\ /:/\:\  /\__\ /:/\:\ \:\__\
-#   |:|  |/:/  / \:\  \             \/__\:\ \/__/ \/__\:\/:/  / \:\~\:\ \/__/
-#   |:|__/:/  /   \:\  \                 \:\__\        \::/  /   \:\ \:\__\  
-#    \::::/__/     \:\  \                 \/__/        /:/  /     \:\ \/__/  
-#     ~~~~          \:\__\                            /:/  /       \:\__\    
-#                    \/__/                            \/__/         \/__/  
+# 🅥🅛 🅕🅗🅔
 
 ## source
 def test_source_concrete(quantized_module, test_input,dtype_inputs=np.int64):
@@ -80,6 +70,7 @@ def test_source_concrete(quantized_module, test_input,dtype_inputs=np.int64):
 
     # closing the wandb logs
     wandb.finish()
+
 
 ## target
 def test_target_concrete(quantized_module, test_input,dtype_inputs=np.int64):

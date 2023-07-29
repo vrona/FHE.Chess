@@ -35,18 +35,8 @@ from source_44cnn_quantz import QTChessNET
 LOADING SECTION
 training_set = Chessset(dataset['AN'])
 """
-#       ___           ___           ___                   ___                    ___           ___           ___           ___     
-#      /\  \         /\  \         /\__\      ___        /\  \                  /\  \         /\  \         /\  \         /\  \    
-#     /::\  \       /::\  \       /:/  /     /\  \       \:\  \                /::\  \       /::\  \        \:\  \       /::\  \   
-#    /:/\ \  \     /:/\:\  \     /:/  /      \:\  \       \:\  \              /:/\:\  \     /:/\:\  \        \:\  \     /:/\:\  \  
-#   _\:\~\ \  \   /::\~\:\  \   /:/  /       /::\__\      /::\  \            /:/  \:\__\   /::\~\:\  \       /::\  \   /::\~\:\  \ 
-#  /\ \:\ \ \__\ /:/\:\ \:\__\ /:/__/     __/:/\/__/     /:/\:\__\          /:/__/ \:|__| /:/\:\ \:\__\     /:/\:\__\ /:/\:\ \:\__\
-#  \:\ \:\ \/__/ \/__\:\/:/  / \:\  \    /\/:/  /       /:/  \/__/          \:\  \ /:/  / \/__\:\/:/  /    /:/  \/__/ \/__\:\/:/  /
-#   \:\ \:\__\        \::/  /   \:\  \   \::/__/       /:/  /                \:\  /:/  /       \::/  /    /:/  /           \::/  / 
-#    \:\/:/  /         \/__/     \:\  \   \:\__\       \/__/                  \:\/:/  /        /:/  /     \/__/            /:/  /  
-#     \::/  /                     \:\__\   \/__/                               \::/__/        /:/  /                      /:/  /   
-#      \/__/                       \/__/                                        ~~            \/__/                       \/__/    
 
+# 🅢🅟🅛🅘🅣 🅓🅐🅣🅐
 
 game_move_set = "data/wb_2000_300.csv"
 wechess = pd.read_csv(game_move_set)
@@ -59,17 +49,8 @@ training_set, valid_set, test_set = np.split(wechess.sample(frac=1, random_state
 
 print(f"When compiling with concrete-ml, tthe size of training_set should be at least 100 data points, here: {len(training_set)}.")
 
-#      ___           ___           ___           ___           ___       ___           ___           ___     
-#     /\  \         /\  \         /\  \         /\  \         /\__\     /\  \         /\  \         /\  \    
-#    /::\  \       /::\  \        \:\  \       /::\  \       /:/  /    /::\  \       /::\  \       /::\  \   
-#   /:/\:\  \     /:/\:\  \        \:\  \     /:/\:\  \     /:/  /    /:/\:\  \     /:/\:\  \     /:/\:\  \  
-#  /:/  \:\__\   /::\~\:\  \       /::\  \   /::\~\:\  \   /:/  /    /:/  \:\  \   /::\~\:\  \   /:/  \:\__\ 
-# /:/__/ \:|__| /:/\:\ \:\__\     /:/\:\__\ /:/\:\ \:\__\ /:/__/    /:/__/ \:\__\ /:/\:\ \:\__\ /:/__/ \:|__|
-# \:\  \ /:/  / \/__\:\/:/  /    /:/  \/__/ \/__\:\/:/  / \:\  \    \:\  \ /:/  / \/__\:\/:/  / \:\  \ /:/  /
-#  \:\  /:/  /       \::/  /    /:/  /           \::/  /   \:\  \    \:\  /:/  /       \::/  /   \:\  /:/  / 
-#   \:\/:/  /        /:/  /     \/__/            /:/  /     \:\  \    \:\/:/  /        /:/  /     \:\/:/  /  
-#    \::/__/        /:/  /                      /:/  /       \:\__\    \::/  /        /:/  /       \::/__/   
-#     ~~            \/__/                       \/__/         \/__/     \/__/         \/__/         ~~       
+
+# 🅓🅐🅣🅐🅛🅞🅐🅓
 
 # from dataset through Chessset class
 trainset = Chessset(training_set['AN'], training_set.shape[0])
@@ -81,9 +62,8 @@ train_loader = DataLoader(trainset, batch_size = 64, shuffle=True, drop_last=Tru
 valid_loader = DataLoader(validset, batch_size = 64, shuffle=True, drop_last=True)
 test_loader = DataLoader(testset, batch_size = 1, shuffle=True, drop_last=True)
 
-"""
-MODEL INSTANTIATION SECTION
-"""
+
+# 🅜🅞🅓🅔🅛
 
 # quantized model 1 - aka source  
 model = QTChessNET()
@@ -91,7 +71,7 @@ model = QTChessNET()
 # quantized model 2 - aka target
 #model = QTtrgChessNET()
 
-## TESTING and ACCURACY
+# 🅣🅔🅢🅣🅘🅝🅖 🅐🅝🅓 🅐🅒🅒🅤🅡🅐🅒🅨
 
 # defining the processor
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")

@@ -61,7 +61,6 @@ class PlainChessNET(nn.Module):
         # define forward behavior
 
         # chessboard context
-
         chessboard = self.input_layer(chessboard)
         chessboard = F.relu(chessboard)
 

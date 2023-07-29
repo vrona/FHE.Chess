@@ -4,7 +4,7 @@ import chess
 import numpy as np
 
 sys.path.append("model_src/")
-from helper_chess_target import Board_State, Move_State
+from helper_chessset import Board_State, Move_State
 
 # recall square table location within chessboard (8x8) 
     # 8 [56,57,58,59,60,61,62,63],

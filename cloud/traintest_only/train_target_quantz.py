@@ -6,11 +6,6 @@ from tqdm import tqdm
 
 #torch.manual_seed(498846564)
 
-"""
-ASCII SET isometric1 http://asciiset.com/figletserver.html
-"""
-
-
 # CUDA's availability
 
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
@@ -47,17 +42,8 @@ def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.
         avg_train_acc = 0
         avg_valid_acc = 0
 
-        #      ___           ___           ___                       ___     
-        #     /\  \         /\  \         /\  \          ___        /\__\    
-        #     \:\  \       /::\  \       /::\  \        /\  \      /::|  |   
-        #      \:\  \     /:/\:\  \     /:/\:\  \       \:\  \    /:|:|  |   
-        #      /::\  \   /::\~\:\  \   /::\~\:\  \      /::\__\  /:/|:|  |__ 
-        #     /:/\:\__\ /:/\:\ \:\__\ /:/\:\ \:\__\  __/:/\/__/ /:/ |:| /\__\
-        #    /:/  \/__/ \/_|::\/:/  / \/__\:\/:/  / /\/:/  /    \/__|:|/:/  /
-        #   /:/  /         |:|::/  /       \::/  /  \::/__/         |:/:/  / 
-        #   \/__/          |:|\/__/        /:/  /    \:\__\         |::/  /  
-        #                  |:|  |         /:/  /      \/__/         /:/  /   
-        #                   \|__|         \/__/                     \/__/    
+
+        # 🅣🅡🅐🅘🅝   
 
         loop = tqdm(enumerate(trainloader), total=len(trainloader), leave=False)
 
@@ -102,21 +88,8 @@ def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.
             loop.set_description(f"Epoch_train [{epoch}/{n_epochs}]")
             loop.set_postfix(loss = loss.item(), train_accuracy = monitor_train_acc)
 
-
-        ### experimental
-        #torch.save(model.state_dict(), "resulttrain/target_experiment.pt")
         
-        #        ___           ___           ___                   ___           ___           ___           ___     
-        #       /\__\         /\  \         /\__\      ___        /\  \         /\  \         /\  \         /\  \    
-        #      /:/  /        /::\  \       /:/  /     /\  \      /::\  \       /::\  \        \:\  \       /::\  \   
-        #     /:/  /        /:/\:\  \     /:/  /      \:\  \    /:/\:\  \     /:/\:\  \        \:\  \     /:/\:\  \  
-        #    /:/__/  ___   /::\~\:\  \   /:/  /       /::\__\  /:/  \:\__\   /::\~\:\  \       /::\  \   /::\~\:\  \ 
-        #    |:|  | /\__\ /:/\:\ \:\__\ /:/__/     __/:/\/__/ /:/__/ \:|__| /:/\:\ \:\__\     /:/\:\__\ /:/\:\ \:\__\
-        #    |:|  |/:/  / \/__\:\/:/  / \:\  \    /\/:/  /    \:\  \ /:/  / \/__\:\/:/  /    /:/  \/__/ \:\~\:\ \/__/
-        #    |:|__/:/  /       \::/  /   \:\  \   \::/__/      \:\  /:/  /       \::/  /    /:/  /       \:\ \:\__\  
-        #     \::::/__/        /:/  /     \:\  \   \:\__\       \:\/:/  /        /:/  /     \/__/         \:\ \/__/  
-        #      ~~~~           /:/  /       \:\__\   \/__/        \::/__/        /:/  /                     \:\__\    
-        #                     \/__/         \/__/                 ~~            \/__/                       \/__/    
+        # 🅥🅐🅛🅘🅓🅐🅣🅔
 
         loop_valid = tqdm(enumerate(validloader), total=len(validloader), leave=False)                    
 
@@ -174,18 +147,7 @@ def train_valid(model, trainloader, validloader, criterion, n_epochs= wb_config.
     wandb.finish()
 
 
-#      ___           ___           ___           ___     
-#     /\  \         /\  \         /\  \         /\  \    
-#     \:\  \       /::\  \       /::\  \        \:\  \   
-#      \:\  \     /:/\:\  \     /:/\ \  \        \:\  \  
-#      /::\  \   /::\~\:\  \   _\:\~\ \  \       /::\  \ 
-#     /:/\:\__\ /:/\:\ \:\__\ /\ \:\ \ \__\     /:/\:\__\
-#    /:/  \/__/ \:\~\:\ \/__/ \:\ \:\ \/__/    /:/  \/__/
-#   /:/  /       \:\ \:\__\    \:\ \:\__\     /:/  /     
-#   \/__/         \:\ \/__/     \:\/:/  /     \/__/      
-#                  \:\__\        \::/  /                 
-#                   \/__/         \/__/            
-
+# 🅣🅔🅢🅣
 
 def test(model, testloader, criterion):
 

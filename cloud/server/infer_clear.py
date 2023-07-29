@@ -3,7 +3,7 @@ import torch
 import chess
 
 sys.path.append("model_src/")
-from helper_chess_target import Board_State, Move_State
+from helper_chessset import Board_State, Move_State
 
 sys.path.append("model_src/clear/")
 from cnn_source_clear import PlainChessNET as source_net
