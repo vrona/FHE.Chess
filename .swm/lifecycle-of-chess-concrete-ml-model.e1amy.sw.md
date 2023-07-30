@@ -9,18 +9,19 @@ app_version: 1.14.0
 
 **Training** (model trained, validated, tested on non-encrypted data)
 
-*   Run training or test: [cloud/traintest\_only/launch\_train\_test\_clear.py](https://cloud/traintest_only/launch_train_test_clear.py)
-*   Models: [cloud/model\_src/clear](https://github.com/vrona/FHE.Chess/tree/quant_fhe/cloud/model_src/clear)
+*   Run training or test: [cloud/traintest\_only/launch\_train\_test\_clear.py](https://github.com/vrona/FHE.Chess/blob/quant_fhe/cloud/traintest_only/launch_train_test_clear.py)
 
-    *   Source (model 1): `📄 cloud/model_src/clear/cnn_source_clear.py`
+*   Models
 
-    *   Target (model 2): `📄 cloud/model_src/clear/cnn_target_clear.py`
+    *   Source (model 1): [cloud/model\_src/clear/cnn\_source\_clear.py](https://github.com/vrona/FHE.Chess/blob/quant_fhe/cloud/model_src/clear/cnn_source_clear.py)
 
-*   Train, validation, test: `📄 cloud/traintest_only`
+    *   Target (model 2): [cloud/model\_src/clear/cnn\_target\_clear.py](https://github.com/vrona/FHE.Chess/blob/quant_fhe/cloud/model_src/clear/cnn_target_clear.py)
 
-    *   Source (model 1):
+*   Train, validation, test
 
-    *   Target (model 2):
+    *   Source (model 1): [cloud/traintest\_only/train\_source\_clear.py](https://github.com/vrona/FHE.Chess/blob/quant_fhe/cloud/traintest_only/train_source_clear.py)
+
+    *   Target (model 2): [cloud/traintest\_only/train\_target\_clear.py](https://github.com/vrona/FHE.Chess/blob/quant_fhe/cloud/traintest_only/train_target_clear.py)
 
 *   **Quantization** (model is converted into an integer equivalent)
 
