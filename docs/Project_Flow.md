@@ -48,19 +48,15 @@ Create a machine-learning-based version of a Chess player which can be executed 
 ## Architecture Client-Server
 
 *   **with both client-server FHE on remote**: (current architecture due to local machine's OS constraint and complexity of model, see. "deepfhe" mode), basically the chess app (scripts which runs the chessboard, pieces, movements rules, ...) itself is in `client_local`. Then, compilation, computation and inference on encrypted data (due to Concrete-ML library) are made in remote server (instance).
-![alt text](https://github.com/vrona/FHE.Chess/blob/quant_fhe/FHE_Chess_archi_current.png)
-<br/>
 
-
-<div align="center"><img src="https://firebasestorage.googleapis.com/v0/b/swimmio-content/o/repositories%2FZ2l0aHViJTNBJTNBRkhFLkNoZXNzJTNBJTNBdnJvbmE%3D%2F46173bd1-69ed-4acd-9e3c-eba63a5e0219.png?alt=media&token=84fc94e2-687f-4ee6-b75a-c6d699fc8a86" style="width:'50%'"/></div>
+<div align="center"><<img src="../FHE_Chess_archi_current.png" style="width:'50%'"/></div>
 
 <br/>
 
 *   **with client FHE on local - with server FHE on remote**: (future architecture), here the chess app itself is still in client\_local accompanied with client FHE for inputs data encryption. Then, computations on encrypted input data and inference of encrypted output data are made in remote server (instance).
-![alt text](https://github.com/vrona/FHE.Chess/blob/quant_fhe/FHE_Chess_archi_next.png)
 <br/>
 
-<div align="center"><img src="https://github.com/vrona/FHE.Chess/blob/quant_fhe/FHE_Chess_archi_next.png" style="width:'50%'"/></div>
+<div align="center"><img src="../FHE_Chess_archi_next.png" style="width:'50%'"/></div>
 
 <br/>
 
