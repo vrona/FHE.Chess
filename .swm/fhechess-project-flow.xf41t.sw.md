@@ -5,8 +5,6 @@ file_version: 1.1.3
 app_version: 1.14.0
 ---
 
-# Project
-
 ## Overview
 
 An application that plays Chess against an AI opponent. The moves are encrypted then thanks to FHE, the AI infers on data that she cannot see.
@@ -14,6 +12,8 @@ An application that plays Chess against an AI opponent. The moves are encrypted 
 ## Description
 
 Create a machine-learning-based version of a Chess player which can be executed in FHE, i.e., where the computer does not see the unencrypted moves. On the player (client) side, the board would be in clear; then, when she plays her move, she encrypts the new position and sends it to the server, which then runs the machine-learning model inference over encrypted data, to predict a new (encrypted) move to apply. Finally, the player decrypts this move and apply it on the position, and reiterate the process until the game is over.
+
+<br/>
 
 ## Knowledge
 
@@ -35,25 +35,26 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
 *   **3 modes enabled** in the FHE.Chess app.:
 
-    *   "**CLEAR**" - the AI uses non-encrypted inputs data (current chessboard and source) and infers non-encrypted output data (the move) due to non quantized model.
+    *   "**clear**" - the AI uses non-encrypted inputs data (current chessboard and source) and infers non-encrypted output data (the move) due to non quantized model.
 
-    *   "**SIMFHE**" - the AI uses a simulation context `fhe="simulate"` to infer decrypted output data (the move) based on encrypted inputs data (current chessboard and source) and thanks to quantized and compiled models.
+    *   "**simfhe**" - the AI uses a simulation context `fhe="simulate"` to infer decrypted output data (the move) based on encrypted inputs data (current chessboard and source) and thanks to quantized and compiled models.
 
-    *   "**DEEPFHE**" - the AI uses the quintessence of FHE to infer decrypted output data (the move) based on encrypted inputs data (current chessboard and source) and thanks to quantized and compiled models.
+    *   "**deepfhe**" - the AI uses the quintessence of FHE to infer decrypted output data (the move) based on encrypted inputs data (current chessboard and source) and thanks to quantized and compiled models.
 
-    *   differences: "SIMFHE" vs "DEEPFHE"
+    *   "simfhe" vs "deepfhe"
 
-        *   the latter needs to save and deployed the model into dedicated client-server architecture. Which includes generated keys to encrypted data (client's job) and keys\_evalutation to infer on encrypted data (server's job). "SIMFHE" simulates the said process.
+        *   the latter needs to save and deployed the models into dedicated client-server architecture. Which includes generated keys to encrypted data (client's job) and keys\_evalutation to infer on encrypted data (server's job). "simfhe" simulates the said process.
 
-        *   based on current model complexity and hardware capacity (Ice Lake CPU), unlike "SIMFHE" which provides an answer within the milliseconds (like "CLEAR"), "DEEPFHE" takes hours to infer.
+        *   based on current model complexity and hardware capacity (Ice Lake CPU), unlike "simfhe" which provides an answer within the milliseconds (like "clear"), "deepfhe" takes hours to infer.
 
         *   both needs to have compiled (quantized) models.
 
-        *   NB: if you test "DEEPFHE" you will want to kill the remote server as the FHE.Chess will freeze while waiting the inferred move by the AI.
+        *   NB: if you test "deepfhe", you will want to kill the remote server as the FHE.Chess will "spinning forever" as it waits the inferred move by the AI.
+<br/>
 
 ## Architecture Client-Server
 
-*   **with both client-server FHE on remote**: (current architecture due to local OS constraint), basically the chess app (scripts which runs the chessboard, pieces, movements rules, ...) itself is in `client_local`. Then, compilation, computation and inference on encrypted data (due to Concrete-ML library) are made in remote server (instance).
+*   **with both client-server FHE on remote**: (current architecture due to local machine's OS constraint and complexity of model, see. "deepfhe" mode), basically the chess app (scripts which runs the chessboard, pieces, movements rules, ...) itself is in `client_local`. Then, compilation, computation and inference on encrypted data (due to Concrete-ML library) are made in remote server (instance).
 
 <br/>
 
@@ -69,11 +70,13 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
 <br/>
 
+<br/>
+
 ## #0 Set up
 
 <br/>
 
-client\_local
+on local machine, run `pip install --no-cache-dir -r client_local/requirements.txt` to install depentendies
 <!-- NOTE-swimm-snippet: the lines below link your snippet to Swimm -->
 ### 📄 requirements.txt
 ```text
@@ -109,6 +112,8 @@ The development of the app can be done completely from scratch or based on [pyth
 It happens that this project is based on both (to speed up development).
 
 From scratch everything from `📄 client_local/chess_env` except the class `📄 client_local/chess_env/clone_chess.py` which return python-chess methods.
+
+<br/>
 
 ## #2 Data
 
