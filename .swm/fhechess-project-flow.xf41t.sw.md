@@ -25,11 +25,12 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
     *   **Quantization**: refers to techniques that helps to contraint an input from continuous (floating point precision) or large set of values to a discrete set (such as integers). Two main libraries are known: _Brevitas_ and the well-known _PyTorch_.
 
-    *   Compilation: is handled by Zama's Concrete-ML library.
+    *   **Compilation**: is handled by Zama's Concrete-ML library. It produces low-code which acts at each computation steps within the quantized models to execute dedicated computations on encrypted data. The price of these additional operations is a slowdown at inference step. (see, "simfhe" vs "deepfhe" below). Thus, the more complex is a quantized model the longer it takes to output a prediction.
 
     *   **FHE circuit**: stands for Full Homomorphic Encryption which enable to compute directly on encrypted input data to infer encrypted output data.
 
-    *   **Concrete-ML**:
+    *   **Concrete-ML**: [Concrete ML](https://docs.zama.ai/concrete-ml/) is an open source, privacy-preserving, machine learning inference framework based on Fully Homomorphic Encryption (FHE).
+<br/>
 
 *   **3 modes enabled** in the FHE.Chess app.:
 
