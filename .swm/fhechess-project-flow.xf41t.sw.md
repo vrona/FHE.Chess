@@ -5,21 +5,25 @@ file_version: 1.1.3
 app_version: 1.14.0
 ---
 
-## Project
+# Project
 
-```markdown
 ## Overview
-Create an application that plays Chess against an AI oponent.
-The moves should be encrypted then the AI doesn't see them but can still inferred on them due to FHE.
+
+Create an application that plays Chess against an AI opponent. The moves should be encrypted then the AI doesn't see them but can still inferred on them due to FHE.
 
 ## Description
-Create a machine-learning-based version of a Chess player which can be executed in FHE, i.e., where the computer does not see the unencrypted moves.
-On the player (client) side, the board would be in clear; then, when she plays her move, she encrypts the new position and sends it to the server, which then runs the machine-learning model inference over encrypted data, to predict a new (encrypted) move to apply. Finally, the player decrypts this move and apply it on the position, and reiterate the process until the game is over.
-```
 
-Read Me, [here](https://github.com/vrona/FHE.Chess/blob/quant_fhe/README.md)
+Create a machine-learning-based version of a Chess player which can be executed in FHE, i.e., where the computer does not see the unencrypted moves. On the player (client) side, the board would be in clear; then, when she plays her move, she encrypts the new position and sends it to the server, which then runs the machine-learning model inference over encrypted data, to predict a new (encrypted) move to apply. Finally, the player decrypts this move and apply it on the position, and reiterate the process until the game is over.
 
-While reading you will based faced to SOURCE and TARGET terms. As a chessboard is made of 64 squares (8\*8), source and target are respectively: the selected square of the piece to move from, the selected square of the piece to move to.
+## Knowledge
+
+*   **Read Me**, [here](https://github.com/vrona/FHE.Chess/blob/quant_fhe/README.md), provides succinct info to run the FHE.Chess. (Do Not Forget to use the [requirements.txt files](https://app.swimm.io/workspaces/J7636nIGHQVtkUo4rtC1/repos/Z2l0aHViJTNBJTNBRkhFLkNoZXNzJTNBJTNBdnJvbmE=/branch/quant_fhe/docs/xf41t/edit#heading-GpIfY): 1 for local, 1 for remote server)
+
+*   **Semantic**: while reading you will based faced to SOURCE and TARGET terms. As a chessboard is made of 64 squares (8\*8), source and target are respectively: the selected square of the piece to move from, the selected square of the piece to move to.
+
+*   **Client-Server Architecture - specific client-server FHE on remote**: (current architecture), basically the chess app itself is on local client, then compilation, computation and inference on encrypted data (due to Concrete-ML library) are made on server (remote instance).
+
+*    
 
 ## #0 Set up
 
