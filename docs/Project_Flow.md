@@ -49,7 +49,7 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
 *   **with both client-server FHE on remote**: (current architecture due to local machine's OS constraint and complexity of model, see. "deepfhe" mode), basically the chess app (scripts which runs the chessboard, pieces, movements rules, ...) itself is in `client_local`. Then, compilation, computation and inference on encrypted data (due to Concrete-ML library) are made in remote server (instance).
 
-<div align="center"><<img src="../FHE_Chess_archi_current.png" style="width:'50%'"/></div>
+<div align="center"><img src="../FHE_Chess_archi_current.png" style="width:'50%'"/></div>
 
 <br/>
 
