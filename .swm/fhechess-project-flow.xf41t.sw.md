@@ -19,17 +19,21 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
 *   **Read Me**, [here](https://github.com/vrona/FHE.Chess/blob/quant_fhe/README.md), provides succinct info to run the FHE.Chess. (Do Not Forget to use the [requirements.txt files](https://app.swimm.io/workspaces/J7636nIGHQVtkUo4rtC1/repos/Z2l0aHViJTNBJTNBRkhFLkNoZXNzJTNBJTNBdnJvbmE=/branch/quant_fhe/docs/xf41t/edit#heading-GpIfY): 1 for local, 1 for remote server)
 
-*   3 possible modes are enabled into FHE.Chess app.:
-
-    *   "CLEAR" - the AI uses non-encrypted inputs data (current chessboard and source) and infers non-encrypted output data (the move) due to non quantized model.
-
-    *   "SIMFHE" - the AI uses
-
 *   **Semantic**: while reading you will based faced to SOURCE, TARGET, FHE, CLEAR, QUANTZ terms.
 
     *   As a chessboard is made of 64 squares (8\*8), _source_ and _target_ are respectively: the selected square of the piece to move from, the selected square of the piece to move to.
 
     *   FHE: stands for Full Homomorphic Encryption.
+
+*   **3 modes enabled** in the FHE.Chess app.:
+
+    *   "CLEAR" - the AI uses non-encrypted inputs data (current chessboard and source) and infers non-encrypted output data (the move) due to non quantized model.
+
+    *   "SIMFHE" - the AI uses a simulation context `fhe="simulate"` to infer decrypted output data (the move) based on encrypted inputs data (current chessboard and source) and thanks to quantized and compiled models.
+
+    *   "DEEPFHE" - the AI uses the quintessence of FHE to infer decrypted output data (the move) based on encrypted inputs data (current chessboard and source) and thanks to quantized and compiled models.
+
+    *   differences "SIMFHE" vs "DEEPFHE"
 
 ## Architecture Client-Server
 
@@ -53,7 +57,7 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
 <br/>
 
-Local (aka client\_local)
+client\_local
 <!-- NOTE-swimm-snippet: the lines below link your snippet to Swimm -->
 ### 📄 requirements.txt
 ```text
@@ -64,7 +68,7 @@ Local (aka client\_local)
 
 <br/>
 
-Cloud (aka Server)
+server\_cloud
 <!-- NOTE-swimm-snippet: the lines below link your snippet to Swimm -->
 ### 📄 server_cloud/requirements.txt
 ```text
