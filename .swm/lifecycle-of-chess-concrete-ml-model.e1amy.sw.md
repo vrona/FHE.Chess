@@ -7,7 +7,9 @@ app_version: 1.14.0
 
 ## Model Development
 
-**Training** (model trained, validated, tested on non-encrypted data)
+**Clear**
+
+Clear models trained, validated, tested on non-encrypted data.
 
 *   Run training or test: [cloud/traintest\_only/launch\_train\_test\_clear.py](https://github.com/vrona/FHE.Chess/blob/quant_fhe/cloud/traintest_only/launch_train_test_clear.py)
 
@@ -23,9 +25,25 @@ app_version: 1.14.0
 
     *   Target (model 2): [cloud/traintest\_only/train\_target\_clear.py](https://github.com/vrona/FHE.Chess/blob/quant_fhe/cloud/traintest_only/train_target_clear.py)
 
-*   **Quantization** (model is converted into an integer equivalent)
+**Quantization**
 
+Quantized model (clear models are converted into an integer equivalent) trained, validated, tested on non-encrypted data.
+
+*   Run training & testing: [cloud/traintest\_only/launch\_train\_quantz.py](https://github.com/vrona/FHE.Chess/blob/quant_fhe/cloud/traintest_only/launch_train_quantz.py)
+*   Models
+
+    *   Source (model 1): [cloud/model\_src/quantz/source\_44cnn\_quantz.py](https://github.com/vrona/FHE.Chess/blob/quant_fhe/cloud/model_src/quantz/source_44cnn_quantz.py)
+
+    *   Target (model 2): [cloud/model\_src/quantz/target\_44cnn\_quantz.py](https://github.com/vrona/FHE.Chess/blob/quant_fhe/cloud/model_src/quantz/target_44cnn_quantz.py)
+
+*   Train, validation, test
+
+    *   Source (model 1): [cloud/traintest\_only/train\_source\_clear.py](https://github.com/vrona/FHE.Chess/blob/quant_fhe/cloud/traintest_only/train_source_clear.py)
+
+    *   Target (model 2): [cloud/traintest\_only/train\_target\_clear.py](https://github.com/vrona/FHE.Chess/blob/quant_fhe/cloud/traintest_only/train_target_clear.py)
 *   **Simulation** (Virtual Library)
+
+    *   Run test (model are compiled to run inference on encrypted data): [cloud/traintest\_only/launch\_(test)\_compile\_fhe.py](https://github.com/vrona/FHE.Chess/blob/quant_fhe/cloud/traintest_only/launch_(test)_compile_fhe.py)
 
 *   **Compilation** (model compiled with Concrete's FHE compiler)
 
