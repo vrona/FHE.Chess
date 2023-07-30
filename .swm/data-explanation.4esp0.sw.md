@@ -1,8 +1,8 @@
 ---
 id: 4esp0
 title: Data Explanation
-file_version: 1.1.2
-app_version: 1.2.0
+file_version: 1.1.3
+app_version: 1.14.0
 ---
 
 PGN (Portable Game Notation) file contains \[annotations\] which pair a Tag with a "String value" and then all the games' moves.
@@ -15,7 +15,7 @@ The outcome is notified by symbole "+" (Check), "#" (Checkmate) and "1-0" if Whi
 
 match _pgn_ (portable game notation) data example formatted to be imported into lichess: [https://lichess.org/paste](https://lichess.org/paste)
 <!-- NOTE-swimm-snippet: the lines below link your snippet to Swimm -->
-### 📄 docs/match_example.txt
+### 📄 docs/chess_match_ex.txt
 ```text
 1      [Event                                                         "Blitz"]
 2      [White                                                         "go4jas"]

@@ -1,8 +1,8 @@
 ---
 id: 5rfyt
 title: Castling move
-file_version: 1.1.2
-app_version: 1.5.5
+file_version: 1.1.3
+app_version: 1.14.0
 ---
 
 Chess rules: one time possibility that two pieces move at once and over another piece (basically only knights can).
@@ -15,85 +15,85 @@ At _Queenside_, the King moves two squares to the left while the right Rook move
 
 
 <!-- NOTE-swimm-snippet: the lines below link your snippet to Swimm -->
-### 📄 client/chess_env/board.py
+### 📄 client_local/chess_env/board.py
 ```python
-340                # castling
-341                if not piece.moved:
-342                    
-343                    # queenside
-344                    left_rook = self.squares[row][0].piece
-345    
-346                    if isinstance(left_rook, Rook):
-347                        if not left_rook.moved:
-348                            for c in range(1, 4):
-349                                if self.squares[row][c].piece_presence(): # castling abord because of piece presence
-350                                    break
-351    
-352                                if c == 3:
-353                                    piece.left_rook = left_rook # adds left rook to queen
-354                                    
-355                                    # rook move to king
-356                                    # micro location
-357                                    source = Square(row, 0)
-358                                    target = Square(row, 3)
-359    
-360                                    # move at micro
-361                                    rook_move = Move(source, target)
-362                                    
-363                                    # king move to rook
-364                                    # micro location
-365                                    source = Square(row, col)
-366                                    target = Square(row, 2)
-367    
-368                                    # move at micro
-369                                    king_move = Move(source, target)
-370                                    
-371                                    if bool:
-372                                        if not self.check_simulation(left_rook, rook_move) and not self.check_simulation(piece, king_move): # if not in check go ahead
-373                                            left_rook.add_ok_move(rook_move)
-374                                            piece.add_ok_move(king_move)
-375                                    else:
-376                                            left_rook.add_ok_move(rook_move)
-377                                            piece.add_ok_move(king_move) # if not in check go ahead
-378    
-379    
-380                    # kingside
-381                    right_rook = self.squares[row][7].piece
-382    
-383                    if isinstance(right_rook, Rook):
-384                        if not right_rook.moved:
-385                            for c in range(5, 7):
-386                                if self.squares[row][c].piece_presence(): # castling abord because of piece presence
-387                                    break
-388    
-389                                if c == 6:
-390                                    piece.right_rook = right_rook # adds right rook to king
-391                                    
-392                                    # rook move to king
-393                                        # micro location
-394                                    source = Square(row, 7)
-395                                    target = Square(row, 5)
-396    
-397                                        # move at micro
-398                                    rook_move = Move(source, target)
-399                                    
-400                                    # king move to rook
-401                                        # micro location
-402                                    source = Square(row, col)
-403                                    target = Square(row, 6)
-404                                    
-405                                        # move at micro
-406                                    king_move = Move(source, target)
-407                                    
-408                                    if bool:
-409                                        if not self.check_simulation(right_rook, rook_move) and not self.check_simulation(piece, king_move): # if not in check go ahead
-410                                            right_rook.add_ok_move(rook_move)
-411                                            piece.add_ok_move(king_move)
-412                                    else:
-413                                            right_rook.add_ok_move(rook_move)
-414                                            piece.add_ok_move(king_move) # if not in check go ahead
+293                # castling
+294                if not piece.moved:
+295                    
+296                    # queenside
+297                    left_rook = self.squares[row][0].piece
+298    
+299                    if isinstance(left_rook, Rook):
+300                        if not left_rook.moved:
+301                            for c in range(1, 4):
+302                                if self.squares[row][c].piece_presence(): # castling abord because of piece presence
+303                                    break
+304    
+305                                if c == 3:
+306                                    piece.left_rook = left_rook # adds left rook to queen
+307                                    
+308                                    # rook move to king
+309                                    # micro location
+310                                    source = Square(row, 0)
+311                                    target = Square(row, 3)
+312    
+313                                    # move at micro
+314                                    rook_move = Move(source, target)
+315                                    
+316                                    # king move to rook
+317                                    # micro location
+318                                    source = Square(row, col)
+319                                    target = Square(row, 2)
+320    
+321                                    # move at micro
+322                                    king_move = Move(source, target)
+323                                    
+324                                    if bool:
+325                                        if not self.king_check_sim(left_rook, rook_move) and not self.king_check_sim(piece, king_move): # if not in check go ahead
+326                                            left_rook.add_ok_move(rook_move)
+327                                            piece.add_ok_move(king_move)
+328                                    else:
+329                                            left_rook.add_ok_move(rook_move)
+330                                            piece.add_ok_move(king_move) # if not in check go ahead
+331    
+332    
+333                    # kingside
+334                    right_rook = self.squares[row][7].piece
+335    
+336                    if isinstance(right_rook, Rook):
+337                        if not right_rook.moved:
+338                            for c in range(5, 7):
+339                                if self.squares[row][c].piece_presence(): # castling abord because of piece presence
+340                                    break
+341    
+342                                if c == 6:
+343                                    piece.right_rook = right_rook # adds right rook to king
+344                                    
+345                                    # rook move to king
+346                                        # micro location
+347                                    source = Square(row, 7)
+348                                    target = Square(row, 5)
+349    
+350                                        # move at micro
+351                                    rook_move = Move(source, target)
+352                                    
+353                                    # king move to rook
+354                                        # micro location
+355                                    source = Square(row, col)
+356                                    target = Square(row, 6)
+357                                    
+358                                        # move at micro
+359                                    king_move = Move(source, target)
+360                                    
+361                                    if bool:
+362                                        if not self.king_check_sim(right_rook, rook_move) and not self.king_check_sim(piece, king_move): # if not in check go ahead
+363                                            right_rook.add_ok_move(rook_move)
+364                                            piece.add_ok_move(king_move)
+365                                    else:
+366                                            right_rook.add_ok_move(rook_move)
+367                                            piece.add_ok_move(king_move) # if not in check go ahead
 ```
 
 <br/>
 
-This file was generated by Swimm. [Click here to view it in the app](/repos/Z2l0aHViJTNBJTNBRkhFLkNoZXNzJTNBJTNBdnJvbmE=/docs/5rfyt).
+This file was generated by Swimm. [Click here to view it in the app](https://app.swimm.io/repos/Z2l0aHViJTNBJTNBRkhFLkNoZXNzJTNBJTNBdnJvbmE=/docs/5rfyt).
