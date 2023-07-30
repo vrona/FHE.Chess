@@ -114,6 +114,8 @@ It happens that this project is based on both (to speed up development).
 
 Except the [Clone\_Chess class](https://github.com/vrona/FHE.Chess/blob/quant_fhe/client_local/chess_env/clone_chess.py) which return [python-chess](https://python-chess.readthedocs.io/en/) methods, everything from [client\_local/chess\_env](https://github.com/vrona/FHE.Chess/tree/quant_fhe/client_local/chess_env) is made from scratch.
 
+<br/>
+
 ## #2 Data
 
 Data used is downloadable here: [https://www.kaggle.com/datasets/arevel/chess-games](https://www.kaggle.com/datasets/arevel/chess-games)
@@ -122,7 +124,8 @@ Data used is downloadable here: [https://www.kaggle.com/datasets/arevel/chess-ga
 
 *   Data preparation is explained in this [wb\_2000.ipynb](https://github.com/vrona/FHE.Chess/blob/quant_fhe/server_cloud/data/wb_2000.ipynb) notebook. _Little take away: the goal is to create an AI that would be rated at least 1500 ELO on Lichess. Thus, data preparation aimed to provide only data points from games made by chess players rated at least 2000 ELO._
 
-*   Data transformation (to matrix and flat) for source target models `📄 server_cloud/model_src/helper_chessset.py`
+*   Data transformation (to matrix and flat) for source and target models are supplied by [server\_cloud/model\_src/helper\_chessset.py](https://github.com/vrona/FHE.Chess/blob/quant_fhe/server_cloud/model_src/helper_chessset.py).
+<br/>
 
 ## #3 Models
 
