@@ -20,11 +20,11 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
     *   **Quantization**: refers to techniques that helps to contraint an input from continuous (floating point precision) or large set of values to a discrete set (such as integers). Two main libraries are known: _Brevitas_ and the well-known _PyTorch_.
 
-    *   Compilation: is handled by Zama's Concrete-ML library.
+    *   **Compilation**: is handled by Zama's Concrete-ML library. It produces low-code which acts at each computation steps within the quantized models to execute dedicated computations on encrypted data. The price of these additional operations is a slowdown at inference step. (see, "simfhe" vs "deepfhe" below). Thus, the more complex is a quantized model the longer it takes to output a prediction.
 
     *   **FHE circuit**: stands for Full Homomorphic Encryption which enable to compute directly on encrypted input data to infer encrypted output data.
 
-    *   **Concrete-ML**:
+    *   **Concrete-ML**: [Concrete ML](https://docs.zama.ai/concrete-ml/) is an open source, privacy-preserving, machine learning inference framework based on Fully        Homomorphic Encryption (FHE).
 
 *   **3 modes enabled** in the FHE.Chess app.:
 
@@ -48,14 +48,13 @@ Create a machine-learning-based version of a Chess player which can be executed 
 ## Architecture Client-Server
 
 *   **with both client-server FHE on remote**: (current architecture due to local machine's OS constraint and complexity of model, see. "deepfhe" mode), basically the chess app (scripts which runs the chessboard, pieces, movements rules, ...) itself is in `client_local`. Then, compilation, computation and inference on encrypted data (due to Concrete-ML library) are made in remote server (instance).
-
+<br/>
 <div align="center"><img src="../FHE_Chess_archi_current.png" style="width:'50%'"/></div>
 
 <br/>
 
 *   **with client FHE on local - with server FHE on remote**: (future architecture), here the chess app itself is still in client\_local accompanied with client FHE for inputs data encryption. Then, computations on encrypted input data and inference of encrypted output data are made in remote server (instance).
 <br/>
-
 <div align="center"><img src="../FHE_Chess_archi_next.png" style="width:'50%'"/></div>
 
 <br/>
@@ -69,8 +68,8 @@ _creation and activation of virtual environments are strongly recommended._
 <br/>
 
 on your local machine, run `pip install --no-cache-dir -r requirements.txt` inside `client_local` directory.
-<!-- NOTE-swimm-snippet: the lines below link your snippet to Swimm -->
-### 📄 requirements.txt
+
+### [/requirements](../requirements.txt)
 ```text
 1      chess==1.9.4
 2      numpy==1.23.5
@@ -80,8 +79,8 @@ on your local machine, run `pip install --no-cache-dir -r requirements.txt` insi
 <br/>
 
 on remote machine, run `pip install --no-cache-dir -r requirements.txt` inside `server_cloud` directory.
-<!-- NOTE-swimm-snippet: the lines below link your snippet to Swimm -->
-### 📄 server_cloud/requirements.txt
+
+### [server_cloud/requirements](../server_cloud/requirements.txt)
 ```text
 1      brevitas==0.8.0
 2      chess==1.9.4
@@ -98,22 +97,20 @@ on remote machine, run `pip install --no-cache-dir -r requirements.txt` inside `
 ## #1 Chess App.
 
 The AI needs an environment to take input from and to propose output to.
-
 The development of the chess app itself can be done completely from scratch or based on [python-chess](https://python-chess.readthedocs.io/en/latest/) library.
-
 It happens that this project is based on both (to speed up development).
 
-Except the [Clone\_Chess class](https://github.com/vrona/FHE.Chess/blob/quant_fhe/client_local/chess_env/clone_chess.py) which return [python-chess](https://python-chess.readthedocs.io/en/) methods, everything from [client\_local/chess\_env](https://github.com/vrona/FHE.Chess/tree/quant_fhe/client_local/chess_env) is made from scratch.
+Except the [Clone_Chess class](https://github.com/vrona/FHE.Chess/blob/quant_fhe/client_local/chess_env/clone_chess.py) which return [python-chess](https://python-chess.readthedocs.io/en/) methods, everything from [client_local/chess_env](https://github.com/vrona/FHE.Chess/tree/quant_fhe/client_local/chess_env) is made from scratch.
 
 ## #2 Data
 
-Data used is downloadable here: [https://www.kaggle.com/datasets/arevel/chess-games](https://www.kaggle.com/datasets/arevel/chess-games)
+Data used is downloadable here: [kaggle.com/datasets/arevel](https://www.kaggle.com/datasets/arevel/chess-games)
 
-*   Data explanation [Data Explanation](data-explanation.4esp0.sw.md)
+*   **Raw data explanation** [Data Explanation](data_explanation.md)
 
-*   Data preparation is explained here, little take away, the goal is to create an AI that would be rated at least 1500 ELO on Lichess. Thus, data preparation aimed to provide only data points from games made by chess players rated at least 2000 ELO.
+*   ***Data preparation** is explained in this [wb_2000.ipynb](https://github.com/vrona/FHE.Chess/blob/quant_fhe/server_cloud/data/wb_2000.ipynb) notebook. _Little take away: the goal is to create an AI that would be rated at least 1500 ELO on Lichess. Thus, data preparation aimed to provide only data points from games made by chess players rated at least 2000 ELO.
 
-*   Data transformation (to matrix and flat) for source target models `📄 server_cloud/model_src/helper_chessset.py`
+*   **Data transformation** needed to nurture source and target models. Transformaions are supplied by [helper_chessset.py](https://github.com/vrona/FHE.Chess/blob/quant_fhe/server_cloud/model_src/helper_chessset.py) - detailed here [Data transformation](data_transformation.md)
 
 ## #3 Models
 
