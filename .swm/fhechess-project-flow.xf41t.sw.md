@@ -38,7 +38,7 @@ Local (aka client\_local)
 
 Cloud (aka Server)
 <!-- NOTE-swimm-snippet: the lines below link your snippet to Swimm -->
-### 📄 cloud/requirements.txt
+### 📄 server_cloud/requirements.txt
 ```text
 1      brevitas==0.8.0
 2      chess==1.9.4
@@ -68,9 +68,9 @@ Data used is downloadable here [https://www.kaggle.com/datasets/arevel/chess-gam
 
 *   Data explanation [Data Explanation](data-explanation.4esp0.sw.md)
 
-*   Data preparation is explained here `📄 cloud/data/wb_2000.ipynb` `📄 cloud/data/wb_2000_300.csv`
+*   Data preparation is explained here
 
-*   Data transformation (to matrix and flat) for source target models `📄 cloud/model_src/helper_chessset.py`
+*   Data transformation (to matrix and flat) for source target models `📄 server_cloud/model_src/helper_chessset.py`
 
 ## #3 Models
 
