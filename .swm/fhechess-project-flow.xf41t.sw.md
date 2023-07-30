@@ -33,7 +33,7 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
 <br/>
 
-<div align="center"><img src="https://firebasestorage.googleapis.com/v0/b/swimmio-content/o/repositories%2FZ2l0aHViJTNBJTNBRkhFLkNoZXNzJTNBJTNBdnJvbmE%3D%2F1f2a6fa5-16cc-4c66-98e3-cb409800edfa.png?alt=media&token=89528b5e-2f0f-4229-98cd-363169bc4aa1" style="width:'50%'"/></div>
+<div align="center"><img src="https://firebasestorage.googleapis.com/v0/b/swimmio-content/o/repositories%2FZ2l0aHViJTNBJTNBRkhFLkNoZXNzJTNBJTNBdnJvbmE%3D%2Fdafcebc8-377b-4f85-a2f4-bc351d4d5c02.png?alt=media&token=bd01a3c7-33e2-444c-b451-7d50a50049c2" style="width:'50%'"/></div>
 
 <br/>
 
