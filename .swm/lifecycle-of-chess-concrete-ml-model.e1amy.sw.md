@@ -11,16 +11,20 @@ app_version: 1.14.0
 
 *   Run training or test: `📄 cloud/traintest_only/launch_train_test_clear.py`
 
+*   Data: !\[alt text\]([https://github.com/vrona/FHE.Chess/blob/quant\_fhe/cloud/data/wb\_2000.ipynb](https://github.com/vrona/FHE.Chess/blob/quant_fhe/cloud/data/wb_2000.ipynb))
+
 *   Models: `📄 cloud/model_src/clear`
 
     *   Source (model 1): `📄 cloud/model_src/clear/cnn_source_clear.py`
 
     *   Target (model 2): `📄 cloud/model_src/clear/cnn_target_clear.py`
+
 *   Train, validation, test: `📄 cloud/traintest_only`
 
     *   Source (model 1):
 
     *   Target (model 2):
+
 *   **Quantization** (model is converted into an integer equivalent)
 
 *   **Simulation** (Virtual Library)
