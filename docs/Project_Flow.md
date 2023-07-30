@@ -10,7 +10,7 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
 ## Knowledge
 
-*   **Read Me**, [here](https://github.com/vrona/FHE.Chess/blob/quant_fhe/README.md), provides succinct info to run the FHE.Chess. (Do Not Forget to use the [requirements.txt files](https://app.swimm.io/workspaces/J7636nIGHQVtkUo4rtC1/repos/Z2l0aHViJTNBJTNBRkhFLkNoZXNzJTNBJTNBdnJvbmE=/branch/quant_fhe/docs/xf41t/edit#heading-GpIfY): 1 for local, 1 for remote server)
+*   [**Read Me**](../README.md) provides succinct info to run the FHE.Chess. (Do Not Forget to use the requirements.txt files (see. #0 Set up - dependencies installation"): 1 for local, 1 for remote server)
 
 *   **Semantic**: while reading you will faced to specific terms, let's cleared them out.
 
