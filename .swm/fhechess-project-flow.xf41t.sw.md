@@ -13,8 +13,6 @@ An application that plays Chess against an AI opponent. The moves are encrypted 
 
 Create a machine-learning-based version of a Chess player which can be executed in FHE, i.e., where the computer does not see the unencrypted moves. On the player (client) side, the board would be in clear; then, when she plays her move, she encrypts the new position and sends it to the server, which then runs the machine-learning model inference over encrypted data, to predict a new (encrypted) move to apply. Finally, the player decrypts this move and apply it on the position, and reiterate the process until the game is over.
 
-<br/>
-
 ## Knowledge
 
 *   **Read Me**, [here](https://github.com/vrona/FHE.Chess/blob/quant_fhe/README.md), provides succinct info to run the FHE.Chess. (Do Not Forget to use the [requirements.txt files](https://app.swimm.io/workspaces/J7636nIGHQVtkUo4rtC1/repos/Z2l0aHViJTNBJTNBRkhFLkNoZXNzJTNBJTNBdnJvbmE=/branch/quant_fhe/docs/xf41t/edit#heading-GpIfY): 1 for local, 1 for remote server)
@@ -72,11 +70,13 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
 <br/>
 
-## #0 Set up
+## #0 Set up - dependencies installation
+
+_creation and activation of virtual environments are strongly recommended._
 
 <br/>
 
-on local machine, run `pip install --no-cache-dir -r client_local/requirements.txt` to install depentendies
+on your local machine, run `pip install --no-cache-dir -r requirements.txt` inside `client_local` directory.
 <!-- NOTE-swimm-snippet: the lines below link your snippet to Swimm -->
 ### 📄 requirements.txt
 ```text
@@ -87,7 +87,7 @@ on local machine, run `pip install --no-cache-dir -r client_local/requirements.t
 
 <br/>
 
-server\_cloud
+on remote machine, run `pip install --no-cache-dir -r requirements.txt` inside `server_cloud` directory.
 <!-- NOTE-swimm-snippet: the lines below link your snippet to Swimm -->
 ### 📄 server_cloud/requirements.txt
 ```text
@@ -107,21 +107,19 @@ server\_cloud
 
 The AI needs an environment to take input from and to propose output to.
 
-The development of the app can be done completely from scratch or based on [python-chess](https://python-chess.readthedocs.io/en/latest/) library.
+The development of the chess app itself can be done completely from scratch or based on [python-chess](https://python-chess.readthedocs.io/en/latest/) library.
 
 It happens that this project is based on both (to speed up development).
 
-From scratch everything from `📄 client_local/chess_env` except the class `📄 client_local/chess_env/clone_chess.py` which return python-chess methods.
-
-<br/>
+Except the [Clone\_Chess class](https://github.com/vrona/FHE.Chess/blob/quant_fhe/client_local/chess_env/clone_chess.py) which return [python-chess](https://python-chess.readthedocs.io/en/) methods, everything from [client\_local/chess\_env](https://github.com/vrona/FHE.Chess/tree/quant_fhe/client_local/chess_env) is made from scratch.
 
 ## #2 Data
 
-Data used is downloadable here [https://www.kaggle.com/datasets/arevel/chess-games](https://www.kaggle.com/datasets/arevel/chess-games)
+Data used is downloadable here: [https://www.kaggle.com/datasets/arevel/chess-games](https://www.kaggle.com/datasets/arevel/chess-games)
 
 *   Data explanation [Data Explanation](data-explanation.4esp0.sw.md)
 
-*   Data preparation is explained here
+*   Data preparation is explained here, little take away, the goal is to create an AI that would be rated at least 1500 ELO on Lichess. Thus, data preparation aimed to provide only data points from games made by chess players rated at least 2000 ELO.
 
 *   Data transformation (to matrix and flat) for source target models `📄 server_cloud/model_src/helper_chessset.py`
 
