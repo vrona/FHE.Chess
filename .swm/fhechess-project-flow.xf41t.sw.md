@@ -25,11 +25,13 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
     *   **Clear**: in cryptography context, it means non-encrypted.
 
-    *   **Quantization**: refers to techniques that helps to contraint an input from continuous (floating point precision) or large set of values to a discrete set (such as integers)
+    *   **Quantization**: refers to techniques that helps to contraint an input from continuous (floating point precision) or large set of values to a discrete set (such as integers). Two main libraries are known: _Brevitas_ and the well-known _PyTorch_.
 
-    *   **FHE**: stands for Full Homomorphic Encryption which enable to compute directly on encrypted input data to infer encrypted output data.
+    *   Compilation: is handled by Zama's Concrete-ML library.
 
-    *    
+    *   **FHE circuit**: stands for Full Homomorphic Encryption which enable to compute directly on encrypted input data to infer encrypted output data.
+
+    *   Concrete-ML
 
 *   **3 modes enabled** in the FHE.Chess app.:
 
