@@ -9,15 +9,8 @@ app_version: 1.14.0
 
 **Training** (model trained, validated, tested on non-encrypted data)
 
-*   Run training or test: `📄 cloud/traintest_only/launch_train_test_clear.py`
-
-*   Data: !\[alt text\]([https://github.com/vrona/FHE.Chess/blob/quant\_fhe/cloud/data/wb\_2000.ipynb](https://github.com/vrona/FHE.Chess/blob/quant_fhe/cloud/data/wb_2000.ipynb))
-
-Data:
-
-[cloud/model\_src/helper\_chessset.py](https://github.com/vrona/FHE.Chess/blob/quant_fhe/cloud/model_src/helper_chessset.py)
-
-*   Models: `📄 cloud/model_src/clear`
+*   Run training or test: [cloud/traintest\_only/launch\_train\_test\_clear.py](https://cloud/traintest_only/launch_train_test_clear.py)
+*   Models: [cloud/model\_src/clear](https://github.com/vrona/FHE.Chess/tree/quant_fhe/cloud/model_src/clear)
 
     *   Source (model 1): `📄 cloud/model_src/clear/cnn_source_clear.py`
 
