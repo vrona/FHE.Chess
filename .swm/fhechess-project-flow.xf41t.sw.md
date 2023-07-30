@@ -1,8 +1,8 @@
 ---
 id: xf41t
 title: FHE.Chess Project Flow
-file_version: 1.1.2
-app_version: 1.6.1
+file_version: 1.1.3
+app_version: 1.14.0
 ---
 
 ## Project
@@ -10,14 +10,14 @@ app_version: 1.6.1
 ```markdown
 ## Overview
 Create an application that plays Chess against an AI oponent.
-The moves should be encrypted with FHE so that the AI doesn't see them but can still run its algorithm on them.
+The moves should be encrypted then the AI doesn't see them but can still inferred on them due to FHE.
 
 ## Description
 Create a machine-learning-based version of a Chess player which can be executed in FHE, i.e., where the computer does not see the unencrypted moves.
 On the player (client) side, the board would be in clear; then, when she plays her move, she encrypts the new position and sends it to the server, which then runs the machine-learning model inference over encrypted data, to predict a new (encrypted) move to apply. Finally, the player decrypts this move and apply it on the position, and reiterate the process until the game is over.
 ```
 
-`📄 README.md`
+Read Me, [here](https://github.com/vrona/FHE.Chess/blob/quant_fhe/README.md)
 
 While reading you will based faced to SOURCE and TARGET terms. As a chessboard is made of 64 squares (8\*8), source and target are respectively: the selected square of the piece to move from, the selected square of the piece to move to.
 
@@ -25,19 +25,29 @@ While reading you will based faced to SOURCE and TARGET terms. As a chessboard i
 
 <br/>
 
-
+Local (aka client\_local)
 <!-- NOTE-swimm-snippet: the lines below link your snippet to Swimm -->
-### 📄 requirements_full.txt
+### 📄 requirements.txt
+```text
+1      chess==1.9.4
+2      numpy==1.23.5
+3      pygame==2.1.2
+```
+
+<br/>
+
+Cloud (aka Server)
+<!-- NOTE-swimm-snippet: the lines below link your snippet to Swimm -->
+### 📄 cloud/requirements.txt
 ```text
 1      brevitas==0.8.0
 2      chess==1.9.4
-3      concrete-ml>=0.4.0
+3      concrete-ml==1.0.3
 4      numpy==1.23.5
-5      pandas==1.5.2
-6      pygame==2.1.2
-7      torch==1.13.1
-8      tqdm==4.64.1
-9      wandb==0.13.10
+5      pygame==2.1.2
+6      torch==1.13.1
+7      tqdm==4.64.1
+8      wandb==0.13.10
 ```
 
 <br/>
@@ -50,7 +60,7 @@ The development of the app can be done completely from scratch or based on [pyth
 
 It happens that this project is based on both (to speed up development).
 
-From scratch everything from `📄 client/chess_env` except the class `📄 client/chess_env/clone_chess.py` which return python-chess methods.
+From scratch everything from `📄 client_local/chess_env` except the class `📄 client_local/chess_env/clone_chess.py` which return python-chess methods.
 
 ## #2 Data
 
@@ -58,13 +68,9 @@ Data used is downloadable here [https://www.kaggle.com/datasets/arevel/chess-gam
 
 *   Data explanation [Data Explanation](data-explanation.4esp0.sw.md)
 
-*   Data preparation is explained here `📄 data/wb_2000.ipynb`
+*   Data preparation is explained here `📄 cloud/data/wb_2000.ipynb` `📄 cloud/data/wb_2000_300.csv`
 
-*   Data transformation (to matrix and flat)
-
-    *   for source model `📄 code_src/model_src/helper_chess_v7_64source.py`
-
-    *   for target model `📄 code_src/model_src/helper_chess_v7_64target.py`
+*   Data transformation (to matrix and flat) for source target models `📄 cloud/model_src/helper_chessset.py`
 
 ## #3 Models
 
@@ -74,13 +80,13 @@ Consequences: AI always starts her moves the same way, but over 5 moves it start
 
 *   **#3.1 clear source / target**
 
-    *   **Source model** `📄 code_src/model_src/clear/cnn_v13_64bit_source_clear.py`
+    *   **Source model**
 
         *   input source : (12,8,8) board -> output source : selected Square number to move FROM as 1D array of shape (64,)
 
         *   3 convolution layers (hidden size=128) + fully-connected layer (64)
 
-    *   **Target model** `📄 code_src/model_src/clear/cnn_v13_64bit_target_clear.py`
+    *   **Target model**
 
         *   input target : (12,8,8) board + selected Square number to move from as 1D array of shape (64,) -> output target : selected Square number to move TO as 1D array of shape (64,)
 
