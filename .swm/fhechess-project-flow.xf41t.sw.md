@@ -19,11 +19,11 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
 *   **Read Me**, [here](https://github.com/vrona/FHE.Chess/blob/quant_fhe/README.md), provides succinct info to run the FHE.Chess. (Do Not Forget to use the [requirements.txt files](https://app.swimm.io/workspaces/J7636nIGHQVtkUo4rtC1/repos/Z2l0aHViJTNBJTNBRkhFLkNoZXNzJTNBJTNBdnJvbmE=/branch/quant_fhe/docs/xf41t/edit#heading-GpIfY): 1 for local, 1 for remote server)
 
-*   **Semantic**: while reading you will based faced to specific terms, let's clear them out.
+*   **Semantic**: while reading you will faced to specific terms, let's cleared them out.
 
     *   As a chessboard is made of 64 squares (8\*8), **Source** and **Target** are respectively: the selected square of the piece to move from, the selected square of the piece to move to.
 
-    *   **Clear**: in cryptography context, it means non-encrypted.
+    *   **Clear**: in cryptography context, means non-encrypted.
 
     *   **Quantization**: refers to techniques that helps to contraint an input from continuous (floating point precision) or large set of values to a discrete set (such as integers). Two main libraries are known: _Brevitas_ and the well-known _PyTorch_.
 
@@ -31,7 +31,7 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
     *   **FHE circuit**: stands for Full Homomorphic Encryption which enable to compute directly on encrypted input data to infer encrypted output data.
 
-    *   Concrete-ML
+    *   **Concrete-ML**:
 
 *   **3 modes enabled** in the FHE.Chess app.:
 
@@ -43,7 +43,7 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
     *   differences: "SIMFHE" vs "DEEPFHE"
 
-        *   the latter needs to save and deployed the model into dedicated client-server architecture. Which includes generating keys to encrypted data (client's job) and keys\_evalutation to infer on encrypted data (server's job). "SIMFHE" simulates the said process.
+        *   the latter needs to save and deployed the model into dedicated client-server architecture. Which includes generated keys to encrypted data (client's job) and keys\_evalutation to infer on encrypted data (server's job). "SIMFHE" simulates the said process.
 
         *   based on current model complexity and hardware capacity (Ice Lake CPU), unlike "SIMFHE" which provides an answer within the milliseconds (like "CLEAR"), "DEEPFHE" takes hours to infer.
 
@@ -53,7 +53,7 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
 ## Architecture Client-Server
 
-*   **with both client-server FHE on remote**: (current architecture due to local OS constraint), basically the chess app itself is on local client, then compilation, computation and inference on encrypted data (due to Concrete-ML library) are made on remote server (instance).
+*   **with both client-server FHE on remote**: (current architecture due to local OS constraint), basically the chess app (scripts which runs the chessboard, pieces, movements rules, ...) itself is in `client_local`. Then, compilation, computation and inference on encrypted data (due to Concrete-ML library) are made in remote server (instance).
 
 <br/>
 
@@ -61,7 +61,7 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
 <br/>
 
-*   **with client FHE on local - with server FHE on remote**: (future architecture), here the chess app itself is on local client with client FHE for input encryption. Then computation and inference on encrypted data are made on remote server (instance).
+*   **with client FHE on local - with server FHE on remote**: (future architecture), here the chess app itself is still in client\_local accompanied with client FHE for inputs data encryption. Then, computations on encrypted input data and inference of encrypted output data are made in remote server (instance).
 
 <br/>
 
