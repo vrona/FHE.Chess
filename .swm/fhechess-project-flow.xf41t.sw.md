@@ -21,9 +21,21 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
 *   **Semantic**: while reading you will based faced to SOURCE and TARGET terms. As a chessboard is made of 64 squares (8\*8), source and target are respectively: the selected square of the piece to move from, the selected square of the piece to move to.
 
-*   **Client-Server Architecture - specific client-server FHE on remote**: (current architecture), basically the chess app itself is on local client, then compilation, computation and inference on encrypted data (due to Concrete-ML library) are made on server (remote instance).
+*   **Client-Server Architecture - with both client-server FHE on remote**: (current architecture due to local OS constraint), basically the chess app itself is on local client, then compilation, computation and inference on encrypted data (due to Concrete-ML library) are made on remote server (instance).
 
-*    
+<br/>
+
+<div align="center"><img src="https://firebasestorage.googleapis.com/v0/b/swimmio-content/o/repositories%2FZ2l0aHViJTNBJTNBRkhFLkNoZXNzJTNBJTNBdnJvbmE%3D%2F46173bd1-69ed-4acd-9e3c-eba63a5e0219.png?alt=media&token=84fc94e2-687f-4ee6-b75a-c6d699fc8a86" style="width:'50%'"/></div>
+
+<br/>
+
+*   **Client-Server Architecture - with client FHE on local - with server FHE on remote**: (future architecture), here the chess app itself is on local client with client FHE for input encryption. Then computation and inference on encrypted data are made on remote server (instance).
+
+<br/>
+
+<div align="center"><img src="https://firebasestorage.googleapis.com/v0/b/swimmio-content/o/repositories%2FZ2l0aHViJTNBJTNBRkhFLkNoZXNzJTNBJTNBdnJvbmE%3D%2F1f2a6fa5-16cc-4c66-98e3-cb409800edfa.png?alt=media&token=89528b5e-2f0f-4229-98cd-363169bc4aa1" style="width:'50%'"/></div>
+
+<br/>
 
 ## #0 Set up
 
