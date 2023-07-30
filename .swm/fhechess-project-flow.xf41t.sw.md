@@ -9,7 +9,7 @@ app_version: 1.14.0
 
 ## Overview
 
-Create an application that plays Chess against an AI opponent. The moves should be encrypted then the AI doesn't see them but can still inferred on them due to FHE.
+An application that plays Chess against an AI opponent. The moves are encrypted then thanks to FHE, the AI infers on data that she cannot see.
 
 ## Description
 
@@ -19,9 +19,21 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
 *   **Read Me**, [here](https://github.com/vrona/FHE.Chess/blob/quant_fhe/README.md), provides succinct info to run the FHE.Chess. (Do Not Forget to use the [requirements.txt files](https://app.swimm.io/workspaces/J7636nIGHQVtkUo4rtC1/repos/Z2l0aHViJTNBJTNBRkhFLkNoZXNzJTNBJTNBdnJvbmE=/branch/quant_fhe/docs/xf41t/edit#heading-GpIfY): 1 for local, 1 for remote server)
 
-*   **Semantic**: while reading you will based faced to SOURCE and TARGET terms. As a chessboard is made of 64 squares (8\*8), source and target are respectively: the selected square of the piece to move from, the selected square of the piece to move to.
+*   3 possible modes are enabled into FHE.Chess app.:
 
-*   **Client-Server Architecture - with both client-server FHE on remote**: (current architecture due to local OS constraint), basically the chess app itself is on local client, then compilation, computation and inference on encrypted data (due to Concrete-ML library) are made on remote server (instance).
+    *   "CLEAR" - the AI uses non-encrypted inputs data (current chessboard and source) and infers non-encrypted output data (the move) due to non quantized model.
+
+    *   "SIMFHE" - the AI uses
+
+*   **Semantic**: while reading you will based faced to SOURCE, TARGET, FHE, CLEAR, QUANTZ terms.
+
+    *   As a chessboard is made of 64 squares (8\*8), _source_ and _target_ are respectively: the selected square of the piece to move from, the selected square of the piece to move to.
+
+    *   FHE: stands for Full Homomorphic Encryption.
+
+## Architecture Client-Server
+
+*   **with both client-server FHE on remote**: (current architecture due to local OS constraint), basically the chess app itself is on local client, then compilation, computation and inference on encrypted data (due to Concrete-ML library) are made on remote server (instance).
 
 <br/>
 
@@ -29,7 +41,7 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
 <br/>
 
-*   **Client-Server Architecture - with client FHE on local - with server FHE on remote**: (future architecture), here the chess app itself is on local client with client FHE for input encryption. Then computation and inference on encrypted data are made on remote server (instance).
+*   **with client FHE on local - with server FHE on remote**: (future architecture), here the chess app itself is on local client with client FHE for input encryption. Then computation and inference on encrypted data are made on remote server (instance).
 
 <br/>
 
