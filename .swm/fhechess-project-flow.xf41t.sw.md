@@ -108,7 +108,7 @@ on remote machine, run `pip install --no-cache-dir -r requirements.txt` inside `
 
 The AI needs an environment to take input from and to propose output to.
 
-The development of the chess app itself can be done completely from scratch or based on [python-chess](https://python-chess.readthedocs.io/en/latest/) library.
+The chess app's development itself can be done completely from scratch or based on [python-chess](https://python-chess.readthedocs.io/en/latest/) library.
 
 It happens that this project is based on both (to speed up development).
 
@@ -120,7 +120,7 @@ Data used is downloadable here: [https://www.kaggle.com/datasets/arevel/chess-ga
 
 *   Data explanation [Data Explanation](data-explanation.4esp0.sw.md)
 
-*   Data preparation is explained here, little take away, the goal is to create an AI that would be rated at least 1500 ELO on Lichess. Thus, data preparation aimed to provide only data points from games made by chess players rated at least 2000 ELO.
+*   Data preparation is explained in this [wb\_2000.ipynb](https://github.com/vrona/FHE.Chess/blob/quant_fhe/server_cloud/data/wb_2000.ipynb) notebook. _Little take away: the goal is to create an AI that would be rated at least 1500 ELO on Lichess. Thus, data preparation aimed to provide only data points from games made by chess players rated at least 2000 ELO._
 
 *   Data transformation (to matrix and flat) for source target models `📄 server_cloud/model_src/helper_chessset.py`
 
