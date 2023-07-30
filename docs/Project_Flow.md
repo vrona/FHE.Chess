@@ -64,23 +64,19 @@ Create a machine-learning-based version of a Chess player which can be executed 
 ## #0 Set up - dependencies installation
 
 _creation and activation of virtual environments are strongly recommended._
-
 <br/>
 
 on your local machine, run `pip install --no-cache-dir -r requirements.txt` inside `client_local` directory.
-
-### [/requirements](../requirements.txt)
+[/requirements](../requirements.txt)
 ```text
 1      chess==1.9.4
 2      numpy==1.23.5
 3      pygame==2.1.2
 ```
-
 <br/>
 
 on remote machine, run `pip install --no-cache-dir -r requirements.txt` inside `server_cloud` directory.
-
-### [server_cloud/requirements](../server_cloud/requirements.txt)
+[server_cloud/requirements](../server_cloud/requirements.txt)
 ```text
 1      brevitas==0.8.0
 2      chess==1.9.4
@@ -100,7 +96,7 @@ The AI needs an environment to take input from and to propose output to.
 The development of the chess app itself can be done completely from scratch or based on [python-chess](https://python-chess.readthedocs.io/en/latest/) library.
 It happens that this project is based on both (to speed up development).
 
-Except the [Clone_Chess class](https://github.com/vrona/FHE.Chess/blob/quant_fhe/client_local/chess_env/clone_chess.py) which return [python-chess](https://python-chess.readthedocs.io/en/) methods, everything from [client_local/chess_env](https://github.com/vrona/FHE.Chess/tree/quant_fhe/client_local/chess_env) is made from scratch.
+Except the [Clone_Chess class](https://github.com/vrona/FHE.Chess/blob/quant_fhe/client_local/chess_env/clone_chess.py) which returns [python-chess](https://python-chess.readthedocs.io/en/) methods, everything from [client_local/chess_env](https://github.com/vrona/FHE.Chess/tree/quant_fhe/client_local/chess_env) is made from scratch.
 
 ## #2 Data
 
