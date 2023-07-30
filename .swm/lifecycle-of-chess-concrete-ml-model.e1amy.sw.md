@@ -13,7 +13,9 @@ app_version: 1.14.0
 
 *   Data: !\[alt text\]([https://github.com/vrona/FHE.Chess/blob/quant\_fhe/cloud/data/wb\_2000.ipynb](https://github.com/vrona/FHE.Chess/blob/quant_fhe/cloud/data/wb_2000.ipynb))
 
-*   Data: `📄 cloud/model_src/helper_chessset.py`
+*   Data:
+
+    [https://github.com/vrona/FHE.Chess/blob/quant\_fhe/.swm/lifecycle-of-chess-concrete-ml-model.e1amy.sw.md](https://github.com/vrona/FHE.Chess/blob/quant_fhe/.swm/lifecycle-of-chess-concrete-ml-model.e1amy.sw.md)
 
 *   Models: `📄 cloud/model_src/clear`
 
