@@ -33,7 +33,13 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
     *   "DEEPFHE" - the AI uses the quintessence of FHE to infer decrypted output data (the move) based on encrypted inputs data (current chessboard and source) and thanks to quantized and compiled models.
 
-    *   differences "SIMFHE" vs "DEEPFHE"
+    *   differences "SIMFHE" vs "DEEPFHE":
+
+        *   the latter needs to save and deployed the model into dedicated client-server architecture. Which includes generating keys to encrypted data (client's job) and keys\_evalutation to infer on encrypted data (server's job). "SIMFHE" simulates the said process.
+
+        *   based on current model complexity and hardware capacity (Ice Lake CPU), unlike "SIMFHE" which provides an answer within the milliseconds (like "CLEAR"), "DEEPFHE" takes hours to infer.
+
+        *   NB: if you test "DEEPFHE" you will want to kill the remote server as the FHE.Chess will freeze while waiting the inferred move by the AI.
 
 ## Architecture Client-Server
 
