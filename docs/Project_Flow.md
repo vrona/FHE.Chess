@@ -10,17 +10,17 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
 ## Knowledge
 
-*   [**Read Me**](../README.md) provides succinct info to run the FHE.Chess. (Do Not Forget to use the requirements.txt files (see. #0 Set up - dependencies installation"): 1 for local, 1 for remote server)
+*   [**Read Me**](../README.md) provides succinct info to run the FHE.Chess.
 
-*   **Semantic**: while reading you will faced to specific terms, let's cleared them out.
+*   **Semantic**: while reading, you will faced to specific terms, let's clear them out.
 
-    *   As a chessboard is made of 64 squares (8\*8), **Source** and **Target** are respectively: the selected square of the piece to move from, the selected square of the piece to move to.
+    *   As a chessboard is made of 64 squares (8*8), **Source** and **Target** are respectively: the selected square of the piece to move from, the selected square of the piece to move to.
 
     *   **Clear**: in cryptography context, means non-encrypted.
 
-    *   **Quantization**: refers to techniques that helps to contraint an input from continuous (floating point precision) or large set of values to a discrete set (such as integers). Two main libraries are known: _Brevitas_ and the well-known _PyTorch_.
+    *   **Quantization**: refers to techniques that helps to contraint an input from continuous (floating point precision) or large set of values to a discrete set (such as integers). Two main libraries are known - _Brevitas_ and _PyTorch_ - to quantized models.
 
-    *   **Compilation**: is handled by Zama's Concrete-ML library. It produces low-code which acts at each computation steps within the quantized models to execute dedicated computations on encrypted data. The price of these additional operations is a slowdown at inference step. (see, "simfhe" vs "deepfhe" below). Thus, the more complex is a quantized model the longer it takes to output a prediction.
+    *   **Compilation**: is handled by Zama's Concrete-ML library. It produces low-code which acts at each computation steps within the quantized models to execute dedicated computations on encrypted data. The price of these additional operations is a slowdown at inference step (see, "simfhe" vs "deepfhe" below) but provide equivalent accuracy rate to non-encrypted environment. Thus, the more complex is a quantized model the longer it takes to output a prediction.
 
     *   **FHE circuit**: stands for Full Homomorphic Encryption which enable to compute directly on encrypted input data to infer encrypted output data.
 

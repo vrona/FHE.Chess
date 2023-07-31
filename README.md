@@ -12,7 +12,7 @@ An application that plays Chess against an AI opponent. The moves are encrypted 
     - clear: non-encryption context. Fast inferences.
     - simfhe: encrypted context thanks to simulation of FHE computations. Fast inferences.
     - deepfhe: encrypted context thanks to FHE. Extreme slow inferences (see. model complexity + hardware)
--   AI always starts her moves the same way, but from several white & black moves it starts to be very pleasant,
+-   AI always starts her moves the same way, after several white & black moves it starts to be very pleasant,
 -   Several minor bugs remain within the Chess app. (see. "from scratch") itself, such as:
     -   false positive en-passant moves on sep,
     -   false positive move of kings even if the targeted square conducts to check
@@ -43,7 +43,7 @@ As the app is based on a client-server architecture, client is at local, server 
 
 **Remote instance**
 1.   Create a remote instance that runs under Intel Ice Lake CPU. GCI (Google Cloud Instance): "n2-standard-8" instance, AWS: EC2 "M6i" instance,
-2.   Run the remote instance and grab: public **IP address** + **port** that enables to communicate with instance under firewall constrains (**for Google Cloud: 3389**),
+2.   Run the remote instance and grab: public **IP address** + **port** that enables to communicate with instance under firewall constrains (**for eg.:GCI, port 3389**),
 3.   Create an SSH connection due to another terminal to command your remote instance. (if you don't know, see the **NOTE** at the bottom)<br/>
 4.   Create venv based on the [server_cloud/requirements.txt](server_cloud/requirements.txt) file and activate venv,
 5.   ```mkdir fhechess``` directory,
