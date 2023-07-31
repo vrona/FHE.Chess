@@ -36,18 +36,20 @@ As the app is based on a client-server architecture, client is at local, server 
 **Local**
 <br/>
 1.   ```mkdir client_local``` directory on your local machine (macOS, Linux, Windows),
-2.   Create venv based on the ```[/requirements.txt](requirements.txt)``` file and activate venv,
+2.   Create venv based on the [/requirements.txt](requirements.txt) file and activate venv,
 3.   Download the content of ```client_local``` into your ```client_local``` local directory,
 4.   ```cd client_local```
 <br/>
 
 **Remote instance**
-1.   Create a remote instance that runs under Intel Ice Lake CPU. Google Cloud: "n2-standard-8" instance, AWS: EC2 "M6i" instance,
+1.   Create a remote instance that runs under Intel Ice Lake CPU. GCI (Google Cloud Instance): "n2-standard-8" instance, AWS: EC2 "M6i" instance,
 2.   Run the remote instance and grab: public **IP address** + **port** that enables to communicate with instance under firewall constrains (for Google Cloud: 3389),
-3.   Create venv based on the [server_cloud/requirements.txt](server_cloud/requirements.txt) file and activate venv,
-4.   ```mkdir fhechess``` directory,
-5.   Download the content of ```server_cloud``` **_(without the mentioned large files)_** into ```fhechess``` directory.
-6.   ```cd fhechess```.
+3.   Create an SSH connection to into another terminal to command your remote instance.
+(quick steps: create private and public keys via GCI or AWS instance dashboard, download the keys into ssh folder onto your local machine, ```cd ssh``` or ```cd .ssh```) 
+4.   Create venv based on the [server_cloud/requirements.txt](server_cloud/requirements.txt) file and activate venv,
+5.   ```mkdir fhechess``` directory,
+6.   Download the content of ```server_cloud``` **_(without the mentioned large files)_** into ```fhechess``` directory.
+7.   ```cd fhechess```.
 
 At this step, you have 2 differents terminal which are running simultaneously.
 7.   Run:
