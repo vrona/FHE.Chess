@@ -28,7 +28,7 @@ An application that plays Chess against an AI opponent. The moves are encrypted 
 Is the **IMPORTANT document** and represents your Ariadne's wire to install, run or rebuilt FHE.Chess project.
 It contains details, explanations and links to other detailed docs.
 
-## SET UP and PLAY
+## Set up and Play
 As the app is based on a client-server architecture, client is at local, server at remote instance.
 
 <br/>
