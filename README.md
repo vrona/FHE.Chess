@@ -43,24 +43,19 @@ As the app is based on a client-server architecture, client is at local, server 
 
 **Remote instance**
 1.   Create a remote instance that runs under Intel Ice Lake CPU. GCI (Google Cloud Instance): "n2-standard-8" instance, AWS: EC2 "M6i" instance,
-2.   Run the remote instance and grab: public **IP address** + **port** that enables to communicate with instance under firewall constrains (for Google Cloud: 3389),
-3.   Create an SSH connection due to another terminal to command your remote instance.<br/>
-     if needed, quick ssh steps:
-        -   generate private and public keys via GCI or AWS instance dashboard, download the keys into ssh folder onto your local machine,
-        -   for ex. locate your keys into a local "ssh" folder for GCI ```ssh-keygen -t rsa -f ~/.ssh/KEY_FILENAME -C USERNAME -b 2048``` (do not forgot to add KEY_VALUE USERNAME to your Google instance > TAB "Metadata" > TAB "SSH")
-        -   ```cd .ssh```,
-        -   for ex. to established connection with GCI, run ```ssh -i nameofkeys USERNAME@IP_address```
+2.   Run the remote instance and grab: public **IP address** + **port** that enables to communicate with instance under firewall constrains (**for Google Cloud: 3389**),
+3.   Create an SSH connection due to another terminal to command your remote instance. (if you don't know, see the **NOTE** at the bottom)<br/>
 4.   Create venv based on the [server_cloud/requirements.txt](server_cloud/requirements.txt) file and activate venv,
 5.   ```mkdir fhechess``` directory,
 6.   Download the content of ```server_cloud``` **_(without the mentioned large files)_** into ```fhechess``` directory.
 7.   ```cd fhechess```.
 
 At this step, you have 2 differents terminal which are running simultaneously.<br/>
-7.   Run:
+Then, run:
 <br/>
-local terminal : ```$ python3 client_local/chess_env/main.py --server _IP address_ --port _port_```
+local terminal : ```$ python3 client_local/chess_env/main.py --server IP address --port 3389```
 <br/>
-remote terminal : ```$ python3 server/server_all.py -i (or --inference) _clear_, _simfhe_ or _deepfhe_```
+remote terminal : ```$ python3 server/server_all.py -i (or --inference) clear or simfhe or deepfhe```
 <br/>
 
 ## Reset and kill
@@ -78,3 +73,12 @@ remote terminal : ```$ python3 server/server_all.py -i (or --inference) _clear_,
 -   White H (Human as white vs Human as black)
 <br/>
 <div align="center"><img src="./screen_zama_vrona_chess.png" style="width:'50%'"/></div>
+
+<br/>
+
+> **_NOTE:_** if needed, quick ssh steps for GCI:
+-   generate private and public keys via your instance dashboard,
+-   add KEY_VALUE USERNAME to your Google instance > TAB "Metadata" > TAB "SSH"
+-   locate your keys into a local "ssh" folder  ```ssh-keygen -t rsa -f ~/.ssh/KEY_FILENAME -C USERNAME -b 2048```
+-   ```cd .ssh```
+-   established ssh connection with your instance, run ```ssh -i nameofkeys USERNAME@IP_address```
