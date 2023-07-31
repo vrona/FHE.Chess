@@ -76,9 +76,9 @@ remote terminal : ```$ python3 server/server_all.py -i (or --inference) clear or
 
 <br/>
 
-> **_NOTE:_** if needed, quick ssh steps for GCI:
+> **_NOTE:_** if needed, main steps to create ssh connection for GCI:
 -   generate private and public keys via your instance dashboard,
--   add KEY_VALUE USERNAME to your Google instance > TAB "Metadata" > TAB "SSH"
--   locate your keys into a local "ssh" folder  ```ssh-keygen -t rsa -f ~/.ssh/KEY_FILENAME -C USERNAME -b 2048```
--   ```cd .ssh```
--   established ssh connection with your instance, run ```ssh -i nameofkeys USERNAME@IP_address```
+-   add KEY_VALUE USERNAME to your Google instance > TAB "Metadata" > TAB "SSH",
+-   locate your keys into a local "ssh" folder  ```ssh-keygen -t rsa -f ~/.ssh/KEY_FILENAME -C USERNAME -b 2048```,
+-   ```cd .ssh```,
+-   established ssh connection with your instance, run ```ssh -i nameofkeys USERNAME@IP_address```.
