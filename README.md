@@ -18,11 +18,11 @@ An application that plays Chess against an AI opponent. The moves are encrypted 
     -   false positive move of kings even if the targeted square conducts to check
     Because of the dual chess developments: one from scratch, one from python-chess, the latter crashes the Chess app.
 -   Do not download the followed large files directories:
-    -   <server_cloud/mlir_source.txt>,
-    -   <server_cloud/mlir_target.txt>,
-    -   <server_cloud/client/source>,
-    -   <server_cloud/client/target>,
-    -   <server_cloud/server/model>.
+    -   ```server_cloud/mlir_source.txt```
+    -   ```server_cloud/mlir_target.txt```
+    -   ```server_cloud/client/source```
+    -   ```server_cloud/client/target```
+    -   ```server_cloud/server/model>```
 
 ## [Project flow](docs/Project_Flow.md)
 Is the **IMPORTANT document** and represents your Ariadne's wire to install, run or rebuilt FHE.Chess project.
@@ -35,8 +35,8 @@ As the app is based on a client-server architecture, client is at local, server 
 
 **Local**
 <br/>
-1.   ```mkdir client_local`````` directory on your local machine (macOS, Linux, Windows),
-2.   Create venv based on the <[/requirements.txt](requirements.txt)> file and activate venv,
+1.   ```mkdir client_local``` directory on your local machine (macOS, Linux, Windows),
+2.   Create venv based on the ```[/requirements.txt](requirements.txt)``` file and activate venv,
 3.   Download the content of ```client_local``` into your ```client_local``` local directory,
 4.   ```cd client_local```
 <br/>
@@ -44,19 +44,19 @@ As the app is based on a client-server architecture, client is at local, server 
 **Remote instance**
 1.   Create a remote instance that runs under Intel Ice Lake CPU. Google Cloud: "n2-standard-8" instance, AWS: EC2 "M6i" instance,
 2.   Run the remote instance and grab: public **IP address** + **port** that enables to communicate with instance under firewall constrains (for Google Cloud: 3389),
-3.   Create venv based on the <[server_cloud/requirements.txt](server_cloud/requirements.txt)> file and activate venv,
-4.   ```mkdir fhechess`````` directory,
-5.   Download the content of <server_cloud> **_(without the mentioned large files)_** into <fhechess> directory.
-6.   <$ cd fhechess>.
+3.   Create venv based on the ```[server_cloud/requirements.txt](server_cloud/requirements.txt)``` file and activate venv,
+4.   ```mkdir fhechess``` directory,
+5.   Download the content of ```server_cloud``` **_(without the mentioned large files)_** into ```fhechess``` directory.
+6.   ```cd fhechess```.
 
 At this step, you have 2 differents terminal which are running simultaneously.
-7.   Run:local terminal : <$ python3 client_local/chess_env/main.py --server _IP address_ --port _port_>
-    remote terminal : $ python3 server/server_all.py -i (or --inference) _clear_, _simfhe_ or _deepfhe_
+7.   Run:local terminal : ```$ python3 client_local/chess_env/main.py --server _IP address_ --port _port_```
+    remote terminal : ```$ python3 server/server_all.py -i (or --inference) _clear_, _simfhe_ or _deepfhe_```
 <br/>
 
 ## Reset and kill
 - to reset the game: press r,
-- to kill, <ctrl+C> on local terminal, or close the pygame window.
+- to kill, ctrl+C on local terminal or close the pygame window.
 - in deepfhe mode, as it takes hours to predict (see. mode explanation [Project Flow](docs/Project_Flow.md)), kill the remote terminal.
 
 <br/>
