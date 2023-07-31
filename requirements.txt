@@ -1,3 +1,4 @@
 chess==1.9.4
 numpy==1.23.5
 pygame==2.1.2
+Python >=3.8.1
