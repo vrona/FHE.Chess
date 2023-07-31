@@ -24,7 +24,7 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
     *   **FHE circuit**: stands for Full Homomorphic Encryption which enable to compute directly on encrypted input data to infer encrypted output data.
 
-    *   **Concrete-ML**: [Concrete ML](https://docs.zama.ai/concrete-ml/) is an open source, privacy-preserving, machine learning inference framework based on Fully        Homomorphic Encryption (FHE).
+    *   **[Concrete ML](https://docs.zama.ai/concrete-ml/)** is an open source, privacy-preserving, machine learning inference framework based on Fully        Homomorphic Encryption (FHE).
 
 *   **3 modes enabled** in the FHE.Chess app.:
 
@@ -100,17 +100,26 @@ Except the [Clone_Chess class](https://github.com/vrona/FHE.Chess/blob/quant_fhe
 
 ## #2 Data
 
-Data used is downloadable here: [kaggle.com/datasets/arevel](https://www.kaggle.com/datasets/arevel/chess-games)
+Raw data are downloadable here: [kaggle.com/datasets/arevel](https://www.kaggle.com/datasets/arevel/chess-games)
 
-*   **Raw data explanation** [Data Explanation](data_explanation.md)
+*   **Raw data explanation**: see [Data Explanation](data_explanation.md)
 
-*   ***Data preparation** is explained in this [wb_2000.ipynb](https://github.com/vrona/FHE.Chess/blob/quant_fhe/server_cloud/data/wb_2000.ipynb) notebook. _Little take away: the goal is to create an AI that would be rated at least 1500 ELO on Lichess. Thus, data preparation aimed to provide only data points from games made by chess players rated at least 2000 ELO.
+*   **Data preparation**: is explained in this [wb_2000](https://github.com/vrona/FHE.Chess/blob/quant_fhe/server_cloud/data/wb_2000.ipynb) notebook.
+Little take away: the goal is to create an AI that would be rated at least 1500 ELO on Lichess. Thus, the preparation setep aimed to provide only data points from games derived from chess players rated at least 2000 ELO each.
 
-*   **Data transformation** needed to nurture source and target models. Transformaions are supplied by [helper_chessset.py](https://github.com/vrona/FHE.Chess/blob/quant_fhe/server_cloud/model_src/helper_chessset.py) - detailed here [Data transformation](data_transformation.md)
+*   **Data transformation**: Transformations are supplied by [helper_chessset.py](https://github.com/vrona/FHE.Chess/blob/quant_fhe/server_cloud/model_src/helper_chessset.py) - detailed here [Data transformation](data_transformation.md)
+
+
+## #3 Problematic
+At the core of this project are the questions: how an AI would play chess and then how to train it?
+Because we didn't want to reinvente the wheel (see [Stockfish](https://stockfishchess.org), AlphaZero, [LCZero](https://lczero.org)), save money and time a straight forward solution has been develped.
+
+1st stone in the bag: chess is about taking a double decisions (select a piece from location - S - to a destination - T -) based
 
 ## #3 Models
 
-**The chosen philosophy is straightforward**: train one model to determine the SOURCE square (no matter the piece and evaluation), train another model to determine the TARGET square.
+**The chosen philosophy is straightforward**:
+Train 2 models: one model to determine the SOURCE square, train another model to determine the TARGET square.(no matter the piece and evaluation)
 
 Consequences: AI always starts her moves the same way, but over 5 moves it starts to be very funny.
 
