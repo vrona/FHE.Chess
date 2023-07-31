@@ -44,9 +44,10 @@ As the app is based on a client-server architecture, client is at local, server 
 **Remote instance**
 1.   Create a remote instance that runs under Intel Ice Lake CPU. GCI (Google Cloud Instance): "n2-standard-8" instance, AWS: EC2 "M6i" instance,
 2.   Run the remote instance and grab: public **IP address** + **port** that enables to communicate with instance under firewall constrains (for Google Cloud: 3389),
-3.   Create an SSH connection to into another terminal to command your remote instance. Here are the Quick steps:
+3.   Create an SSH connection due to another terminal to command your remote instance.<br/>
+     if needed, quick ssh steps:
         -   generate private and public keys via GCI or AWS instance dashboard, download the keys into ssh folder onto your local machine,
-        -   for ex. locate your keys into a local "ssh" folder for GCI ```ssh-keygen -t rsa -f ~/.ssh/KEY_FILENAME -C USERNAME -b 2048``` (do not forgot to add KEY_VALUE USERNAME to your Google Instance > Metadata > TAB SSH)
+        -   for ex. locate your keys into a local "ssh" folder for GCI ```ssh-keygen -t rsa -f ~/.ssh/KEY_FILENAME -C USERNAME -b 2048``` (do not forgot to add KEY_VALUE USERNAME to your Google instance > TAB "Metadata" > TAB "SSH")
         -   ```cd .ssh```,
         -   for ex. to established connection with GCI, run ```ssh -i nameofkeys USERNAME@IP_address```
 4.   Create venv based on the [server_cloud/requirements.txt](server_cloud/requirements.txt) file and activate venv,
@@ -54,7 +55,7 @@ As the app is based on a client-server architecture, client is at local, server 
 6.   Download the content of ```server_cloud``` **_(without the mentioned large files)_** into ```fhechess``` directory.
 7.   ```cd fhechess```.
 
-At this step, you have 2 differents terminal which are running simultaneously.
+At this step, you have 2 differents terminal which are running simultaneously.<br/>
 7.   Run:
 <br/>
 local terminal : ```$ python3 client_local/chess_env/main.py --server _IP address_ --port _port_```
