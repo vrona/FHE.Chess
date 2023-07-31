@@ -112,9 +112,17 @@ Little take away: the goal is to create an AI that would be rated at least 1500 
 
 ## #3 Problematic
 At the core of this project are the questions: how an AI would play chess and then how to train it?
-Because we didn't want to reinvente the wheel (see [Stockfish](https://stockfishchess.org), AlphaZero, [LCZero](https://lczero.org)), save money and time a straight forward solution has been develped.
+Because we didn't want to reinvente the wheel (see well known chess engines: [Stockfish](https://stockfishchess.org), AlphaZero, [LCZero](https://lczero.org)) but saving money and time, a straight forward solution came up thanks to rationalization.
 
-1st stone in the bag: chess is about taking a double decisions (select a piece from location - S - to a destination - T -) based
+Let's pick up stones and fill our bag.
+1st stone in the bag: the environment is a chessboard of 64 (8*8) squares,
+2nd stone: chess is about taking a double decisions. Based on a context (localization of all the white and black pieces on the chessboard), White selects a piece from a "Source" location to a "Target" destination,
+3rd stone: each type of piece obeys to its own rule of movement,
+4th stone: each type of piece has an importance/value (the 3rd stone is correlated with the 4th),
+5th stone: the probability tree for each "Source"/"Target" couple is large,
+6th stone: human apply specific technics or methods wich would be looking for a "bad" beshop, play the "Spanish opening" or the "Sicilian defense", ...
+7th stone: each square of the chessboard has a value based on each piece type. It is the Piece Square Table. 
+
 
 ## #3 Models
 
