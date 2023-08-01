@@ -111,17 +111,17 @@ Little take away: the goal is to create an AI that would be rated at least 1500 
 
 
 ## #3 Problematic
-At the core of this project are the questions: how an AI would play chess and then how to train it?
+At the core of this project are the questions: how an AI would play chess and then how to train it? <br>
 Because we didn't want to reinvente the wheel (see well known chess engines: [Stockfish](https://stockfishchess.org), AlphaZero, [LCZero](https://lczero.org)) but saving money and time, a straight forward solution came up thanks to rationalization.
 
 Let's pick up stones and fill our bag.
 - 1st stone in the bag: the environment is a chessboard of 64 (8*8) squares,
-- 2nd stone: chess is about taking a double decisions. Based on a context (localization of all the white and black pieces on the chessboard), White selects a piece from a - "Source" location to a "Target" destination,
-- 3rd stone: each type of piece obeys to its own rule of movement,
-- 4th stone: each type of piece has an importance/value (the 3rd stone is correlated with the 4th),
-- 5th stone: the probability tree for each "Source"/"Target" couple is large,
-- 6th stone: human apply specific technics or methods wich would be looking for a "bad" beshop, play the "Spanish opening" or the "Sicilian defense", ...
-- 7th stone: each square of the chessboard has a value based on each piece type. It is the Piece Square Table. 
+- 2nd stone: chess is about taking a double decisions. Based on a context (localization of all the white and black pieces on the chessboard), White selects a piece from a "Source" location to a "Target" destination,
+- 3rd stone: each type of piece has an importance/value,
+- 4th stone: each type of piece obeys to its own rule of movement (correlated with the 3rd),
+- 5th stone: to tend to a specific context, the probability tree for each "Source"/"Target" couple is very large (tackled by [Alpha-Beta pruning](https://www.chessprogramming.org/Alpha-Beta) used by Stockfish),
+- 6th stone: human applies specific technics or methods which would be looking for a "bad" beshop, play the "Spanish opening" or the "Sicilian defense", ...
+- 7th stone: each square of the chessboard has a value based on each piece type. It is the Piece Square Table.
 
 Old work on 6 models
 Unlike the well known chess engines which are based on rules, we going to focus on the main patterns generate by human and reproduce
