@@ -123,7 +123,7 @@ Which data will be encrypted and use for computations?<br>
     - input_data: the pieces on the chessboard (spatial indication of piece's location),
     - output_data: the selected square of departure.
 - Model 2:
-    - input_data: the pieces on the chessboard (spatial indication of piece's location) + the square of the selected piece to move,
+    - input_data: the pieces on the chessboard (spatial indication of piece's location) + Model 1's output,
     - output_data: the selected square of destination.
 
 In terms of architecture, at deployment, it is necessary to base the application on the client-server canvas. <br>
