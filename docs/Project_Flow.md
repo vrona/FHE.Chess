@@ -14,7 +14,7 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
 *   **Semantic**: while reading, you will faced to specific terms, let's clear them out.
 
-    *   As a chessboard is made of 64 squares (8*8), **Source** and **Target** are respectively: the selected square of the piece to move from, the selected square of the piece to move to.
+    *   As a chessboard is made of 64 squares (8*8), **Source** and **Target** are respectively: the selected square to move from, the selected square to move to.
 
     *   **Clear**: means non-encrypted in cryptography context.
 
@@ -91,7 +91,8 @@ on remote machine, run `pip install --no-cache-dir -r requirements.txt` inside `
 <br/>
 
 ## #1 Problematic
-At the core of this project is the question: what architecture would have our AI? <br>
+### AI
+At the core of this project is the question: what structure would have the AI? <br>
 
 Because we didn't want to reinvent the wheel (see well known chess engines: [Stockfish](https://stockfishchess.org) < [AlphaZero](https://arxiv.org/abs/1712.01815) < [LCZero (LeelaChessZero)](https://lczero.org)) but saving money and time, a straight forward solution came up thanks to the [B. Oshri and N. Khandwala paper]((http://vision.stanford.edu/teaching/cs231n/reports/2015/pdfs/ConvChess.pdf)) and rationalization.
 
@@ -110,10 +111,24 @@ As human has already integrated all these points, each move made by player with 
 In addition, we learn about their method that the rules of game and the evaluation function are not part of the input_data.
 
 Thus, **the approach** would be:
-- The AI will be build on 2 deep learning models (see [Model Lifecycle doc](model_lifecycle.md)):
+- The AI will be building on 2 deep learning models (see [Model Lifecycle doc](model_lifecycle.md)):
     - 1 to select the square where is located the piece we would like to move,
     - and only 1 to select the square of destination where the piece would move to,
 - the inferred move would be filtered as ```legal_move``` by Python-Chess library's method and dedicated movement of piece would be handle by hard code (see [Chess_app](/docs/Chess_app/))
+
+### FHE
+Which data will be encrypted and use for computations?<br>
+(see [Model Lifecycle doc](model_lifecycle.md))<br>
+- Model 1:
+    - input_data: the pieces on the chessboard (spatial indication of piece's location),
+    - output_data: the selected square of departure.
+- Model 2:
+    - input_data: the pieces on the chessboard (spatial indication of piece's location) + the square of the selected piece to move,
+    - output_data: the selected square of destination.
+
+In terms of architecture, at deployment, it is necessary to base the application on the client-server canvas. <br>
+- client: takes care of input_data encryption and decryption (keys generation),
+- server: takes care of the necessary computations to predict (key evaluation).
 
 <br>
 
