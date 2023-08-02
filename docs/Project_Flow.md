@@ -10,15 +10,15 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
 ## Knowledge
 
-*   [**Read Me**](../README.md) provides succinct info to run the FHE.Chess.
+*   [**Read Me**](../README.md) provides succinct information to run the FHE.Chess.
 
 *   **Semantic**: while reading, you will faced to specific terms, let's clear them out.
 
     *   As a chessboard is made of 64 squares (8*8), **Source** and **Target** are respectively: the selected square of the piece to move from, the selected square of the piece to move to.
 
-    *   **Clear**: in cryptography context, means non-encrypted.
+    *   **Clear**: means non-encrypted in cryptography context.
 
-    *   **Quantization**: refers to techniques that helps to contraint an input from continuous (floating point precision) or large set of values to a discrete set (such as integers). Two main libraries are known - _Brevitas_ and _PyTorch_ - to quantized models.
+    *   **Quantization**: refers to techniques that helps to contraint an input from continuous (floating point precision) or large set of values to a discrete set (such as integers). Two main libraries are known - _Brevitas_ and _PyTorch_ - to quantize models.
 
     *   **Compilation**: is handled by Zama's Concrete-ML library. It produces low-code which acts at each computation steps within the quantized models to execute dedicated computations on encrypted data. The price of these additional operations is a slowdown at inference step (see, "simfhe" vs "deepfhe" below) but provide equivalent accuracy rate to non-encrypted environment. Thus, the more complex is a quantized model the longer it takes to output a prediction.
 
@@ -49,13 +49,13 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
 *   **with both client-server FHE on remote**: (current architecture due to local machine's OS constraint and complexity of model, see. "deepfhe" mode), basically the chess app (scripts which runs the chessboard, pieces, movements rules, ...) itself is in `client_local`. Then, compilation, computation and inference on encrypted data (due to Concrete-ML library) are made in remote server (instance).
 <br/>
-<div align="center"><img src="../FHE_Chess_archi_current.png" style="width:'50%'"/></div>
+<div align="center"><img src="../images/FHE_Chess_archi_current.png" style="width:'50%'"/></div>
 
 <br/>
 
 *   **with client FHE on local - with server FHE on remote**: (future architecture), here the chess app itself is still in client\_local accompanied with client FHE for inputs data encryption. Then, computations on encrypted input data and inference of encrypted output data are made in remote server (instance).
 <br/>
-<div align="center"><img src="../FHE_Chess_archi_next.png" style="width:'50%'"/></div>
+<div align="center"><img src="../images/FHE_Chess_archi_next.png" style="width:'50%'"/></div>
 
 <br/>
 

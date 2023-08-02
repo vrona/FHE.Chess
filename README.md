@@ -73,7 +73,7 @@ remote terminal : ```$ python3 server/server_all.py -i (or --inference) clear or
 -   WhiteAI (AI as white vs Human as black)
 -   White H (Human as white vs Human as black)
 <br/>
-<div align="center"><img src="./screen_zama_vrona_chess.png" style="width:'50%'"/></div>
+<div align="center"><img src="./images/screen_zama_vrona_chess.png" style="width:'50%'"/></div>
 
 <br/>
 
