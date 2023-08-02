@@ -92,12 +92,12 @@ on remote machine, run `pip install --no-cache-dir -r requirements.txt` inside `
 
 ## #1 Problematic
 At the core of this project are the questions: <br>
-- how an AI would play chess? (underlying question, how human plays chess?)
+- how an AI would play chess? (the underlying question, how human plays chess?)
 - how to train her? <br>
-Because we didn't want to reinvente the wheel (see well known chess engines: [Stockfish](https://stockfishchess.org) < [AlphaZero](https://arxiv.org/abs/1712.01815) < [LCZero (LeelaChessZero)](https://lczero.org)) but saving money and time, a straight forward solution came up thanks to rationalization.
+Because we didn't want to reinvente the wheel (see well known chess engines: [Stockfish](https://stockfishchess.org) < [AlphaZero](https://arxiv.org/abs/1712.01815) < [LCZero (LeelaChessZero)](https://lczero.org)) but saving money and time, a straight forward solution came up thanks to the [B. Oshri and N. Khandwala paper]((http://vision.stanford.edu/teaching/cs231n/reports/2015/pdfs/ConvChess.pdf)) and rationalization.
 
-Let's pick up stones and fill our bag.
-- 1st stone in the bag: the environment is a chessboard of 64 (8*8) squares,
+What are the stones?
+- 1st stone: the environment is a chessboard of 64 (8*8) squares,
 - 2nd stone: each type of piece has an importance/value,
 - 3rd stone: each type of piece obeys to its own rule of movement (correlated with the 3rd),
 - 4th stone: chess is about taking a several dimension of decisions. Based on a current context (localization of all the white and black pieces on the chessboard) and an assessement of multiple future contexts, White decides to selects a piece from a "Source" location to a "Target" destination.
@@ -105,9 +105,10 @@ Let's pick up stones and fill our bag.
 The exploration of branches (all branches tackled by [Alpha-Beta pruning](https://www.chessprogramming.org/Alpha-Beta) with a limited depth in the tree used by Stockfish, or some of them but until the very end of the game like Alpha-zero with [MCTS](https://web.archive.org/web/20180623055344/http://mcts.ai/about/index.html)) is what it takes to build a robust chess engine, **LCZero.... TO FINISH**
 - 6th stone: each square of the chessboard has a value based on each piece type. It is the Piece Square Table.
 - 7th stone: human applies specific technics or methods which would be looking for a "bad" beshop, play the "Spanish opening" or the "Sicilian defense", ...
+- 8th stone: B. Oshri and N. Khandwala made 1 model (CNN) to select a piece + 6 models (1 CNN per type of piece) to move the selected piece,
+Let's pick up some of the stones and fill our bag.
 
-
-Old work on 6 models
+Predicting Moves in Chess using Convolutional Neural Networks Old work on 6 models
 Unlike the well known chess engines which are based on rules, we going to focus on the main patterns generate by human and reproduce
 
 <br>

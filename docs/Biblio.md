@@ -15,7 +15,7 @@ Brevitas: Element-wise Arithmetic between QuantTensor [https://xilinx.github.io/
 - Python [Coding a Complete Chess Game](https://www.youtube.com/watch?v=OpL0Gcfn4B4)
 - C# [Coding Adventures](https://www.youtube.com/watch?v=U4ogK0MIzqk)
 
-### papers
+### Paper
 [Predicting Moves in Chess using Convolutional Neural Networks](http://vision.stanford.edu/teaching/cs231n/reports/2015/pdfs/ConvChess.pdf)
 
 <br/>
