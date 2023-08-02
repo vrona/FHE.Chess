@@ -11,9 +11,10 @@ Chess pictures: John Pablok's improved Cburnett chess set\[JohnPablok chess set\
 [Concrete ML](https://docs.zama.ai/concrete-ml) <br>
 Brevitas: Element-wise Arithmetic between QuantTensor [https://xilinx.github.io/brevitas/tutorials/tvmcon2021.html](https://xilinx.github.io/brevitas/tutorials/tvmcon2021.html)
 
-### Chess App coding, tutorial videos
+### Chess App coding, tutorial
 - Python [Coding a Complete Chess Game](https://www.youtube.com/watch?v=OpL0Gcfn4B4)
 - C# [Coding Adventures](https://www.youtube.com/watch?v=U4ogK0MIzqk)
+- [Chess Programming WIKI](https://www.chessprogramming.org)
 
 ### Paper
 [Predicting Moves in Chess using Convolutional Neural Networks](http://vision.stanford.edu/teaching/cs231n/reports/2015/pdfs/ConvChess.pdf)

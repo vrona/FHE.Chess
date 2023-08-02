@@ -91,25 +91,29 @@ on remote machine, run `pip install --no-cache-dir -r requirements.txt` inside `
 <br/>
 
 ## #1 Problematic
-At the core of this project are the questions: <br>
-- how an AI would play chess? (the underlying question, how human plays chess?)
-- how to train her? <br>
-Because we didn't want to reinvente the wheel (see well known chess engines: [Stockfish](https://stockfishchess.org) < [AlphaZero](https://arxiv.org/abs/1712.01815) < [LCZero (LeelaChessZero)](https://lczero.org)) but saving money and time, a straight forward solution came up thanks to the [B. Oshri and N. Khandwala paper]((http://vision.stanford.edu/teaching/cs231n/reports/2015/pdfs/ConvChess.pdf)) and rationalization.
+At the core of this project is the question: what architecture would have our AI? <br>
 
-What are the stones?
-- 1st stone: the environment is a chessboard of 64 (8*8) squares,
-- 2nd stone: each type of piece has an importance/value,
-- 3rd stone: each type of piece obeys to its own rule of movement (correlated with the 3rd),
-- 4th stone: chess is about taking a several dimension of decisions. Based on a current context (localization of all the white and black pieces on the chessboard) and an assessement of multiple future contexts, White decides to selects a piece from a "Source" location to a "Target" destination.
-- 5th stone: to tend to a specific context, the probability tree from a "Source"/"Target" couple is very large. <br>
+Because we didn't want to reinvent the wheel (see well known chess engines: [Stockfish](https://stockfishchess.org) < [AlphaZero](https://arxiv.org/abs/1712.01815) < [LCZero (LeelaChessZero)](https://lczero.org)) but saving money and time, a straight forward solution came up thanks to the [B. Oshri and N. Khandwala paper]((http://vision.stanford.edu/teaching/cs231n/reports/2015/pdfs/ConvChess.pdf)) and rationalization.
+
+What are the indispensable points?
+- the environment is a chessboard of 64 (8*8) squares, 6 types of pieces, handled by 2 opponents,
+- each type of piece has an importance/value,
+- each type of piece obeys to its own rule of movement (correlated with their importance),
+- chess is about taking a several dimension of decisions. Based on a current context (localization of all the white and black pieces on the chessboard) and an assessment of multiple future contexts, White decides to selects a piece from a "Source" location to a "Target" destination.
+- to tend to a specific context, the probability tree from a "Source"/"Target" couple is very large. <br>
 The exploration of branches (all branches tackled by [Alpha-Beta pruning](https://www.chessprogramming.org/Alpha-Beta) with a limited depth in the tree used by Stockfish, or some of them but until the very end of the game like Alpha-zero with [MCTS](https://web.archive.org/web/20180623055344/http://mcts.ai/about/index.html)) is what it takes to build a robust chess engine, **LCZero.... TO FINISH**
-- 6th stone: each square of the chessboard has a value based on each piece type. It is the Piece Square Table.
-- 7th stone: human applies specific technics or methods which would be looking for a "bad" beshop, play the "Spanish opening" or the "Sicilian defense", ...
-- 8th stone: B. Oshri and N. Khandwala made 1 model (CNN) to select a piece + 6 models (1 CNN per type of piece) to move the selected piece,
-Let's pick up some of the stones and fill our bag.
+- each square of the chessboard has a value based on each piece type. (see [Piece Square Table](https://www.chessprogramming.org/Simplified_Evaluation_Function)).
+- human applies specific technics or methods which would be looking for a "bad" bishop, play the "Spanish opening" or the "Sicilian defense", ...
 
-Predicting Moves in Chess using Convolutional Neural Networks Old work on 6 models
-Unlike the well known chess engines which are based on rules, we going to focus on the main patterns generate by human and reproduce
+As human has already integrated all these points, each move made by player with high rating ELO is an optimization of a merge of all those points. <br>
+[Predicting Moves in Chess using Convolutional Neural Networks](http://vision.stanford.edu/teaching/cs231n/reports/2015/pdfs/ConvChess.pdf), let us already know that relevant patterns appear on recurrent context of attack and defense. <br>
+In addition, we learn about their method that the rules of game and the evaluation function are not part of the input_data.
+
+Thus, **the approach** would be:
+- The AI will be build on 2 deep learning models (see [Model Lifecycle doc](model_lifecycle.md)):
+    - 1 to select the square where is located the piece we would like to move,
+    - and only 1 to select the square of destination where the piece would move to,
+- the inferred move would be filtered as ```legal_move``` by Python-Chess library's method and dedicated movement of piece would be handle by hard code (see [Chess_app](/docs/Chess_app/))
 
 <br>
 
@@ -120,7 +124,7 @@ Raw data are downloadable here: [kaggle.com/datasets/arevel](https://www.kaggle.
 *   **Raw data explanation**: see [Data Explanation](data_explanation.md)
 
 *   **Data preparation**: is explained in this [wb_2000](https://github.com/vrona/FHE.Chess/blob/quant_fhe/server_cloud/data/wb_2000.ipynb) notebook.
-Little take away: the goal is to create an AI that would be rated at least 1500 ELO on Lichess. Thus, the preparation setep aimed to provide only data points from games derived from chess players rated at least 2000 ELO each.
+Little take away: the goal is to create an AI that would be rated at least 1500 ELO on Lichess. Thus, the preparation step aimed to provide only data points from games derived from chess players rated at least 2000 ELO each.
 
 *   **Data transformation**: Transformations are supplied by [helper_chessset.py](https://github.com/vrona/FHE.Chess/blob/quant_fhe/server_cloud/model_src/helper_chessset.py) - detailed here [Data transformation](data_transformation.md)
 
