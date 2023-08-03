@@ -8,8 +8,9 @@
 Chess pictures: John Pablok's improved Cburnett chess set\[JohnPablok chess set\]([https://opengameart.org/sites/default/files/JohnPablok%20Cburnett%20Chess%20Zip.zip](https://opengameart.org/sites/default/files/JohnPablok%20Cburnett%20Chess%20Zip.zip))
 
 ### Libraries
-[Concrete ML](https://docs.zama.ai/concrete-ml) <br>
-Brevitas: Element-wise Arithmetic between QuantTensor [https://xilinx.github.io/brevitas/tutorials/tvmcon2021.html](https://xilinx.github.io/brevitas/tutorials/tvmcon2021.html)
+- Chess: [Python-Chess](https://python-chess.readthedocs.io/en)
+- FHE: [Concrete ML](https://docs.zama.ai/concrete-ml) <br>
+- Quantization: Brevitas: Element-wise Arithmetic between QuantTensor [https://xilinx.github.io/brevitas/tutorials/tvmcon2021.html](https://xilinx.github.io/brevitas/tutorials/tvmcon2021.html)
 
 ### Chess App coding, tutorial
 - Python [Coding a Complete Chess Game](https://www.youtube.com/watch?v=OpL0Gcfn4B4)
