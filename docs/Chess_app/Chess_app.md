@@ -53,7 +53,7 @@ Core methods:
 - ```python
     def king_check_sim(piece, move)
     ```
-    (detailed here [check_simulation](Chess_app.md))
+    (detailed here [check_simulation](check_simulation.md))
 
 - Common methods:
     - ```python
@@ -63,9 +63,8 @@ Core methods:
         ```python
         def move_kingchecksim()
         ```
-    and
         ```python
-            sim_kingcheck_okmoves()
+        def sim_kingcheck_okmoves()
         ```
 
 Recall that each piece has its own behavior (some shared behavior):
@@ -103,9 +102,31 @@ This class calls the Python-Chess methods (see [Biblio](../Biblio.md)).<br>
 It is used to clone all piece's location and movements from "homemade" chessboard into Python-Chess module.<br>
 This is a key pillar class as AI is nurtured with chessboard data from Python-Chess and its inferred output is filtered with Python-Chess' method: ```legal_move()``` and ```pseudo_legal_move()```
 
+### Client-Server
+[chess_network.py](../../client_local/chess_network.py) provides the ```Network``` class which takes care of connecting Client (Chess App on local machine) and Server (AI with/without FHE dedicated client-server architecture on a remote instance).
+
 ### Main
 Everything comes together in [main.py](../../client_local/chess_env/main.py)<br>
 <br>
+
+
+
+The input_data are retrieved from here:
+
+```python
+chessboard = clone_chess.get_board()
+```
+
+are sent to the Server where the AI makes its computation and its prediction are sent back to the Client (Chess App)
+```python
+listoftuplesofmoves = cs_network.send(chessboard)
+```
+
+``
+```python
+def autonomous_piece(source_row, source_col, target_row, target_col, board, game, clone_chess, surface)
+```
+
 
 To print Forsyth–Edwards Notation (FEN) game position, uncomment these lines: 
 - ```python
@@ -113,16 +134,5 @@ To print Forsyth–Edwards Notation (FEN) game position, uncomment these lines:
     ```
 - ```python
     #print("\nAUTONOMOUS FEN: ",clone_chess.get_fen())
-    ```
-
-AI get her input_data here:
-
-```python
-chessboard = clone_chess.get_board()
-```
-
-```python
-def autonomous_piece(source_row, source_col, target_row, target_col, board, game, clone_chess, surface)
-```
-
+    ``
 
