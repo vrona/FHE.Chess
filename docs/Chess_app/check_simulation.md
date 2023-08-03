@@ -9,7 +9,7 @@ Virtualization of the board by copying the Board() and Piece() classes. Then, co
 
 ### [client_local/chess_env/board.py](../client_local/chess_env/board.py)
 ```python
-89         def check_simulation(self, piece, move):
+89         def king_check_sim(self, piece, move):
 90             
 91             """"for simulation"""
 92             temppiece = copy.deepcopy(piece)
