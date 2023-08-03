@@ -5,7 +5,7 @@ It integrates [Python-Chess library](https://python-chess.readthedocs.io/en) via
 
 ```text
 ├── client_local
-│   ├── [chess_env](client_local/chess_env)
+│   ├── chess_env
 │   │   ├── base.py
 │   │   ├── board.py
 │   │   ├── button.py
@@ -25,3 +25,16 @@ It integrates [Python-Chess library](https://python-chess.readthedocs.io/en) via
 │           └── pieces_80px (folder of all black & white chess pieces. Used when they are on the chessboard)
 
 ```
+
+Focus on the [Chess_env](../../client_local/chess_env) scripts<br>
+[base.py](../../client_local/chess_env/base.py): pro<br>
+[board.py](../../client_local/chess_env/board.py)<br>
+[button.py](../../client_local/chess_env/button.py)<br>
+[clone_chess.py](../../client_local/chess_env/clone_chess.py)<br>
+[config.py](../../client_local/chess_env/config.py)<br>
+[dragger.py](../../client_local/chess_env/dragger.py)<br>
+[game.py](../../client_local/chess_env/game.py)<br>
+[main.py](../../client_local/chess_env/main.py)<br>
+[move.py](../../client_local/chess_env/move.py)<br>
+[piece.py](../../client_local/chess_env/piece.py)<br>
+[square.py](../../client_local/chess_env/square.py)<br>
