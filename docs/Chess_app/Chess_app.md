@@ -73,8 +73,8 @@ A class that enable to provide information to PyGame when grabbing or releasing 
 Likely ````dragger```` class, this allows to display all content via PyGame.
 
 ### UX<br>
-[config.py](../../client_local/chess_env/config.py)<br>: used by PyGame for typography.
-[button.py](../../client_local/chess_env/button.py)<br>: activate and command the game.
+[config.py](../../client_local/chess_env/config.py): used by PyGame for typography.<br>
+[button.py](../../client_local/chess_env/button.py): activate and command the game.<br>
 
 ### Python-Chess power
 [clone_chess.py](../../client_local/chess_env/clone_chess.py)<br>
