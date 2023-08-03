@@ -47,7 +47,7 @@ This class used all the 4 previous classes to create methods which define pieces
 
 Core methods:
 - ```compute_move(piece, row, col, bool=True)```
-- ```king_check_sim(piece, move)```
+- ```king_check_sim(piece, move)```, (detailed here [check_simulation](Chess_app.md))
 - Common methods:<br>
     - ```move(piece, move, simulation = False)```
     - for refactoring purpose: ```move_kingchecksim()``` and ```sim_kingcheck_okmoves()```
@@ -60,19 +60,33 @@ Recall that each piece has its own behavior (some shared behavior):
 - King: ```castling(source, target)```
 
 A piece behavior is define by a dedicated internal method inside ```compute_move(piece, row, col, bool=True)``` method.<br>
-For eg.: King behavior is define by ```king_moves()``` which is completed by King_check simulation (details here [check_simulation](Chess_app.md))
+For eg.: King behavior is defined by ```king_moves()```.
 
 <br>
 
-### UX<br>
-[config.py](../../client_local/chess_env/config.py)<br>: used by PyGame for typography.
-[button.py](../../client_local/chess_env/button.py)<br>
-
-
-[clone_chess.py](../../client_local/chess_env/clone_chess.py)<br>
+### Game
 
 [dragger.py](../../client_local/chess_env/dragger.py)<br>
+A class that enable to provide information to PyGame when grabbing or releasing pieces on the board.
+
 [game.py](../../client_local/chess_env/game.py)<br>
+Likely ````dragger```` class, this allows to display all content via PyGame.
+
+### UX<br>
+[config.py](../../client_local/chess_env/config.py)<br>: used by PyGame for typography.
+[button.py](../../client_local/chess_env/button.py)<br>: activate and command the game.
+
+### Python-Chess power
+[clone_chess.py](../../client_local/chess_env/clone_chess.py)<br>
+This class calls the python-chess methods (see [Biblio](../Biblio.md)).<br>
+It is used to clone all piece's location and movements from "homemade" chessboard inside python-chess module.<br>
+This is a key pillar class as AI is nurtured with data from python-chess and its inferred output is filtered with legal_move() python-chess' method
+
+### Main aka app.
 [main.py](../../client_local/chess_env/main.py)<br>
+
+
+
+
 
 
