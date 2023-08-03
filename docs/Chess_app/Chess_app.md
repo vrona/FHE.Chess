@@ -110,22 +110,35 @@ Everything comes together in [main.py](../../client_local/chess_env/main.py)<br>
 <br>
 
 
+In AI mode, the flow as follows:
+```base```, ```squares```, ```pieces```, ```move``` and ```board``` are initialized (and runs permanently) and are displayed via ```game```.
 
-The input_data are retrieved from here:
+The input_data (current chessboard) are retrieved from ```clone_chess```:
 
 ```python
 chessboard = clone_chess.get_board()
 ```
 
-are sent to the Server where the AI makes its computation and its prediction are sent back to the Client (Chess App)
+Then, ```network``` sends them to the Server (AI) and makes its prediction which are sent back to the Client (Chess App). The coordinates of the 1st move are instantiated (which is a legal_move()).
 ```python
 listoftuplesofmoves = cs_network.send(chessboard)
+
+selected_square_row = listoftuplesofmoves[0][0][1]
+selected_square_col = listoftuplesofmoves[0][0][0]
+targeted_square_row = listoftuplesofmoves[0][1][1]
+targeted_square_col = listoftuplesofmoves[0][1][0]
 ```
 
-``
+The move is applied to the environment thanks to this method:
+
 ```python
-def autonomous_piece(source_row, source_col, target_row, target_col, board, game, clone_chess, surface)
+self.autonomous_piece(7-selected_square_row, selected_square_col, 7-targeted_square_row, targeted_square_col, board, game, clone_chess, screenplay)
 ```
+
+**NB**:
+- local terminal prints the history of games' moves (either by AI or Human), chessboard diagram included,
+- remote terminal prints: chessboard input_data and predictions as a list of tuples.
+
 
 
 To print Forsyth–Edwards Notation (FEN) game position, uncomment these lines: 
@@ -134,5 +147,5 @@ To print Forsyth–Edwards Notation (FEN) game position, uncomment these lines:
     ```
 - ```python
     #print("\nAUTONOMOUS FEN: ",clone_chess.get_fen())
-    ``
+    ```
 
