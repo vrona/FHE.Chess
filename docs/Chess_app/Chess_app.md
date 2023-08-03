@@ -47,18 +47,40 @@ The class that explicitly defines what composes a move (FROM: source square, TO:
 This class used all the 4 previous classes to create methods which define pieces behaviors on the chessboard and basically the creation of piece inside the squares.<br>
 
 Core methods:
-- ```compute_move(piece, row, col, bool=True)```
-- ```king_check_sim(piece, move)```, (detailed here [check_simulation](Chess_app.md))
-- Common methods:<br>
-    - ```move(piece, move, simulation = False)```
-    - for refactoring purpose: ```move_kingchecksim()``` and ```sim_kingcheck_okmoves()```
+- ```python
+    def compute_move(piece, row, col, bool=True)
+    ```
+- ```python
+    def king_check_sim(piece, move)
+    ```
+    (detailed here [check_simulation](Chess_app.md))
+
+- Common methods:
+    - ```python
+        def move(piece, move, simulation = False)
+        ```
+    - for refactoring purpose:
+        ```python
+        def move_kingchecksim()
+        ```
+    and
+        ```python
+            sim_kingcheck_okmoves()
+        ```
 
 Recall that each piece has its own behavior (some shared behavior):
 
 - Pawn:
-    - ```check_pawn_promotion(piece, target)```
-    - ```set_true_en_passant(piece)```
-- King: ```castling(source, target)```
+    - ```python
+        def check_pawn_promotion(piece, target)
+        ```
+    - ```python
+        def set_true_en_passant(piece)
+        ```
+- King:
+    ```python
+    def castling(source, target)
+    ```
 
 A piece behavior is define by a dedicated internal method inside ```compute_move(piece, row, col, bool=True)``` method.<br>
 For eg.: King behavior is defined by ```king_moves()```.
@@ -98,6 +120,9 @@ AI get her input_data here:
 ```python
 chessboard = clone_chess.get_board()
 ```
-```autonomous_piece(source_row, source_col, target_row, target_col, board, game, clone_chess, surface)```
+
+```python
+def autonomous_piece(source_row, source_col, target_row, target_col, board, game, clone_chess, surface)
+```
 
 
