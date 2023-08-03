@@ -25,9 +25,10 @@ It integrates [Python-Chess library](https://python-chess.readthedocs.io/en) via
 │           └── pieces_80px (folder of all black & white chess pieces. Used when they are on the chessboard)
 
 ```
-
-Focus on the [Chess_env](../../client_local/chess_env) scripts<br>
 <br>
+Focus on the [Chess_env](../../client_local/chess_env) scripts.<br>
+<br>
+
 ### Structural<br>
 
 [base.py](../../client_local/chess_env/base.py)<br>
@@ -62,8 +63,6 @@ Recall that each piece has its own behavior (some shared behavior):
 A piece behavior is define by a dedicated internal method inside ```compute_move(piece, row, col, bool=True)``` method.<br>
 For eg.: King behavior is defined by ```king_moves()```.
 
-<br>
-
 ### Game
 
 [dragger.py](../../client_local/chess_env/dragger.py)<br>
@@ -74,19 +73,31 @@ Likely ````dragger```` class, this allows to display all content via PyGame.
 
 ### UX<br>
 [config.py](../../client_local/chess_env/config.py): used by PyGame for typography.<br>
-[button.py](../../client_local/chess_env/button.py): activate and command the game.<br>
+[button.py](../../client_local/chess_env/button.py): activate AI vs Human or Human vs Human modes.<br>
 
 ### Python-Chess power
 [clone_chess.py](../../client_local/chess_env/clone_chess.py)<br>
-This class calls the python-chess methods (see [Biblio](../Biblio.md)).<br>
-It is used to clone all piece's location and movements from "homemade" chessboard inside python-chess module.<br>
-This is a key pillar class as AI is nurtured with data from python-chess and its inferred output is filtered with legal_move() python-chess' method
+This class calls the Python-Chess methods (see [Biblio](../Biblio.md)).<br>
+It is used to clone all piece's location and movements from "homemade" chessboard into Python-Chess module.<br>
+This is a key pillar class as AI is nurtured with chessboard data from Python-Chess and its inferred output is filtered with Python-Chess' method: ```legal_move()``` and ```pseudo_legal_move()```
 
-### Main aka app.
-[main.py](../../client_local/chess_env/main.py)<br>
+### Main
+Everything comes together in [main.py](../../client_local/chess_env/main.py)<br>
+<br>
 
+To print Forsyth–Edwards Notation (FEN) game position, uncomment these lines: 
+- ```python
+    #print("\nHUMAN FEN: ",clone_chess.get_fen())
+    ```
+- ```python
+    #print("\nAUTONOMOUS FEN: ",clone_chess.get_fen())
+    ```
 
+AI get her input_data here:
 
-
+```python
+chessboard = clone_chess.get_board()
+```
+```autonomous_piece(source_row, source_col, target_row, target_col, board, game, clone_chess, surface)```
 
 

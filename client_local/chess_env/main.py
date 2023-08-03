@@ -28,7 +28,7 @@ class Main:
 
 
     def pawn_promotion(self, source_row, source_col, target_row, target_col):
-            """ this is specific to python-chess library: let pawn promoted"""
+            """ this is specific to python-chess library: let pawn being promoted"""
             self.clone_chess.move_clone_promotion(bitboard[source_row, source_col], bitboard[target_row, target_col], chess.QUEEN)
 
 
