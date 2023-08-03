@@ -10,12 +10,16 @@ homemade chessboard row starts at 0 from top // col starts at 0 from left
 python-chess library (https://python-chess.readthedocs.io): within chessboard, rows start at "1" from bottom  // cols start at "a" from left // bitboard from 0 to 63 squares (see below)
 """
 
-# homemade chessboard
-cb_cols = 8
-cb_rows = 8
-sqsize = sp_width // cb_cols
+# homemade chessboard (8*8)
+cb_cols = 8                     #number of columns
+cb_rows = 8                     #number of rows
+sqsize = sp_width // cb_cols    #size of squares
 
-# array of square table location within chessboard (8x8) 
+
+"""Python-Chess lib. uses alphanumeric coordinates (e2 equivalent to col 1 - row 2) but also
+bitboard logic: an array of square table location within chessboard.
+the move e2e4 becomes 8 to 24.
+"""
 bitboard = np.array([
     [56,57,58,59,60,61,62,63],
     [48,49,50,51,52,53,54,55],

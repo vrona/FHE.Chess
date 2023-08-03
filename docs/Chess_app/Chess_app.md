@@ -27,14 +27,19 @@ It integrates [Python-Chess library](https://python-chess.readthedocs.io/en) via
 ```
 
 Focus on the [Chess_env](../../client_local/chess_env) scripts<br>
-[base.py](../../client_local/chess_env/base.py): pro<br>
+[base.py](../../client_local/chess_env/base.py): structural information about the chessboard itself and enables interaction between "homemade" chess environment and python-chess library.<br>
+[square.py](../../client_local/chess_env/square.py)<br>
+A class that mainly returns bool about the content of squares (opponent piece, empty square), the chessboard's limits and alphanumeric conversion.<br>
 [board.py](../../client_local/chess_env/board.py)<br>
+For UX
+[config.py](../../client_local/chess_env/config.py)<br>: used by PyGame for typography.
 [button.py](../../client_local/chess_env/button.py)<br>
+
+
 [clone_chess.py](../../client_local/chess_env/clone_chess.py)<br>
-[config.py](../../client_local/chess_env/config.py)<br>
+
 [dragger.py](../../client_local/chess_env/dragger.py)<br>
 [game.py](../../client_local/chess_env/game.py)<br>
 [main.py](../../client_local/chess_env/main.py)<br>
 [move.py](../../client_local/chess_env/move.py)<br>
 [piece.py](../../client_local/chess_env/piece.py)<br>
-[square.py](../../client_local/chess_env/square.py)<br>
