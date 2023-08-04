@@ -78,7 +78,7 @@ Ready to use "dataset": [wb_2000_300.csv](../server_cloud/data/wb_2000_300.csv) 
     This method converts moves training elements: the source ("from" square) and the target ("to" square) into output format (array (64,)).<br>
     For eg.:
     - white moves e2e4 is 'pawn' source = e2 and target = e4.<br>
-    - under the logic of bitboard (see [base.py](../client_local/chess_env/base.py)) becomes source = 12 and target = 28
+    - under the logic of bitboard (see variable ```bitboard```), this move becomes source = 12 and target = 28
     - as an array:
     ```python
     # source
@@ -97,7 +97,10 @@ Ready to use "dataset": [wb_2000_300.csv](../server_cloud/data/wb_2000_300.csv) 
 
     **NB**: Target model uses an additional input data which is the ```source_flat_bit```.
 
+
     - production
+
     Target model needs the ```source_flat_bit()``` method to convert the square number of source (following the example above, it would be 12) into an array (64,).
 
 
+dataset_source dataset_target
