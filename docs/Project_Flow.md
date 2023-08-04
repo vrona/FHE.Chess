@@ -138,8 +138,9 @@ Raw data are downloadable here: [kaggle.com/datasets/arevel](https://www.kaggle.
 
 *   **Raw data explanation**: see [Data Explanation](data_explanation.md)
 
-*   **Data preparation**: is explained in this [wb_2000](https://github.com/vrona/FHE.Chess/blob/quant_fhe/server_cloud/data/wb_2000.ipynb) notebook.
-Little take away: the goal is to create an AI that would be rated at least 1500 ELO on Lichess. Thus, the preparation step aimed to provide only data points from games derived from chess players rated at least 2000 ELO each.
+*   **Data preparation**: is explained in this [wb_2000](https://github.com/vrona/FHE.Chess/blob/quant_fhe/server_cloud/data/wb_2000.ipynb) notebook.<br>
+Little take away: the goal is to create an AI that would be rated at least 1500 ELO on Lichess.<br>
+Thus, the preparation step aimed to provide only data points from games derived from chess players rated at least 2000 ELO each (white and black).
 
 *   **Data transformation**: Transformations are supplied by [helper_chessset.py](https://github.com/vrona/FHE.Chess/blob/quant_fhe/server_cloud/model_src/helper_chessset.py) - detailed here [Data transformation](data_transformation.md)
 
