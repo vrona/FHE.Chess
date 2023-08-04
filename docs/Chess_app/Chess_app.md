@@ -52,6 +52,9 @@ Core methods:
     ```python
     def compute_move(piece, row, col, bool=True)
     ```
+    A piece behavior is define by a dedicated internal method inside ```compute_move()``` method.<br>
+    For eg.: King behavior is defined by ```king_moves()```.
+
 - simulation of any opponent's movements over the other King:
     ```python
     def king_check_sim(piece, move)
@@ -86,8 +89,6 @@ Some pieces have exceptional movements:
     def castling(source, target)
     ```
 
-A piece behavior is define by a dedicated internal method inside ```compute_move(piece, row, col, bool=True)``` method.<br>
-For eg.: King behavior is defined by ```king_moves()```.
 
 ### Game
 
