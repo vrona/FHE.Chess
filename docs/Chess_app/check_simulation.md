@@ -7,7 +7,7 @@ Virtualization of the board by copying the Board() and Piece() classes. Then, co
 <br/>
 
 
-### [client_local/chess_env/board.py](../client_local/chess_env/board.py)
+### [/chess_env/board.py](../../client_local/chess_env/board.py)
 ```python
 89         def king_check_sim(self, piece, move):
 90             

@@ -6,7 +6,7 @@ At _Kingside_, the King moves two squares to the right while the right Rook move
 At _Queenside_, the King moves two squares to the left while the right Rook moves three squares over the King. (prerequisites: no pieces must be between the King and the chosen Rook and none of them have moved yet).
 
 
-### [client_local/chess_env/board.py](../client_local/chess_env/board.py)
+### [/chess_env/board.py](../../client_local/chess_env/board.py)
 ```python
 293                # castling
 294                if not piece.moved:

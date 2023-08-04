@@ -46,11 +46,14 @@ The class that explicitly defines what composes a move (FROM: source square, TO:
 [board.py](../../client_local/chess_env/board.py)<br>
 This class used all the 4 previous classes to create methods which define pieces behaviors on the chessboard and basically the creation of piece inside the squares.<br>
 
+There are several methods that are notable:
 Core methods:
-- ```python
+- defining the piece behavior:
+    ```python
     def compute_move(piece, row, col, bool=True)
     ```
-- ```python
+- simulation of any opponent's movements over the other King:
+    ```python
     def king_check_sim(piece, move)
     ```
     (detailed here [check_simulation](check_simulation.md))
@@ -67,16 +70,18 @@ Core methods:
         def sim_kingcheck_okmoves()
         ```
 
-Recall that each piece has its own behavior (some shared behavior):
+Some pieces have exceptional movements:
 
 - Pawn:
-    - ```python
+    - Promotion:
+        ```python
         def check_pawn_promotion(piece, target)
         ```
-    - ```python
+    - En-passant:
+        ```python
         def set_true_en_passant(piece)
         ```
-- King:
+- King: castling
     ```python
     def castling(source, target)
     ```
