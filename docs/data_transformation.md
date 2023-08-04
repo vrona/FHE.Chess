@@ -1,12 +1,14 @@
 # Data transformation
 
-At this step, [helper_chessset](../server_cloud/model_src/helper_chessset.py) supports the actions of transformation.
+At this step, [helper_chessset.py](../server_cloud/model_src/helper_chessset.py) supports the actions of transformation.
 
 ## Goal
 
-This document would help the models to receive the desired input_data in correct format and transformed the ground truth data and output. This includes in training and production contexts.<br>
+This document would help the [models](model_lifecycle.md) to receive the desired input_data in correct format and transformed the ground truth data and output. This includes in training and production contexts.<br>
 
-The models are Convolution Neural Network which need input_data with (12,8,8) format and binary data.<br>
+**Input data**<br>
+The 1st layers of the models are made of Convolution Neural Network which need input_data of shape (12,8,8) and filled of binary data.<br>
+
 
 * format :
     - dim 0 = a layer for each color (2) and type of pieces (6),
@@ -19,7 +21,13 @@ The models are Convolution Neural Network which need input_data with (12,8,8) fo
 
 <br>
 
-Because the Python-Chess lib uses the logic of bitboard ground truth and models' outputs (prediction) are converted to array of shape (64,).
+**Output**<br>
+
+The last layers are then full connected networks layers which deliver output of shape (64,).
+This document return the ground truth training data as it takes advantages of Python-Chess lib's bitboard logic.
+
+<br>
+
 
 ## Recall
 
@@ -103,4 +111,9 @@ Ready to use "dataset": [wb_2000_300.csv](../server_cloud/data/wb_2000_300.csv) 
     Target model needs the ```source_flat_bit()``` method to convert the square number of source (following the example above, it would be 12) into an array (64,).
 
 
-dataset_source dataset_target
+## Chessset dataset (PyTorch)
+
+### dataset_source
+
+
+### dataset_target
