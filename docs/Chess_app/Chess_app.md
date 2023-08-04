@@ -137,15 +137,14 @@ self.autonomous_piece(7-selected_square_row, selected_square_col, 7-targeted_squ
 
 **NB**:
 - local terminal prints the history of games' moves (either by AI or Human), chessboard diagram included,
+    To print Forsyth–Edwards Notation (FEN) game position, uncomment these lines: 
+    - ```python
+        #print("\nHUMAN FEN: ",clone_chess.get_fen())
+        ```
+    - ```python
+        #print("\nAUTONOMOUS FEN: ",clone_chess.get_fen())
+        ```
 - remote terminal prints: chessboard input_data and predictions as a list of tuples.
 
 
-
-To print Forsyth–Edwards Notation (FEN) game position, uncomment these lines: 
-- ```python
-    #print("\nHUMAN FEN: ",clone_chess.get_fen())
-    ```
-- ```python
-    #print("\nAUTONOMOUS FEN: ",clone_chess.get_fen())
-    ```
 
