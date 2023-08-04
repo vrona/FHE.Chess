@@ -1,4 +1,4 @@
-# Biblio
+# Bibliography
 
 ### Data
 - [lichess.org](https://database.lichess.org/#standard_games) 2023 January 33.5 GB +103,000,000 games

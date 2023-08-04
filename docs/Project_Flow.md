@@ -2,11 +2,11 @@
 
 ## Overview
 
-An application that plays Chess against an AI opponent. The moves are encrypted then thanks to FHE, the AI infers on data that she cannot see.
+An application that plays Chess against an AI opponent. The moves are encrypted then thanks to FHE, the AI infers on data that it cannot see.
 
 ## Description
 
-Create a machine-learning-based version of a Chess player which can be executed in FHE, i.e., where the computer does not see the unencrypted moves. On the player (client) side, the board would be in clear; then, when she plays her move, she encrypts the new position and sends it to the server, which then runs the machine-learning model inference over encrypted data, to predict a new (encrypted) move to apply. Finally, the player decrypts this move and apply it on the position, and reiterate the process until the game is over.
+Create a machine-learning-based version of a Chess player which can be executed in FHE, i.e., where the computer does not see the unencrypted moves. On the player (client) side, the board would be in clear; then, when it plays its move, it encrypts the new position and sends it to the server, which then runs the machine-learning model inference over encrypted data, to predict a new (encrypted) move to apply. Finally, the player decrypts this move and apply it on the position, and reiterate the process until the game is over.
 
 ## Knowledge
 
@@ -18,7 +18,7 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
     *   **Clear**: means non-encrypted in cryptography context.
 
-    *   **Quantization**: refers to techniques that helps to contraint an input from continuous (floating point precision) or large set of values to a discrete set (such as integers). Two main libraries are known - _Brevitas_ and _PyTorch_ - to quantize models.
+    *   **Quantization**: refers to techniques that helps to constrain an input from continuous (floating point precision) or large set of values to a discrete set (such as integers). Two main libraries are known - _Brevitas_ and _PyTorch_ - to quantize models.
 
     *   **Compilation**: is handled by Zama's Concrete-ML library. It produces low-code which acts at each computation steps within the quantized models to execute dedicated computations on encrypted data. The price of these additional operations is a slowdown at inference step (see, "simfhe" vs "deepfhe" below) but provide equivalent accuracy rate to non-encrypted environment. Thus, the more complex is a quantized model the longer it takes to output a prediction.
 
@@ -151,14 +151,16 @@ The AI needs an environment to take input from and to propose output to.
 The development of the chess app itself can be done completely from scratch or based on [python-chess](https://python-chess.readthedocs.io/en/latest/) library.
 It happens that this project is based on both (to speed up development).
 
-Except the [Clone_Chess class](https://github.com/vrona/FHE.Chess/blob/quant_fhe/client_local/chess_env/clone_chess.py) which returns [python-chess](https://python-chess.readthedocs.io/en/) methods, everything from [client_local/chess_env](https://github.com/vrona/FHE.Chess/tree/quant_fhe/client_local/chess_env) is made from scratch.
+Except the [Clone_Chess class](https://github.com/vrona/FHE.Chess/blob/quant_fhe/client_local/chess_env/clone_chess.py) which returns [python-chess](https://python-chess.readthedocs.io/en/) methods, everything from [client_local/chess_env](https://github.com/vrona/FHE.Chess/tree/quant_fhe/client_local/chess_env) is made from scratch.<br>
+
+Explanations of chess app scripts are here [Chess_app](Chess_app/Chess_app.md).
 
 ## #3 Models
 
 **The chosen philosophy is straightforward**:
 Train 2 models: one model to determine the SOURCE square, train another model to determine the TARGET square.(no matter the piece and evaluation)
 
-Consequences: AI always starts her moves the same way, but over 5 moves it starts to be very funny.
+Consequences: AI always starts its moves the same way, but over 5 moves it starts to be very funny.
 
 *   **#3.1 clear source / target**
 
