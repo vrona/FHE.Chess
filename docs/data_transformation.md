@@ -58,7 +58,7 @@ Ready to use "dataset": [wb_2000_300.csv](../server_cloud/data/wb_2000_300.csv) 
     ```
     (This format let you visual all the moves that have been done and provides the context of the game.)<br>
 
-    which is then being transformed into an array of shape (12,8,8) thanks to theses two methods:
+    which is then being transformed into an tensor of shape (12,8,8) thanks to theses two methods:
     ```python
     def feat_map_piece_12(board, color)
     def board_tensor_12(board)
@@ -117,6 +117,16 @@ Ready to use "dataset": [wb_2000_300.csv](../server_cloud/data/wb_2000_300.csv) 
 
 [dataset_source.py](../server_cloud/model_src/dataset_source.py) is used for Source model.<br>
 [dataset_target.py](../server_cloud/model_src/dataset_target.py) is used for Target model.<br>
+<br>
+
+Their classes are used by at:
+- training, validation and testing:
+  - clear: [launch_train_test_clear](../server_cloud/traintest_only/launch_train_test_clear.py)
+  - quantz: [launch_train_quantz](../server_cloud/traintest_only/launch_train_quantz.py), [launch_(test)_compile_fhe.py](../server_cloud/traintest_only/launch_(test)_compile_fhe.py)
+- compilation:
+  - simulation fhe: [compile_fhe_inprod](../server_cloud/server/compile_fhe_inprod.py)
+  - fhe: [client_server_fhe_deploy](../server_cloud/client_server_fhe_deploy.py)
+
 
 2 methods are worth to talk about:
 - ```python
