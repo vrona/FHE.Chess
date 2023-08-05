@@ -44,7 +44,7 @@ Ready to use "dataset": [wb_2000_300.csv](../server_cloud/data/wb_2000_300.csv) 
     1. e4 e5 2. b3 Nf6 3. Bb2 Nc6 4. Nf3 d6 5. d3 g6 6. Nbd2 Bg7 7. g3 Be6 8. Bg2 Qd7 9. O-O O-O 10. c3 b5 11. d4 exd4 12. cxd4 Bg4 13. Rc1 Rfe8 14. Qc2 Nb4 15. Qxc7 Qxc7 16. Rxc7 Nxa2 17. Ra1 Nb4 18. Raxa7 Rxa7 19. Rxa7 Nxe4 20. Nxe4 Rxe4 21. Ng5 Re1+ 22. Bf1 Be2 23. Rxf7 Bxf1 24. Kh1 Bh3# 0-1
     ```
 
-    is translated into chessboard like format and can be visualized thanks to [Python-Chess library](https://python-chess.readthedocs.io/en/) library: 
+    is translated into chessboard string matrix like format and can be visualized thanks to [Python-Chess library](https://python-chess.readthedocs.io/en/) library: 
 
     ```
     r . b q k b . r
@@ -56,6 +56,7 @@ Ready to use "dataset": [wb_2000_300.csv](../server_cloud/data/wb_2000_300.csv) 
     P P P P . P P P
     R N B . K . N R
     ```
+    (This format let you visual all the moves that have been done and provides the context of the game.)<br>
 
     which is then being transformed into an array of shape (12,8,8) thanks to theses two methods:
     ```python
@@ -153,7 +154,7 @@ Ready to use "dataset": [wb_2000_300.csv](../server_cloud/data/wb_2000_300.csv) 
 
     return x, y
   ```
-  returns the input_data (x) as a matrices (12,8,8) and ground_truth_data (source: y, _ or target: y, t) where y is the source square for source model and t (target square for target model).<br>
+  returns the input_data (x) as a binary tensor (12,8,8) and ground_truth_data (source: y, _ or target: y, t) where y is the source square for source model and t (target square for target model).<br>
 
   The flow is basically: a random game > random move > get the historical moves until the selected move > push history and move into Python-Chess board to get chessboard matrix > transform matrix into binary tensor and flat binary array.
 
