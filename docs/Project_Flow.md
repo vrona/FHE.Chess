@@ -114,7 +114,7 @@ Thus, **the approach** would be:
 - The AI will be building on 2 deep learning models (see [Model Lifecycle doc](model_lifecycle.md)):
     - 1 to select the square where is located the piece we would like to move,
     - and only 1 to select the square of destination where the piece would move to,
-- the inferred move would be filtered as ```legal_move``` by Python-Chess library's method and dedicated movement of piece would be handle by hard code (see [Chess_app](/docs/Chess_app/))
+- the inferred move would be filtered as ```legal_move``` by Python-Chess library's method, and then applied in the chess game environment (see [Chess_app](/docs/Chess_app/)).
 
 ### FHE
 Which data will be encrypted and use for computations?<br>
@@ -158,26 +158,33 @@ Explanations of chess app scripts are here [Chess_app](Chess_app/Chess_app.md).
 
 ## #3 Models
 
-**The chosen philosophy is straightforward**:
-Train 2 models: one model to determine the SOURCE square, train another model to determine the TARGET square.(no matter the piece and evaluation)
+Sum-up, 2 models in 2 contexts:
 
-Consequences: AI always starts its moves the same way, but over 5 moves it starts to be very funny.
-
-*   **#3.1 clear source / target**
+*   **# clear source / target**
 
     *   **Source model**
 
         *   input source : (12,8,8) board -> output source : selected Square number to move FROM as 1D array of shape (64,)
 
-        *   3 convolution layers (hidden size=128) + fully-connected layer (64)
+        *   4 convolution layers (hidden size=128) + fully-connected layer (64)
+
+*   **Target model**
+
+    *   input_target : (12,8,8) board + selected Square number to move from as 1D array of shape (64,) -> output target : selected Square number to move TO as 1D array of shape (64,)
+
+    *   3 convolution layers (hidden size=128) + fully-connected layer (64)
+
+*   **# quantized source / target**
+
+    *   **Source model**
+
+            *   input source : (12,8,8) board -> output source : selected Square number to move FROM as 1D array of shape (64,)
+
+            *   4 convolution layers (hidden size=128) + fully-connected layer (64)
 
     *   **Target model**
 
-        *   input target : (12,8,8) board + selected Square number to move from as 1D array of shape (64,) -> output target : selected Square number to move TO as 1D array of shape (64,)
-
-        *   3 convolution layers (hidden size=128) + fully-connected layer (64)
-
-*   **#3.2 quantized source / target**
+        *   input_target : (12,8,8) board + selected Square number to move from as 1D array of shape (64,) -> output target : selected Square number to move TO as 1D array of shape (64,)
 
 ## #4 Train / Validation / Test
 

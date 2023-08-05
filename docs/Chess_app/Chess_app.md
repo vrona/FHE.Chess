@@ -116,7 +116,7 @@ Everything comes together in [main.py](../../client_local/chess_env/main.py)<br>
 <br>
 
 
-In AI mode, the flow as follows:
+In AI mode, the flow is as follows:
 ```base```, ```squares```, ```pieces```, ```move``` and ```board``` are initialized (and runs permanently) and are displayed via ```game```.
 
 The input_data (current chessboard) are retrieved from ```clone_chess```:
@@ -142,7 +142,7 @@ self.autonomous_piece(7-selected_square_row, selected_square_col, 7-targeted_squ
 ```
 
 **NB**:
-- local terminal prints the history of games' moves (either by AI or Human) chessboard diagram included. If Forsyth–Edwards Notation (FEN) game position is needed, to print them, uncomment these lines: 
+- local terminal prints the history of games' moves (either by AI or Human) chessboard string matrix included. If Forsyth–Edwards Notation (FEN) game position is needed, to print them, uncomment these lines: 
     - ```python
         #print("\nHUMAN FEN: ",clone_chess.get_fen())
         ```
