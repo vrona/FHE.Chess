@@ -117,15 +117,14 @@ Ready to use "dataset": [wb_2000_300.csv](../server_cloud/data/wb_2000_300.csv) 
 
 [dataset_source.py](../server_cloud/model_src/dataset_source.py) is used for Source model.<br>
 [dataset_target.py](../server_cloud/model_src/dataset_target.py) is used for Target model.<br>
-<br>
 
 Their classes are used by at:
 - training, validation and testing:
-  - clear: [launch_train_test_clear](../server_cloud/traintest_only/launch_train_test_clear.py)
-  - quantz: [launch_train_quantz](../server_cloud/traintest_only/launch_train_quantz.py), [launch_(test)_compile_fhe.py](../server_cloud/traintest_only/launch_(test)_compile_fhe.py)
+  - clear: [launch_train_test_clear.py](../server_cloud/traintest_only/launch_train_test_clear.py)
+  - quantz: [launch_train_quantz.py](../server_cloud/traintest_only/launch_train_quantz.py), [launch_(test)_compile_fhe.py](../server_cloud/traintest_only/launch_(test)_compile_fhe.py)
 - compilation:
-  - simulation fhe: [compile_fhe_inprod](../server_cloud/server/compile_fhe_inprod.py)
-  - fhe: [client_server_fhe_deploy](../server_cloud/client_server_fhe_deploy.py)
+  - simulation fhe: [compile_fhe_inprod.py](../server_cloud/server/compile_fhe_inprod.py)
+  - fhe: [client_server_fhe_deploy.py](../server_cloud/client_server_fhe_deploy.py)
 
 
 2 methods are worth to talk about:
