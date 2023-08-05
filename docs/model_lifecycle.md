@@ -113,7 +113,6 @@ At this step, if you need a deep dive into Quantization?! You can read [zama's q
     
     ```nn.BatchNorm2d, nn.BatchNorm1d``` from PyTorch are kept. They offer better results and the 2nd does not handle dimension properly.
 
-    <br>
 
     **A neuralgic method must not be forgotten**: ```qnn.QuantIdentity``` before feeding each or groups of layers.<br>
     It sets the ```scale, zero_point, bit_width, signed_t, training_t``` parameters to the followed layers applied to values at QuantTensor level.<br>
@@ -131,8 +130,9 @@ At this step, if you need a deep dive into Quantization?! You can read [zama's q
 
         - At convolutions steps, normalization is not used,
         - before 1D layers combination: the same instantiated ```qnn.QuantIdentity``` variable is used for each operand of the arithmetic operation.<br>
-        The goal is to set the same ```scale, zero_point``` parameters for both QuantTensor of ```chessboard``` and ```source```. (see Element-wise Arithmetic between QuantTensor in [Biblio](Biblio.md).<br>
-        Other technic like separate instantiation of ```qnn.QuantIdentity``` for each operand and then infusing the ```scale, zero_point``` value (from of one of them) into a fresh new ```QuantTensor``` filled of the merge of these two QuantTensors will not work.
+        The goal is to set the same ```scale, zero_point``` parameters for both QuantTensor of ```chessboard``` and ```source```. (see Element-wise Arithmetic between QuantTensor in [Biblio](Biblio.md)).<br>
+        
+        NB: other technic like separate instantiation of ```qnn.QuantIdentity``` for each operand and then infusing the ```scale, zero_point``` value (from of one of them) into a fresh new ```QuantTensor``` filled of the merge of these two QuantTensors will not work.
 
 
     - **Target** (**inference**): [target_44cnn_quantz_eval.py](../server_cloud/model_src/quantz/target_44cnn_quantz_eval.py)
@@ -146,8 +146,7 @@ At this step, if you need a deep dive into Quantization?! You can read [zama's q
 
     #print("SCALE -->",chessboard.scale.item()-source.scale.item())
     merge = chessboard_eval + source_eval
-    ``````
-
+    ```
 
 
 ### **Compilation & Simulation** (Virtual Library)
