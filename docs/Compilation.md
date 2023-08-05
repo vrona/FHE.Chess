@@ -2,19 +2,22 @@
 
 At this step, if you need a deep dive into Compilation?! You can have look at [Zama's compilation explanations](https://docs.zama.ai/concrete-ml/advanced-topics/compilation).<br>
 
-As we have made a custom quantized Brevitas models with Quantization Aware Training we use ```compile_brevitas_qat_model()``` to obtain our "quantized_module" (aka compiled (quantized) model)
+As we have made a custom quantized Brevitas models with Quantization Aware Training we use ```compile_brevitas_qat_model()``` to obtain "quantized_module" (a compiled version of our quantized model) for each of our models.
 
 In this project, compilation can be found when:<br>
 
 - **Testing**: in [launch_(test)_compile_fhe](../server_cloud/traintest_only/launch_(test)_compile_fhe.py) 
 
 ```python
-...
+#...
 q_module_vl = compile_brevitas_qat_model(model, train_input, n_bits={"model_inputs":4, "model_outputs":4})
-...
+#...
 ```
+where ```model``` is loaded model (with dict items and weights), ```train_data``` is the transformed "solo" input_data (see. "Special step: Compilation" in Data Transformation) for Source model or multiple input_data for Target model.
 
 and then [test_model_FHE.py](../server_cloud/traintest_only/test_model_FHE.py) which is being called by .
+
+
 
 test_source_concrete
 for idx, (data, target) in loop_vlfhe_test:
