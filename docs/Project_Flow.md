@@ -156,7 +156,7 @@ Except the [Clone_Chess class](https://github.com/vrona/FHE.Chess/blob/quant_fhe
 
 Explanations of chess app scripts are here [Chess_app](Chess_app/Chess_app.md).
 
-## #3 Models
+## #3 [Models lifecycle](model_lifecycle.md)
 
 Sum-up, 2 models in 2 contexts:
 
