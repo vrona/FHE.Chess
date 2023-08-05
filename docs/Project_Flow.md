@@ -188,7 +188,7 @@ Sum-up, 2 models in 2 contexts:
 
         *   4 convolution layers (hidden size=128) + 2 fully-connected layer (64)
 
-        **IMPORTANT for inference only**, target model is [target_44cnn_quantz_eval](../server_cloud/model_src/quantz/target_44cnn_quantz_eval.py)
+        *   **IMPORTANT for inference only**, target model is [target_44cnn_quantz_eval](../server_cloud/model_src/quantz/target_44cnn_quantz_eval.py)
 
 ## #4 Train / Validation / Test
 
