@@ -160,7 +160,7 @@ Explanations of chess app scripts are here [Chess_app](Chess_app/Chess_app.md).
 
 Sum-up, 2 models in 2 contexts:
 
-*   **# clear source / target**
+*   **# clear**
 
     *   **Source model**
 
@@ -168,23 +168,25 @@ Sum-up, 2 models in 2 contexts:
 
         *   4 convolution layers (hidden size=128) + fully-connected layer (64)
 
-*   **Target model**
+    *   **Target model**
 
-    *   input_target : (12,8,8) board + selected Square number to move from as 1D array of shape (64,) -> output target : selected Square number to move TO as 1D array of shape (64,)
+        *   input_target : (12,8,8) board + selected Square number to move from as 1D array of shape (64,) -> output target : selected Square number to move TO as 1D array of shape (64,)
 
-    *   3 convolution layers (hidden size=128) + fully-connected layer (64)
+        *   4 convolution layers (hidden size=128) + 2 fully-connected layer (64)
 
-*   **# quantized source / target**
+*   **# quantized**
 
     *   **Source model**
 
-            *   input source : (12,8,8) board -> output source : selected Square number to move FROM as 1D array of shape (64,)
+        *   input source : (12,8,8) board -> output source : selected Square number to move FROM as 1D array of shape (64,)
 
-            *   4 convolution layers (hidden size=128) + fully-connected layer (64)
+        *   4 convolution layers (hidden size=128) + fully-connected layer (64)
 
     *   **Target model**
 
         *   input_target : (12,8,8) board + selected Square number to move from as 1D array of shape (64,) -> output target : selected Square number to move TO as 1D array of shape (64,)
+
+        *   4 convolution layers (hidden size=128) + 2 fully-connected layer (64)
 
 ## #4 Train / Validation / Test
 
