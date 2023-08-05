@@ -24,9 +24,7 @@ The 1st layers of the models are made of Convolution Neural Network which need i
 **Output**<br>
 
 The last layers are then full connected networks layers which deliver output of shape (64,).
-This document return the ground truth training data as it takes advantages of Python-Chess lib's bitboard logic.
-
-<br>
+This document return the ground truth training data as it takes advantages of Python-Chess lib's bitboard logic.<br>
 
 
 ## Recall
@@ -110,10 +108,54 @@ Ready to use "dataset": [wb_2000_300.csv](../server_cloud/data/wb_2000_300.csv) 
 
     Target model needs the ```source_flat_bit()``` method to convert the square number of source (following the example above, it would be 12) into an array (64,).
 
+<br>
 
 ## Chessset dataset (PyTorch)
 
-### dataset_source
+[PyTorch](https://pytorch.org) provides a class that helps to create easily a bridge between dataset and models.
+
+[dataset_source.py](../server_cloud/model_src/dataset_source.py) is used for Source model.<br>
+[dataset_target.py](../server_cloud/model_src/dataset_target.py) is used for Target model.<br>
+
+2 methods are worth to talk about:
+- ```python
+  def __len__()
+  ```
+  returns the size of dataset that will be loaded by another  PyTorch's method.<br>
+  The main dataset is splitted into 3 sub dataset: training (60% of the main dataset), validation and testing (20% each).<br>
+
+- ```python
+  def __getitem__(idx)
+  # get the game
+    random_game = self.games_df.values[idx]
+    initial_moves = helper_move_state.list_move_sequence(random_game)
+
+    # get random move
+    game_state_i = np.random.randint(len(initial_moves)-1)
+    next_move = initial_moves[game_state_i]  # piece_pos
+
+    # get the sequence of moves until the move
+    moves = initial_moves[:game_state_i]
+
+    # instantiate board from chess lib
+    board = chess.Board()
+
+    for move in moves:
+        board.push_san(move)
+
+    x = helper_board_state.board_tensor_12(board)          # shape(6,8,8) or shape(12,8,8)
+    
+    y, _ = helper_move_state.from_to_bitboards(next_move, board) # shape (1)
+
+    # determine white or black turn (1 for w, -1 for b) and then the one to play has always positive value
+    if game_state_i %2 == 1:
+        x *= -1
+
+    return x, y
+  ```
+  returns the input_data (x) as a matrices (12,8,8) and ground_truth_data (source: y, _ or target: y, t) where y is the source square for source model and t (target square for target model).<br>
+
+  The flow is basically: a random game > random move > get the historical moves until the selected move > push history and move into Python-Chess board to get chessboard matrix > transform matrix into binary tensor and flat binary array.
 
 
-### dataset_target
+
