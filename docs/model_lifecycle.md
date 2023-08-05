@@ -20,25 +20,25 @@ train_loader = DataLoader(trainset, batch_size = 64, shuffle=True, drop_last=Tru
 
     Clear models are trained, validated, tested on non-encrypted data thanks to [train_source_clear](../server_cloud/traintest_only/train_source_clear.py) and [train_target_clear](../server_cloud/traintest_only/train_target_clear.py).<br>
 
+    Training parameters:<br>
     ```python
     Epochs = 5
-    Learning rate = 1.0e-3
+    Learning_rate = 1.0e-3
     criterion = nn.MSELoss()
     ```
 
-    ```train_loss```, ```valid_loss = 0``` and ```accuracy``` are monitored by wandb (aka [Weights & Biases](https://wandb.ai/)).<br>
+    ```train_loss```, ```valid_loss = 0``` and ```accuracy``` are monitored by wandb (aka [Weights & Biases](https://wandb.ai/site)).<br>
+
+    **NB**: the level of float precision offered by ```torch.float``` is enough.<br>
 
 *   Models
 
-    *   Source (model 1): 
 
-    *   Target (model 2): 
+    *   Source: [cnn_source_clear](../server_cloud/model_src/clear/cnn_source_clear.py)
 
-*   Train, validation, test
+    *   Target: [cnn_target_clear](../server_cloud/model_src/clear/cnn_target_clear.py)
 
-    *   Source (model 1): 
 
-    *   Target (model 2): 
 
 ### **Quantization**
 
@@ -48,15 +48,13 @@ Quantized model (clear models are converted into an integer equivalent) trained,
 
 *   Models
 
-    *   Source (model 1): 
+    *   Source: [source_44cnn_quantz.py](../server_cloud/model_src/quantz/source_44cnn_quantz.py)
 
-    *   Target (model 2): 
+    *   Target (**training**): [target_44cnn_quantz.py](../server_cloud/model_src/quantz/target_44cnn_quantz.py)
 
-*   Train, validation, test
+    *   Target (**inference**): [target_44cnn_quantz_eval.py](../server_cloud/model_src/quantz/target_44cnn_quantz_eval.py)
 
-    *   Source (model 1): 
 
-    *   Target (model 2): 
 
 ### **Compilation & Simulation** (Virtual Library)
 
