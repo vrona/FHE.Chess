@@ -1,9 +1,5 @@
 # Model Dev. / Training / Validation / Testing
 
-### **Clear**
-
-Clear models are trained, validated, tested on non-encrypted data thanks to [launch_train_test_clear.py](../server_cloud/traintest_only/launch_train_test_clear.py).<br>
-
 3 subsets: training_set, valid_set, test_set are made from global dataset [wb_2000_300](../server_cloud/data/wb_2000_300.csv).<br>
 ```python
 # split dataset splitted into: training_set (80%), valid_set (20%), test_set (20%)
@@ -13,6 +9,11 @@ They are instantiated like:
 ```python
 trainset = Chessset(training_set['AN'], training_set.shape[0])
 ```
+
+### **Clear**
+
+Clear models are trained, validated, tested on non-encrypted data thanks to [launch_train_test_clear.py](../server_cloud/traintest_only/launch_train_test_clear.py).<br>
+
 
 *   Run training and testing:
 
