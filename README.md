@@ -61,7 +61,7 @@ remote terminal : ```$ python3 server/server_all.py -i (or --inference) clear or
 
 ## Reset and kill
 - to reset the game: press r,
-- to kill, ctrl+C on local terminal or close the pygame window.
+- to kill: ctrl+C on local terminal or close the pygame window.
 - in deepfhe mode, as it takes hours to predict (see. mode explanation [Project Flow](docs/Project_Flow.md)), kill the remote terminal.
 
 <br/>

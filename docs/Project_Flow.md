@@ -40,9 +40,9 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
         *   based on current model complexity and hardware capacity (Ice Lake CPU), unlike "simfhe" which provides an answer within the milliseconds (like "clear"), "deepfhe" takes hours to infer.
 
-        *   both needs to have compiled (quantized) models.
+        *   both needs to have compiled models (already quantized).
 
-        *   NB: if you test "deepfhe", you will want to kill the remote server as the FHE.Chess will "spinning forever" as it waits the inferred move by the AI.
+        *   NB: if you test "deepfhe", you will want to kill the remote server as you will feel that the FHE.Chess "spins forever" as it waits the inferred move by the AI.
 <br/>
 
 ## Architecture Client-Server
@@ -136,13 +136,13 @@ In terms of architecture, at deployment, it is necessary to base the application
 
 Raw data are downloadable here: [kaggle.com/datasets/arevel](https://www.kaggle.com/datasets/arevel/chess-games)
 
-*   **Raw data explanation**: see [Data Explanation](data_explanation.md)
+*   **Raw data explanation**: see [Data Explanation](data_explanation.md),
 
 *   **Data preparation**: is explained in this [wb_2000](https://github.com/vrona/FHE.Chess/blob/quant_fhe/server_cloud/data/wb_2000.ipynb) notebook.<br>
 Little take away: the goal is to create an AI that would be rated at least 1500 ELO on Lichess.<br>
 Thus, the preparation step aimed to provide only data points from games derived from chess players rated at least 2000 ELO each (white and black).
 
-*   **Data transformation**: Transformations are supplied by [helper_chessset.py](https://github.com/vrona/FHE.Chess/blob/quant_fhe/server_cloud/model_src/helper_chessset.py) - detailed here [Data transformation](data_transformation.md)
+*   **Data transformation**: Transformations are supplied by [helper_chessset.py](https://github.com/vrona/FHE.Chess/blob/quant_fhe/server_cloud/model_src/helper_chessset.py) - detailed here [Data transformation](data_transformation.md).
 
 <br>
 
@@ -162,13 +162,13 @@ Sum-up, 2 models in 2 contexts:
 
 *   **clear** (PyTorch)
 
-    *   **Source model**
+    *   **[Source model](../server_cloud/model_src/clear/cnn_source_clear.py)**
 
         *   input source : (12,8,8) board -> output source : selected Square number to move FROM as 1D array of shape (64,)
 
         *   4 convolution layers (hidden size=128) + fully-connected layer (64)
 
-    *   **Target model**
+    *   **[Target model](../server_cloud/model_src/clear/cnn_target_clear.py)**
 
         *   input_target : (12,8,8) board + selected Square number to move from as 1D array of shape (64,) -> output target : selected Square number to move TO as 1D array of shape (64,)
 
@@ -176,17 +176,19 @@ Sum-up, 2 models in 2 contexts:
 
 *   **quantized** (Brevitas - PyTorch)
 
-    *   **Source model**
+    *   **[Source model](../server_cloud/model_src/quantz/source_44cnn_quantz.py)**
 
         *   input source : (12,8,8) board -> output source : selected Square number to move FROM as 1D array of shape (64,)
 
         *   4 convolution layers (hidden size=128) + fully-connected layer (64)
 
-    *   **Target model**
+    *   **[Target model](../server_cloud/model_src/quantz/target_44cnn_quantz.py)**
 
         *   input_target : (12,8,8) board + selected Square number to move from as 1D array of shape (64,) -> output target : selected Square number to move TO as 1D array of shape (64,)
 
         *   4 convolution layers (hidden size=128) + 2 fully-connected layer (64)
+
+        **IMPORTANT for inference only**, target model is [target_44cnn_quantz_eval](../server_cloud/model_src/quantz/target_44cnn_quantz_eval.py)
 
 ## #4 Train / Validation / Test
 
