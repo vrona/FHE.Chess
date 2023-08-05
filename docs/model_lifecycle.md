@@ -34,7 +34,7 @@ train_loader = DataLoader(trainset, batch_size = 64, shuffle=True, drop_last=Tru
 
 *   Models
 
-    *   Source: [cnn_source_clear](../server_cloud/model_src/clear/cnn_source_clear.py)
+    *   Source: [cnn_source_clear.py](../server_cloud/model_src/clear/cnn_source_clear.py)
     ```python
     # input_layer, recall 12 input layers is for each 6 types of pieces for each color (2). The output layers is settled at 128 neurons.
     self.input_layer = nn.Conv2d(12, hidden_size, kernel_size=3, stride=1, padding=1)
@@ -51,24 +51,24 @@ train_loader = DataLoader(trainset, batch_size = 64, shuffle=True, drop_last=Tru
     <br>
 
     *   Target: [cnn_target_clear.py](../server_cloud/model_src/clear/cnn_target_clear.py)<br>
-    Is identical to Source model except that **2 input_data are combined**.<br>
-    The reason is that the 2nd input_data put emphasis to the selected piece which has to move among all the pieces which are on the current chessboard (aka the 1st input_data).<br>
-    1st input_data: ```self.input_layer = nn.Conv2d(12, ...)```<br>
-    After all the features have been exploited from CNN layers, the output is flatten to match the 1D format of the 2nd input_data.<br>
-    2nd input_data:
-    ```python
-    # source (the selected squares)
-    self.input_source = nn.Linear(64,64)
-    ```
+        Is identical to Source model except that **2 input_data are combined**.<br>
+        The reason is that the 2nd input_data put emphasis to the selected piece which has to move among all the pieces which are on the current chessboard (aka the 1st input_data).<br>
+        1st input_data: ```self.input_layer = nn.Conv2d(12, ...)```<br>
+        After all the features have been exploited from CNN layers, the output is flatten to match the 1D format of the 2nd input_data.<br>
+        2nd input_data:
+        ```python
+        # source (the selected squares)
+        self.input_source = nn.Linear(64,64)
+        ```
 
-    Then, the combination is operated simply at tensor level:
-    ```python
-    # merging chessboard (context + selected source square)
-    merge = chessboard + source
+        Then, the combination is operated simply at tensor level:
+        ```python
+        # merging chessboard (context + selected source square)
+        merge = chessboard + source
 
-    merge = self.batchn1d_1(merge)
-    ```
-    This is followed by a much needed normalization step. Indeed, ```chessboard``` variable is the 1D (64,) output from flatten CNN layers filled of floats between 0 and 1. ```source```variable is also a 1D (64,) but filled of 0 and just 1 at the indice relative to the square number where is located the piece in the bitboard. Then, for better computation results at this indice in the "merged" tensor, the feature is then below 1 (so do accordingly the other remaining 63 features).
+        merge = self.batchn1d_1(merge)
+        ```
+        This is followed by a much needed normalization step. Indeed, ```chessboard``` variable is the 1D (64,) output from flatten CNN layers filled of floats between 0 and 1. ```source```variable is also a 1D (64,) but filled of 0 and just 1 at the indice relative to the square number where is located the piece in the bitboard. Then, for better computation results at this indice in the "merged" tensor, the feature is then below 1 (so do accordingly the other remaining 63 features).
 
 
 
