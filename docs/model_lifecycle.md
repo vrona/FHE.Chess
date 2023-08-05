@@ -82,15 +82,15 @@ train_loader = DataLoader(trainset, batch_size = 64, shuffle=True, drop_last=Tru
 
 Quantized model (clear models are converted into an integer equivalent) trained, validated, tested on non-encrypted data.<br>
 
-At this step, needs a deep dive into Quantization? read [zama's quantization explanations](https://docs.zama.ai/concrete-ml/advanced-topics/quantization)<br>
+At this step, if you need a deep dive into Quantization?! You can read [zama's quantization explanations](https://docs.zama.ai/concrete-ml/advanced-topics/quantization).<br>
 
-*   Training, validation and Testing are **identical as Clear except**:<br>
+*   Training, validation and Testing are **identical as "Clear" except**:<br>
 
     Training and validation are managed by running [launch_train_quantz.py](../server_cloud/traintest_only/launch_train_quantz.py).<br>
 
-    Testing is managed by running [launch_(test)_compile_fhe.py](../server_cloud/traintest_only/launch_(test)_compile_fhe.py)<br>
+    Testing is managed by running [launch_(test)_compile_fhe.py](../server_cloud/traintest_only/launch_(test)_compile_fhe.py) and [test_model_FHE.py](../server_cloud/traintest_only/test_model_FHE.py)<br>
 
-    Quantized models are trained, validated, tested on non-encrypted data thanks to [train_source_quantz.py](../server_cloud/traintest_only/train_source_quantz.py) and [train_target_quantz](../server_cloud/traintest_only/train_target_quantz.py).<br>
+    Quantized models are trained, validated thanks to [train_source_quantz.py](../server_cloud/traintest_only/train_source_quantz.py) and [train_target_quantz](../server_cloud/traintest_only/train_target_quantz.py).<br>
 
     Training parameters:<br>
     ```python
@@ -98,9 +98,10 @@ At this step, needs a deep dive into Quantization? read [zama's quantization exp
     Learning_rate = 1.0e-3
     criterion = nn.MSELoss()
     ```
-    Epoch have been doubled to compensate a bit the eventual losses of accuracy due to the action of quantization which reduces the precision of values at tensor .<br>
+    Epoch have been doubled to compensate a bit the eventual losses of accuracy due to the action of quantization which reduces the precision of values at tensor.<br>
 
-*   Models
+
+*   Models<br>
     Both "Quantized" models keep the same structure as "Clear" ones.<br>
     
     All type layer and activations (PyTorch) methods are changed into their "quantized" (Brevitas) equivalent:<br>
@@ -121,12 +122,19 @@ At this step, needs a deep dive into Quantization? read [zama's quantization exp
     - bit_width and weight_width ```n_bits, w_bits``` are the number of bits necessary from input_data and weights for intermediary results. Here, they settled to 4 and 4.
     - ```return_quant_tensor``` is mainly settled to ```True``` to get a quantized output from layer.
     - pruning technic is used to help model to produce intermediary and global outputs with fewer bits as it sets a maximum of neurons to be activated among specific layers. Here, a max of 84 out of 128 are activated among the CNN layers.
+    
+    * Source: [source_44cnn_quantz.py](../server_cloud/model_src/quantz/source_44cnn_quantz.py)<br>
+    Same logic as in "clear" but with one additional normalization after linearization.<br>
 
-    *   Source: [source_44cnn_quantz.py](../server_cloud/model_src/quantz/source_44cnn_quantz.py)
+    * Target (**training**): [target_44cnn_quantz.py](../server_cloud/model_src/quantz/target_44cnn_quantz.py)<br>
+    Because of the willingness to combine two different layers, we follow the same logic but with some nuances.<br>
+    - At convolutions steps, normalization is not used,
+    - before 1D layers combination: the same instantiated ```qnn.QuantIdentity``` variable is used for each of the elements of the arithmetic operation <br>
+    The goal is to set the same ```scale, zero_point``` parameters for both QuantTensor of ```chessboard``` and ```source```. (see Element-wise Arithmetic between QuantTensor in [Biblioraphy](Biblio.md)<br>
+    Other technic like separate instantiation of ```qnn.QuantIdentity``` for each element and then infusing the ```scale, zero_point``` value (from of one of them) into a fresh new ```QuantTensor``` filled of the merge of these two QuantTensors will not work.
+    
 
-    *   Target (**training**): [target_44cnn_quantz.py](../server_cloud/model_src/quantz/target_44cnn_quantz.py)
-
-    *   Target (**inference**): [target_44cnn_quantz_eval.py](../server_cloud/model_src/quantz/target_44cnn_quantz_eval.py)
+    * Target (**inference**): [target_44cnn_quantz_eval.py](../server_cloud/model_src/quantz/target_44cnn_quantz_eval.py)
 
 
 
