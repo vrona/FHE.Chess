@@ -101,7 +101,8 @@ At this step, if you need a deep dive into Quantization?! You can read [zama's q
     Epoch have been doubled to compensate a bit the eventual losses of accuracy due to the action of quantization which reduces the precision of values at tensor.<br>
 
 
-*   Models<br>
+*   Models
+
     Both "Quantized" models keep the same structure as "Clear" ones.<br>
     
     All type layer and activations (PyTorch) methods are changed into their "quantized" (Brevitas) equivalent:<br>
