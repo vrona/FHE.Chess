@@ -82,7 +82,7 @@ train_loader = DataLoader(trainset, batch_size = 64, shuffle=True, drop_last=Tru
 
 Quantized model (clear models are converted into an integer equivalent) trained, validated, tested on non-encrypted data.<br>
 
-At this step, if you need a deep dive into Quantization?! You can read [zama's quantization explanations](https://docs.zama.ai/concrete-ml/advanced-topics/quantization).<br>
+At this step, if you need a deep dive into Quantization?! You can read [Zama's quantization explanations](https://docs.zama.ai/concrete-ml/advanced-topics/quantization).<br>
 
 *   Training, validation and Testing are **identical as "Clear" except**:<br>
 
@@ -149,18 +149,3 @@ At this step, if you need a deep dive into Quantization?! You can read [zama's q
     merge = chessboard_eval + source_eval
     ```
 
-
-### **Compilation & Simulation** (Virtual Library)
-
-At this step, if you need a deep dive into Compilation?! You can read [zama's compilation explanations](https://docs.zama.ai/concrete-ml/advanced-topics/compilation).<br>
-
-
-*   Run test (model are compiled with Concrete's FHE compiler to run inference on encrypted data): blob/quant_fhe/server_cloud/traintest_only/launch_(test)_compile_fhe.py)
-
-## Model Deployment
-
-*   client generates private keys and a public evaluation key (used by the model's FHE evaluation on the server) and then encrypts data and decrypts results.
-
-*   server runs compiled model, makes inference on encrypted data.
-
-<br/>
