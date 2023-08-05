@@ -80,9 +80,10 @@ train_loader = DataLoader(trainset, batch_size = 64, shuffle=True, drop_last=Tru
 
 ### **Quantization**
 
-Quantized model (clear models are converted into an integer equivalent) trained, validated, tested on non-encrypted data.
+Quantized model (clear models are converted into an integer equivalent) trained, validated, tested on non-encrypted data.<br>
 
-*   Training, validation and Testing are **identical as Clear except**:
+*   Training, validation and Testing are **identical as Clear except**:<br>
+
     Training and validation are managed by running [launch_train_quantz.py](../server_cloud/traintest_only/launch_train_quantz.py).<br>
 
     Testing is managed by running [launch_(test)_compile_fhe.py](../server_cloud/traintest_only/launch_(test)_compile_fhe.py)<br>
@@ -91,12 +92,27 @@ Quantized model (clear models are converted into an integer equivalent) trained,
 
     Training parameters:<br>
     ```python
-    Epochs = 5
+    Epochs = 10
     Learning_rate = 1.0e-3
     criterion = nn.MSELoss()
     ```
+    Epoch have been doubled to compensate a bit the eventual losses of accuracy due to the action of quantization which reduces the precision of values at tensor .<br>
 
 *   Models
+    Both "Quantized" models keep the same structure as "Clear" ones.<br>
+    
+    All type layer and activations (PyTorch) methods are changed into their "quantized" (Brevitas) equivalent:<br>
+        
+    -  convolution: ```nn.Conv2d()``` to ```qnn.QuantConv2d()```
+    -  linear: ```nn.Linear()``` to ```qnn.QuantLinear()```
+    -  activation: ```F.relu()``` to ```qnn.QuantReLU()```
+    -  activation: ```torch.sigmoid()``` to ```qnn.QuantSigmoid()```
+    
+    ```nn.BatchNorm2d, nn.BatchNorm1d``` from PyTorch are kept. They offer better results and the 2nd does not handle dimension properly.
+    
+    <br>
+    A neuralgic method must not be forgotten: ```qnn.QuantIdentity``` before feeding each or groups of layers.<br>
+    It sets the ```scale, zero_point, bit_width, signed_t, training_t``` parameters to the followed layers applied to values at tensor level.<br>
 
     *   Source: [source_44cnn_quantz.py](../server_cloud/model_src/quantz/source_44cnn_quantz.py)
 
