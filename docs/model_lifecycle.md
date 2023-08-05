@@ -5,17 +5,28 @@
 # split dataset splitted into: training_set (80%), valid_set (20%), test_set (20%)
 training_set, valid_set, test_set = np.split(wechess.sample(frac=1, random_state=42), [int(.6*len(wechess)), int(.8*len(wechess))])
 ```
-They are instantiated like:
+They are instantiated for eg.:
 ```python
+# thanks to dataset_source or dataset_target
 trainset = Chessset(training_set['AN'], training_set.shape[0])
+
+# loaded with Dataloader (PyTorch method) where shuffle game and batch size parameters are specified.
+train_loader = DataLoader(trainset, batch_size = 64, shuffle=True, drop_last=True)
 ```
 
 ### **Clear**
 
-Clear models are trained, validated, tested on non-encrypted data thanks to [launch_train_test_clear.py](../server_cloud/traintest_only/launch_train_test_clear.py).<br>
+*   Training and Testing are managed by running [launch_train_test_clear.py](../server_cloud/traintest_only/launch_train_test_clear.py).<br>
 
+    Clear models are trained, validated, tested on non-encrypted data thanks to [train_source_clear](../server_cloud/traintest_only/train_source_clear.py) and [train_target_clear](../server_cloud/traintest_only/train_target_clear.py).<br>
 
-*   Run training and testing:
+    ```python
+    Epochs = 5
+    Learning rate = 1.0e-3
+    criterion = nn.MSELoss()
+    ```
+
+    ```train_loss```, ```valid_loss = 0``` and ```accuracy``` are monitored by wandb (aka [Weights & Biases](https://wandb.ai/)).<br>
 
 *   Models
 
