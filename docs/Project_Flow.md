@@ -61,7 +61,7 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
 <br/>
 
-## #0 Set up - dependencies installation
+## #0 Dependencies installation
 
 _creation and activation of virtual environments are strongly recommended._
 <br/>
@@ -160,7 +160,7 @@ Explanations of chess app scripts are here [Chess_app](Chess_app/Chess_app.md).
 
 Sum-up, 2 models in 2 contexts:
 
-*   **# clear**
+*   **clear**
 
     *   **Source model**
 
@@ -174,7 +174,7 @@ Sum-up, 2 models in 2 contexts:
 
         *   4 convolution layers (hidden size=128) + 2 fully-connected layer (64)
 
-*   **# quantized**
+*   **quantized**
 
     *   **Source model**
 
@@ -220,16 +220,39 @@ Sum-up, 2 models in 2 contexts:
 
 ## #9 Set up and play
 
-1\. Download `client_local` on your local machine & then dowload the content of the`server_cloud` folders into local folder `<your_local_folder>`. Then, `$ cd <your_local_folder>`
+## Set up and Play
+As the app is based on a client-server architecture, client is at local, server at remote instance.
 
-2\. Create venv based on requirements.txt and activate venv
+<br/>
 
-3\. Open 2 terminals:
+**Local**
+<br/>
+1.   ```mkdir client_local``` directory on your local machine (macOS, Linux, Windows),
+2.   Create venv based on the [/requirements.txt](requirements.txt) file and activate venv,
+3.   Download the content of ```client_local``` into your ```client_local``` local directory,
+4.   ```cd client_local```
+<br/>
 
-\- terminal 1: `$ python3 server/server.py`
+**Remote instance**
+1.   Create a remote instance that runs under Intel Ice Lake CPU. GCI (Google Cloud Instance): "n2-standard-8" instance, AWS: EC2 "M6i" instance,
+2.   Run the remote instance and grab: public **IP address** + **port** that enables to communicate with instance under firewall constrains (**for eg.: GCI, port 3389**),
+3.   Create an SSH connection due to another terminal to command your remote instance. (if you don't know, see the **NOTE** at the bottom)<br/>
+4.   Create venv based on the [server_cloud/requirements.txt](server_cloud/requirements.txt) file and activate venv,
+5.   ```mkdir fhechess``` directory,
+6.   Download the content of ```server_cloud``` **_(without the mentioned large files)_** into ```fhechess``` directory.
+7.   ```cd fhechess```.
 
-\- terminal 2: `$ python3 client/chess_env/main.py`
+At this step, you have 2 differents terminal which are running simultaneously.<br/>
+Then, run:
+<br/>
+local terminal : ```$ python3 client_local/chess_env/main.py --server IP address --port 3389```
+<br/>
+remote terminal : ```$ python3 server/server_all.py -i (or --inference) clear or simfhe or deepfhe```
+<br/>
 
-**_NB._**: When the Chess app crashes, execute `$ python3 client/chess_env/main.py` from terminal 2.
+## Reset and kill
+- to reset the game: press r,
+- to kill, ctrl+C on local terminal or close the pygame window.
+- in deepfhe mode, as it takes hours to predict (see. mode explanation [Project Flow](docs/Project_Flow.md)), kill the remote terminal.
 
 <br/>
