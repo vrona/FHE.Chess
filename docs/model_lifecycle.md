@@ -152,6 +152,9 @@ At this step, if you need a deep dive into Quantization?! You can read [zama's q
 
 ### **Compilation & Simulation** (Virtual Library)
 
+At this step, if you need a deep dive into Compilation?! You can read [zama's compilation explanations](https://docs.zama.ai/concrete-ml/advanced-topics/compilation).<br>
+
+
 *   Run test (model are compiled with Concrete's FHE compiler to run inference on encrypted data): blob/quant_fhe/server_cloud/traintest_only/launch_(test)_compile_fhe.py)
 
 ## Model Deployment

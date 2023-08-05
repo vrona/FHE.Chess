@@ -37,7 +37,7 @@ def get_train_input(trainload_set, target=False):
             list_train_inputs.append(data)
             list_train_sources.append(source)
 
-        loop_trainset.set_description(f"datasss [{idx}/{trainload_set}]")
+        loop_trainset.set_description(f"data [{idx}/{trainload_set}]")
 
         train_chess = np.concatenate(list_train_inputs)
         train_source = np.concatenate(list_train_sources)

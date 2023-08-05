@@ -4,7 +4,7 @@ At this step, [helper_chessset.py](../server_cloud/model_src/helper_chessset.py)
 
 ## Goal
 
-This document would help the [models](model_lifecycle.md) to receive the desired input_data in correct format and transformed the ground truth data and output. This includes in training and production contexts.<br>
+This document would help the [models](model_lifecycle.md) to receive the desired input_data in correct format and transformed the ground truth data and output. This concerns training and inference contexts.<br>
 
 **Input data**<br>
 The 1st layers of the models are made of Convolution Neural Network which need input_data of shape (12,8,8) and filled of binary data.<br>
@@ -168,4 +168,11 @@ Their classes are used by at:
   The flow is basically: a random game > random move > get the historical moves until the selected move > push history and move into Python-Chess board to get chessboard matrix > transform matrix into binary tensor and flat binary array.
 
 
+## Special step: Compilation
+
+When it is about compilation step. Training_data must be np.array type.<br>
+This is where [data_compliance.py](../server_cloud/server/data_compliance.py) comes in.<br>
+
+It basically uses ```Dataloader``` (PyTorch's method) and then each data (Source model: input_data_1, ground_truth, Target model: input_data_1, input_data_2, ground_truth) is converted (from tensor) to np.array.<br>
+A minimum of 100 training data points are necessary when compiling a model.
 
