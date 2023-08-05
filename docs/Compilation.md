@@ -71,10 +71,31 @@ for idx, (data, target) in loop_vlfhe_test:
 
     Source model is 14 bits out of 16 (max bits) and Target model is 11. Then we have the confirmation that the models can be used in a FHE circuit.<br>
     
-    **NB**: the compiled model (or quantized_module are loaded ONLY once when the Server is initialized. This is the when running [/server/server_all.py](../server_cloud/server/server_all.py) or [/server/server_simfhe.py](../server_cloud/server/server_simfhe.py).<br>
+    **NB**: the compiled models (or quantized_modules) are loaded ONLY once when the Server is initialized. This is the when running [/server/server_all.py](../server_cloud/server/server_all.py) or [/server/server_simfhe.py](../server_cloud/server/server_simfhe.py).<br>
 
-    * deploying FHE
 
+    * **deploying FHE**
+    concerns mainly [client_server_fhe_deploy](../server_cloud/client_server_fhe_deploy.py).
+
+    ```python
+    """
+    🅒🅞🅜🅟🅘🅛🅐🅣🅘🅞🅝
+    get the quantized model
+    """
+    ## model 1
+    q_model_source = compile_brevitas_qat_model(model_source, train_input_src, n_bits={"model_inputs":4, "model_outputs":4})
+
+    with open("mlir_source.txt", "w") as mlir:
+        mlir.write(q_model_source.fhe_circuit.mlir)
+
+    ## model 2
+    q_model_target = compile_brevitas_qat_model(model_target, train_input_trgt, n_bits={"model_inputs":4, "model_outputs":4})
+
+    with open("mlir_target.txt", "w") as mlir:
+        mlir.write(q_model_target.fhe_circuit.mlir)
+    ```
+
+    
     *   Run test (model are compiled with Concrete's FHE compiler to run inference on encrypted data): blob/quant_fhe/server_cloud/traintest_only/launch_(test)_compile_fhe.py)
 
     ## Model Deployment
