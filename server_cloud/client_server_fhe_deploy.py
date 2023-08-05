@@ -133,7 +133,7 @@ model_target.pruning_conv(False)
 
 """
 🅒🅞🅜🅟🅘🅛🅐🅣🅘🅞🅝
-get the quantized model
+get the quantized module
 """
 ## model 1
 q_model_source = compile_brevitas_qat_model(model_source, train_input_src, n_bits={"model_inputs":4, "model_outputs":4})

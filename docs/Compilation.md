@@ -80,7 +80,7 @@ for idx, (data, target) in loop_vlfhe_test:
     ```python
     """
     🅒🅞🅜🅟🅘🅛🅐🅣🅘🅞🅝
-    get the quantized model
+    get the quantized module
     """
     ## model 1
     q_model_source = compile_brevitas_qat_model(model_source, train_input_src, n_bits={"model_inputs":4, "model_outputs":4})
