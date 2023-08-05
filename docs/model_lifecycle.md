@@ -27,14 +27,25 @@ train_loader = DataLoader(trainset, batch_size = 64, shuffle=True, drop_last=Tru
     criterion = nn.MSELoss()
     ```
 
-    ```train_loss```, ```valid_loss = 0``` and ```accuracy``` are monitored by wandb (aka [Weights & Biases](https://wandb.ai/site)).<br>
+    ```train_loss```, ```valid_loss``` and ```accuracy``` are monitored by wandb (aka [Weights & Biases](https://wandb.ai/site)).<br>
 
     **NB**: the level of float precision offered by ```torch.float``` is enough.<br>
 
 *   Models
 
-
     *   Source: [cnn_source_clear](../server_cloud/model_src/clear/cnn_source_clear.py)
+    ```python
+    # input_layer, recall 12 input layers is for each 6 types of pieces for each color (2). The output layers is settled at 128 neurons.
+    self.input_layer = nn.Conv2d(12, hidden_size, kernel_size=3, stride=1, padding=1)
+    ```
+    followed by 4 additional CNN layers of 128 neurons, organized with ```nn.ModuleList()``` torch method. <br>
+    Their output is then flatted into ```nn.Linear(64,64)```.
+    <br>
+    Except the source square output which is obtained thanks to
+    ```python
+    x_source = torch.sigmoid(self.output_source(x))
+    ```
+    all outputs are resulted from normalization and ```relu``` activation. 
 
     *   Target: [cnn_target_clear](../server_cloud/model_src/clear/cnn_target_clear.py)
 
