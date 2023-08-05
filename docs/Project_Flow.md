@@ -160,7 +160,7 @@ Explanations of chess app scripts are here [Chess_app](Chess_app/Chess_app.md).
 
 Sum-up, 2 models in 2 contexts:
 
-*   **clear**
+*   **clear** (PyTorch)
 
     *   **Source model**
 
@@ -174,7 +174,7 @@ Sum-up, 2 models in 2 contexts:
 
         *   4 convolution layers (hidden size=128) + 2 fully-connected layer (64)
 
-*   **quantized**
+*   **quantized** (Brevitas - PyTorch)
 
     *   **Source model**
 
@@ -212,15 +212,10 @@ Sum-up, 2 models in 2 contexts:
 
 ## #5 Model Quantization
 
-## #6 Simulation
+## #6 Compilation / Simulation / Deployment (FHE client-server)
 
-## #7 Compilation
+## #7 Set up and play
 
-## #8 Deployment (client-server)
-
-## #9 Set up and play
-
-## Set up and Play
 As the app is based on a client-server architecture, client is at local, server at remote instance.
 
 <br/>
