@@ -34,7 +34,7 @@ train_loader = DataLoader(trainset, batch_size = 64, shuffle=True, drop_last=Tru
 
 *   Models
 
-    *   Source: [cnn_source_clear.py](../server_cloud/model_src/clear/cnn_source_clear.py)
+    *   **Source**: [cnn_source_clear.py](../server_cloud/model_src/clear/cnn_source_clear.py)
     ```python
     # input_layer, recall 12 input layers is for each 6 types of pieces for each color (2). The output layers is settled at 128 neurons.
     self.input_layer = nn.Conv2d(12, hidden_size, kernel_size=3, stride=1, padding=1)
@@ -50,7 +50,7 @@ train_loader = DataLoader(trainset, batch_size = 64, shuffle=True, drop_last=Tru
     
     <br>
 
-    *   Target: [cnn_target_clear.py](../server_cloud/model_src/clear/cnn_target_clear.py)<br>
+    *   **Target**: [cnn_target_clear.py](../server_cloud/model_src/clear/cnn_target_clear.py)<br>
        
     Is identical to Source model except that **2 input_data are combined**.<br>
     
@@ -123,10 +123,10 @@ At this step, if you need a deep dive into Quantization?! You can read [zama's q
     - ```return_quant_tensor``` is mainly settled to ```True``` to get a quantized output from layer.
     - pruning technic is used to help model to produce intermediary and global outputs with fewer bits as it sets a maximum of neurons to be activated among specific layers. Here, a max of 84 out of 128 are activated among the CNN layers.
     
-    - Source: [source_44cnn_quantz.py](../server_cloud/model_src/quantz/source_44cnn_quantz.py)<br>
+    - **Source**: [source_44cnn_quantz.py](../server_cloud/model_src/quantz/source_44cnn_quantz.py)<br>
     Same logic as in "clear" but with one additional normalization after linearization.<br>
 
-    - Target (**training**): [target_44cnn_quantz.py](../server_cloud/model_src/quantz/target_44cnn_quantz.py)<br>
+    - **Target** (**training**): [target_44cnn_quantz.py](../server_cloud/model_src/quantz/target_44cnn_quantz.py)<br>
     Because of the willingness to combine two different layers, we follow the same logic but with some nuances.<br>
 
         - At convolutions steps, normalization is not used,
@@ -135,9 +135,9 @@ At this step, if you need a deep dive into Quantization?! You can read [zama's q
         Other technic like separate instantiation of ```qnn.QuantIdentity``` for each operand and then infusing the ```scale, zero_point``` value (from of one of them) into a fresh new ```QuantTensor``` filled of the merge of these two QuantTensors will not work.
 
 
-    - Target (**inference**): [target_44cnn_quantz_eval.py](../server_cloud/model_src/quantz/target_44cnn_quantz_eval.py)
+    - **Target** (**inference**): [target_44cnn_quantz_eval.py](../server_cloud/model_src/quantz/target_44cnn_quantz_eval.py)
     To enforce the restriction of same ```scale``` for each operand during inference, ```eval()``` mode (in ```train()``` the operands’ scales are averaged). This explained the divergence between training and inference scripts.<br>
-    
+
     ```python
     # merging chessboard (context + selected source square)
     self.quant_merge.eval()
