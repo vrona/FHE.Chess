@@ -5,7 +5,7 @@
 # split dataset splitted into: training_set (80%), valid_set (20%), test_set (20%)
 training_set, valid_set, test_set = np.split(wechess.sample(frac=1, random_state=42), [int(.6*len(wechess)), int(.8*len(wechess))])
 ```
-They are instantiated for eg.:
+They are instantiated, for eg., as follows:
 ```python
 # thanks to dataset_source or dataset_target
 trainset = Chessset(training_set['AN'], training_set.shape[0])
@@ -82,6 +82,8 @@ train_loader = DataLoader(trainset, batch_size = 64, shuffle=True, drop_last=Tru
 
 Quantized model (clear models are converted into an integer equivalent) trained, validated, tested on non-encrypted data.<br>
 
+At this step, needs a deep dive into Quantization? read [zama's quantization explanations](https://docs.zama.ai/concrete-ml/advanced-topics/quantization)<br>
+
 *   Training, validation and Testing are **identical as Clear except**:<br>
 
     Training and validation are managed by running [launch_train_quantz.py](../server_cloud/traintest_only/launch_train_quantz.py).<br>
@@ -109,10 +111,16 @@ Quantized model (clear models are converted into an integer equivalent) trained,
     -  activation: ```torch.sigmoid()``` to ```qnn.QuantSigmoid()```
     
     ```nn.BatchNorm2d, nn.BatchNorm1d``` from PyTorch are kept. They offer better results and the 2nd does not handle dimension properly.
-    
+
     <br>
-    A neuralgic method must not be forgotten: ```qnn.QuantIdentity``` before feeding each or groups of layers.<br>
+
+    **A neuralgic method must not be forgotten**: ```qnn.QuantIdentity``` before feeding each or groups of layers.<br>
     It sets the ```scale, zero_point, bit_width, signed_t, training_t``` parameters to the followed layers applied to values at tensor level.<br>
+
+    Then, bit_width, weight_width, return_quant_tensor and pruning are the last key elements used in this context.<br>
+    - bit_width and weight_width ```n_bits, w_bits``` are the number of bits necessary from input_data and weights for intermediary results. Here, they settled to 4 and 4.
+    - ```return_quant_tensor``` is mainly settled to ```True``` to get a quantized output from layer.
+    - pruning technic is used to help model to produce intermediary and global outputs with fewer bits as it sets a maximum of neurons to be activated among specific layers. Here, a max of 84 out of 128 are activated among the CNN layers.
 
     *   Source: [source_44cnn_quantz.py](../server_cloud/model_src/quantz/source_44cnn_quantz.py)
 
