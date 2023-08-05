@@ -33,7 +33,7 @@ class Inference_deepfhe:
     # inference function
     def predict(self, input_board, topf=2, topt=3):
         """
-        Recall: 2 disctinct models (source & target)
+        Recall: 2 distinct models (source & target)
         input source : 12,8,8 board -> output source : selected Square number to move FROM as 1D array of shape (64,)
         input target : 12,8,8 board + selected Square number to move from as 1D array of shape (64,) -> output target : selected Square number to move TO as 1D array of shape (64,)
         """

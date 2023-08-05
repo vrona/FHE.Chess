@@ -71,7 +71,7 @@ for idx, (data, target) in loop_vlfhe_test:
 
     Source model is 14 bits out of 16 (max bits) and Target model is 11. Then we have the confirmation that the models can be used in a FHE circuit.<br>
     
-    **NB**: the compiled models (or quantized_modules) are loaded ONLY once when the Server is initialized. This is the when running [/server/server_all.py](../server_cloud/server/server_all.py) or [/server/server_simfhe.py](../server_cloud/server/server_simfhe.py).<br>
+    **NB**: the compiled models (or quantized_modules) are loaded ONLY once when the Server (into remote instance) is initialized. This is the when running [/server/server_all.py](../server_cloud/server/server_all.py) or [/server/server_simfhe.py](../server_cloud/server/server_simfhe.py).<br>
 
 
     * **deploying FHE**
@@ -94,12 +94,9 @@ for idx, (data, target) in loop_vlfhe_test:
     with open("mlir_target.txt", "w") as mlir:
         mlir.write(q_model_target.fhe_circuit.mlir)
     ```
+    <br>
 
-    
-    *   Run test (model are compiled with Concrete's FHE compiler to run inference on encrypted data): blob/quant_fhe/server_cloud/traintest_only/launch_(test)_compile_fhe.py)
+    **NB**: the compiled models (or quantized_modules) are SAVED and deployed to a "client-server" dedicated FHE architecture. (see [Deploy_FHE](Deploy_FHE.md))<br>
 
-    ## Model Deployment
+    The Server is initialized (into remote instance) when running [/server/server_all.py](../server_cloud/server/server_all.py) or [/server/server_deepfhe.py](../server_cloud/server/server_deepfhe.py).<br>
 
-    *   client generates private keys and a public evaluation key (used by the model's FHE evaluation on the server) and then encrypts data and decrypts results.
-
-    *   server runs compiled model, makes inference on encrypted data.
