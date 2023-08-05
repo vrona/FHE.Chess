@@ -116,25 +116,37 @@ At this step, if you need a deep dive into Quantization?! You can read [zama's q
     <br>
 
     **A neuralgic method must not be forgotten**: ```qnn.QuantIdentity``` before feeding each or groups of layers.<br>
-    It sets the ```scale, zero_point, bit_width, signed_t, training_t``` parameters to the followed layers applied to values at tensor level.<br>
+    It sets the ```scale, zero_point, bit_width, signed_t, training_t``` parameters to the followed layers applied to values at QuantTensor level.<br>
 
     Then, bit_width, weight_width, return_quant_tensor and pruning are the last key elements used in this context.<br>
     - bit_width and weight_width ```n_bits, w_bits``` are the number of bits necessary from input_data and weights for intermediary results. Here, they settled to 4 and 4.
     - ```return_quant_tensor``` is mainly settled to ```True``` to get a quantized output from layer.
     - pruning technic is used to help model to produce intermediary and global outputs with fewer bits as it sets a maximum of neurons to be activated among specific layers. Here, a max of 84 out of 128 are activated among the CNN layers.
     
-    * Source: [source_44cnn_quantz.py](../server_cloud/model_src/quantz/source_44cnn_quantz.py)<br>
+    - Source: [source_44cnn_quantz.py](../server_cloud/model_src/quantz/source_44cnn_quantz.py)<br>
     Same logic as in "clear" but with one additional normalization after linearization.<br>
 
-    * Target (**training**): [target_44cnn_quantz.py](../server_cloud/model_src/quantz/target_44cnn_quantz.py)<br>
+    - Target (**training**): [target_44cnn_quantz.py](../server_cloud/model_src/quantz/target_44cnn_quantz.py)<br>
     Because of the willingness to combine two different layers, we follow the same logic but with some nuances.<br>
-    - At convolutions steps, normalization is not used,
-    - before 1D layers combination: the same instantiated ```qnn.QuantIdentity``` variable is used for each of the elements of the arithmetic operation <br>
-    The goal is to set the same ```scale, zero_point``` parameters for both QuantTensor of ```chessboard``` and ```source```. (see Element-wise Arithmetic between QuantTensor in [Biblioraphy](Biblio.md)<br>
-    Other technic like separate instantiation of ```qnn.QuantIdentity``` for each element and then infusing the ```scale, zero_point``` value (from of one of them) into a fresh new ```QuantTensor``` filled of the merge of these two QuantTensors will not work.
-    
 
-    * Target (**inference**): [target_44cnn_quantz_eval.py](../server_cloud/model_src/quantz/target_44cnn_quantz_eval.py)
+        - At convolutions steps, normalization is not used,
+        - before 1D layers combination: the same instantiated ```qnn.QuantIdentity``` variable is used for each operand of the arithmetic operation.<br>
+        The goal is to set the same ```scale, zero_point``` parameters for both QuantTensor of ```chessboard``` and ```source```. (see Element-wise Arithmetic between QuantTensor in [Biblio](Biblio.md).<br>
+        Other technic like separate instantiation of ```qnn.QuantIdentity``` for each operand and then infusing the ```scale, zero_point``` value (from of one of them) into a fresh new ```QuantTensor``` filled of the merge of these two QuantTensors will not work.
+
+
+    - Target (**inference**): [target_44cnn_quantz_eval.py](../server_cloud/model_src/quantz/target_44cnn_quantz_eval.py)
+    To enforce the restriction of same ```scale``` for each operand during inference, ```eval()``` mode (in ```train()``` the operands’ scales are averaged). This explained the divergence between training and inference scripts.<br>
+    
+    ```python
+    # merging chessboard (context + selected source square)
+    self.quant_merge.eval()
+    chessboard_eval = self.quant_merge(chessboard)
+    source_eval = self.quant_merge(source)
+
+    #print("SCALE -->",chessboard.scale.item()-source.scale.item())
+    merge = chessboard_eval + source_eval
+    ``````
 
 
 
