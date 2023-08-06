@@ -4,6 +4,8 @@
 ## Overview
 An application that plays Chess against an AI opponent. The moves are encrypted then thanks to FHE, the AI infers on data that she cannot see.
 
+<br>
+
 ## Acknowledgement
 **This repo contains large files: training dataset, mlir docs, keys and keys evaluations. All repo is about 8 Go.**
 -   FHE.Chess project answers to [Zama.ai](https://www.zama.ai)'s bounty and shows how to use Zama's [Concrete-ML](https://docs.zama.ai/concrete-ml/) open-source library,
@@ -24,16 +26,19 @@ An application that plays Chess against an AI opponent. The moves are encrypted 
     -   ```server_cloud/client/target```
     -   ```server_cloud/server/model```
 
+<br>
+
 ## How to
 [Project flow](docs/Project_Flow.md) is the **IMPORTANT document** and represents your Ariadne's wire to install, run or rebuilt FHE.Chess project.<br>
 As it contains details, explanations and links to other detailed docs, follow the steps.
 <br>
 
-All documents are here [/docs](docs).
+All documents are here [/docs](docs).<br>
+<br>
 
 ## Bibliography
 All libraries link, concept explanation, benchmark modeling and coding are in [Biblio](docs/Biblio.md)<br>
-
+<br>
 
 ## Set up and Play
 As the app is based on a client-server architecture, client is at local, server at remote instance.
@@ -64,7 +69,7 @@ local terminal : ```$ python3 client_local/chess_env/main.py --server IP address
 <br>
 remote terminal : ```$ python3 server/server_all.py -i (or --inference) clear or simfhe or deepfhe```
 <br>
-
+<br>
 ## Reset and kill
 - to reset the game: press r,
 - to kill: ctrl+C on local terminal or close the pygame window.
@@ -72,11 +77,15 @@ remote terminal : ```$ python3 server/server_all.py -i (or --inference) clear or
 
 <br>
 
-## FHE.Chess
-<br>
+## FHE.Chess app
+
 2 modes:
 
--   WhiteAI (AI as white vs Human as black)
+-   WhiteAI (AI as white vs Human as black)<br>
+    3 modes:
+    - clear
+    - simfhe
+    - deepfhe
 -   White H (Human as white vs Human as black)
 <br>
 <div align="center"><img src="./images/screen_zama_vrona_chess.png" style="width:'50%'"/></div>
