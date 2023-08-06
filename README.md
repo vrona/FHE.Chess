@@ -29,7 +29,7 @@ An application that plays Chess against an AI opponent. The moves are encrypted 
 <br>
 
 ## How to
-[Project flow](docs/Project_Flow.md) is the **IMPORTANT document** and represents your Ariadne's wire to install, run or rebuilt FHE.Chess project.<br>
+[Project flow](docs/Project_Flow.md) is the **IMPORTANT** document and represents your Ariadne's wire to install, run or rebuilt FHE.Chess project.<br>
 As it contains details, explanations and links to other detailed docs, follow the steps.
 <br>
 
@@ -37,7 +37,7 @@ All documents are here [/docs](docs).<br>
 <br>
 
 ## Bibliography
-All libraries link, concept explanation, benchmark modeling and coding are in [Biblio](docs/Biblio.md)<br>
+All concept, benchmark modeling, code tutorial and libraries links are in [Biblio](docs/Biblio.md)<br>
 <br>
 
 ## Set up and Play
@@ -62,7 +62,7 @@ As the app is based on a client-server architecture, client is at local, server 
 6.   Download the content of ```server_cloud``` **_(without the mentioned large files)_** into ```fhechess``` directory.
 7.   ```cd fhechess```.
 
-At this step, you have 2 differents terminal which are running simultaneously.<br>
+At this step, you have 2 different terminal which are running simultaneously.<br>
 Then, run:
 <br>
 local terminal : ```$ python3 client_local/chess_env/main.py --server IP address --port 3389```
