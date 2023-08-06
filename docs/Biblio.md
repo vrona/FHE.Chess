@@ -1,8 +1,8 @@
 # Bibliography
 
 ### Data
-- [lichess.org](https://database.lichess.org/#standard_games) 2023 January 33.5 GB +103,000,000 games
 - [kaggle arevel](https://www.kaggle.com/datasets/arevel/chess-games)
+- [lichess.org](https://database.lichess.org/#standard_games)
 
 ### Chess
 - **Chess App coding, tutorial**
