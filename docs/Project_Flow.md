@@ -196,7 +196,7 @@ Sum-up, 2 models in 2 contexts:
 
     *  Training and Validation losses<br>
 
-    <div align="center"><img src="../images/train_losses_source.png" style="width:'50%'"/></div><br>
+    <div align="center"><img src="../images/train_losses_source.png" style="width:'30%'"/></div><br>
     
     <div align="center"><img src="../images/valid_losses_source.png" style="width:'50%'"/></div><br>
 
