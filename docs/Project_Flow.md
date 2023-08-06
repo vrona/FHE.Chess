@@ -94,7 +94,7 @@ on remote machine, run `pip install --no-cache-dir -r requirements.txt` inside `
 ### AI
 At the core of this project is the question: what structure would have the AI? <br>
 
-Because we didn't want to reinvent the wheel (see well known chess engines: [Stockfish](https://stockfishchess.org) < [AlphaZero](https://arxiv.org/abs/1712.01815) < [LCZero (LeelaChessZero)](https://lczero.org)) but saving money and time, a straight forward solution came up thanks to the [B. Oshri and N. Khandwala paper]((http://vision.stanford.edu/teaching/cs231n/reports/2015/pdfs/ConvChess.pdf)) and rationalization.
+Because we didn't want to reinvent the wheel (see well known chess engines: [Stockfish](https://stockfishchess.org) < [AlphaZero](https://arxiv.org/abs/1712.01815) < [LCZero (LeelaChessZero)](https://lczero.org)) but saving money and time, a straight forward solution came up thanks to the [B. Oshri and N. Khandwala paper](http://vision.stanford.edu/teaching/cs231n/reports/2015/pdfs/ConvChess.pdf) and rationalization.
 
 What are the indispensable points?
 - the environment is a chessboard of 64 (8*8) squares, 6 types of pieces, handled by 2 opponents,

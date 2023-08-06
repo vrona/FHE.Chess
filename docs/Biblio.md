@@ -15,6 +15,7 @@ Chess pictures: [JohnPablok chess set](https://opengameart.org/sites/default/fil
 
 ### Libraries
 - Chess: [Python-Chess](https://python-chess.readthedocs.io/en)
+- Modeling: [PyTorch](https://pytorch.org)
 - FHE: [Concrete ML](https://docs.zama.ai/concrete-ml)
 - Quantization:
     - [Brevitas](https://xilinx.github.io/brevitas/getting_started.html)
