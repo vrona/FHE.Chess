@@ -2,7 +2,9 @@
 
 At this step, if you need a deep dive into Compilation?! You can have look at [Zama's compilation explanations](https://docs.zama.ai/concrete-ml/advanced-topics/compilation).<br>
 
-As we have made a custom quantized Brevitas models with Quantization Aware Training we use ```compile_brevitas_qat_model()``` to obtain "quantized_module" (a compiled version of our quantized model) for each of our models.
+As we have made a custom quantized Brevitas models with Quantization Aware Training we use ```compile_brevitas_qat_model()``` to obtain "quantized_module" (a compiled version of our quantized model) for each of our models.<br>
+
+You will noticed ```train_data```. In this compilation context, it is the transformed (see. "Special step: Compilation" in [Data Transformation](data_explanation.md)) "solo" input_data for Source model or multiple input_data for Target model.<br>
 
 In this project, compilation can be found when:<br>
 
@@ -13,7 +15,8 @@ In this project, compilation can be found when:<br>
 q_module_vl = compile_brevitas_qat_model(model, train_input, n_bits={"model_inputs":4, "model_outputs":4})
 #...
 ```
-where ```model``` is loaded quantized model (with dict items and weights), ```train_data``` is the transformed (see. "Special step: Compilation" in [Data Transformation](data_explanation.md)) "solo" input_data for Source model or multiple input_data for Target model.<br>
+where ```model``` is the loaded quantized model (with dict items and weights), ```train_data``` is the transformed "mono" (chessboard) input_data for Source model or multiple (chessboard + source) input_data for Target model.<br>
+
 And finally ```n_bits``` are the maximum necessary bits used during training for input_data and weights.
 
 Later on, the "quantized_module" is used in [test_model_FHE.py](../server_cloud/traintest_only/test_model_FHE.py).

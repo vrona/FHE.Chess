@@ -136,7 +136,7 @@ At this step, if you need a deep dive into Quantization?! You can read [Zama's q
         NB: other technic like separate instantiation of ```qnn.QuantIdentity``` for each operand and then infusing the ```scale, zero_point``` value (from of one of them) into a fresh new ```QuantTensor``` filled of the merge of these two QuantTensors will not work.
 
 
-    - **Target** (**inference**): [target_44cnn_quantz_eval.py](../server_cloud/model_src/quantz/target_44cnn_quantz_eval.py)
+    - **Target** (**inference**): [target_44cnn_quantz_eval.py](../server_cloud/model_src/quantz/target_44cnn_quantz_eval.py)<br>
     To enforce the restriction of same ```scale``` for each operand during inference, ```eval()``` mode (in ```train()``` the operands’ scales are averaged). This explained the divergence between training and inference scripts.<br>
 
     ```python
