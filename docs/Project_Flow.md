@@ -212,7 +212,7 @@ Sum-up, 2 models in 2 contexts:
 
 *  Accuracy for all 4 models <br>
 
-    <div align="center"><img src="../images/valid_losses_source.png" style="width:'50%'"/></div><br>
+    <div align="center"><img src="../images/accurary_all.png" style="width:'50%'"/></div><br>
 
 
 ## #4 Compilation / Simulation / Deployment (FHE client-server)
