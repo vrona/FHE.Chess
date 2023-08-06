@@ -156,7 +156,11 @@ Except the [Clone_Chess class](https://github.com/vrona/FHE.Chess/blob/quant_fhe
 
 Explanations of chess app scripts are here [Chess_app](Chess_app/Chess_app.md).
 
-## #3 [Models lifecycle](model_lifecycle.md)
+<br>
+
+## Models lifecycle
+
+The [Models lifecycle](model_lifecycle.md) is the dedicated document.<br>
 
 Sum-up, 2 models in 2 contexts:
 
@@ -190,7 +194,7 @@ Sum-up, 2 models in 2 contexts:
 
         *   **IMPORTANT at inference** target model diverges. Code [target model eval](../server_cloud/model_src/quantz/target_44cnn_quantz_eval.py).
 
-*   **Clear vs Quantization Results**
+*   **Results monitoring**
 
 *   Source:
 
