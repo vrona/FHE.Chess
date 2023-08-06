@@ -61,7 +61,7 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
 <br/>
 
-## #0 Dependencies installation
+## Dependencies installation
 
 _creation and activation of virtual environments are strongly recommended._
 <br/>
@@ -90,7 +90,7 @@ on remote machine, run `pip install --no-cache-dir -r requirements.txt` inside `
 
 <br/>
 
-## #1 Problematic
+## Problematic (to finish)
 ### AI
 At the core of this project is the question: what structure would have the AI? <br>
 
@@ -132,7 +132,7 @@ In terms of architecture, at deployment, it is necessary to base the application
 
 <br>
 
-## #2 Data
+## Data management
 
 Raw data are downloadable here: [kaggle.com/datasets/arevel](https://www.kaggle.com/datasets/arevel/chess-games)
 
@@ -142,11 +142,11 @@ Raw data are downloadable here: [kaggle.com/datasets/arevel](https://www.kaggle.
 Little take away: the goal is to create an AI that would be rated at least 1500 ELO on Lichess.<br>
 Thus, the preparation step aimed to provide only data points from games derived from chess players rated at least 2000 ELO each (white and black).
 
-*   **Data transformation**: Transformations are supplied by [helper_chessset.py](https://github.com/vrona/FHE.Chess/blob/quant_fhe/server_cloud/model_src/helper_chessset.py) - detailed here [Data transformation](data_transformation.md).
+*   **Data transformation**: Transformations are supplied by [helper_chessset.py](https://github.com/vrona/FHE.Chess/blob/quant_fhe/server_cloud/model_src/helper_chessset.py) for training and production and for compilation [data_compliance.py](../server_cloud/server/data_compliance.py) is solicited. All details are here: [Data transformation](data_transformation.md).
 
 <br>
 
-## #2 Chess App.
+## Chess App.
 
 The AI needs an environment to take input from and to propose output to.
 The development of the chess app itself can be done completely from scratch or based on [python-chess](https://python-chess.readthedocs.io/en/latest/) library.
@@ -190,13 +190,13 @@ Sum-up, 2 models in 2 contexts:
 
         *   **IMPORTANT at inference** target model diverges. Code [target model eval](../server_cloud/model_src/quantz/target_44cnn_quantz_eval.py).
 
-*   ** Clear vs Quantization Results
+*   **Clear vs Quantization Results**
 
 *   Source:
 
     *  Training and Validation losses<br>
 
-    <div align="center"><img src="../images/train_losses_source.png" style="width:'30%'"/></div><br>
+    <div align="center"><img src="../images/train_losses_source.png" style="width:'50%'"/></div><br>
     
     <div align="center"><img src="../images/valid_losses_source.png" style="width:'50%'"/></div><br>
 
