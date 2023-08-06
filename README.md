@@ -31,53 +31,57 @@ As it contains details, explanations and links to other detailed docs, follow th
 
 All documents are here [/docs](docs).
 
+## Bibliography
+All libraries link, concept explanation, benchmark modeling and coding are in [Biblio](docs/Biblio.md)<br>
+
+
 ## Set up and Play
 As the app is based on a client-server architecture, client is at local, server at remote instance.
 
-<br/>
+<br>
 
 **Local**
-<br/>
+<br>
 1.   ```mkdir client_local``` directory on your local machine (macOS, Linux, Windows),
 2.   Create venv based on the [/requirements.txt](requirements.txt) file and activate venv,
 3.   Download the content of ```client_local``` into your ```client_local``` local directory,
 4.   ```cd client_local```
-<br/>
+<br>
 
 **Remote instance**
 1.   Create a remote instance that runs under Intel Ice Lake CPU. GCI (Google Cloud Instance): "n2-standard-8" instance, AWS: EC2 "M6i" instance,
 2.   Run the remote instance and grab: public **IP address** + **port** that enables to communicate with instance under firewall constrains (**for eg.: GCI, port 3389**),
-3.   Create an SSH connection due to another terminal to command your remote instance. (if you don't know, see the **NOTE** at the bottom)<br/>
+3.   Create an SSH connection due to another terminal to command your remote instance. (if you don't know, see the **NOTE** at the bottom)<br>
 4.   Create venv based on the [server_cloud/requirements.txt](server_cloud/requirements.txt) file and activate venv,
 5.   ```mkdir fhechess``` directory,
 6.   Download the content of ```server_cloud``` **_(without the mentioned large files)_** into ```fhechess``` directory.
 7.   ```cd fhechess```.
 
-At this step, you have 2 differents terminal which are running simultaneously.<br/>
+At this step, you have 2 differents terminal which are running simultaneously.<br>
 Then, run:
-<br/>
+<br>
 local terminal : ```$ python3 client_local/chess_env/main.py --server IP address --port 3389```
-<br/>
+<br>
 remote terminal : ```$ python3 server/server_all.py -i (or --inference) clear or simfhe or deepfhe```
-<br/>
+<br>
 
 ## Reset and kill
 - to reset the game: press r,
 - to kill: ctrl+C on local terminal or close the pygame window.
 - in deepfhe mode, as it takes hours to predict (see. mode explanation [Project Flow](docs/Project_Flow.md)), kill the remote terminal.
 
-<br/>
+<br>
 
 ## FHE.Chess
-<br/>
+<br>
 2 modes:
 
 -   WhiteAI (AI as white vs Human as black)
 -   White H (Human as white vs Human as black)
-<br/>
+<br>
 <div align="center"><img src="./images/screen_zama_vrona_chess.png" style="width:'50%'"/></div>
 
-<br/>
+<br>
 
 > **_NOTE:_** if needed, main steps to create ssh connection for GCI:
 -   generate private and public keys via your instance dashboard,
