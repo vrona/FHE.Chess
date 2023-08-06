@@ -193,26 +193,26 @@ Sum-up, 2 models in 2 contexts:
 *   ** Clear vs Quantization Results
 
 *   Source:
-    
+
     *  Training and Validation losses<br>
 
-    <div align="center"><img src="./images/train_losses_source.png" style="width:'50%'"/></div><br>
+    <div align="center"><img src="../images/train_losses_source.png" style="width:'50%'"/></div><br>
     
-    <div align="center"><img src="./images/valid_losses_source.png" style="width:'50%'"/></div><br>
+    <div align="center"><img src="../images/valid_losses_source.png" style="width:'50%'"/></div><br>
 
 
 *   Target:
     
     *  Training and Validation losses<br>
 
-    <div align="center"><img src="./images/train_losses_target.png" style="width:'50%'"/></div><br>
+    <div align="center"><img src="../images/train_losses_target.png" style="width:'50%'"/></div><br>
     
-    <div align="center"><img src="./images/valid_losses_target.png" style="width:'50%'"/></div><br>
+    <div align="center"><img src="../images/valid_losses_target.png" style="width:'50%'"/></div><br>
 
 
 *  Accuracy for all 4 models <br>
 
-    <div align="center"><img src="./images/valid_losses_source.png" style="width:'50%'"/></div><br>
+    <div align="center"><img src="../images/valid_losses_source.png" style="width:'50%'"/></div><br>
 
 
 ## #4 Compilation / Simulation / Deployment (FHE client-server)
