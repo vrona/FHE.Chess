@@ -24,9 +24,11 @@ An application that plays Chess against an AI opponent. The moves are encrypted 
     -   ```server_cloud/client/target```
     -   ```server_cloud/server/model```
 
-## [Project flow](docs/Project_Flow.md)
-Is the **IMPORTANT document** and represents your Ariadne's wire to install, run or rebuilt FHE.Chess project.
-It contains details, explanations and links to other detailed docs.
+## How to
+[Project flow](docs/Project_Flow.md) is the **IMPORTANT document** and represents your Ariadne's wire to install, run or rebuilt FHE.Chess project.<br>
+As it contains details, explanations and links to other detailed docs, follow the steps.
+<br>
+
 All documents are here [/docs](docs).
 
 ## Set up and Play

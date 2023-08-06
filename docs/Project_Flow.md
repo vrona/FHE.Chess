@@ -221,7 +221,8 @@ Sum-up, 2 models in 2 contexts:
 
 ## Compilation / Simulation / Deployment (FHE client-server)
 
-## #5 Set up and play
+
+## Set up and play
 
 As the app is based on a client-server architecture, client is at local, server at remote instance.
 
