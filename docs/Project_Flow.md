@@ -188,35 +188,36 @@ Sum-up, 2 models in 2 contexts:
 
         *   4 convolution layers (hidden size=128) + 2 fully-connected layer (64)
 
-        *   **IMPORTANT for inference only**, target model is [target_44cnn_quantz_eval](../server_cloud/model_src/quantz/target_44cnn_quantz_eval.py)
+        *   **IMPORTANT at inference** target model diverges. Code [target model eval](../server_cloud/model_src/quantz/target_44cnn_quantz_eval.py).
 
-## #4 Train / Validation / Test
+*   ** Clear vs Quantization Results
 
-*   Clear models: Train/Validation
+*   Source:
+    
+    *  Training and Validation losses<br>
 
-<br/>
+    <div align="center"><img src="./images/train_losses_source.png" style="width:'50%'"/></div><br>
+    
+    <div align="center"><img src="./images/valid_losses_source.png" style="width:'50%'"/></div><br>
 
-<div align="center"><img src="https://firebasestorage.googleapis.com/v0/b/swimmio-content/o/repositories%2FZ2l0aHViJTNBJTNBRkhFLkNoZXNzJTNBJTNBdnJvbmE%3D%2F43a2be88-898c-436d-9c64-dce01319ef35.png?alt=media&token=26f73975-8ca4-41ee-96e5-06f8ea44a82b" style="width:'50%'"/></div>
 
-<br/>
+*   Target:
+    
+    *  Training and Validation losses<br>
 
-*   Clear models: Test/Accuracy
+    <div align="center"><img src="./images/train_losses_target.png" style="width:'50%'"/></div><br>
+    
+    <div align="center"><img src="./images/valid_losses_target.png" style="width:'50%'"/></div><br>
 
-<br/>
 
-<div align="center"><img src="https://firebasestorage.googleapis.com/v0/b/swimmio-content/o/repositories%2FZ2l0aHViJTNBJTNBRkhFLkNoZXNzJTNBJTNBdnJvbmE%3D%2Fd3f2d163-d3cb-4b7a-8a80-1269a3d5ccf6.png?alt=media&token=1dba49d2-0a8d-45a8-bf70-c5331dc1cfb3" style="width:'50%'"/></div>
+*  Accuracy for all 4 models <br>
 
-<br/>
+    <div align="center"><img src="./images/valid_losses_source.png" style="width:'50%'"/></div><br>
 
-*   Quantized models: Train/Validation
 
-*   Quantized models: Test/Accuracy
+## #4 Compilation / Simulation / Deployment (FHE client-server)
 
-## #5 Model Quantization
-
-## #6 Compilation / Simulation / Deployment (FHE client-server)
-
-## #7 Set up and play
+## #5 Set up and play
 
 As the app is based on a client-server architecture, client is at local, server at remote instance.
 
