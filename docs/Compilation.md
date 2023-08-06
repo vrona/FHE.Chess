@@ -1,4 +1,4 @@
-# Compilation & Simulation (Virtual Library)
+# Compilation & Simulation
 
 At this step, if you need a deep dive into Compilation?! You can have look at [Zama's compilation explanations](https://docs.zama.ai/concrete-ml/advanced-topics/compilation).<br>
 
