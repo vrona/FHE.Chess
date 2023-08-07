@@ -201,9 +201,10 @@
                 return decrypted_data
     ```
     
-
-    ```
-    python
+    NB: simfhe and deepfhe scripts have an additional piece of code to delete any predicted Source square without a white piece.<br>
+    It had been added while testing and left since then.<br>
+    
+    ```python
     # checking source_square prediction is white pieces, if not deletation
     indices_to_remove = []
 
@@ -215,8 +216,34 @@
 
     square_toremove = source_square[0][indices_to_remove]
     source_square = source_square[~np.isin(source_square,square_toremove)]
+    # warning source_square.shape from dim=2 to dim=1
     ```
+    <br>
+    **Finally** <br>
+    All the proposals (topt for every topf) are gathered into a dict (after a needed translation operated by ```square_to_alpha()```method, see below) and are then filtered by ```legal_moves``` generator from Python-Chess lib.<br>
+    To obtain some more permissive moves ```pseudo_legal_moves``` generator is also involved.<br>
+    A list of tuples is returned.
+    <br>
 
+    ```python
+    # from raw proposal to legal propose
+        for i, (prop, values) in enumerate(dictofproposal.items()):
+        
+            if chess.Move.from_uci(prop) in input_board.legal_moves:
+                #print("Move %s -- %s legal" %(i,prop))
+                legal_proposal_moves.append(values)
+    
+            elif chess.Move.from_uci(prop) in input_board.pseudo_legal_moves:
+                pseudo_legal_propmoves.append(values)
+
+        if len(legal_proposal_moves)== 0 and len(pseudo_legal_propmoves)>0:
+           print("pseudo legal moves available")
+           return pseudo_legal_propmoves
+
+        else:
+            return legal_proposal_moves
+
+    ```
 
 ### Models' outputs translation
 
