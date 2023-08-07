@@ -122,7 +122,7 @@
 
 - **Inference**
 
-    For example: Source model's inference code.
+    For example: Source model's inference.
     - **clear**
 
     ```python
@@ -130,22 +130,6 @@
     ```
 
     - **simfhe**
-
-    ```python
-    # convert to tensor
-    # adding dim + from torch to numpy type
-    chessboard, source_square_bit = torch.tensor(board).unsqueeze(0).to(torch.float).to(device), torch.tensor(source_square_bit).unsqueeze(0).to(torch.float).to(device)
-    chessboard, source_square_bit = chessboard.cpu().detach().numpy(), source_square_bit.cpu().detach().numpy()
-    
-    # zama fhe simulation quantization --> encryptions, keys check --> inference
-    chessboard_q, source_square_q = target_model.quantize_input(chessboard, source_square_bit)
-    target_pred = target_model.quantized_forward(chessboard_q, source_square_q, fhe="simulate")
-    
-    # dequantization <-- decryptions <-- inference
-    target_output = target_model.dequantize_output(target_pred)
-    ```
-
-    - **deepfhe**
 
     ```python
     # Prediction of source square
@@ -159,6 +143,22 @@
     
     # dequantization <-- decryptions <-- inference
     source_output = source_model.dequantize_output(source_pred)
+    ```
+
+    - **deepfhe**
+
+    ```python
+    # Prediction of source square
+    # adding dim + from torch to numpy type
+    source_input  = torch.tensor(board).unsqueeze(0).to(torch.float).to(device)
+    source_input = source_input.cpu().detach().numpy()
+    
+    # zama fhe for real with FHEModelClient FHEModelServer quantization --> encryptions, keys check --> inference
+    source_encrypted, source_keys = self.fhe_chess.encrypt_keys(source_input)
+    source_serial_result = self.fhe_chess.fhesource_server.run(source_encrypted, source_keys)
+
+    # dequantization <-- decryptions <-- inference
+    source_output = self.fhe_chess.decrypt(source_serial_result)
     ```
 
 
