@@ -12,7 +12,7 @@
 ```predict(input_board, topf=2, topt=3)``` method from ```Inference``` class operates with some similarities and differences.<br>
 
 
-- **Multiple inferences**<br>
+- **Choice of number of outputs**<br>
 ```input_board```, ```topf=2```, ```topt=3``` parameters are the current Python-Chess lib's ```chess.Board()```, the top (highest) 2 values wanted in the (64,) Source's output and, for each one, the top 3 values wanted in the (64,) Target's output.<br>
 (**recall NB**: as we want a square number as final inferred data, we use the index of the top scores). This tops are retrieved differently when in different contexts.<br>
 
@@ -92,7 +92,7 @@
     
     This step is handled specifically by [deep_fhe.py](../server_cloud/client/deep_fhe.py).<br>
 
-    As client is for encryption and decryption with private keys, Source and Target models' cryptographic components are loaded by ```FHEModelClient``` method.<br>
+    As client is for encryption and decryption with private keys, Source and Target models' cryptographic components are loaded by ```FHEModelClient``` method (imported from Concrete-ML).<br>
     And as server infers with evaluation public keys, thus models' cryptographic components are loaded by ```FHEModelServer```.<br>
 
     ```python
@@ -118,6 +118,47 @@
     # target
     self.fhetarget_server = FHEModelServer(path_dir=self.target_server)# , key_dir=self.target_server)
     self.fhetarget_server.load()
+    ```
+
+- **Inference**
+
+    - **clear**
+
+    ```python
+    source_output = source_model(torch.tensor(board).unsqueeze(0).to(torch.float).to(device))
+    ```
+
+    - **simfhe**
+
+    ```python
+    # convert to tensor
+    # adding dim + from torch to numpy type
+    chessboard, source_square_bit = torch.tensor(board).unsqueeze(0).to(torch.float).to(device), torch.tensor(source_square_bit).unsqueeze(0).to(torch.float).to(device)
+    chessboard, source_square_bit = chessboard.cpu().detach().numpy(), source_square_bit.cpu().detach().numpy()
+    
+    # zama fhe simulation quantization --> encryptions, keys check --> inference
+    chessboard_q, source_square_q = target_model.quantize_input(chessboard, source_square_bit)
+    target_pred = target_model.quantized_forward(chessboard_q, source_square_q, fhe="simulate")
+    
+    # dequantization <-- decryptions <-- inference
+    target_output = target_model.dequantize_output(target_pred)
+    ```
+
+    - **deepfhe**
+
+    ```python
+    # Prediction of source square
+    # adding dim + from torch to numpy type
+    
+    source_input  = torch.tensor(board).unsqueeze(0).to(torch.float).to(device)
+    source_input = source_input.cpu().detach().numpy()
+    
+    # zama fhe for real with FHEModelClient FHEModelServer quantization --> encryptions, keys check --> inference
+    source_encrypted, source_keys = self.fhe_chess.encrypt_keys(source_input)
+    source_serial_result = self.fhe_chess.fhesource_server.run(source_encrypted, source_keys)
+
+    # dequantization <-- decryptions <-- inference
+    source_output = self.fhe_chess.decrypt(source_serial_result)
     ```
 
 
