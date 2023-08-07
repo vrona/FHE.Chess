@@ -2,9 +2,9 @@
 
 PGN (Portable Game Notation) file contains \[annotations\] which pair a Tag with a "String value" and then all the games' moves.
 Each move is numbered followed by White's move (Pawn move to e4) then Black's one (Pawn move to e5).
-The outcome is notified by symbole "+" (Check), "#" (Checkmate) and "1-0" if White wins otherwise that is Black ("0-1") or Draw ("0-0").
+The outcome is notified by symbol "+" (Check), "#" (Checkmate) and "1-0" if White wins otherwise that is Black ("0-1") or Draw ("0-0").
 
-match _pgn_ (portable game notation) data example formatted to be imported into lichess: [https://lichess.org/paste](https://lichess.org/paste)
+match _pgn_ (portable game notation) data example formatted to be imported into Lichess: [/lichess.org/paste](https://lichess.org/paste)
 
 ```text
 1      [Event                                                         "Blitz"]
