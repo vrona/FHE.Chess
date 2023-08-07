@@ -1,6 +1,6 @@
 # Chess App
 
-The Chess environment has been developed from scratch thanks to the "Coding a Complete Chess Game" tutorial and wiki: [Bibliography](../Biblio.md).
+The Chess environment has been developed from scratch thanks to the "Coding a Complete Chess Game" tutorial and wiki: [bibliography](../bibliography.md).
 It integrates [Python-Chess library](https://python-chess.readthedocs.io/en) via the Clone_chess class here: [clone_chess.py](../../client_local/chess_env/clone_chess.py)
 
 ```text
@@ -104,7 +104,7 @@ Likely ````dragger```` class, this allows to display all content via PyGame.
 
 ### Python-Chess power
 [clone_chess.py](../../client_local/chess_env/clone_chess.py)<br>
-This class calls the Python-Chess methods (see [Biblio](../Biblio.md)).<br>
+This class calls the Python-Chess methods (see [bibliography](../bibliography.md)).<br>
 It is used to clone all piece's location and movements from "homemade" chessboard into Python-Chess module.<br>
 This is a key pillar class as AI is nurtured with chessboard data from Python-Chess and its inferred output is filtered with Python-Chess' method: ```legal_move()``` and ```pseudo_legal_move()```
 

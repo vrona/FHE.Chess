@@ -37,7 +37,7 @@ All documents are here [/docs](docs).<br>
 <br>
 
 ## Bibliography
-All concept, benchmark modeling, code tutorial and libraries links are in [Biblio](docs/Biblio.md)<br>
+All concept, benchmark modeling, code tutorial and libraries links are in [bibliography](docs/bibliography.md)<br>
 <br>
 
 ## Set up and Play

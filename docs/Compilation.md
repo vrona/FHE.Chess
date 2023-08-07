@@ -99,7 +99,7 @@ for idx, (data, target) in loop_vlfhe_test:
     ```
     <br>
 
-    **NB**: the compiled models (or quantized_modules) are SAVED and deployed to a "client-server" dedicated FHE architecture. (see [Deploy_FHE](Deploy_FHE.md))<br>
+    **NB**: the compiled models (or quantized_modules) are SAVED and deployed to a "client-server" dedicated FHE architecture. (see [model_deploy_FHE](model_deploy_FHE.md))<br>
 
     The Server is initialized (into remote instance) when running [/server/server_all.py](../server_cloud/server/server_all.py) or [/server/server_deepfhe.py](../server_cloud/server/server_deepfhe.py).<br>
 

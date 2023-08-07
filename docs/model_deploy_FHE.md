@@ -27,7 +27,7 @@ After the both models have been loaded (with pruning unenabled) and compiled wit
 
 A ```class OnDiskNetwork``` helps to save, copy models and send them to client to generate private keys. Then, send them to server and producing evaluation keys.<br>
 
-It has been written by Zama's team and can be found in this [ClientServer notebook](https://github.com/zama-ai/concrete-ml/blob/release/1.1.x/docs/advanced_examples/ClientServer.ipynb) in other [deployment test cases](https://github.com/zama-ai/concrete-ml/tree/9096a9d4f106b486532ec77a26a2cb8e423ebcf1/tests/deployment).<br>
+It has been written by Zama's team and can be found in this [ClientServer notebook](https://github.com/zama-ai/concrete-ml/blob/release/1.1.x/docs/advanced_examples/ClientServer.ipynb) and in other [deployment test cases](https://github.com/zama-ai/concrete-ml/tree/9096a9d4f106b486532ec77a26a2cb8e423ebcf1/tests/deployment).<br>
 
 
 ```python

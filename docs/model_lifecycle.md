@@ -131,7 +131,7 @@ At this step, if you need a deep dive into Quantization?! You can read [Zama's q
 
         - At convolutions steps, normalization is not used,
         - before 1D layers combination: the same instantiated ```qnn.QuantIdentity``` variable is used for each operand of the arithmetic operation.<br>
-        The goal is to set the same ```scale, zero_point``` parameters for both QuantTensor of ```chessboard``` and ```source```. (see Element-wise Arithmetic between QuantTensor in [Biblio](Biblio.md)).<br>
+        The goal is to set the same ```scale, zero_point``` parameters for both QuantTensor of ```chessboard``` and ```source```. (see Element-wise Arithmetic between QuantTensor in [bibliography](bibliography.md)).<br>
         
         NB: other technic like separate instantiation of ```qnn.QuantIdentity``` for each operand and then infusing the ```scale, zero_point``` value (from of one of them) into a fresh new ```QuantTensor``` filled of the merge of these two QuantTensors will not work.
 
