@@ -122,7 +122,9 @@
 
 - **Inference**
 
-    For example: Source model's inference.
+    Here the excerpt of Source model's inference.<br>
+    Target's one is the same but takes two input_data: ```chessboard, source_square_bit```.
+    
     - **clear**
 
     ```python
@@ -159,6 +161,24 @@
 
     # dequantization <-- decryptions <-- inference
     source_output = self.fhe_chess.decrypt(source_serial_result)
+    ```
+
+    We find here again ```FHEModelClient, FHEModelServer``` through ```FHE_chess```'s attributes (```encrypt_keys(), fhesource_server, decrypt()```) instantiated as ```self.fhe_chess``` (see [deep_fhe.py](../server_cloud/client/deep_fhe.py)).<br>
+    
+
+    ```
+    python
+    # checking source_square prediction is white pieces, if not deletation
+    indices_to_remove = []
+
+    for d in range(topf):
+
+        # thanks to chess lib, provide the #number of the square and return type :P, ...
+        if str(input_board.piece_at(source_square[:,d][0])) not in white_pieces:
+            indices_to_remove.append(d)
+
+    square_toremove = source_square[0][indices_to_remove]
+    source_square = source_square[~np.isin(source_square,square_toremove)]
     ```
 
 
