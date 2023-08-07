@@ -91,8 +91,10 @@
     - **deepfhe**:
     
     This step is handled specifically by [deep_fhe.py](../server_cloud/client/deep_fhe.py).<br>
-    recall: client is for encryption, decryption with private keys and server inference with evaluation public keys.<br>
-    
+
+    As client is for encryption and decryption with private keys, Source and Target models' cryptographic components are loaded by ```FHEModelClient``` method.<br>
+    And as server infers with evaluation public keys, thus models' cryptographic components are loaded by ```FHEModelServer```.<br>
+
     ```python
     self.source_client = "client/source"
     self.target_client = "client/target"
