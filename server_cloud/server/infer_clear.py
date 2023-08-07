@@ -71,7 +71,7 @@ class Inference_clear:
         source_output = source_model(torch.tensor(board).unsqueeze(0).to(torch.float).to(device))
         #source_square = torch.argmax(source_output)
 
-        # 3 topf source square
+        # 2 topf source square
         _, source_square = torch.topk(source_output, topf)
 
         for s in range(topf):

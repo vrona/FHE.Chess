@@ -9,7 +9,55 @@
 
 ### Predict
 
-```predict(input_board, topf=2, topt=3)``` method from ```Inference``` class operates with some differences:<br>
+```predict(input_board, topf=2, topt=3)``` method from ```Inference``` class operates with some similarities and differences.<br>
+
+
+- **Multiple inferences**:<br>
+```input_board```, ```topf=2```, ```topt=3``` parameters are the current Python-Chess lib's ```chess.Board()```, the top (highest) 2 values wanted in the (64,) Source's output and, for each one, the top 3 values wanted in the (64,) Target's output.<br>
+(**recall NB**: as we want a square number as final inferred data, we use the index of the top scores). This tops are retrieved differently when in different contexts.<br>
+
+
+    - **clear**
+
+    Data are PyTorch's tensor type, then ```torch.topk``` is solicited.
+
+    ```python
+    # 2 topf source square
+    _, source_square = torch.topk(source_output, topf)
+
+    #...
+    
+    # topt target square
+    _, target_square = torch.topk(target_output, topt)
+    
+    #...
+    ```
+
+    - **simfhe and deepfhe**
+
+    Data are Numpy array type, then ```np.argsort``` is used followed by data manipulations.
+    
+
+    ```python
+    # topf source square
+    source_squares = np.argsort(source_output)
+
+    source_square = source_squares[:,-topf:] # getting the indices of the top values but needs to flip them
+    source_square = np.flip(source_square) # re-sorted to match source_squares values
+    
+    #...
+    
+    # topt target square
+    target_squares = np.argsort(target_output)
+
+    target_square = target_squares[:,-topt:] # getting the indices of the top values but needs to flip them
+    target_square = np.flip(target_square) # re-sorted to match source_squares values
+    
+    #...
+    ```
+            
+
+
 
 - **Models' loading**
 
