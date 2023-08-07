@@ -122,6 +122,7 @@
 
 - **Inference**
 
+    For example: Source model's inference code.
     - **clear**
 
     ```python
@@ -149,16 +150,15 @@
     ```python
     # Prediction of source square
     # adding dim + from torch to numpy type
-    
     source_input  = torch.tensor(board).unsqueeze(0).to(torch.float).to(device)
     source_input = source_input.cpu().detach().numpy()
-    
-    # zama fhe for real with FHEModelClient FHEModelServer quantization --> encryptions, keys check --> inference
-    source_encrypted, source_keys = self.fhe_chess.encrypt_keys(source_input)
-    source_serial_result = self.fhe_chess.fhesource_server.run(source_encrypted, source_keys)
 
+    # zama fhe simulation quantization --> encryptions, keys check --> inference
+    source_input_q = source_model.quantize_input(source_input)
+    source_pred = source_model.quantized_forward(source_input_q, fhe="simulate")
+    
     # dequantization <-- decryptions <-- inference
-    source_output = self.fhe_chess.decrypt(source_serial_result)
+    source_output = source_model.dequantize_output(source_pred)
     ```
 
 
