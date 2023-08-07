@@ -7,7 +7,48 @@
 
 <br>
 
-They all use ```def square_to_alpha(src_sq, trgt_sq)``` which translate the square number of Source and Target to alphanumeric and digit coordinates.<br>
+### Predict
+
+```predict(input_board, topf=2, topt=3)``` method from ```Inference``` class operates with some differences:<br>
+
+- **Models' loading**
+
+    - **clear**
+    
+    <br>
+    They are loaded in the script.
+
+    ```python
+    # loading the checkpoint
+    source_state_dict = torch.load("weights/source_clear.pt",map_location = device)
+    target_state_dict = torch.load("weights/target_clear.pt",map_location = device)
+    ```
+    An alternative would have to instantiate them as class attributes.<br>
+
+    - **simfhe**
+    
+    <br>
+
+    They are surely instantiated as class attributes (```self.source_model, self.target_model```) and recall that fhe simulation needs them to be compiled first.<br>
+    This step should be repeated everytime but as the whole application is built on client-server architecture, when the Server is initialized and connecting with the Client, **compilation happens only once**.<br>
+
+    The trick is done when running either [server_all.py](../server_cloud/server/server_all.py) or [server_simfhe.py](../server_cloud/server/server_simfhe.py). For example in the case of server_simfhe.py, it happens precisely here:<br>
+    
+    ```python
+    # from compile_fhe_inprod import CompileModel
+    compiled_models = CompileModel()
+    inference = Inference_simfhe(compiled_models.compiled_source, compiled_models.compiled_target)
+    ```
+
+    - **deepfhe**:
+    
+    This step is handled specifically [deep_fhe.py](../server_cloud/client/deep_fhe.py)
+
+
+### Models' outputs translation
+
+
+All 3 scripts use ```square_to_alpha(src_sq, trgt_sq)``` method which translates the square number of Source and Target to alphanumeric and digit coordinates.<br>
 The first is push into Python-Chess lib's "chess.Board()", the latter into "homemade" board.<br>
 
 ```python
