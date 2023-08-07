@@ -165,7 +165,8 @@
 
     We find here again ```FHEModelClient, FHEModelServer``` through ```FHE_chess```'s attributes (```encrypt_keys(), fhesource_server, decrypt()```) instantiated as ```self.fhe_chess``` (see below or [deep_fhe.py](../server_cloud/client/deep_fhe.py)).<br>
 
-        ```python
+
+    ```python
         """
         input: float --> quantization --> encryption
         """
@@ -199,7 +200,7 @@
             else:
                 decrypted_data = self.fhesource_client.deserialize_decrypt_dequantize(encrypted_output)
                 return decrypted_data
-        ```
+    ```
     
 
     ```
