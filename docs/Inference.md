@@ -12,14 +12,14 @@
 ```predict(input_board, topf=2, topt=3)``` method from ```Inference``` class operates with some similarities and differences.<br>
 
 
-- **Multiple inferences**:<br>
+- **Multiple inferences**<br>
 ```input_board```, ```topf=2```, ```topt=3``` parameters are the current Python-Chess lib's ```chess.Board()```, the top (highest) 2 values wanted in the (64,) Source's output and, for each one, the top 3 values wanted in the (64,) Target's output.<br>
 (**recall NB**: as we want a square number as final inferred data, we use the index of the top scores). This tops are retrieved differently when in different contexts.<br>
 
 
     - **clear**
 
-    Data are PyTorch's tensor type, then ```torch.topk``` is solicited.
+    Outputs are PyTorch's tensor type, then ```torch.topk``` is solicited.
 
     ```python
     # 2 topf source square
@@ -35,7 +35,7 @@
 
     - **simfhe and deepfhe**
 
-    Data are Numpy array type, then ```np.argsort``` is used followed by data manipulations.
+    Outputs are Numpy array type, then ```np.argsort``` is used followed by data manipulations.
     
 
     ```python
@@ -58,12 +58,11 @@
             
 
 
-
 - **Models' loading**
+    <br>
 
     - **clear**
     
-    <br>
     They are loaded in the script.
 
     ```python
@@ -72,13 +71,13 @@
     target_state_dict = torch.load("weights/target_clear.pt",map_location = device)
     ```
     An alternative would have to instantiate them as class attributes.<br>
-
+    <br>
+    
     - **simfhe**
     
-    <br>
 
     They are surely instantiated as class attributes (```self.source_model, self.target_model```) and recall that fhe simulation needs them to be compiled first.<br>
-    This step should be repeated everytime but as the whole application is built on client-server architecture, when the Server is initialized and connecting with the Client, **compilation happens only once**.<br>
+    This step should be repeated everytime but as the whole application is built on client-server architecture, when the Server is initializing and connecting with the Client, **compilation happens only once**.<br>
 
     The trick is done when running either [server_all.py](../server_cloud/server/server_all.py) or [server_simfhe.py](../server_cloud/server/server_simfhe.py). For example in the case of server_simfhe.py, it happens precisely here:<br>
     
@@ -87,10 +86,37 @@
     compiled_models = CompileModel()
     inference = Inference_simfhe(compiled_models.compiled_source, compiled_models.compiled_target)
     ```
+    <br>
 
     - **deepfhe**:
     
-    This step is handled specifically [deep_fhe.py](../server_cloud/client/deep_fhe.py)
+    This step is handled specifically by [deep_fhe.py](../server_cloud/client/deep_fhe.py).<br>
+    recall: client is for encryption, decryption with private keys and server inference with evaluation public keys.<br>
+    
+    ```python
+    self.source_client = "client/source"
+    self.target_client = "client/target"
+    
+    # source
+    self.fhesource_client = FHEModelClient(self.source_client, key_dir=self.source_client)
+    self.fhesource_client.load()
+    
+    # target
+    self.fhetarget_client = FHEModelClient(self.target_client , key_dir=self.target_client)
+    self.fhetarget_client.load()
+    
+    ## server
+    self.source_server = "server/model/source"
+    self.target_server = "server/model/target"
+    
+    # source
+    self.fhesource_server = FHEModelServer(path_dir=self.source_server)#, key_dir=self.source_server)
+    self.fhesource_server.load()
+    
+    # target
+    self.fhetarget_server = FHEModelServer(path_dir=self.target_server)# , key_dir=self.target_server)
+    self.fhetarget_server.load()
+    ```
 
 
 ### Models' outputs translation
