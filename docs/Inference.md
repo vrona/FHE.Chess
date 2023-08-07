@@ -163,8 +163,7 @@
     source_output = self.fhe_chess.decrypt(source_serial_result)
     ```
 
-    We find here again ```FHEModelClient, FHEModelServer``` through ```FHE_chess```'s attributes (```encrypt_keys(), fhesource_server, decrypt()```) instantiated as ```self.fhe_chess``` (see below or [deep_fhe.py](../server_cloud/client/deep_fhe.py)).<br>
-
+    We find here again ```FHEModelClient, FHEModelServer``` through ```FHE_chess```'s attributes (```encrypt_keys(), fhesource_server, decrypt()```) instantiated as ```self.fhe_chess``` from [deep_fhe.py](../server_cloud/client/deep_fhe.py).<br>
 
     ```python
         """

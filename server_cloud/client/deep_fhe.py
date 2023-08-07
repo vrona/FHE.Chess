@@ -61,5 +61,3 @@ class FHE_chess:
         else:
             decrypted_data = self.fhesource_client.deserialize_decrypt_dequantize(encrypted_output)
             return decrypted_data
-
-
