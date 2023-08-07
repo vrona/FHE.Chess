@@ -21,57 +21,83 @@ Export the Source and Target models to their respective client-server locations 
 <br>
 
 
-### Tool
-The ```OnDiskNetwork``` class has been written by Zama's team and can be found in [deployment test cases](https://github.com/zama-ai/concrete-ml/tree/9096a9d4f106b486532ec77a26a2cb8e423ebcf1/tests/deployment).<br>
+### Coding
 
-It literally copying the saved models and send it to client to generate private keys
+After the both models have been loaded (with pruning unenabled) and compiled with hundreds of data point.<br>
+
+A ```class OnDiskNetwork``` helps to save, copy models and send them to client to generate private keys. Then, send them to server and producing evaluation keys.<br>
+
+It has been written by Zama's team and can be found in this [ClientServer notebook](https://github.com/zama-ai/concrete-ml/blob/release/1.1.x/docs/advanced_examples/ClientServer.ipynb) in other [deployment test cases](https://github.com/zama-ai/concrete-ml/tree/9096a9d4f106b486532ec77a26a2cb8e423ebcf1/tests/deployment).<br>
+
+
 ```python
-class OnDiskNetwork:
-    """Simulate a network on disk."""
+"""
+🅝🅔🅣🅦🅞🅡🅚/🅢🅐🅥🅘🅝🅖/🅢🅔🅡🅥🅔🅡 🅢🅔🅒🅣🅘🅞🅝
+cf. zama documentation
+"""
+# instantiating the network
+network = OnDiskNetwork()
 
-    def __init__(self):
-        # Create 3 temporary folder for server, client and dev with tempfile
-        self.server_dir = "server/model" # pylint: disable=consider-using-with
-        self.client_dir = "client" # pylint: disable=consider-using-with
-        self.dev_dir = "deploy" # pylint: disable=consider-using-with
-        self.empty_dev_dir()
+source_dev = network.dev_dir+"/source"
+target_dev = network.dev_dir+"/target"
 
-    def empty_dev_dir(self):
-        if len(os.listdir(self.dev_dir)):
-            print("dev_dir is empty")
-        else:
-            print("dev_dir not empty")
-    
-    def client_send_evaluation_key_to_server(self, serialized_evaluation_keys, sub_model):
-        """Send the public key to the server."""
-        with open(self.server_dir + sub_model + "/serialized_evaluation_keys.ekl", "wb") as f:
-            f.write(serialized_evaluation_keys)
+# saving trained-compiled model and sending to server
+## model source
+### Now that the model has been trained we want to save it to send it to a server
+fhemodel_src = FHEModelDev(source_dev, q_model_source)
+fhemodel_src.save()
+print("model_source_saved")
 
-    def client_send_input_to_server_for_prediction(self, encrypted_input, sub_model):
-        """Send the input to the server and execute on the server in FHE."""
-        with open(self.server_dir + sub_model + "/serialized_evaluation_keys.ekl", "rb") as f:
-            serialized_evaluation_keys = f.read()
-        time_begin = time.time()
-        encrypted_prediction = FHEModelServer(self.server_dir).run(
-            encrypted_input, serialized_evaluation_keys
-        )
-        time_end = time.time()
-        with open(self.server_dir + sub_model + "/encrypted_prediction.enc", "wb") as f:
-            f.write(encrypted_prediction)
-        return time_end - time_begin
+### sending models to the server
+network.dev_send_model_to_server("/source")
+print("model_source_senttoserver")
 
-    def dev_send_model_to_server(self, sub_model):
-        """Send the model to the server."""
-        copyfile(self.dev_dir + sub_model + "/server.zip", self.server_dir + sub_model + "/server.zip")
+## model target
+fhemodel_trgt = FHEModelDev(target_dev, q_model_target)
+fhemodel_trgt.save()
+print("model_target_saved")
 
-    def server_send_encrypted_prediction_to_client(self, sub_model):
-        """Send the encrypted prediction to the client."""
-        with open(self.server_dir + sub_model + "/encrypted_prediction.enc", "rb") as f:
-            encrypted_prediction = f.read()
-        return encrypted_prediction
+network.dev_send_model_to_server("/target")
+print("model_target_senttoserver")
 
-    def dev_send_clientspecs_and_modelspecs_to_client(self, sub_model):
-        """Send the clientspecs and evaluation key to the client."""
-        copyfile(self.dev_dir + sub_model + "/client.zip", self.client_dir + sub_model + "/client.zip")
+# send client specifications and evaluation key to the client
+network.dev_send_clientspecs_and_modelspecs_to_client("/source")
+network.dev_send_clientspecs_and_modelspecs_to_client("/target")
 
+"""
+🅒🅛🅘🅔🅝🅣
+cf. zama documentation
+"""
+source_client = network.client_dir+"/source"
+target_client = network.client_dir+"/target"
+
+#source
+## client creation and loading the model
+fhemodel_src_client = FHEModelClient(source_client, key_dir=source_client)
+
+## private and evaluation keys creation
+fhemodel_src_client.generate_private_and_evaluation_keys()
+
+## get the serialized evaluation keys
+serialz_eval_keys_src = fhemodel_src_client.get_serialized_evaluation_keys()
+print(f"Evaluation 'source' keys size: {len(serialz_eval_keys_src) / (10**6):.2f} MB")
+
+## send public key to server
+network.client_send_evaluation_key_to_server(serialz_eval_keys_src, "/source")
+print("sourceeval_key_senttoserver")
+
+#target
+## client creation and loading the model
+fhemodel_trgt_client = FHEModelClient(target_client, key_dir=target_client)
+
+## private and evaluation keys creation
+fhemodel_trgt_client.generate_private_and_evaluation_keys()
+
+## get the serialized evaluation keys
+serialz_eval_keys_trgt = fhemodel_src_client.get_serialized_evaluation_keys()
+print(f"Evaluation 'target' keys size: {len(serialz_eval_keys_trgt) / (10**6):.2f} MB")
+
+## send public key to server
+network.client_send_evaluation_key_to_server(serialz_eval_keys_trgt, "/target")
+print("target_eval_key_senttoserver")
 ```
