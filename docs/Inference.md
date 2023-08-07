@@ -163,7 +163,43 @@
     source_output = self.fhe_chess.decrypt(source_serial_result)
     ```
 
-    We find here again ```FHEModelClient, FHEModelServer``` through ```FHE_chess```'s attributes (```encrypt_keys(), fhesource_server, decrypt()```) instantiated as ```self.fhe_chess``` (see [deep_fhe.py](../server_cloud/client/deep_fhe.py)).<br>
+    We find here again ```FHEModelClient, FHEModelServer``` through ```FHE_chess```'s attributes (```encrypt_keys(), fhesource_server, decrypt()```) instantiated as ```self.fhe_chess``` (see below or [deep_fhe.py](../server_cloud/client/deep_fhe.py)).<br>
+
+        ```python
+        """
+        input: float --> quantization --> encryption
+        """
+        def encrypt_keys(self, clear_chessboard, clear_source=None, target=False):
+            
+            if clear_source is not None and target:
+                
+                # quantized and encryption of clear target model inputs
+                serial_target_evaluation_keys = self.fhetarget_client.get_serialized_evaluation_keys()
+                quantized_chessboard, quantized_source = self.fhetarget_client.model.quantize_input(clear_chessboard, clear_source)
+                chess_encrypt_input, source_encrypt_input = self.fhetarget_client.quantize_encrypt_serialize(quantized_chessboard, quantized_source)
+
+                return chess_encrypt_input, source_encrypt_input, serial_target_evaluation_keys
+            else:
+
+                # quantized and encryption of clear source model input            
+                quantized_chessboard = self.fhesource_client.model.quantize_input(clear_chessboard)
+                serialized_evaluation_keys = self.fhesource_client.get_serialized_evaluation_keys()
+                encrypted_input = self.fhesource_client.quantize_encrypt_serialize(quantized_chessboard)
+                
+                return encrypted_input, serialized_evaluation_keys
+        
+        """
+        output: float <-- dequantization <-- decryption
+        """
+        def decrypt(self, encrypted_output, target=False):
+
+            if target:
+                decrypted_data = self.fhetarget_client.deserialize_decrypt_dequantize(encrypted_output)
+                return decrypted_data
+            else:
+                decrypted_data = self.fhesource_client.deserialize_decrypt_dequantize(encrypted_output)
+                return decrypted_data
+        ```
     
 
     ```
