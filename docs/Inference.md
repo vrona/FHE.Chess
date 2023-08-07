@@ -219,6 +219,7 @@
     # warning source_square.shape from dim=2 to dim=1
     ```
     <br>
+    
     **Finally** <br>
     All the proposals (topt for every topf) are gathered into a dict (after a needed translation operated by ```square_to_alpha()```method, see below) and are then filtered by ```legal_moves``` generator from Python-Chess lib.<br>
     To obtain some more permissive moves ```pseudo_legal_moves``` generator is also involved.<br>
