@@ -101,15 +101,13 @@ wandb==0.13.10
 ### AI
 At the core of this project is the question: what structure would have the AI? <br>
 
-Because we didn't want to reinvent the wheel (see well known chess engines: [Stockfish](https://stockfishchess.org) < [AlphaZero](https://arxiv.org/abs/1712.01815) < [LCZero (LeelaChessZero)](https://lczero.org)) but saving money and time, a straight forward solution came up thanks to the [B. Oshri and N. Khandwala paper](http://vision.stanford.edu/teaching/cs231n/reports/2015/pdfs/ConvChess.pdf) and rationalization.
+Because we didn't want to reinvent the wheel (see well known chess engines: [Stockfish](https://stockfishchess.org) < [AlphaZero](https://arxiv.org/abs/1712.01815) < [LCZero (LeelaChessZero)](https://lczero.org)[^1]) but saving money and time, a straight forward solution came up thanks to the [B. Oshri and N. Khandwala paper](http://vision.stanford.edu/teaching/cs231n/reports/2015/pdfs/ConvChess.pdf) and rationalization.
 
 What are the indispensable points?
 - the environment is a chessboard of 64 (8*8) squares, 6 types of pieces, handled by 2 opponents,
 - each type of piece has an importance/value,
 - each type of piece obeys to its own rule of movement (correlated with their importance),
-- chess is about taking a several dimension of decisions. Based on a current context (localization of all the white and black pieces on the chessboard) and an assessment of multiple future contexts, White decides to selects a piece from a "Source" location to a "Target" destination.
-- to tend to a specific context, the probability tree from a "Source"/"Target" couple is very large. <br>
-The exploration of branches (all branches tackled by [Alpha-Beta pruning](https://www.chessprogramming.org/Alpha-Beta) with a limited depth in the tree used by Stockfish, or some of them but until the very end of the game like Alpha-zero with [MCTS](https://web.archive.org/web/20180623055344/http://mcts.ai/about/index.html)) is what it takes to build a robust chess engine, **LCZero.... TO FINISH**
+- chess is about taking a several dimension of decisions. Based on a current context (localization of all the white and black pieces on the chessboard) and an assessment of multiple future contexts, player "white", for example, decides to select a piece from a "Source" location to a "Target" destination.
 - each square of the chessboard has a value based on each piece type. (see [Piece Square Table](https://www.chessprogramming.org/Simplified_Evaluation_Function)).
 - human applies specific technics or methods which would be looking for a "bad" bishop, play the "Spanish opening" or the "Sicilian defense", ...
 
@@ -122,6 +120,9 @@ Thus, **the approach** would be:
     - 1 to select the square where is located the piece we would like to move,
     - and only 1 to select the square of destination where the piece would move to,
 - the inferred move would be filtered as ```legal_move``` by Python-Chess library's method, and then applied in the chess game environment (see [Chess_app](/docs/Chess_app/)).
+
+[^1]: to tend to a specific context, the probability tree from a "Source"/"Target" couple is very large. <br>
+The exploration of branches (all branches tackled by [Alpha-Beta pruning](https://www.chessprogramming.org/Alpha-Beta) with a limited depth in the tree used by Stockfish, or some of them but until the very end of the game like Alpha-zero with [MCTS](https://web.archive.org/web/20180623055344/http://mcts.ai/about/index.html)) is what it takes to build a robust chess engine, **LCZero.... TO FINISH**
 
 ### FHE
 Which data will be encrypted and use for computations?<br>
