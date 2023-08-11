@@ -1,19 +1,16 @@
 # Inference
 
-3 different scripts for 3 modes:<br>
+Documents for all 3 different scripts related to 3 modes:<br>
 - clear: [infer_clear.py](../server_cloud/server/infer_clear.py)
 - simfhe: [infer_simfhe.py](../server_cloud/server/infer_simfhe.py)
 - deepfhe: [infer_deepfhe.py](../server_cloud/server/infer_deepfhe.py)
 
-<br>
-
-### Predict
+### Predict method
 
 ```predict(input_board, topf=2, topt=3)``` method from ```Inference``` class operates with some similarities and differences.<br>
 
-
 - **Choice of number of outputs**<br>
-```input_board```, ```topf=2```, ```topt=3``` parameters are the current Python-Chess lib's ```chess.Board()```, the top (highest) 2 values wanted in the (64,) Source's output and, for each one, the top 3 values wanted in the (64,) Target's output.<br>
+```input_board```, ```topf=2```, ```topt=3``` parameters are respectively the current Python-Chess lib's ```chess.Board()```, the top (highest) 2 values wanted in the (64,) Source's output and, for each one, the top 3 values wanted in the (64,) Target's output.<br>
 (**recall NB**: as we want a square number as final inferred data, we use the index of the top scores). This tops are retrieved differently when in different contexts.<br>
 
 
@@ -122,8 +119,8 @@
 
 - **Inference**
 
-    Here the excerpt of Source model's inference.<br>
-    Target's one is the same but takes two input_data: ```chessboard, source_square_bit```.
+    Here, the excerpt of Source model's inference.<br>
+    Target's one is the same but takes 2 input_data: ```chessboard, source_square_bit```.
     
     - **clear**
 
@@ -244,6 +241,12 @@
         else:
             return legal_proposal_moves
 
+    ```
+    
+    The list of inferences is exploited by [Chess_app](Chess_app/Chess_app.md) by [main.py](../client_local/chess_env/main.py), here:
+
+    ```python
+    listoftuplesofmoves = cs_network.send(chessboard)
     ```
 
 ### Models' outputs translation
