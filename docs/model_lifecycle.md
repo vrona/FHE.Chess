@@ -87,7 +87,7 @@ Quantized model (normal models are converted into an integer equivalent) trained
 
 At this step, if you need a deep dive into Quantization?! You can read [Zama's quantization explanations](https://docs.zama.ai/concrete-ml/advanced-topics/quantization).<br>
 
-*   Training, validation and Testing are **identical as "Normal" except**:<br>
+*   **Training, validation and Testing are identical as "Normal" except**:<br>
 
     Training and validation are managed by running [launch_train_quantz.py](../server_cloud/traintest_only/launch_train_quantz.py).<br>
 
@@ -104,27 +104,27 @@ At this step, if you need a deep dive into Quantization?! You can read [Zama's q
     Epoch have been doubled to compensate a bit the eventual losses of accuracy due to the action of quantization which reduces the precision of values at tensor.<br>
 
 
-*   Models
+*   **Models**
 
     Both "Quantized" models keep the same structure as "Normal" ones.<br>
     
-    All type layer and activations (PyTorch) methods are changed into their "quantized" (Brevitas) equivalent:<br>
+    All tensor type layer and activations (PyTorch) methods are changed into their QuantTensor (Brevitas) equivalent:<br>
         
     -  convolution: ```nn.Conv2d()``` to ```qnn.QuantConv2d()```
     -  linear: ```nn.Linear()``` to ```qnn.QuantLinear()```
     -  activation: ```F.relu()``` to ```qnn.QuantReLU()```
     -  activation: ```torch.sigmoid()``` to ```qnn.QuantSigmoid()```
     
-    ```nn.BatchNorm2d, nn.BatchNorm1d``` from PyTorch are kept. They offer better results and the 2nd does not handle dimension properly.
+    ```nn.BatchNorm2d, nn.BatchNorm1d``` from PyTorch are kept. They offer better results than Brevitas.<br>
+    Additionally, Brevitas's ```BatchNorm1dToQuantScaleBias``` does not handle dimension properly.<br>
 
+    **A neuralgic method must not be forgotten**: ```qnn.QuantIdentity``` before feeding each (or groups of) layer(s).<br>
+    It sets the ```scale, zero_point, bit_width, signed_t, training_t``` parameters to the followed layers applied at QuantTensor level.<br>
 
-    **A neuralgic method must not be forgotten**: ```qnn.QuantIdentity``` before feeding each or groups of layers.<br>
-    It sets the ```scale, zero_point, bit_width, signed_t, training_t``` parameters to the followed layers applied to values at QuantTensor level.<br>
-
-    Then, bit_width, weight_width, return_quant_tensor and pruning are the last key elements used in this context.<br>
+    Then, **bit_width**, **weight_width**, **return_quant_tensor** and **pruning** are the last key elements used in this context.<br>
     - bit_width and weight_width ```n_bits, w_bits``` are the number of bits necessary from input_data and weights for intermediary results. Here, they settled to 4 and 4.
     - ```return_quant_tensor``` is mainly settled to ```True``` to get a quantized output from layer.
-    - pruning technic is used to help model to produce intermediary and global outputs with fewer bits as it sets a maximum of neurons to be activated among specific layers. Here, a max of 84 out of 128 are activated among the CNN layers.
+    - pruning technic is used to help model to produce intermediary and global outputs with fewer bits as it sets a maximum of neurons to be activated among specific layers. Currently, a max of 84 out of 128 are activated among the CNN layers.
     
     - **Source**: [source_44cnn_quantz.py](../server_cloud/model_src/quantz/source_44cnn_quantz.py)<br>
     Same logic as in "normal" but with one additional normalization after linearization.<br>
@@ -132,23 +132,23 @@ At this step, if you need a deep dive into Quantization?! You can read [Zama's q
     - **Target** (**training**): [target_44cnn_quantz.py](../server_cloud/model_src/quantz/target_44cnn_quantz.py)<br>
     Because of the willingness to combine two different layers, we follow the same logic but with some nuances.<br>
 
-        - At convolutions steps, normalization is not used,
-        - before 1D layers combination: the same instantiated ```qnn.QuantIdentity``` variable is used for each operand of the arithmetic operation.<br>
+        - at convolutions steps, normalization is not used,
+        - before the combination of the 2 1D layers: the same instantiated ```qnn.QuantIdentity``` variable is used for each operand of the arithmetic operation.<br>
         The goal is to set the same ```scale, zero_point``` parameters for both QuantTensor of ```chessboard``` and ```source```. (see Element-wise Arithmetic between QuantTensor in [bibliography](bibliography.md)).<br>
         
         NB: other technic like separate instantiation of ```qnn.QuantIdentity``` for each operand and then infusing the ```scale, zero_point``` value (from of one of them) into a fresh new ```QuantTensor``` filled of the merge of these two QuantTensors will not work.
 
 
     - **Target** (**inference**): [target_44cnn_quantz_eval.py](../server_cloud/model_src/quantz/target_44cnn_quantz_eval.py)<br>
-    To enforce the restriction of same ```scale``` for each operand during inference, ```eval()``` mode (in ```train()``` the operands’ scales are averaged). This explained the divergence between training and inference scripts.<br>
+    To enforce the restriction of same ```scale``` for each operand during inference, ```eval()``` mode is used (in ```train()``` mode, the operands’ scales are averaged). This explained the divergence between training and inference scripts.<br>
 
-    ```python
-    # merging chessboard (context + selected source square)
-    self.quant_merge.eval()
-    chessboard_eval = self.quant_merge(chessboard)
-    source_eval = self.quant_merge(source)
+        ```python
+        # merging chessboard (context + selected source square)
+        self.quant_merge.eval()
+        chessboard_eval = self.quant_merge(chessboard)
+        source_eval = self.quant_merge(source)
 
-    #print("SCALE -->",chessboard.scale.item()-source.scale.item())
-    merge = chessboard_eval + source_eval
-    ```
+        #print("SCALE -->",chessboard.scale.item()-source.scale.item())
+        merge = chessboard_eval + source_eval
+        ```
 
