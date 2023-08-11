@@ -234,7 +234,7 @@ Sum-up, 2 models in 2 contexts:
     
     Normal and quantized models' training, validation results show that models are very close and the latter needs more time to learn.<br>
     Below, the visualizations where:
-    - Source models: Orange are Normal (aka not-quantized) models, in <span style="color:green">*Green*</span> are quantized ones,
+    - Source models: Orange are Normal (aka not-quantized) models, in <span style="color:green">some *Green*</span> are quantized ones,
     - Target models: Orange are Normal (aka not-quantized) models, in <span style="color:blue">Blue</span> are quantized ones.
     
     train_..._quant_n_bits4_w_bits4_prune84
