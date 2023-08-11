@@ -186,7 +186,7 @@ Sum-up, 2 models in 2 contexts:
 
     *   **[Target model](../server_cloud/model_src/clear/cnn_target_clear.py)**
 
-        *   input_target : (12,8,8) board + Source model's output (selected Square number to move from) as 1D array of shape (64,) -> output target : selected Square number to move TO as 1D array of shape (64,)
+        *   input_target : (12,8,8) board + Source model's output (selected Square number to move from) as 1D array of shape (64,) -> output target : selected Square number to move to as 1D array of shape (64,)
 
         *   4 convolution layers (hidden size=128) + 2 fully-connected layers (64)
 
@@ -200,7 +200,7 @@ Sum-up, 2 models in 2 contexts:
 
     *   **[Target model](../server_cloud/model_src/quantz/target_44cnn_quantz.py)**
 
-        *   input_target : (12,8,8) board + Source model's output (selected Square number to move from) as 1D array of shape (64,) -> output target : selected Square number to move TO as 1D array of shape (64,)
+        *   input_target : (12,8,8) board + Source model's output (selected Square number to move from) as 1D array of shape (64,) -> output target : selected Square number to move to as 1D array of shape (64,)
 
         *   4 convolution layers (hidden size=128) + 2 fully-connected layers (64)
 
@@ -261,13 +261,16 @@ Sum-up, 2 models in 2 contexts:
     *   **Model's accuracies**<br>
     
     Here, the graph curves show **accuracies of clear (quantized) vs fhe (simulation) inferences on the same 81000+ moves testset**.
-    - Source models: the Greens. Model under Fhe simulated context is about 2% less accurate (45% vs 46% for under clear),
-    - Target models: the Blues. The gap is increased: 5% less accurate (52.6% fhe simulated vs 55% clear).
+    - Source models: the Greens. Model under Fhe simulated context is about 2% less accurate (45% vs 46% under clear) and this is because of quantization (see above),
+    - Target models: the Blues. The gap is increased up to 5% (52.6% fhe simulated vs 55% clear).<br>
+        Here, in addition of quantization (see above) the gap is bigger perhaps because how the *Brevitas lib* handles arithmetic operation on QuantTensors.<br>
+        Indeed, the precision acquired while learning by two QuantTensors may be partially vanished when adding them. And this is because one of the QuantTensor's inner scale is replaced by the other.<br>
+        (Some have trouble concatenating QuantTensor with Brevitas, as well).
 
-        <div align="center"><img src="../images/accuracy_all.png" style="width:'50%'"/></div><br>
+    <div align="center"><img src="../images/accuracy_all.png" style="width:'50%'"/></div><br>
 
-        The gap between Target model global accuracy vs Source model is substantial due to the combination of the input_data: chessboard + source square.<br>
-        The pattern between this merged input (with normalized value) and the output target square (from training data) is simpler to converge to than a chessboard input_data and a source square to select (aka Source model's job).
+    The gap between Target model global accuracy vs Source model is substantial due to the combination of the input_data: chessboard + source square.<br>
+    The pattern between this merged input (with normalized value) and the output target square (from training data) is simpler to converge to than a chessboard input_data and a source square to select (aka Source model's job).
 
 ## Compilation / Simulation / Deployment (FHE client-server)
 
