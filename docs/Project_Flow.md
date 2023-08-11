@@ -244,14 +244,14 @@ Sum-up, 2 models in 2 contexts:
     - Source models: Orange are Normal (aka not-quantized) models, Green are quantized ones,
     - Target models: Orange are Normal (aka not-quantized) models, Blue are quantized ones.
 
-    *   **Source**:
+    *   **Source**
 
         <div align="center"><img src="../images/train_losses_source.png" style="width:'50%'"/></div><br>
         
         <div align="center"><img src="../images/valid_losses_source.png" style="width:'50%'"/></div><br>
 
 
-    *   **Target**:
+    *   **Target**
         
         <div align="center"><img src="../images/train_losses_target.png" style="width:'50%'"/></div><br>
         
@@ -260,17 +260,20 @@ Sum-up, 2 models in 2 contexts:
 
     *   **Model's accuracies**<br>
     
-    Here, the graph curves show **accuracies of clear (quantized) vs fhe (simulation) inferences on the same 81000+ moves testset**.
-    - Source models: the Greens. Model under Fhe simulated context is about 2% less accurate (45% vs 46% under clear) and this is because of quantization (see above),
-    - Target models: the Blues. The gap is increased up to 5% (52.6% fhe simulated vs 55% clear).<br>
+    Here, the graph curves show **accuracies of clear vs fhe (simulation with quantizatio) inferences on the same 81000+ moves testset**.
+    - Source models: the Greens.<br>
+        Model under Fhe simulated context is about 2% less accurate (45% vs 46% under clear) and this is because of quantization (see above),
+
+    - Target models: the Blues.<br>
+        The gap is increased up to 5% (52.6% fhe simulated vs 55% clear).<br>
         Here, in addition of quantization (see above) the gap is bigger perhaps because how the *Brevitas lib* handles arithmetic operation on QuantTensors.<br>
-        Indeed, the precision acquired while learning by two QuantTensors may be partially vanished when adding them. And this is because one of the QuantTensor's inner scale is replaced by the other.<br>
+        Indeed, the precision acquired while learning by two QuantTensors may be partially vanished when adding them. And this is because one of the QuantTensor's inner scale is replaced by the other (scales has to be the same).<br>
         (Some have trouble concatenating QuantTensor with Brevitas, as well).
 
     <div align="center"><img src="../images/accuracy_all.png" style="width:'50%'"/></div><br>
 
     The gap between Target model global accuracy vs Source model is substantial due to the combination of the input_data: chessboard + source square.<br>
-    The pattern between this merged input (with normalized value) and the output target square (from training data) is simpler to converge to than a chessboard input_data and a source square to select (aka Source model's job).
+    The pattern between this merged input (with normalized value) and the output target square (from training data) is simpler to converge to than a chessboard input_data and a source square as an output (aka Source model's job).
 
 ## Compilation / Simulation / Deployment (FHE client-server)
 
