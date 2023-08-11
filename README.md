@@ -57,7 +57,7 @@ As the app is based on a client-server architecture, client is at local, server 
 **Remote instance**
 1.   Create a remote instance that runs under Intel Ice Lake CPU. Name of instance in GCI: "n2-standard-8", in AWS: EC2 "M6i",
 2.   Run the remote instance and grab: public **IP_address** + **port** that enables to communicate with instance under firewall constrains (**for eg.: GCI, port 3389**),
-3.   Create an SSH connection due to another terminal to command your remote instance. (if you don't know, see the footnote: **NOTE**)<br>
+3.   Create an SSH connection due to another terminal to command your remote instance. (if you don't know how, see [^1])<br>
 4.   Create venv based on the [server_cloud/requirements.txt](server_cloud/requirements.txt) file and activate venv,
 5.   ```mkdir fhechess``` directory,
 6.   Download the content of ```server_cloud``` **_(without the mentioned large files)_** into ```fhechess``` directory.
@@ -93,9 +93,9 @@ remote terminal : ```$ python3 server/server_all.py -i (or --inference) "clear" 
 
 <br>
 
-> **_NOTE:_** if needed, main steps to create ssh connection with GCI:
--   generate private and public keys via your google cloud instance dashboard,
--   add KEY_VALUE USERNAME to your Google instance > TAB "Metadata" > TAB "SSH",
--   locate your keys into a local "ssh" folder  ```ssh-keygen -t rsa -f ~/.ssh/KEY_FILENAME -C USERNAME -b 2048```,
--   ```cd .ssh```,
--   established ssh connection with your instance, run ```ssh -i nameofkeys USERNAME@IP_address```.
+[^1]: if needed, main steps to create ssh connection with GCI.
+    -  generate private and public keys via your google cloud instance dashboard,
+    -  add KEY_VALUE USERNAME to your Google instance > TAB "Metadata" > TAB "SSH",
+    -  locate your keys into a local "ssh" folder  ```ssh-keygen -t rsa -f ~/.ssh/KEY_FILENAME -C USERNAME -b 2048```,
+    -  ```cd .ssh```,
+    -  established ssh connection with your instance, run ```ssh -i nameofkeys USERNAME@IP_address```.
