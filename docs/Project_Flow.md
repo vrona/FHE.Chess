@@ -14,7 +14,7 @@ Finally, the app decrypts this move and applies it on the board, and reiterate t
 
 *   [**Read Me**](../README.md) provides succinct information to run the FHE.Chess.
 
-*   **Semantic**: while reading, you will faced to specific terms, let's clear them out.
+*   **Semantic**: while reading, you will faced to specific terms, let's explain them out.
 
     *   **Bitboard**: as a chessboard is made of 64 squares (8*8), one feature of a bitboard used here is to indicate the implicit square denomination and localization as the indices from an array of shape (64,). Concretely, square "0" is located at "a1" and square "63" is at "h8". Then, to describe, for eg.: a pawn's move "a2a4", it would be from source square: 8 to target square: 24. Other deeper uses are made from [Bitboards](https://www.chessprogramming.org/Bitboards).
     
@@ -176,7 +176,7 @@ The dedicated document to read is: [Models lifecycle](model_lifecycle.md).<br>
 
 Sum-up, 2 models in 2 contexts:
 
-*   **clear** (PyTorch)
+*   **normal** (PyTorch)
 
     *   **[Source model](../server_cloud/model_src/clear/cnn_source_clear.py)**
 
@@ -204,13 +204,48 @@ Sum-up, 2 models in 2 contexts:
 
         *   4 convolution layers (hidden size=128) + 2 fully-connected layers (64)
 
-        *   **IMPORTANT at inference** target model diverges. Specific code: [target model eval](../server_cloud/model_src/quantz/target_44cnn_quantz_eval.py), explanations here at [Quantization in model_lifecycle](https://github.com/vrona/FHE.Chess/blob/main/docs/model_lifecycle.md#quantization) doc.
+        *   **IMPORTANT at inference** target model diverges. The details are here at [Quantization in model_lifecycle](https://github.com/vrona/FHE.Chess/blob/main/docs/model_lifecycle.md#quantization) doc.
 
 *   **Results monitoring**
 
+    Recall models configuration
+    ```python
+    #### Normal ####
+    Epochs = 5
+    Learning_rate = 1.0e-3
+    criterion = nn.MSELoss()
+
+    hidden_layers=2 # 4 CNN Layers
+    hidden size=128
+
+    #### Quantized ####
+    Epochs = 10
+    Learning_rate = 1.0e-3
+    criterion = nn.MSELoss()
+
+    # 4 CNN Layers
+    hidden size=128
+    n_bits = 4
+    w_bits=4
+    return_quant_tensor=True,
+    ```
+    *  Training and Validation losses<br>
+    
+    Normal and quantized models' training, validation results show that models are very close and the latter needs more time to learn.<br>
+    Below, some visualizations where:
+    - Source models: Orange are Normal (aka not-quantized) models, in Green are quantized ones,
+    - Target models: Orange are Normal (aka not-quantized) models, in Blue are quantized ones.
+    
+    train_..._quant_n_bits4_w_bits4_prune84
+    
+    In Quantization context, as there is a lost of float precision and not all the neurons are activate, models have been trained twice longer.<br>
+    It enabled to keep the slope of learning while keeping important parameters such as learning_rate.<br>
+    
+    Model's accuracy clear vs fhe simulation
+
     *   Source:
 
-        *  Training and Validation losses<br>
+        
 
         <div align="center"><img src="../images/train_losses_source.png" style="width:'50%'"/></div><br>
         
