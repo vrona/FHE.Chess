@@ -3,7 +3,7 @@ chess==1.9.4
 concrete-ml==1.0.3
 numpy==1.23.5
 pygame==2.1.2
-Python >=3.8.1
+python >=3.8.1
 torch==1.13.1
 tqdm==4.64.1
 wandb==0.13.10

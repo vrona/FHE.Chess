@@ -66,8 +66,6 @@ Here, client FHE is on local and server FHE on remote server. The chess app itse
 
 <br/>
 
-<br/>
-
 ## Dependencies installation
 
 _creation and activation of virtual environments are strongly recommended._
@@ -76,23 +74,25 @@ _creation and activation of virtual environments are strongly recommended._
 on your local machine, run `pip install --no-cache-dir -r requirements.txt` inside `client_local` directory.
 [/requirements](../requirements.txt)
 ```text
-1      chess==1.9.4
-2      numpy==1.23.5
-3      pygame==2.1.2
+chess==1.9.4
+numpy==1.23.5
+pygame==2.1.2
+python >=3.8.1
 ```
 <br/>
 
 on remote machine, run `pip install --no-cache-dir -r requirements.txt` inside `server_cloud` directory.
 [server_cloud/requirements](../server_cloud/requirements.txt)
 ```text
-1      brevitas==0.8.0
-2      chess==1.9.4
-3      concrete-ml==1.0.3
-4      numpy==1.23.5
-5      pygame==2.1.2
-6      torch==1.13.1
-7      tqdm==4.64.1
-8      wandb==0.13.10
+brevitas==0.8.0
+chess==1.9.4
+concrete-ml==1.0.3
+numpy==1.23.5
+pygame==2.1.2
+python >=3.8.1
+torch==1.13.1
+tqdm==4.64.1
+wandb==0.13.10
 ```
 
 <br/>
