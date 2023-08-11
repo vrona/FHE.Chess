@@ -38,7 +38,7 @@ Ready to use "dataset": [wb_2000_300.csv](../server_cloud/data/wb_2000_300.csv) 
   class Board_State()
   ```
 
-1.  Each move of each game (sequences of white vs black moves) from "dataset": [wb_2000_300.csv](../server_cloud/data/wb_2000_300.csv):
+Each move of each game (sequences of white vs black moves) from "dataset": [wb_2000_300.csv](../server_cloud/data/wb_2000_300.csv):
     ```text
     1. e4 e5 2. b3 Nf6 3. Bb2 Nc6 4. Nf3 d6 5. d3 g6 6. Nbd2 Bg7 7. g3 Be6 8. Bg2 Qd7 9. O-O O-O 10. c3 b5 11. d4 exd4 12. cxd4 Bg4 13. Rc1 Rfe8 14. Qc2 Nb4 15. Qxc7 Qxc7 16. Rxc7 Nxa2 17. Ra1 Nb4 18. Raxa7 Rxa7 19. Rxa7 Nxe4 20. Nxe4 Rxe4 21. Ng5 Re1+ 22. Bf1 Be2 23. Rxf7 Bxf1 24. Kh1 Bh3# 0-1
     ```
@@ -75,7 +75,7 @@ Ready to use "dataset": [wb_2000_300.csv](../server_cloud/data/wb_2000_300.csv) 
   ```python
   class Move_State()
   ```
-    - training
+    - **training**
     ```python
     def from_to_bitboards(move, board)
     ```
@@ -102,7 +102,7 @@ Ready to use "dataset": [wb_2000_300.csv](../server_cloud/data/wb_2000_300.csv) 
     **NB**: Target model uses an additional input data which is the ```source_flat_bit```.
 
 
-    - production
+    - **production**
 
     Target model needs the ```source_flat_bit()``` method to convert the square number of source (following the example above, it would be 12) into an array (64,).
 
@@ -115,10 +115,10 @@ Ready to use "dataset": [wb_2000_300.csv](../server_cloud/data/wb_2000_300.csv) 
 [dataset_source.py](../server_cloud/model_src/dataset_source.py) is used for Source model.<br>
 [dataset_target.py](../server_cloud/model_src/dataset_target.py) is used for Target model.<br>
 
-Their classes are used by at:
+Their classes are used at:
 - training, validation and testing:
-  - clear: [launch_train_test_clear.py](../server_cloud/traintest_only/launch_train_test_clear.py)
-  - quantz: [launch_train_quantz.py](../server_cloud/traintest_only/launch_train_quantz.py), [launch_(test)_compile_fhe.py](../server_cloud/traintest_only/launch_(test)_compile_fhe.py)
+  - normal: [launch_train_test_clear.py](../server_cloud/traintest_only/launch_train_test_clear.py)
+  - quantized: [launch_train_quantz.py](../server_cloud/traintest_only/launch_train_quantz.py), [launch_(test)_compile_fhe.py](../server_cloud/traintest_only/launch_(test)_compile_fhe.py)
 - compilation:
   - simulation fhe: [compile_fhe_inprod.py](../server_cloud/server/compile_fhe_inprod.py)
   - fhe: [client_server_fhe_deploy.py](../server_cloud/client_server_fhe_deploy.py)
@@ -162,7 +162,7 @@ Their classes are used by at:
   ```
   returns the input_data (x) as a binary tensor (12,8,8) and ground_truth_data (source: y, _ or target: y, t) where y is the source square for source model and t (target square for target model).<br>
 
-  The flow is basically: a random game > random move > get the historical moves until the selected move > push history and move into Python-Chess board to get chessboard matrix > transform matrix into binary tensor and flat binary array.
+  The flow is basically: a random game > random move > get the historical moves until the selected move > push history and move into Python-Chess board to get chessboard string matrix > transform matrix into binary tensor and flat binary array.
 
 
 ## Special step: Compilation
