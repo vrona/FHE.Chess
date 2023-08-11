@@ -204,7 +204,7 @@ Sum-up, 2 models in 2 contexts:
 
         *   4 convolution layers (hidden size=128) + 2 fully-connected layers (64)
 
-        *   **IMPORTANT at inference** target model diverges. The details are here at [Quantization in model_lifecycle](https://github.com/vrona/FHE.Chess/blob/main/docs/model_lifecycle.md#quantization) doc.
+        *   **IMPORTANT at inference** target model diverges. The details are here at [Quantization in model_lifecycle](https://github.com/vrona/FHE.Chess/blob/main/docs/model_lifecycle.md#quantization) documentation.
 
 *   **Results monitoring**
 
@@ -277,6 +277,10 @@ Sum-up, 2 models in 2 contexts:
 
 ## Compilation / Simulation / Deployment (FHE client-server)
 
+Testing of quantized models above involves Compilation and Simulation steps.
+
+- Compilation and simulation are described in [compilation](compilation.md) documentation with all the needed scripts are linked. A specific work on data is explained in [data_transformation](data_transformation.md).
+- Deployment is powered by [client_server_fhe_deploy.py](../server_cloud/client_server_fhe_deploy.py) and explained in [model_deploy_FHE](model_deploy_FHE.md) documentation.
 
 ## Set up and play
 
