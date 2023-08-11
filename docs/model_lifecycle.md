@@ -77,13 +77,13 @@ train_loader = DataLoader(training_set, batch_size = 64, shuffle=True, drop_last
     merge = self.batchn1d_1(merge)
     ```
 
-    This is followed by a much needed normalization step. Indeed, ```chessboard``` variable is the 1D (64,) output from flatten CNN layers filled of floats between 0 and 1.<br> ```source```variable is also a 1D (64,) but filled of 0 and just 1 at the indice relative to the square number where is located the piece in the bitboard.<br>
-    Then, for better computation results at this indice in the "merged" tensor, the feature is then below 1 (so do accordingly the other remaining 63 features).
+    This is followed by a much needed normalization step. Indeed, ```chessboard``` variable is the 1D array (64,) output from flatten CNN layers filled of floats between 0 and 1.<br> ```source```variable is also a 1D aray (64,) but filled of 0 and just 1 at the index relative to the square number where is located the piece in the bitboard.<br>
+    Then, for better computation results at this index in the "merged" tensor, the feature is then below 1 (so do accordingly the other remaining 63 features).
 
 
 ### **Quantization**
 
-Quantized model (clear models are converted into an integer equivalent) trained, validated, tested on non-encrypted data.<br>
+Quantized model (normal models are converted into an integer equivalent) trained, validated, tested on non-encrypted data.<br>
 
 At this step, if you need a deep dive into Quantization?! You can read [Zama's quantization explanations](https://docs.zama.ai/concrete-ml/advanced-topics/quantization).<br>
 
@@ -127,7 +127,7 @@ At this step, if you need a deep dive into Quantization?! You can read [Zama's q
     - pruning technic is used to help model to produce intermediary and global outputs with fewer bits as it sets a maximum of neurons to be activated among specific layers. Here, a max of 84 out of 128 are activated among the CNN layers.
     
     - **Source**: [source_44cnn_quantz.py](../server_cloud/model_src/quantz/source_44cnn_quantz.py)<br>
-    Same logic as in "clear" but with one additional normalization after linearization.<br>
+    Same logic as in "normal" but with one additional normalization after linearization.<br>
 
     - **Target** (**training**): [target_44cnn_quantz.py](../server_cloud/model_src/quantz/target_44cnn_quantz.py)<br>
     Because of the willingness to combine two different layers, we follow the same logic but with some nuances.<br>
