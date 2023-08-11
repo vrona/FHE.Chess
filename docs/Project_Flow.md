@@ -97,7 +97,7 @@ wandb==0.13.10
 
 <br/>
 
-## Problematic (to finish)
+## Problematic
 ### AI
 At the core of this project is the question: what structure would have the AI? <br>
 
@@ -107,36 +107,39 @@ What are the indispensable points?
 - the environment is a chessboard of 64 (8*8) squares, 6 types of pieces, handled by 2 opponents,
 - each type of piece has an importance/value,
 - each type of piece obeys to its own rule of movement (correlated with their importance),
-- chess is about taking a several dimension of decisions. Based on a current context (localization of all the white and black pieces on the chessboard) and an assessment of multiple future contexts, player "white", for example, decides to select a piece from a "Source" location to a "Target" destination.
-- each square of the chessboard has a value based on each piece type. (see [Piece Square Table](https://www.chessprogramming.org/Simplified_Evaluation_Function)).
+- chess is about taking a several dimension of decisions. Based on a current context (localization of all the white and black pieces on the chessboard) and an assessment of multiple future contexts, player "white", for example, decides to select a piece from a "Source" location to a "Target" destination,
+- each square of the chessboard has a value based on each piece type. (see [Piece Square Table](https://www.chessprogramming.org/Simplified_Evaluation_Function)),
 - human applies specific technics or methods which would be looking for a "bad" bishop, play the "Spanish opening" or the "Sicilian defense", ...
 
-As human has already integrated all these points, each move made by player with high rating ELO is an optimization of a merge of all those points. <br>
-[Predicting Moves in Chess using Convolutional Neural Networks](http://vision.stanford.edu/teaching/cs231n/reports/2015/pdfs/ConvChess.pdf), let us already know that relevant patterns appear on recurrent context of attack and defense. <br>
-In addition, we learn about their method that the rules of game and the evaluation function are not part of the input_data.
+As human has already integrated all these points, each move made by players with high rating ELO is a (spatial and time) optimization of a merge of all those points.<br>
+The [Predicting Moves in Chess using Convolutional Neural Networks](http://vision.stanford.edu/teaching/cs231n/reports/2015/pdfs/ConvChess.pdf) of B. Oshri and N. Khandwal, let us already know that relevant patterns appear on recurrent context of attack and defense.<br>
 
 Thus, **the approach** would be:
 - The AI will be building on 2 deep learning models (see [Model Lifecycle doc](model_lifecycle.md)):
     - 1 to select the square where is located the piece we would like to move,
     - and only 1 to select the square of destination where the piece would move to,
 - the inferred move would be filtered as ```legal_move``` by Python-Chess library's method, and then applied in the chess game environment (see [Chess_app](/docs/Chess_app/)).
+- Like, B. Oshri and N. Khandwal, the rules of game and the evaluation function are not part of the input_data.
 
-[^1]: to tend to a specific context, the probability tree from a "Source"/"Target" couple is very large. <br>
-The exploration of branches (all branches tackled by [Alpha-Beta pruning](https://www.chessprogramming.org/Alpha-Beta) with a limited depth in the tree used by Stockfish, or some of them but until the very end of the game like Alpha-zero with [MCTS](https://web.archive.org/web/20180623055344/http://mcts.ai/about/index.html)) is what it takes to build a robust chess engine, **LCZero.... TO FINISH**
+[^1]: the probability tree from a "Source"/"Target" couple is very large. <br>
+The exploration of branches:
+    - all branches tackled by [Alpha-Beta pruning](https://www.chessprogramming.org/Alpha-Beta) with a limited depth in the tree used by Stockfish,
+    - some of them but until the very end of the game like Alpha-zero with [MCTS](https://web.archive.org/web/20180623055344/http://mcts.ai/about/index.html)
+is what it takes to build a robust chess engine.
 
 ### FHE
 Which data will be encrypted and use for computations?<br>
 (see [Model Lifecycle doc](model_lifecycle.md))<br>
 - Model 1:
-    - input_data: the pieces on the chessboard (spatial indication of piece's location),
+    - input_data: layers for each piece type within a chessboard (spatial indication of piece's location),
     - output_data: the selected square of departure.
 - Model 2:
-    - input_data: the pieces on the chessboard (spatial indication of piece's location) + Model 1's output,
+    - input_data: layers for each piece type within a chessboard (spatial indication of piece's location) + Model 1's output,
     - output_data: the selected square of destination.
 
-In terms of architecture, at deployment, it is necessary to base the application on the client-server canvas. <br>
-- client: takes care of input_data encryption and decryption (keys generation),
-- server: takes care of the necessary computations to predict (key evaluation).
+In terms of architecture, at deployment, it is necessary to base the application on the client-server canvas (see. [model_deploy_FHE](model_deploy_FHE.md)). <br>
+- client: takes care of input_data encryption and decryption (thanks to private keys),
+- server: takes care of the necessary computations to predict (thanks to public key).
 
 <br>
 
@@ -144,25 +147,26 @@ In terms of architecture, at deployment, it is necessary to base the application
 
 Raw data are downloadable here: [kaggle.com/datasets/arevel](https://www.kaggle.com/datasets/arevel/chess-games)
 
-*   **Raw data explanation**: see [Data Explanation](data_explanation.md),
+*   **Raw data**: quick explanation via [data Explanation](data_explanation.md),
 
 *   **Data preparation**: is explained in this [wb_2000](https://github.com/vrona/FHE.Chess/blob/quant_fhe/server_cloud/data/wb_2000.ipynb) notebook.<br>
 Little take away: the goal is to create an AI that would be rated at least 1500 ELO on Lichess.<br>
-Thus, the preparation step aimed to provide only data points from games derived from chess players rated at least 2000 ELO each (white and black).
+Thus, the preparation step aimed to provide only data points derived from games of chess players rated at least 2000 ELO each (white and black).
 
-*   **Data transformation**: Transformations are supplied by [helper_chessset.py](https://github.com/vrona/FHE.Chess/blob/quant_fhe/server_cloud/model_src/helper_chessset.py) for training and production and for compilation [data_compliance.py](../server_cloud/server/data_compliance.py) is solicited. All details are here: [Data transformation](data_transformation.md).
+*   **Data transformation**: transformations are supplied by [helper_chessset.py](https://github.com/vrona/FHE.Chess/blob/quant_fhe/server_cloud/model_src/helper_chessset.py) for training and production. However, for compilation, [data_compliance.py](../server_cloud/server/data_compliance.py) is solicited.<br>
+All details are here: [data transformation](data_transformation.md).
 
 <br>
 
 ## Chess App.
 
-The AI needs an environment to take input from and to propose output to.
-The development of the chess app itself can be done completely from scratch or based on [python-chess](https://python-chess.readthedocs.io/en/latest/) library.
-It happens that this project is based on both (to speed up development).
+The AI needs an environment to take input from and to apply its output.<br>
+The development of the chess app itself can be done completely from scratch or based on [python-chess](https://python-chess.readthedocs.io/en/latest/) library.<br>
+It happens that this project is based on both (to speed up development).<br>
 
 Except the [Clone_Chess class](https://github.com/vrona/FHE.Chess/blob/quant_fhe/client_local/chess_env/clone_chess.py) which returns [python-chess](https://python-chess.readthedocs.io/en/) methods, everything from [client_local/chess_env](https://github.com/vrona/FHE.Chess/tree/quant_fhe/client_local/chess_env) is made from scratch.<br>
 
-Explanations of chess app scripts are here [Chess_app](Chess_app/Chess_app.md).
+Explanations of chess app scripts are here: [Chess_app](Chess_app/Chess_app.md).
 
 <br>
 
