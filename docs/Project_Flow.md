@@ -261,7 +261,7 @@ Sum-up, 2 models in 2 contexts:
     - Source models: the Blues. The dark blue (fhe simulated) is 5% range are Normal (aka not-quantized) models, Green are quantized ones,
     - Target models: the Greens.Orange are Normal (aka not-quantized) models, Blue are quantized ones.
 
-        <div align="center"><img src="../images/accurary_all.png" style="width:'50%'"/></div><br>
+        <div align="center"><img src="../images/accuracy_all.png" style="width:'50%'"/></div><br>
 
 
 ## Compilation / Simulation / Deployment (FHE client-server)
