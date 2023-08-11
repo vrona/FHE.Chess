@@ -2,7 +2,7 @@
 # FHE.Chess
 
 ## Overview
-An application that plays Chess against an AI opponent. The moves are encrypted then thanks to FHE, the AI infers on data that she cannot see.
+FHE.Chess is about an application that let you play Chess against an AI opponent. The moves are encrypted and then thanks to FHE, the AI infers on data that it cannot see.
 
 <br>
 
@@ -13,12 +13,12 @@ An application that plays Chess against an AI opponent. The moves are encrypted 
 -   The FHE.Chess app can be run under 3 modes:
     - clear: non-encryption context. Fast inferences.
     - simfhe: encrypted context thanks to simulation of FHE computations. Fast inferences.
-    - deepfhe: encrypted context thanks to FHE. Extreme slow inferences (see. model complexity + hardware)
--   AI always starts her moves the same way, after several white & black moves it starts to be very pleasant,
--   Several minor bugs remain within the Chess app. (see. "from scratch") itself, such as:
-    -   false positive en-passant moves on sep,
-    -   false positive move of kings even if the targeted square conducts to check
-    Because of the dual chess developments: one from scratch, one from python-chess, the latter crashes the Chess app.
+    - deepfhe: encrypted context thanks to FHE. Very slow inferences (because model complexity + hardware)
+-   AI mainly starts its moves the same way, after several white & black moves its moves are relevant,
+-   Several minor bugs remain within the [Chess_app](docs/Chess_app/Chess_app.md) itself, such as:
+    -   false positive authorized en-passant moves,
+    -   false positive authorized move of kings even if the targeted (aka destination) square conducts to check,
+    Because of the dual chess developments: one from scratch, one from python-chess, the latter crashes the Chess app when a move is not "legal".
 -   Do not download the followed large files directories:
     -   ```server_cloud/mlir_source.txt```
     -   ```server_cloud/mlir_target.txt```
@@ -30,18 +30,19 @@ An application that plays Chess against an AI opponent. The moves are encrypted 
 
 ## How to
 [Project flow](docs/Project_Flow.md) is the **IMPORTANT** document and represents your Ariadne's wire to install, run or rebuilt FHE.Chess project.<br>
-As it contains details, explanations and links to other detailed docs, follow the steps.
+As it contains details, explanations and links to other detailed docs, follow the inner steps it explains.
 <br>
 
 All documents are here [/docs](docs).<br>
 <br>
 
 ## Bibliography
-All concept, benchmark modeling, code tutorial and libraries links are in [bibliography](docs/bibliography.md)<br>
+All concept, benchmark modeling, code tutorial and libraries links are in [bibliography](docs/bibliography.md).<br>
 <br>
 
 ## Set up and Play
-As the app is based on a client-server architecture, client is at local, server at remote instance.
+As the app is based on a client-server architecture, client is at local, server at remote instance.<br>
+(do not mix up with client-server architecture used when deploying models under the context of FHE).
 
 <br>
 
