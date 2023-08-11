@@ -4,7 +4,7 @@ At this step, if you need a deep dive into Compilation?! You can have look at [Z
 
 As we have made a custom quantized Brevitas models with Quantization Aware Training we use ```compile_brevitas_qat_model()``` to obtain "quantized_module" (a compiled version of our quantized model) for each of our models.<br>
 
-Below, you will noticed for eg.: ```train_data```, ```source_train_input```, ```target_train_input```. In this compilation context, it is the transformed (see. "Special step: Compilation" in [Data Transformation](data_explanation.md)) "solo" input_data for Source model or multiple input_data for Target model.<br>
+Below, you will noticed for eg.: ```train_data```, ```source_train_input```, ```target_train_input```. In this compilation context, it is the transformed (see. "Special step: Compilation" in [data Transformation](data_explanation.md)) "solo" input_data for Source model or multiple input_data for Target model.<br>
 
 In this project, compilation can be found when:<br>
 
