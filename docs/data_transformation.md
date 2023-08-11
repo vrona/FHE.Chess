@@ -4,7 +4,7 @@ At this step, [helper_chessset.py](../server_cloud/model_src/helper_chessset.py)
 
 ## Goal
 
-This document would help the [models](model_lifecycle.md) to receive the desired input_data in correct format and transformed the ground truth data and output. This concerns training and inference contexts.<br>
+This script would help the [models](model_lifecycle.md) to receive the desired input_data in correct format and transformed the ground truth data and output. This concerns training and inference contexts.<br>
 
 **Input data**<br>
 The 1st layers of the models are made of Convolution Neural Network which need input_data of shape (12,8,8) and filled of binary data.<br>
@@ -12,8 +12,8 @@ The 1st layers of the models are made of Convolution Neural Network which need i
 
 * format :
     - dim 0 = a layer for each color (2) and type of pieces (6),
-    - dim 1 = number of cols,
-    - dim 2 = number of rows.
+    - dim 1 = number of cols (8),
+    - dim 2 = number of rows (8).
 * binary :
     - 0: empty square
     - 1: presence of white piece
@@ -22,16 +22,15 @@ The 1st layers of the models are made of Convolution Neural Network which need i
 <br>
 
 **Output**<br>
-
-The last layers are then full connected networks layers which deliver output of shape (64,).
-This document return the ground truth training data as it takes advantages of Python-Chess lib's bitboard logic.<br>
+The last layers are then full connected networks layers which deliver output as an array of shape (64,).
+Due to Python-Chess lib's bitboard logic, this script returns the ground truth training data.<br>
 
 
 ## Recall
 
-Ready to use "dataset": [wb_2000_300.csv](../server_cloud/data/wb_2000_300.csv) have been made due to data preparation (see. ["wb_2000" jupyter notebook](../server_cloud/data/wb_2000.ipynb)).
+Ready to use "dataset": [wb_2000_300.csv](../server_cloud/data/wb_2000_300.csv) have been made due to data preparation (see. ["wb_2000" jupyter notebook](../server_cloud/data/wb_2000.ipynb)).<br><br>
 
-## The Flow involved 2 classes:
+## The flow involved 2 classes
 <br>
 
 - ### Input Data (training and production)
@@ -56,23 +55,21 @@ Ready to use "dataset": [wb_2000_300.csv](../server_cloud/data/wb_2000_300.csv) 
     P P P P . P P P
     R N B . K . N R
     ```
-    (This format let you visual all the moves that have been done and provides the context of the game.)<br>
+    (This format let you visualize up to a specific move all the implicit historical moves that have been done and provides the current chessboard.)<br>
 
-    which is then being transformed into an tensor of shape (12,8,8) thanks to theses two methods:
+    This ```chess.Board()``` is then transformed into an tensor of shape (12,8,8) thanks to theses two methods:
     ```python
     def feat_map_piece_12(board, color)
     def board_tensor_12(board)
     ```
-    <br>
-
     **NB: methods for 6 pieces (1 layer for each piece type but both color are merged) has been written and tested. They've been left in the script to let them been used if anyone wanted to.**<br>
     
     ```python
     def feat_map_piece_6(board, color)
     def board_tensor_6(board)
     ```
+    <br>
 
-<br>
 
 - ### Ground truth Output Data
   ```python

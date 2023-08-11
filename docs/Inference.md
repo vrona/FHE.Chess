@@ -215,7 +215,6 @@ Documents for all 3 different scripts related to 3 modes:<br>
     source_square = source_square[~np.isin(source_square,square_toremove)]
     # warning source_square.shape from dim=2 to dim=1
     ```
-    <br>
     
     **Finally** <br>
     All the proposals (topt for every topf) are gathered into a dict (after a needed translation operated by ```square_to_alpha()```method, see below) and are then filtered by ```legal_moves``` generator from Python-Chess lib.<br>
