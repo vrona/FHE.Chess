@@ -260,9 +260,9 @@ Sum-up, 2 models in 2 contexts:
 
     *   **Model's accuracies**<br>
     
-    Here, the graph curves show **accuracies of clear vs fhe (simulation with quantizatio) inferences on the same 81000+ moves testset**.
+    Here, the graph curves show **accuracies of clear vs fhe (simulation) inferences on the same 81000+ moves testset**.
     - Source models: the Greens.<br>
-        Model under Fhe simulated context is about 2% less accurate (45% vs 46% under clear) and this is because of quantization (see above),
+        Model under fhe simulated context is about 2% less accurate (45% vs 46% under clear) and this is because of quantization (see above),
 
     - Target models: the Blues.<br>
         The gap is increased up to 5% (52.6% fhe simulated vs 55% clear).<br>
@@ -280,38 +280,47 @@ Sum-up, 2 models in 2 contexts:
 
 ## Set up and play
 
-As the app is based on a client-server architecture, client is at local, server at remote instance.
+As the app is based on a client-server architecture, client is at local, server at remote instance.<br>
+(not to be confused with client-server architecture used when deploying models under the context of FHE).
 
-<br/>
+<br>
 
 **Local**
-<br/>
+<br>
 1.   ```mkdir client_local``` directory on your local machine (macOS, Linux, Windows),
 2.   Create venv based on the [/requirements.txt](requirements.txt) file and activate venv,
 3.   Download the content of ```client_local``` into your ```client_local``` local directory,
 4.   ```cd client_local```
-<br/>
+<br>
 
 **Remote instance**
-1.   Create a remote instance that runs under Intel Ice Lake CPU. GCI (Google Cloud Instance): "n2-standard-8" instance, AWS: EC2 "M6i" instance,
-2.   Run the remote instance and grab: public **IP address** + **port** that enables to communicate with instance under firewall constrains (**for eg.: GCI, port 3389**),
-3.   Create an SSH connection due to another terminal to command your remote instance. (if you don't know, see the **NOTE** at the bottom)<br/>
+1.   Create a remote instance that runs under Intel Ice Lake CPU. Name of instance in GCI: "n2-standard-8", in AWS: EC2 "M6i",
+2.   Run the remote instance and grab: public **IP_address** + **port** that enables to communicate with instance under firewall constrains (**for eg.: GCI, port 3389**),
+3.   Create an SSH connection due to another terminal to command your remote instance. (if you don't know how, see [^2])<br>
 4.   Create venv based on the [server_cloud/requirements.txt](server_cloud/requirements.txt) file and activate venv,
 5.   ```mkdir fhechess``` directory,
 6.   Download the content of ```server_cloud``` **_(without the mentioned large files)_** into ```fhechess``` directory.
 7.   ```cd fhechess```.
 
-At this step, you have 2 differents terminal which are running simultaneously.<br/>
+At this step, you have 2 different terminals which are running simultaneously.<br>
 Then, run:
-<br/>
-local terminal : ```$ python3 client_local/chess_env/main.py --server IP address --port 3389```
-<br/>
-remote terminal : ```$ python3 server/server_all.py -i (or --inference) clear or simfhe or deepfhe```
-<br/>
+<br>
+
+local terminal : ```$ python3 client_local/chess_env/main.py --server IP_address --port 3389```
+<br>
+
+remote terminal : ```$ python3 server/server_all.py -i (or --inference) "clear" or "simfhe" or "deepfhe"```
+<br>
 
 ## Reset and kill
 - to reset the game: press r,
-- to kill, ctrl+C on local terminal or close the pygame window.
-- in deepfhe mode, as it takes hours to predict (see. mode explanation [Project Flow](docs/Project_Flow.md)), kill the remote terminal.
+- to kill: ctrl+C on local terminal or close the pygame window.
+- in deepfhe mode, as it takes hours to predict (see. **mode** explanation [Project Flow](docs/Project_Flow.md)), kill the remote terminal.
+<br>
 
-<br/>
+[^2]: if needed, main steps to create ssh connection with GCI:
+    -  generate private and public keys via your google cloud instance dashboard,
+    -  add KEY_VALUE USERNAME to your Google instance > TAB "Metadata" > TAB "SSH",
+    -  locate your keys into a local "ssh" folder  ```ssh-keygen -t rsa -f ~/.ssh/KEY_FILENAME -C USERNAME -b 2048```,
+    -  ```cd .ssh```,
+    -  established ssh connection with your instance, run ```ssh -i nameofkeys USERNAME@IP_address```.

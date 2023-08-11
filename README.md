@@ -66,11 +66,13 @@ As the app is based on a client-server architecture, client is at local, server 
 At this step, you have 2 different terminals which are running simultaneously.<br>
 Then, run:
 <br>
+
 local terminal : ```$ python3 client_local/chess_env/main.py --server IP_address --port 3389```
 <br>
+
 remote terminal : ```$ python3 server/server_all.py -i (or --inference) "clear" or "simfhe" or "deepfhe"```
 <br>
-<br>
+
 ## Reset and kill
 - to reset the game: press r,
 - to kill: ctrl+C on local terminal or close the pygame window.
