@@ -38,10 +38,6 @@ class CompileModel:
         def compile_models(self):
              ##
              # SPLITING DATA
-             ##
-             # split dataset splitted into: training_set (80%), valid_set (20%), test_set (20%)
-             #training_set, valid_set, test_set = np.split(self.wechess.sample(frac=1, random_state=42), [int(.6*len(self.wechess)), int(.8*len(self.wechess))])
-
              # IMPORTANT downsizing the training set size to avoid crash causes by overload computation
              training_set, valid_set, test_set = np.split(self.wechess.sample(frac=1, random_state=42), [int(.002*len(self.wechess)), int(.8*len(self.wechess))])
 

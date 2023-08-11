@@ -34,7 +34,7 @@ training_set = Chessset(dataset['AN'])
 game_move_set = "data/wb_2000_300.csv"
 wechess = pd.read_csv(game_move_set)
 
-# split dataset splitted into: training_set (80%), valid_set (20%), test_set (20%)
+# split dataset splitted into: training_set (60%), valid_set (20%), test_set (20%)
 training_set, valid_set, test_set = np.split(wechess.sample(frac=1, random_state=42), [int(.6*len(wechess)), int(.8*len(wechess))])
 
 # 🅓🅐🅣🅐🅛🅞🅐🅓

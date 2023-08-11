@@ -1,24 +1,24 @@
 # Model Dev. / Training / Validation / Testing
 
-3 subsets: training_set, valid_set, test_set are made from global dataset [wb_2000_300](../server_cloud/data/wb_2000_300.csv).<br>
+3 subsets: **training_set**, **valid_set**, **test_set** are made from global dataset [wb_2000_300.csv](../server_cloud/data/wb_2000_300.csv).<br>
 ```python
-# split dataset splitted into: training_set (80%), valid_set (20%), test_set (20%)
+# dataset splitted into: training_set (60%), valid_set (20%), test_set (20%)
 training_set, valid_set, test_set = np.split(wechess.sample(frac=1, random_state=42), [int(.6*len(wechess)), int(.8*len(wechess))])
 ```
 They are instantiated, for eg., as follows:
 ```python
-# thanks to dataset_source or dataset_target
+# thanks to dataset_source.py or dataset_target.py
 trainset = Chessset(training_set['AN'], training_set.shape[0])
 
-# loaded with Dataloader (PyTorch method) where shuffle game and batch size parameters are specified.
-train_loader = DataLoader(trainset, batch_size = 64, shuffle=True, drop_last=True)
+# loaded with Dataloader (PyTorch method) where shuffle and batch size parameters are specified.
+train_loader = DataLoader(training_set, batch_size = 64, shuffle=True, drop_last=True)
 ```
 
-### **Clear**
+### **Normal**
 
-*   Training, validation and Testing are managed by running [launch_train_test_clear.py](../server_cloud/traintest_only/launch_train_test_clear.py).<br>
+*   **Training, validation and Testing** are managed by running [launch_train_test_clear.py](../server_cloud/traintest_only/launch_train_test_clear.py).<br>
 
-    Clear models are trained, validated, tested on non-encrypted data thanks to [train_source_clear.py](../server_cloud/traintest_only/train_source_clear.py) and [train_target_clear.py](../server_cloud/traintest_only/train_target_clear.py).<br>
+    Normal models are trained, validated, tested on non-encrypted data thanks to [train_source_clear.py](../server_cloud/traintest_only/train_source_clear.py) and [train_target_clear.py](../server_cloud/traintest_only/train_target_clear.py).<br>
 
     Training parameters:<br>
     ```python
@@ -27,14 +27,16 @@ train_loader = DataLoader(trainset, batch_size = 64, shuffle=True, drop_last=Tru
     criterion = nn.MSELoss()
     ```
 
-    ```train_loss```, ```valid_loss``` and ```accuracy``` are monitored by wandb (aka [Weights & Biases](https://wandb.ai/site)).<br>
+    ```train_loss```, ```valid_loss``` and ```accuracy``` are monitored by ```wandb``` (aka [Weights & Biases](https://wandb.ai/site)).<br>
 
     **NB**: the level of float precision offered by ```torch.float``` is enough.<br>
 
 
-*   Models
+*   **Models**
 
     *   **Source**: [cnn_source_clear.py](../server_cloud/model_src/clear/cnn_source_clear.py)
+    
+    The Input_layer
     ```python
     # input_layer, recall 12 input layers is for each 6 types of pieces for each color (2). The output layers is settled at 128 neurons.
     self.input_layer = nn.Conv2d(12, hidden_size, kernel_size=3, stride=1, padding=1)
@@ -46,7 +48,7 @@ train_loader = DataLoader(trainset, batch_size = 64, shuffle=True, drop_last=Tru
     ```python
     x_source = torch.sigmoid(self.output_source(x))
     ```
-    all outputs are resulted from normalization and ```relu``` activation.
+    All outputs are resulted from normalization and ```relu``` activation.
     
     <br>
 
@@ -54,7 +56,7 @@ train_loader = DataLoader(trainset, batch_size = 64, shuffle=True, drop_last=Tru
        
     Is identical to Source model except that **2 input_data are combined**.<br>
     
-    The reason is that the 2nd input_data put emphasis to the selected piece which has to move among all the pieces which are on the current chessboard (aka the 1st input_data).<br>
+    The reason is that the 2nd input_data bring emphasis on the (source) selected piece which has to move among all the pieces currently on the chessboard (aka the 1st input_data).<br>
 
     1st input_data: ```self.input_layer = nn.Conv2d(12, ...)```<br>
     After all the features have been exploited from CNN layers, the output is flatten to match the 1D format of the 2nd input_data.<br>
@@ -84,7 +86,7 @@ Quantized model (clear models are converted into an integer equivalent) trained,
 
 At this step, if you need a deep dive into Quantization?! You can read [Zama's quantization explanations](https://docs.zama.ai/concrete-ml/advanced-topics/quantization).<br>
 
-*   Training, validation and Testing are **identical as "Clear" except**:<br>
+*   Training, validation and Testing are **identical as "Normal" except**:<br>
 
     Training and validation are managed by running [launch_train_quantz.py](../server_cloud/traintest_only/launch_train_quantz.py).<br>
 
@@ -103,7 +105,7 @@ At this step, if you need a deep dive into Quantization?! You can read [Zama's q
 
 *   Models
 
-    Both "Quantized" models keep the same structure as "Clear" ones.<br>
+    Both "Quantized" models keep the same structure as "Normal" ones.<br>
     
     All type layer and activations (PyTorch) methods are changed into their "quantized" (Brevitas) equivalent:<br>
         
