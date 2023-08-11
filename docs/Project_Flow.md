@@ -16,33 +16,33 @@ Finally, the app decrypts this move and applies it on the board, and reiterate t
 
 *   **Semantic**: while reading, you will faced to specific terms, let's clear them out.
 
-    *   **Bitboard**: as a chessboard is made of 64 squares (8*8), one feature of a bitboard used here is to indicate the implicit square denomination and localization from the indices of an array of shape (64,). Concretely, square "0" is located at "a1" and square "63" is at "h8". Then, to describe, for eg.: a pawn's move "a2a4", it would be from source square: 8 to target square: 24.
+    *   **Bitboard**: as a chessboard is made of 64 squares (8*8), one feature of a bitboard used here is to indicate the implicit square denomination and localization as the indices from an array of shape (64,). Concretely, square "0" is located at "a1" and square "63" is at "h8". Then, to describe, for eg.: a pawn's move "a2a4", it would be from source square: 8 to target square: 24. Other deeper uses are made from [Bitboards](https://www.chessprogramming.org/Bitboards).
     
-    *   **Source**, **Target**: are respectively the selected square to move from, the selected square to move to.
+    *   **Source**, **Target**: are respectively the selected square to move from and the selected square to move to.
 
     *   **Clear**: means non-encrypted in cryptography context.
 
-    *   **Quantization**: refers to techniques that helps to constrain an input from continuous (floating point precision) or large set of values to a discrete set (such as integers). Two main libraries are known - _Brevitas_ and _PyTorch_ - to quantize models.
+    *   **[Quantization](https://docs.zama.ai/concrete-ml/advanced-topics/quantization)**: refers to techniques that helps to constrain an input from continuous (floating point precision) or large set of values to a discrete set (such as integers). Two main libraries are known - _Brevitas_ and _PyTorch_ - to quantize models.
 
-    *   **Compilation**: is handled by Zama's Concrete-ML library. It produces low-code which acts at each computation steps within the quantized models to execute dedicated computations on encrypted data. The price of these additional operations is a slowdown at inference step (see, "simfhe" vs "deepfhe" below) but provide equivalent accuracy rate to non-encrypted environment. Thus, the more complex is a quantized model the longer it takes to output a prediction.
+    *   **[Compilation](https://docs.zama.ai/concrete-ml/advanced-topics/compilation#fhe-simulation)**: is handled by Zama's Concrete-ML library. It produces low-code which acts at each computation steps within the quantized models to execute dedicated computations on encrypted data. The price of these additional operations is a slowdown at inference step (see, "simfhe" vs "deepfhe" below) but the huge benefit is to provide equivalent accuracy rate to non-encrypted environment. The more complex is a quantized model the longer it takes to output a prediction.
 
-    *   **FHE circuit**: stands for Full Homomorphic Encryption which enable to compute directly on encrypted input data to infer encrypted output data.
+    *   **FHE circuit**: stands for Full Homomorphic Encryption which enables to compute directly on encrypted input_data to infer encrypted output data.
 
     *   **[Concrete ML](https://docs.zama.ai/concrete-ml/)** is an open source, privacy-preserving, machine learning inference framework based on Fully        Homomorphic Encryption (FHE).
 
 *   **3 modes enabled** in the FHE.Chess app.:
 
-    *   "**clear**" - the AI uses non-encrypted inputs data (current chessboard and source) and infers non-encrypted output data (the move) due to non quantized model.
+    *   "**clear**" - the AI uses non-encrypted inputs data (current chessboard and source) and infers non-encrypted output data (the move) due to models (non-quantized).
 
-    *   "**simfhe**" - the AI uses a simulation context `fhe="simulate"` to infer decrypted output data (the move) based on encrypted inputs data (current chessboard and source) and thanks to quantized and compiled models.
+    *   "**simfhe**" - the AI uses a simulation context `fhe="simulate"` to infer encrypted output data (the move when decrypted) based on encrypted inputs data (current chessboard and source) and thanks to quantized and compiled models.
 
-    *   "**deepfhe**" - the AI uses the quintessence of FHE to infer decrypted output data (the move) based on encrypted inputs data (current chessboard and source) and thanks to quantized and compiled models.
+    *   "**deepfhe**" - the AI uses the quintessence of FHE to infer encrypted output data (the move when decrypted) based on encrypted inputs data (current chessboard and source square) and thanks to quantized and compiled models.
 
     *   "simfhe" vs "deepfhe"
 
-        *   the latter needs to save and deployed the models into dedicated client-server architecture. Which includes generated keys to encrypted data (client's job) and keys\_evalutation to infer on encrypted data (server's job). "simfhe" simulates the said process.
+        *   the latter needs to save and deployed the models into dedicated client-server architecture. Which includes generated keys to encrypt data (client's job) and keys_evaluation to infer on encrypted data (server's job). "simfhe" simulates the said process.
 
-        *   based on current model complexity and hardware capacity (Ice Lake CPU), unlike "simfhe" which provides an answer within the milliseconds (like "clear"), "deepfhe" takes hours to infer.
+        *   based on current models complexities and hardware capacity (Ice Lake CPU), unlike "simfhe" which provides an answer within a second (like "clear"), "deepfhe" takes hours to infer.
 
         *   both needs to have compiled models (already quantized).
 
@@ -51,13 +51,16 @@ Finally, the app decrypts this move and applies it on the board, and reiterate t
 
 ## Architecture Client-Server
 
-*   **with both client-server FHE on remote**: (current architecture due to local machine's OS constraint and complexity of model, see. "deepfhe" mode), basically the chess app (scripts which runs the chessboard, pieces, movements rules, ...) itself is in `client_local`. Then, compilation, computation and inference on encrypted data (due to Concrete-ML library) are made in remote server (instance).
+*   **current architecture**: because of local machine's OS constraint and complexity of model, see. "deepfhe" mode.<br>
+Here both client-server FHE are on remote server. Basically, the chess app (scripts which runs the chessboard, pieces, movements rules, ...) itself is in `client_local`.<br>
+Then, compilation, computation and inference on encrypted data are made in remote server (instance).
 <br/>
 <div align="center"><img src="../images/FHE_Chess_archi_current.png" style="width:'50%'"/></div>
 
 <br/>
 
-*   **with client FHE on local - with server FHE on remote**: (future architecture), here the chess app itself is still in client\_local accompanied with client FHE for inputs data encryption. Then, computations on encrypted input data and inference of encrypted output data are made in remote server (instance).
+*   **future architecture**:<br>
+Here, client FHE is on local and server FHE on remote server. The chess app itself is still in `client_local` accompanied with client FHE (to encrypt input_data). Then, computations on encrypted input_data and inference of encrypted output data are made in remote server (instance).
 <br/>
 <div align="center"><img src="../images/FHE_Chess_archi_next.png" style="width:'50%'"/></div>
 
