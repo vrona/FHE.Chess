@@ -172,7 +172,7 @@ Explanations of chess app scripts are here: [Chess_app](Chess_app/Chess_app.md).
 
 ## Models lifecycle
 
-The [Models lifecycle](model_lifecycle.md) is the dedicated document.<br>
+The dedicated document to read is: [Models lifecycle](model_lifecycle.md).<br>
 
 Sum-up, 2 models in 2 contexts:
 
@@ -180,13 +180,13 @@ Sum-up, 2 models in 2 contexts:
 
     *   **[Source model](../server_cloud/model_src/clear/cnn_source_clear.py)**
 
-        *   input source : (12,8,8) board -> output source : selected Square number to move FROM as 1D array of shape (64,)
+        *   input source : (12,8,8) board -> output source : selected Square number to move from as 1D array of shape (64,)
 
         *   4 convolution layers (hidden size=128) + fully-connected layer (64)
 
     *   **[Target model](../server_cloud/model_src/clear/cnn_target_clear.py)**
 
-        *   input_target : (12,8,8) board + selected Square number to move from as 1D array of shape (64,) -> output target : selected Square number to move TO as 1D array of shape (64,)
+        *   input_target : (12,8,8) board + Source model's output (selected Square number to move from) as 1D array of shape (64,) -> output target : selected Square number to move TO as 1D array of shape (64,)
 
         *   4 convolution layers (hidden size=128) + 2 fully-connected layer (64)
 
@@ -200,7 +200,7 @@ Sum-up, 2 models in 2 contexts:
 
     *   **[Target model](../server_cloud/model_src/quantz/target_44cnn_quantz.py)**
 
-        *   input_target : (12,8,8) board + selected Square number to move from as 1D array of shape (64,) -> output target : selected Square number to move TO as 1D array of shape (64,)
+        *   input_target : (12,8,8) board + Source model's output (selected Square number to move from) as 1D array of shape (64,) -> output target : selected Square number to move TO as 1D array of shape (64,)
 
         *   4 convolution layers (hidden size=128) + 2 fully-connected layer (64)
 
