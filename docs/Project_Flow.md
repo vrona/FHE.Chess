@@ -235,20 +235,23 @@ Sum-up, 2 models in 2 contexts:
 
     Normal and quantized models' training, validation results show that models are very close and the latter needs, at one point, more time to learn.<br>
     Indeed, as there is a lost of float precision and not all the neurons are activate, models have been trained twice longer only to scrape together more precision.<br>
-    It enabled to keep the slope of learning while keeping important parameters such as learning_rate, number of hidden_layers and criterion identical.<br>
+    It enabled to keep the slope of learning while keeping important parameters such as learning_rate, number of hidden_layers and criterion identical.
+    <br>
+
+    You will noticed that slightly difference of precision in quantization shows bigger gap between models at accuracy test step.<br>
     
-    Below, the visualizations display similarities where for:
+    Below, the visualizations display losses differences where for:
     - Source models: Orange are Normal (aka not-quantized) models, Green are quantized ones,
     - Target models: Orange are Normal (aka not-quantized) models, Blue are quantized ones.
 
-    *   Source:
+    *   **Source**:
 
         <div align="center"><img src="../images/train_losses_source.png" style="width:'50%'"/></div><br>
         
         <div align="center"><img src="../images/valid_losses_source.png" style="width:'50%'"/></div><br>
 
 
-    *   Target:
+    *   **Target**:
         
         <div align="center"><img src="../images/train_losses_target.png" style="width:'50%'"/></div><br>
         
@@ -258,11 +261,13 @@ Sum-up, 2 models in 2 contexts:
     *   **Model's accuracies**<br>
     
     Here, the graph curves show **accuracies of clear (quantized) vs fhe (simulation) inferences on the same 81000+ moves testset**.
-    - Source models: the Blues. The dark blue (fhe simulated) is 5% range are Normal (aka not-quantized) models, Green are quantized ones,
-    - Target models: the Greens.Orange are Normal (aka not-quantized) models, Blue are quantized ones.
+    - Source models: the Greens. Model under Fhe simulated context is about 2% less accurate (45% vs 46% for under clear),
+    - Target models: the Blues. The gap is increased: 5% less accurate (52.6% fhe simulated vs 55% clear).
 
         <div align="center"><img src="../images/accuracy_all.png" style="width:'50%'"/></div><br>
 
+        The gap between Target model global accuracy vs Source model is substantial due to the combination of the input_data: chessboard + source square.<br>
+        The pattern between this merged input (with normalized value) and the output target square (from training data) is simpler to converge to than a chessboard input_data and a source square to select (aka Source model's job).
 
 ## Compilation / Simulation / Deployment (FHE client-server)
 
