@@ -230,21 +230,18 @@ Sum-up, 2 models in 2 contexts:
     n_active = 84               # Maximum number of active neurons
     return_quant_tensor=True    # except the last Sigmoid activation
     ```
-    *  **Training and Validation losses**<br>
+
+    *  **Training and Validation losses**
 
     Normal and quantized models' training, validation results show that models are very close and the latter needs, at one point, more time to learn.<br>
     Indeed, as there is a lost of float precision and not all the neurons are activate, models have been trained twice longer only to scrape together more precision.<br>
-    It enabled to keep the slope of learning while keeping important parameters such as learning_rate.<br>
+    It enabled to keep the slope of learning while keeping important parameters such as learning_rate, number of hidden_layers and criterion identical.<br>
     
     Below, the visualizations display similarities where for:
     - Source models: Orange are Normal (aka not-quantized) models, Green are quantized ones,
     - Target models: Orange are Normal (aka not-quantized) models, Blue are quantized ones.
-        
-    Model's accuracy clear vs fhe simulation
 
     *   Source:
-
-        
 
         <div align="center"><img src="../images/train_losses_source.png" style="width:'50%'"/></div><br>
         
@@ -253,14 +250,16 @@ Sum-up, 2 models in 2 contexts:
 
     *   Target:
         
-        *  Training and Validation losses<br>
-
         <div align="center"><img src="../images/train_losses_target.png" style="width:'50%'"/></div><br>
         
         <div align="center"><img src="../images/valid_losses_target.png" style="width:'50%'"/></div><br>
 
 
-    *  Accuracy for all 4 models <br>
+    *   **Model's accuracies**<br>
+    
+    Here, the graph curves show **accuracies of clear (quantized) vs fhe (simulation) inferences on the same 81000+ moves testset**.
+    - Source models: the Blues. The dark blue (fhe simulated) is 5% range are Normal (aka not-quantized) models, Green are quantized ones,
+    - Target models: the Greens.Orange are Normal (aka not-quantized) models, Blue are quantized ones.
 
         <div align="center"><img src="../images/accurary_all.png" style="width:'50%'"/></div><br>
 
