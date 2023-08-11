@@ -106,7 +106,7 @@ Likely ````dragger```` class, this allows to display all content via PyGame.
 [clone_chess.py](../../client_local/chess_env/clone_chess.py)<br>
 This class calls the Python-Chess methods (see [bibliography](../bibliography.md)).<br>
 It is used to clone all piece's location and movements from "homemade" chessboard into Python-Chess module.<br>
-This is a key pillar class as AI is nurtured with chessboard data from Python-Chess and its inferred output is filtered with Python-Chess' method: ```legal_move()``` and ```pseudo_legal_move()```
+This is a key pillar class as AI is nurtured with chessboard data from Python-Chess and its inferred output is filtered with Python-Chess' methods: ```legal_move()``` and ```pseudo_legal_move()```.
 
 ### Client-Server
 [chess_network.py](../../client_local/chess_network.py) provides the ```Network``` class which takes care of connecting Client (Chess App on local machine) and Server (AI with/without FHE dedicated client-server architecture on a remote instance).
@@ -125,7 +125,7 @@ The input_data (current chessboard) are retrieved from ```clone_chess```:
 chessboard = clone_chess.get_board()
 ```
 
-Then, ```network``` sends them to the Server (AI) and makes its prediction which are sent back to the Client (Chess App). The coordinates of the 1st move are instantiated (which is has been filtered via ```legal_move()``` method).
+Then, ```network``` sends them to the Server (AI) and makes its prediction which are sent back to the Client (Chess App). The coordinates of the 1st move are instantiated (which is has been filtered via ```legal_move()``` or ```pseudo_legal_move()``` method).
 ```python
 listoftuplesofmoves = cs_network.send(chessboard)
 
@@ -142,7 +142,8 @@ self.autonomous_piece(7-selected_square_row, selected_square_col, 7-targeted_squ
 ```
 
 **NB**:
-- local terminal prints the history of games' moves (either by AI or Human) chessboard string matrix included. If Forsyth–Edwards Notation (FEN) game position is needed, to print them, uncomment these lines: 
+- local terminal prints the history of games' moves (chessboard string matrix included) made by either by AI or Human.<br>
+    If Forsyth–Edwards Notation (FEN) game position is needed, to print them, just uncomment these lines: 
     - ```python
         #print("\nHUMAN FEN: ",clone_chess.get_fen())
         ```
