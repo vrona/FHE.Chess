@@ -208,7 +208,7 @@ Sum-up, 2 models in 2 contexts:
 
 *   **Results monitoring**
 
-    Recall models configuration
+    Recall models configurations
     ```python
     #### Normal ####
     Epochs = 5
@@ -227,14 +227,15 @@ Sum-up, 2 models in 2 contexts:
     hidden size=128
     n_bits = 4
     w_bits=4
-    return_quant_tensor=True,
+    n_active = 84               # Maximum number of active neurons
+    return_quant_tensor=True    # except the last Sigmoid activation
     ```
-    *  Training and Validation losses<br>
+    *  **Training and Validation losses**<br>
     
     Normal and quantized models' training, validation results show that models are very close and the latter needs more time to learn.<br>
-    Below, some visualizations where:
-    - Source models: Orange are Normal (aka not-quantized) models, in Green are quantized ones,
-    - Target models: Orange are Normal (aka not-quantized) models, in Blue are quantized ones.
+    Below, the visualizations where:
+    - Source models: Orange are Normal (aka not-quantized) models, in <span style="color:green">Green</span> are quantized ones,
+    - Target models: Orange are Normal (aka not-quantized) models, in <span style="color:blue">Blue</span> are quantized ones.
     
     train_..._quant_n_bits4_w_bits4_prune84
     
