@@ -188,13 +188,13 @@ Sum-up, 2 models in 2 contexts:
 
         *   input_target : (12,8,8) board + Source model's output (selected Square number to move from) as 1D array of shape (64,) -> output target : selected Square number to move TO as 1D array of shape (64,)
 
-        *   4 convolution layers (hidden size=128) + 2 fully-connected layer (64)
+        *   4 convolution layers (hidden size=128) + 2 fully-connected layers (64)
 
 *   **quantized** (Brevitas - PyTorch)
 
     *   **[Source model](../server_cloud/model_src/quantz/source_44cnn_quantz.py)**
 
-        *   input source : (12,8,8) board -> output source : selected Square number to move FROM as 1D array of shape (64,)
+        *   input source : (12,8,8) board -> output source : selected Square number to move from as 1D array of shape (64,)
 
         *   4 convolution layers (hidden size=128) + fully-connected layer (64)
 
@@ -202,9 +202,9 @@ Sum-up, 2 models in 2 contexts:
 
         *   input_target : (12,8,8) board + Source model's output (selected Square number to move from) as 1D array of shape (64,) -> output target : selected Square number to move TO as 1D array of shape (64,)
 
-        *   4 convolution layers (hidden size=128) + 2 fully-connected layer (64)
+        *   4 convolution layers (hidden size=128) + 2 fully-connected layers (64)
 
-        *   **IMPORTANT at inference** target model diverges. Code [target model eval](../server_cloud/model_src/quantz/target_44cnn_quantz_eval.py).
+        *   **IMPORTANT at inference** target model diverges. Specific code: [target model eval](../server_cloud/model_src/quantz/target_44cnn_quantz_eval.py), explanations here at [Quantization in model_lifecycle](https://github.com/vrona/FHE.Chess/blob/main/docs/model_lifecycle.md#quantization) doc.
 
 *   **Results monitoring**
 
