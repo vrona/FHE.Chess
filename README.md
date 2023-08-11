@@ -33,7 +33,7 @@ FHE.Chess is about an application that let you play Chess against an AI opponent
 As it contains details, explanations and links to other detailed docs, follow the inner steps it explains.
 <br>
 
-All documents are here [/docs](docs).<br>
+All documents are here [docs](docs).<br>
 <br>
 
 ## Bibliography
@@ -78,7 +78,7 @@ remote terminal : ```$ python3 server/server_all.py -i (or --inference) "clear" 
 
 <br>
 
-## Playin FHE.Chess
+## Playing FHE.Chess
 
 2 main modes:
 

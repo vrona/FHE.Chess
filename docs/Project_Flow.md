@@ -2,11 +2,13 @@
 
 ## Overview
 
-An application that plays Chess against an AI opponent. The moves are encrypted then thanks to FHE, the AI infers on data that it cannot see.
+FHE.Chess is about an application that let you play Chess against an AI opponent. The moves are encrypted and then thanks to FHE, the AI infers on data that it cannot see.
 
 ## Description
 
-Create a machine-learning-based version of a Chess player which can be executed in FHE, i.e., where the computer does not see the unencrypted moves. On the player (client) side, the board would be in clear; then, when it plays its move, it encrypts the new position and sends it to the server, which then runs the machine-learning model inference over encrypted data, to predict a new (encrypted) move to apply. Finally, the player decrypts this move and apply it on the position, and reiterate the process until the game is over.
+Creation of a machine-learning-based version of a Chess player which can be executed in FHE, i.e., where the AI does not see the unencrypted moves.<br>
+On the player (client) side, the board would be in clear; then, when it's the AI's turn, the app encrypts the board and sends it to the server, which then runs the machine-learning model inference over encrypted data, to predict a new (encrypted) move to apply.<br>
+Finally, the app decrypts this move and applies it on the board, and reiterate the process until the game is over.
 
 ## Knowledge
 
@@ -14,7 +16,9 @@ Create a machine-learning-based version of a Chess player which can be executed 
 
 *   **Semantic**: while reading, you will faced to specific terms, let's clear them out.
 
-    *   As a chessboard is made of 64 squares (8*8), **Source** and **Target** are respectively: the selected square to move from, the selected square to move to.
+    *   **Bitboard**: as a chessboard is made of 64 squares (8*8), one feature of a bitboard used here is to indicate the implicit square denomination and localization from the indices of an array of shape (64,). Concretely, square "0" is located at "a1" and square "63" is at "h8". Then, to describe, for eg.: a pawn's move "a2a4", it would be from source square: 8 to target square: 24.
+    
+    *   **Source**, **Target**: are respectively the selected square to move from, the selected square to move to.
 
     *   **Clear**: means non-encrypted in cryptography context.
 
