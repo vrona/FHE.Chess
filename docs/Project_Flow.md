@@ -231,19 +231,15 @@ Sum-up, 2 models in 2 contexts:
     return_quant_tensor=True    # except the last Sigmoid activation
     ```
     *  **Training and Validation losses**<br>
-    <span style="color:red">
-    Text content
-    </span>
-    Normal and quantized models' training, validation results show that models are very close and the latter needs more time to learn.<br>
-    Below, the visualizations where:
-    - Source models: Orange are Normal (aka not-quantized) models, in <span style="color:green">some *Green*</span> are quantized ones,
-    - Target models: Orange are Normal (aka not-quantized) models, in <span style="color:blue">Blue</span> are quantized ones.
-    
-    train_..._quant_n_bits4_w_bits4_prune84
-    
-    In Quantization context, as there is a lost of float precision and not all the neurons are activate, models have been trained twice longer.<br>
+
+    Normal and quantized models' training, validation results show that models are very close and the latter needs, at one point, more time to learn.<br>
+    Indeed, as there is a lost of float precision and not all the neurons are activate, models have been trained twice longer only to scrape together more precision.<br>
     It enabled to keep the slope of learning while keeping important parameters such as learning_rate.<br>
     
+    Below, the visualizations display similarities where for:
+    - Source models: Orange are Normal (aka not-quantized) models, Green are quantized ones,
+    - Target models: Orange are Normal (aka not-quantized) models, Blue are quantized ones.
+        
     Model's accuracy clear vs fhe simulation
 
     *   Source:
