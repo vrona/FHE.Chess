@@ -1,4 +1,8 @@
+brevitas==0.8.0
 chess==1.9.4
+concrete==4.18.2
 numpy==1.23.5
+pandas==1.5.2
 pygame==2.1.2
-python >=3.8.1
+torch==1.13.1
+tqdm==4.64.1
