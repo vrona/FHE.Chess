@@ -74,10 +74,14 @@ _creation and activation of virtual environments are strongly recommended._
 on your local machine, run `pip install --no-cache-dir -r requirements.txt` inside `client_local` directory.
 [/requirements](../requirements.txt)
 ```text
+brevitas==0.8.0
 chess==1.9.4
 numpy==1.23.5
+pandas==1.5.2
 pygame==2.1.2
-python >=3.8.1
+torch==1.13.1
+tqdm==4.64.1
+
 ```
 <br/>
 
@@ -88,8 +92,7 @@ brevitas==0.8.0
 chess==1.9.4
 concrete-ml==1.0.3
 numpy==1.23.5
-pygame==2.1.2
-python >=3.8.1
+pandas==2.0.3
 torch==1.13.1
 tqdm==4.64.1
 wandb==0.13.10
@@ -310,10 +313,10 @@ At this step, you have 2 different terminals which are running simultaneously.<b
 Then, run:
 <br>
 
-1st remote terminal : ```$ python3 server/server_all.py -i (or --inference) "clear" or "simfhe" or "deepfhe"```<br>
+**1st remote terminal**: ```$ python3 server/server_all.py -i (or --inference) "clear" or "simfhe" or "deepfhe"```<br>
 !! Wait until the server is connected !! (waiting time:```"clear"``` and ```"deepfhe"``` < several seconds, ```"simfhe"``` between 2 and 7 mins)<br>
 
-2nd local terminal : ```$ python3 client_local/chess_env/main.py --server IP_address --port PORT```<br>
+**2nd local terminal**: ```$ python3 client_local/chess_env/main.py --server IP_address --port PORT```<br>
 NB: default ```--port``` is 3389 which is ok on GCI and AWS.
 <br>
 

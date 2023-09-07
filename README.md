@@ -68,10 +68,10 @@ At this step, you have 2 different terminals which are running simultaneously.<b
 Then, run:
 <br>
 
-1st remote terminal : ```$ python3 server/server_all.py -i (or --inference) "clear" or "simfhe" or "deepfhe"```<br>
+**1st remote terminal**: ```$ python3 server/server_all.py -i (or --inference) "clear" or "simfhe" or "deepfhe"```<br>
 !! Wait until the server is connected !! (waiting time:```"clear"``` and ```"deepfhe"``` < several seconds, ```"simfhe"``` between 2 and 7 mins)<br>
 
-2nd local terminal : ```$ python3 client_local/chess_env/main.py --server IP_address --port PORT```<br>
+**2nd local terminal**: ```$ python3 client_local/chess_env/main.py --server IP_address --port PORT```<br>
 NB: default ```--port``` is 3389 which is ok on GCI and AWS.
 <br>
 
