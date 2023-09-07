@@ -14,7 +14,7 @@ class Network:
 
         parser = argparse.ArgumentParser(description='provide Server IP address')
         parser.add_argument('--server', type=str)
-        parser.add_argument('--port', type=int)
+        parser.add_argument('--port', type=int, default=3389)
 
         args = parser.parse_args()
         self.server = str(args.server) # 34.76.213.79 0.0.0.0
