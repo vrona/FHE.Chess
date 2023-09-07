@@ -68,11 +68,14 @@ At this step, you have 2 different terminals which are running simultaneously.<b
 Then, run:
 <br>
 
-local terminal : ```$ python3 client_local/chess_env/main.py --server IP_address --port 3389```
+1st remote terminal : ```$ python3 server/server_all.py -i (or --inference) "clear" or "simfhe" or "deepfhe"```<br>
+!! Wait until the server is connected !! (waiting time:```"clear"``` and ```"deepfhe"``` < several seconds, ```"simfhe"``` between 2 and 7 mins)<br>
+
+2nd local terminal : ```$ python3 client_local/chess_env/main.py --server IP_address --port PORT```<br>
+NB: default ```--port``` is 3389 which is ok on GCI and AWS.
 <br>
 
-remote terminal : ```$ python3 server/server_all.py -i (or --inference) "clear" or "simfhe" or "deepfhe"```
-<br>
+
 
 ## Reset and kill
 - to reset the game: press r,
@@ -96,9 +99,10 @@ remote terminal : ```$ python3 server/server_all.py -i (or --inference) "clear" 
 
 <br>
 
-[^1]: if needed, main steps to create ssh connection with GCI:
-    -  generate private and public keys via your google cloud instance dashboard,
-    -  add KEY_VALUE USERNAME to your Google instance > TAB "Metadata" > TAB "SSH",
-    -  locate your keys into a local "ssh" folder  ```ssh-keygen -t rsa -f ~/.ssh/KEY_FILENAME -C USERNAME -b 2048```,
+[^1]: if needed, main steps to create ssh connection with GCI on Linux/Mac:
+    -  recall your ```USERNAME``` from GCI and think about a ```KEY_FILENAME```,
+    -  create your keys: run the command ```ssh-keygen -t rsa -f ~/.ssh/KEY_FILENAME -C USERNAME -b 2048``` (to see them ```ls .ssh```),
+    -  then copy the private key (.pub is the public one)
+    -  Add private key + ```USERNAME``` into your instance's metadata (follow this [process](https://cloud.google.com/compute/docs/connect/add-ssh-keys?hl=fr#add_ssh_keys_to_instance_metadata)),  
     -  ```cd .ssh```,
-    -  established ssh connection with your instance, run ```ssh -i nameofkeys USERNAME@IP_address```.
+    -  established ssh connection with your instance, run ```ssh -i KEY_FILENAME USERNAME@IP_address```.
