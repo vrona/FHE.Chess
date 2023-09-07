@@ -12,9 +12,9 @@ class Network:
     def __init__(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-        parser = argparse.ArgumentParser(description='provide Server IP address')
-        parser.add_argument('--server', type=str)
-        parser.add_argument('--port', type=int, default=3389)
+        parser = argparse.ArgumentParser(description='provide Server IP_Address and port')
+        parser.add_argument('--server', type=str, help="the remote server's IP_Address is required")
+        parser.add_argument('--port', type=int, help='the remote server\'s port', default=3389)
 
         args = parser.parse_args()
         self.server = str(args.server) # 34.76.213.79 0.0.0.0
