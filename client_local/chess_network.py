@@ -21,7 +21,7 @@ class Network:
         self.port = int(args.port) # 3389 Google Cloud Instance's firewall ok_port 
 
         if not self.server:
-            print("The server's IP address is disfunctional.")
+            print("The server's IP address is dysfunctional.")
             raise SystemExit(1)
 
   
