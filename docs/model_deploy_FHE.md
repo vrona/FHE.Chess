@@ -103,19 +103,69 @@ print("target_eval_key_senttoserver")
 ```
 <br>
 
-### How to deploy the FHE models.
+### :o: How to deploy the FHE models.
 
-:o: **In your remote terminal**:
-- ```cd server_cloud```
+ **In your remote terminal**:
+- ```cd fhechess```
 - the following folders must be empty. if not, emptied them!:
-    - ```server_cloud/deploy```
-    - ```server_cloud/client/source```
-    - ```server_cloud/client/target```
-    - ```server_cloud/server/model/client```
-    - ```server_cloud/server/model/target```
+    - ```fhechess/deploy```
+    - ```fhechess/client/source```
+    - ```fhechess/client/target```
+    - ```fhechess/server/model/client```
+    - ```fhechess/server/model/target```
+    <br> *(<ins>understanding</ins>: the ```deploy``` folder is like a basecamp to dispatch the model between ```client``` and ```server```. It can be deleted after deployment is completed.)*
+- run ```$ python3 client_server_fhe_deploy.py```<br>
 
-- run ```$ python3 server/client_server_fhe_deploy.py```<br>
-Toubleshooting: if a problem occurs because of an emptied folder, the solution is to delete the said folder and re-create it with the same name.
+Toubleshooting: if a crash occurs because of an unemptied folder, the hard solution is to delete the said folder and re-create it with the same name.
 
+While the deployment runs, you'll noticed some prints which keep you informed of the process. It takes fair minutes.
 
-The [client_server_fhe_deploy.py](../server_cloud/client_server_fhe_deploy.py)
+Here is an example of the contents of ```deploy, client, server``` folders when the deployment is over:<br>
+
+**IMPORTANT: You will not have the same encryption folders 10868118508151244911 and 16067062207993741669. These folders will necessary be different for each machine and users.**
+
+```python
+fhechess
+├── deploy
+│   ├── source
+│   │   ├── client.zip
+│   │   ├── server.zip
+│   │   └── versions.json
+│   └── target
+│       ├── client.zip
+│       ├── server.zip
+│       └── versions.json
+
+├── client
+│   ├
+│   ├
+│   ├── source
+│   │   ├── 10868118508151244911
+│   │   │   └── 0_0
+│   │   │       ├── ksKey_0
+│   │   │       ├── pbsKey_0
+│   │   │       ├── pksKey_0
+│   │   │       ├── secretKey_0
+│   │   │       └── secretKey_1
+│   │   └── client.zip
+│   └── target
+│       ├── 16067062207993741669
+│       │   └── 0_0
+│       │       ├── ksKey_0
+│       │       ├── pbsKey_0
+│       │       ├── pksKey_0
+│       │       ├── secretKey_0
+│       │       └── secretKey_1
+│       └── client.zip
+
+├── server
+│   ├
+│   ├
+│   ├── model
+│   │   ├── source
+│   │   │   ├── serialized_evaluation_keys.ekl
+│   │   │   └── server.zip
+│   │   └── target
+│   │       ├── serialized_evaluation_keys.ekl
+│   │       └── server.zip
+```
