@@ -101,3 +101,21 @@ print(f"Evaluation 'target' keys size: {len(serialz_eval_keys_trgt) / (10**6):.2
 network.client_send_evaluation_key_to_server(serialz_eval_keys_trgt, "/target")
 print("target_eval_key_senttoserver")
 ```
+<br>
+
+### How to deploy the FHE models.
+
+:o: **In your remote terminal**:
+- ```cd server_cloud```
+- the following folders must be empty. if not, emptied them!:
+    - ```server_cloud/deploy```
+    - ```server_cloud/client/source```
+    - ```server_cloud/client/target```
+    - ```server_cloud/server/model/client```
+    - ```server_cloud/server/model/target```
+
+- run ```$ python3 server/client_server_fhe_deploy.py```<br>
+Toubleshooting: if a problem occurs because of an emptied folder, the solution is to delete the said folder and re-create it with the same name.
+
+
+The [client_server_fhe_deploy.py](../server_cloud/client_server_fhe_deploy.py)

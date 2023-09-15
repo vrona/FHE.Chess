@@ -131,21 +131,31 @@ model_source.pruning_conv(False)
 model_target.load_state_dict(torch.load("weights/target_quantz.pt",map_location = device))
 model_target.pruning_conv(False)
 
+print("Source and Target models have been loaded")
+
 """
 🅒🅞🅜🅟🅘🅛🅐🅣🅘🅞🅝
 get the quantized module
 """
+print("Compilation is running, it takes fair minutes. Please wait... ;-).")
+
 ## model 1
 q_model_source = compile_brevitas_qat_model(model_source, train_input_src, n_bits={"model_inputs":4, "model_outputs":4})
+print("Source model have been compiled.")
 
 with open("mlir_source.txt", "w") as mlir:
     mlir.write(q_model_source.fhe_circuit.mlir)
 
+print("mlir_source.txt written, located server_cloud/mlir_source.txt")
+
 ## model 2
 q_model_target = compile_brevitas_qat_model(model_target, train_input_trgt, n_bits={"model_inputs":4, "model_outputs":4})
+print("Target model have been compiled.")
 
 with open("mlir_target.txt", "w") as mlir:
     mlir.write(q_model_target.fhe_circuit.mlir)
+
+print("mlir_target.txt written, located server_cloud/mlir_target.txt")
 
 """
 🅝🅔🅣🅦🅞🅡🅚/🅢🅐🅥🅘🅝🅖/🅢🅔🅡🅥🅔🅡 🅢🅔🅒🅣🅘🅞🅝
@@ -201,7 +211,7 @@ print(f"Evaluation 'source' keys size: {len(serialz_eval_keys_src) / (10**6):.2f
 
 ## send public key to server
 network.client_send_evaluation_key_to_server(serialz_eval_keys_src, "/source")
-print("sourceeval_key_senttoserver")
+print("source_eval_key_senttoserver")
 
 #target
 ## client creation and loading the model
