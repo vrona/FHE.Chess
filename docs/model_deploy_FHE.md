@@ -108,11 +108,11 @@ print("target_eval_key_senttoserver")
  **In your remote terminal**:
 - ```cd fhechess```
 - the following folders must be empty. if not, emptied them!:
-    - ```fhechess/deploy```
-    - ```fhechess/client/source```
-    - ```fhechess/client/target```
-    - ```fhechess/server/model/source```
-    - ```fhechess/server/model/target```
+    - ```/deploy```
+    - ```/client/source```
+    - ```/client/target```
+    - ```/server/model/source```
+    - ```/server/model/target```
     <br> *(<ins>understanding</ins>: the ```deploy``` folder is like a basecamp to dispatch the model between ```client``` and ```server```. It can be deleted after deployment is completed.)*
 - run ```$ python3 client_server_fhe_deploy.py```<br>
 
