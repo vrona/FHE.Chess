@@ -282,8 +282,8 @@ Sum-up, 2 models in 2 contexts:
 
 Testing of quantized models above involves Compilation and Simulation steps.
 
-- Compilation and simulation are described in [compilation](compilation.md) documentation with all the needed scripts are linked. A specific work on data is explained in [data_transformation](data_transformation.md).
-- Deployment is powered by [client_server_fhe_deploy.py](../server_cloud/client_server_fhe_deploy.py) and explained in [model_deploy_FHE](model_deploy_FHE.md) documentation.
+- Compilation and simulation are described in [compilation](compilation.md) documentation where all the needed scripts are linked. A specific work on data is explained in [data_transformation](data_transformation.md).
+- :o: To run the "deepfhe" mode, you must deploy. Deployment is powered by [client_server_fhe_deploy.py](../server_cloud/client_server_fhe_deploy.py) and explained in [model_deploy_FHE](model_deploy_FHE.md) documentation.
 
 ## Set up and play
 
