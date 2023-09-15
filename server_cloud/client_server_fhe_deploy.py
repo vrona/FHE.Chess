@@ -146,7 +146,7 @@ print("Source model have been compiled.")
 with open("mlir_source.txt", "w") as mlir:
     mlir.write(q_model_source.fhe_circuit.mlir)
 
-print("mlir_source.txt written, located server_cloud/mlir_source.txt")
+print("mlir_source.txt written, located fhechess(or server_cloud)/mlir_source.txt")
 
 ## model 2
 q_model_target = compile_brevitas_qat_model(model_target, train_input_trgt, n_bits={"model_inputs":4, "model_outputs":4})
@@ -155,7 +155,7 @@ print("Target model have been compiled.")
 with open("mlir_target.txt", "w") as mlir:
     mlir.write(q_model_target.fhe_circuit.mlir)
 
-print("mlir_target.txt written, located server_cloud/mlir_target.txt")
+print("mlir_target.txt written, located fhechess(or server_cloud)/mlir_target.txt")
 
 """
 🅝🅔🅣🅦🅞🅡🅚/🅢🅐🅥🅘🅝🅖/🅢🅔🅡🅥🅔🅡 🅢🅔🅒🅣🅘🅞🅝

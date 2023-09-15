@@ -84,7 +84,7 @@ print(f"Evaluation 'source' keys size: {len(serialz_eval_keys_src) / (10**6):.2f
 
 ## send public key to server
 network.client_send_evaluation_key_to_server(serialz_eval_keys_src, "/source")
-print("sourceeval_key_senttoserver")
+print("source_eval_key_senttoserver")
 
 #target
 ## client creation and loading the model
