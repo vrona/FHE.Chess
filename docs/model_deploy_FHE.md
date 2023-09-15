@@ -111,7 +111,7 @@ print("target_eval_key_senttoserver")
     - ```fhechess/deploy```
     - ```fhechess/client/source```
     - ```fhechess/client/target```
-    - ```fhechess/server/model/client```
+    - ```fhechess/server/model/source```
     - ```fhechess/server/model/target```
     <br> *(<ins>understanding</ins>: the ```deploy``` folder is like a basecamp to dispatch the model between ```client``` and ```server```. It can be deleted after deployment is completed.)*
 - run ```$ python3 client_server_fhe_deploy.py```<br>
@@ -140,7 +140,7 @@ fhechess
 │   ├
 │   ├
 │   ├── source
-│   │   ├── 10868118508151244911
+│   │   ├── 10868118508151244911 (you will have a different number)
 │   │   │   └── 0_0
 │   │   │       ├── ksKey_0
 │   │   │       ├── pbsKey_0
@@ -149,7 +149,7 @@ fhechess
 │   │   │       └── secretKey_1
 │   │   └── client.zip
 │   └── target
-│       ├── 16067062207993741669
+│       ├── 16067062207993741669 (you will have a different number)
 │       │   └── 0_0
 │       │       ├── ksKey_0
 │       │       ├── pbsKey_0
