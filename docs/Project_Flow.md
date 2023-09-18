@@ -46,7 +46,8 @@ Finally, the app decrypts this move and applies it on the board, and reiterate t
 
         *   both needs to have compiled models (already quantized).
 
-        *   NB: if you test "deepfhe", you will want to kill the remote server as you will feel that the FHE.Chess "spins forever" as it waits the inferred move by the AI.
+        *   NB: if you test "deepfhe", you will want to kill the remote server as you will feel that the FHE.Chess "spins forever" as it waits the inferred move by the AI.<br>
+        The inference time follows the VGG's one (18000 sec): see the benchmark made by Zama's machine learning team: [Deep NN for Encrypted Inference with TFHE](https://eprint.iacr.org/2023/257).
 <br/>
 
 ## Architecture Client-Server
