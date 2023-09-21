@@ -165,7 +165,7 @@ class Clone_Chess:
     def check_termination(self, current_board):
         """checks all checks"""
 
-        if current_board.outcome() is not None:
+        if current_board.outcome():
             print("Game outcome", current_board.outcome())
             return True
         
@@ -194,6 +194,7 @@ class Clone_Chess:
             return True
 
         else:
+            print("Game NOT OVER")
             return False
 
 
