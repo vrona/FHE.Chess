@@ -193,7 +193,8 @@ class Main:
                             game.display_pieces(screenplay)
                                 # print the Outcome of the game
 
-                            if clone_chess.check_termination(clone_chess.get_board()): break
+                            if clone_chess.check_termination(clone_chess.get_board()):
+                                print("Test underway")
 
                             game.next_player()
 
