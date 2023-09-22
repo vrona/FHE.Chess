@@ -166,9 +166,17 @@ class Clone_Chess:
         """checks all checks"""
 
         if current_board.outcome():
-            print("Game outcome", current_board.outcome())
-            return True
-        
+            if current_board.outcome().winner == chess.WHITE:
+                print("White wins by %s" % current_board.outcome().termination)
+            elif current_board.outcome().winner == chess.BLACK:
+                print("Black wins %s" % current_board.outcome().termination)
+            else:
+                print("Draw, no winner nor looser.")
+        print("Game %s" % current_board.outcome())
+
+
+
+        """
         elif self.board.is_checkmate():
             print("is Check: %s" % current_board.is_checkmate())
             return True
@@ -192,10 +200,7 @@ class Clone_Chess:
         elif current_board.is_seventyfive_moves():
             print("Repetition 75: %s" % current_board.is_seventyfive_moves())
             return True
-
-        else:
-            print("Game NOT OVER")
-            return False
+        """
 
 
     #  ⒸⓁⒶⒾⓂⓈ 🅒🅛🅐🅘🅜🅢 ⒸⓁⒶⒾⓂⓈ
