@@ -123,7 +123,7 @@ class Main:
                 targeted_square_col = listoftuplesofmoves[0][1][0]
 
                 # apply the move
-                self.autonomous_piece(7-selected_square_row, selected_square_col, 7-targeted_square_row, targeted_square_col, board, game, clone_chess, screenplay)
+                self.autonomous_piece(7-selected_square_row, selected_square_col, 7-targeted_square_row, targeted_square_col, board, game, clone_chess, button, screenplay)
 
                 """
                 Case2: INFERENCE WITH PSEUDO EVALUATION WHITE VALUE FILTER
@@ -136,7 +136,7 @@ class Main:
                 # source_r, source_c, target_r, target_c = self.autonomous_check_sim(listoftuplesofmoves)
 
                 # apply the move
-                # self.autonomous_piece(source_r, source_c, target_r, target_c, board, game, clone_chess, screenplay)
+                # self.autonomous_piece(source_r, source_c, target_r, target_c, board, game, clone_chess, button, screenplay)
                 """
 
             # ⒽⓊⓂⒶⓃ 🅗🅤🅜🅐🅝 ⒽⓊⓂⒶⓃ
@@ -221,21 +221,14 @@ class Main:
                             game.display_chessboard(screenplay)
                             game.display_lastmove(screenplay)
                             game.display_pieces(screenplay)
-                                # print the Outcome of the game
-                            
                             game.next_player()
 
                     dragger.undrag_piece()
-
-
-
-                    #print("Game outcome from Human", self.clone_chess.get_board().outcome())
                 
                 # reset app
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_r:
                         game.reset()
-                        button.normal = True
                         game = self.game
                         board = self.game.board
                         dragger = self.game.dragger
@@ -254,7 +247,7 @@ class Main:
             pygame.display.update()
                         
 
-    def autonomous_piece(self,source_row, source_col, target_row, target_col, board, game, clone_chess, surface):
+    def autonomous_piece(self,source_row, source_col, target_row, target_col, board, game, clone_chess, button, surface):
         """Makes the AI's move inference applied into homemade chessboard environment"""
 
         # presence of piece within selected square
@@ -295,17 +288,32 @@ class Main:
                     game.display_chessboard(surface)
                     game.display_lastmove(surface)
                     game.display_pieces(surface)
-                    # print the Outcome of the game
-                    clone_chess.check_termination(clone_chess.get_board())
+                    
+                    # TO DELETE EVENTUALLY # print the Outcome of the game
+                    # #clone_chess.check_termination(clone_chess.get_board())
+                    
+                    # # get the outcome of game when not None
+                    # if self.outcome():
+                    #     if button.new_game:
+                    #         game.reset()
+                    #         button.normal = True
+                    #         game = self.game
+                    #         board = self.game.board
+                    #         dragger = self.game.dragger
+                    #         clone_chess.reset_board()
+                    #         print("\n^^Game %s has been reseted^^\n"%self.game_count)
+                    #         self.game_count += 1
+                    #         print("\n--Game %s has started--\n"%self.game_count)
 
                     game.next_player()
                 
                 else:
-                    print("\nDEAD GAME ZONE")
-                    clone_chess.check_termination(clone_chess.get_board())
+                    game.next_player()
+                    print("from %s, %s to %s, %s is wrong" % (source_col, source_row, target_col, target_row))
                     game.reset()
 
         else:
+            game.next_player()
             print("No piece")
 
 
