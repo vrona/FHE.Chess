@@ -31,6 +31,30 @@ class Main:
             """ this is specific to python-chess library: let pawn being promoted"""
             self.clone_chess.move_clone_promotion(bitboard[source_row, source_col], bitboard[target_row, target_col], chess.QUEEN)
 
+    def outcome(self):
+        screenplay = self.screenplay
+        #game = self.game
+        button = self.button
+        #board = self.game.board
+        #dragger = self.game.dragger
+        clone_chess = self.clone_chess
+
+        if clone_chess.get_board().outcome() is not None:
+
+            while button.restart:
+                button.button_restart(screenplay)                                  
+                if clone_chess.get_board().outcome().winner == chess.WHITE:
+                    button.show_result(screenplay, "White wins", "%s" % clone_chess.get_board().outcome().termination)
+                    #print("White wins by %s" % clone_chess.get_board().outcome().termination)
+                elif clone_chess.get_board().outcome().winner == chess.BLACK:
+                    button.show_result(screenplay, "Black wins", "%s" % clone_chess.get_board().outcome().termination)
+                    #print("Black wins %s" % clone_chess.get_board().outcome().termination)
+                else:
+                    button.show_result(screenplay, "Draw", "%s" % clone_chess.get_board().outcome().termination)
+                    #print("Draw, no winner nor looser.")
+                
+                return True
+
 
     def mainloop(self):
         
@@ -44,8 +68,6 @@ class Main:
         self.game_count += 1
         print("\n--Game %s has started--\n"%self.game_count)
 
-        button.button_restart(screenplay)
-        button.show_result(screenplay, 'Black wins', 'Reason: THREEFOLD_REPETITION')
         while True:
 
             # display chess board
@@ -66,6 +88,18 @@ class Main:
             button.button_whiteAI(screenplay)
             button.button_HH(screenplay)
 
+            # get the outcome of game when not None
+            if self.outcome():
+                if button.new_game:
+                    game.reset()
+                    button.normal = True
+                    game = self.game
+                    board = self.game.board
+                    dragger = self.game.dragger
+                    clone_chess.reset_board()
+                    print("\n^^Game %s has been reseted^^\n"%self.game_count)
+                    self.game_count += 1
+                    print("\n--Game %s has started--\n"%self.game_count)
             
             # ⒶⒾ 🅐🅘 ⒶⒾ 🅐🅘 ⒶⒾ
 
@@ -126,10 +160,6 @@ class Main:
 
                         if piece.color == game.player_turn:
                             
-                            # print the Outcome of the game
-                            #if clone_chess.check_termination():
-                            #    button.button_reset(screenplay)
-
                             board.compute_move(piece, selected_square_row, selected_square_col, bool=True)
                             dragger.save_source(event.pos)
                             dragger.drag_piece(piece)
@@ -192,29 +222,12 @@ class Main:
                             game.display_lastmove(screenplay)
                             game.display_pieces(screenplay)
                                 # print the Outcome of the game
-                               
-
+                            
                             game.next_player()
 
-
-                            
-                            if clone_chess.get_board().outcome() is None:
-                            #clone_chess.get_board().outcome() #clone_chess.get_board().outcome()
-                            #print("Game %s" % clone_chess.get_board().outcome())
-
-                                button.button_restart(screenplay)
-                                """if clone_chess.get_board().outcome().winner == chess.WHITE:
-                                    button.show_result(screenplay, "White wins", "%s" % clone_chess.get_board().outcome().termination)
-                                    print("White wins by %s" % clone_chess.get_board().outcome().termination)
-                                elif clone_chess.get_board().outcome().winner == chess.BLACK:
-                                    button.show_result(screenplay, "Black wins", "%s" % clone_chess.get_board().outcome().termination)
-                                    print("Black wins %s" % clone_chess.get_board().outcome().termination)
-                                else:
-                                    button.show_result(screenplay, "Draw", "%s" % clone_chess.get_board().outcome().termination)
-                                    print("Draw, no winner nor looser.")"""
-
                     dragger.undrag_piece()
-                    
+
+
 
                     #print("Game outcome from Human", self.clone_chess.get_board().outcome())
                 
@@ -222,6 +235,7 @@ class Main:
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_r:
                         game.reset()
+                        button.normal = True
                         game = self.game
                         board = self.game.board
                         dragger = self.game.dragger
