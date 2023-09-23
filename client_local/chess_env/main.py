@@ -23,7 +23,7 @@ class Main:
         self.game = Game()
         self.button = Button()
         self.clone_chess = Clone_Chess()
-        self.cs_network = Network()
+        #self.cs_network = Network()
         self.game_count = 0
 
 
@@ -64,7 +64,7 @@ class Main:
         board = self.game.board
         dragger = self.game.dragger
         clone_chess = self.clone_chess
-        cs_network = self.cs_network
+        #cs_network = self.cs_network
         self.game_count += 1
         print("\n--Game %s has started--\n"%self.game_count)
 
