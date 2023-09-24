@@ -4,6 +4,7 @@ from move import *
 import copy
 from square import Square
 from clone_chess import Clone_Chess
+import chess
 
 class Board:
 
@@ -49,7 +50,9 @@ class Board:
                 rook = piece.left_rook if (diff < 0) else piece.right_rook # determine if castling queenside or kingside
 
                 self.move(rook, rook.ok_moves[-1])
-
+        
+        #if isinstance(piece, King) and isinstance(piece.color, color) #DISTANCE BETWEEN KINGS
+        
         # move
         piece.moved = True
 
@@ -85,36 +88,95 @@ class Board:
         return move in piece.ok_moves  
 
  
-    # here it simulates if King is check, thus it blocks any movement that lead king to be check.
-    # improvements needed cause some deadends.
+    # here it simulates if King is check, thus it blocks any movement that lead king to be checked.
+    # improvements needed cause some deadends when King vs King.
     def king_check_sim(self, piece, move):
 
         """"for simulation"""
         temppiece = copy.deepcopy(piece)
         tempboard = copy.deepcopy(self)
         tempboard.move(temppiece, move, simulation=True) # move virtually one piece
+        
+        king_target = []
+        opponent_target = []
 
         for row in range(cb_rows):
             for col in range(cb_cols):
                 """check for all opponent if their potential ok_moves arrive in the team's Kings' square"""
-                if tempboard.squares[row][col].opponent_presence(piece.color):
-                    p = tempboard.squares[row][col].piece
-                    
-                    tempboard.compute_move(p, row, col, bool=False)
+                
+                if tempboard.squares[row][col].opponent_presence(piece.color): # if current player's opponent exist on chessboard
+                    p = tempboard.squares[row][col].piece                       # get the piece of this opponent
+                    tempboard.compute_move(p, row, col, bool=False)             # calculate opponent piece's moves to retrieve its ok_moves
 
-                    for mvmt in p.ok_moves:
+                    if piece.type == chess.KING:
+                        #tempboard.compute_move(piece, row, col, bool=False)
+
+                        for king_player_mvmt in piece.ok_moves:
+                            king_target.append(bitboard[king_player_mvmt.target.row][king_player_mvmt.target.col]) 
+                        #print("King Player", king_target)
+
+                    for mvmt in p.ok_moves:          # for each moves in ok_moves, look for opponent piece's target squares where a king exist
+                        
+                        # if p.type == chess.KING:
+                        #     opponent_target.append(bitboard[mvmt.target.row][mvmt.target.col])
+                        #     #print("King Opponent", opponent_target)
+                        #     for i in opponent_target:
+                        #         if i in king_target:
+                        #             print("COLLISION",i)
+                        #             return True
+
                         if isinstance(mvmt.target.piece, King):
+                            # print("Menace From:", mvmt.source.col,mvmt.source.row,">>",bitboard[mvmt.source.row][mvmt.source.col])
+                            # print("Menace to:", mvmt.target.col,mvmt.target.row,">>",bitboard[mvmt.target.row][mvmt.target.col])
                             return True
+        return False
+                
+    def king_check_sim_king(self, piece, move):
+
+        """"for simulation"""
+        temppiece = copy.deepcopy(piece)
+        tempboard = copy.deepcopy(self)
+        tempboard.move(temppiece, move, simulation=True) # move virtually one piece
+        
+        king_target = []
+        opponent_target = []
+        for row in range(cb_rows):
+            for col in range(cb_cols):
+                """check for all opponent if their potential ok_moves arrive in the team's Kings' square"""
+                
+                if tempboard.squares[row][col].opponent_presence(piece.color): # if current player's opponent exist on chessboard
+                    p = tempboard.squares[row][col].piece                       # get the piece of this opponent
+                    tempboard.compute_move(p, row, col, bool=False)             # calculate opponent piece's moves to retrieve its ok_moves
+                    
+                    if piece.type == chess.KING:
+                        tempboard.compute_move(piece, row, col, bool=False)
+
+                        for king_player_mvmt in piece.ok_moves:
+                            king_target.append(bitboard[king_player_mvmt.target.row][king_player_mvmt.target.col]) 
+                        #print("King Player", king_target)
+    
+                    #print(p.ok_moves, p.type)
+                    if p.type == chess.KING:
+                        print(p.ok_moves, p.type)
+                        for mvmt in p.ok_moves:
+                            opponent_target.append(bitboard[mvmt.target.row][mvmt.target.col])
+                            print("King Opponent", opponent_target)
+                    for i in opponent_target:
+                        if i in king_target:
+                            print("COLLISION",i)
+                            return True
+
         return False
 
 
     def sim_kingcheck_okmoves(self, piece, move, bool):
         """adds move into ok_move list if my King is not in check"""
-        if bool:
+        if bool: # simulation is on
             if not self.king_check_sim(piece, move): # if not in check go ahead
+                print(piece,self.king_check_sim(piece, move))
                 piece.add_ok_move(move)
 
-        else:
+        else:   # simulation is off
             piece.add_ok_move(move) # if not in check go ahead
 
 
@@ -198,7 +260,7 @@ class Board:
                             self.move_kingchecksim(source, target, piece, bool)
 
 
-        def kight_moves():
+        def knight_moves():
             possible_moves = [
                 (row-2, col+1),
                 (row-1, col+2),
@@ -220,8 +282,18 @@ class Board:
                         piece_target = self.squares[ok_move_row][ok_move_col].piece # get piece at target aka king check
                         target = Square(ok_move_row, ok_move_col, piece_target)
 
-                        self.move_kingchecksim(source, target, piece, bool)
+                        #self.move_kingchecksim(source, target, piece, bool)
 
+                        # move at micro
+                        move = Move(source, target)
+                        
+                        if bool: # simulation is on
+                            if not self.king_check_sim(piece, move): # if not in check go ahead
+                                piece.add_ok_move(move)
+                            else: break
+
+                        else:   # simulation is off
+                            piece.add_ok_move(move) # if not in check go ahead
 
 
         def straightline_move(increments):
@@ -275,20 +347,26 @@ class Board:
             
             for ok_move in juxtapose:
                 ok_move_row, ok_move_col = ok_move # y, x
-
+                
                 # macro location
                 if Square.in_board(ok_move_row, ok_move_col):
-                    
-                        
-                    # micro location
-                    source = Square(row, col)
-                    target = Square(ok_move_row, ok_move_col)
-                    
-                    # move at micro
-                    move = Move(source, target)
-                
                     if self.squares[ok_move_row][ok_move_col].empty_occupied(piece.color):
-                        self.sim_kingcheck_okmoves(piece,move,bool)
+                        # micro location
+                        source = Square(row, col)
+                        target = Square(ok_move_row, ok_move_col)
+                        
+                        # move at micro
+                        move = Move(source, target)
+
+                        if bool:
+
+                            if not self.king_check_sim(piece, move): # if not in check go ahead
+                                print(self.king_check_sim(piece, move))
+                                piece.add_ok_move(move)
+                            #else: break
+
+                        else:
+                            piece.add_ok_move(move)
 
             # castling
             if not piece.moved:
@@ -369,7 +447,7 @@ class Board:
 
         if isinstance(piece, Pawn): pawn_moves()
 
-        elif isinstance(piece, Knight): kight_moves()
+        elif isinstance(piece, Knight): knight_moves()
 
         elif isinstance(piece, Bishop):
             straightline_move([

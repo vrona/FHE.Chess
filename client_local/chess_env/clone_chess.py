@@ -61,8 +61,8 @@ class Clone_Chess:
         uci_format = self.convert_move_2_string(move)
         try:
             self.board.push_san(uci_format)
-        except chess.IllegalMoveError:
-            self.check_termination(self.get_board())
+        except chess.IllegalMoveError as e:
+            print(e)
             
 
     def move_clone_promotion(self, sq_s, sq_t, promotion):
