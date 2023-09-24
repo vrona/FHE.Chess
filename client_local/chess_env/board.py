@@ -88,8 +88,7 @@ class Board:
         return move in piece.ok_moves  
 
  
-    # here it simulates if King is check, thus it blocks any movement that lead king to be checked.
-    # improvements needed cause some deadends when King vs King.
+    # here it simulates if King is check by piece (except opponent King), thus it blocks any movement that lead king to be checked.
     def king_check_sim(self, piece, move):
 
         """"for simulation"""
@@ -97,41 +96,26 @@ class Board:
         tempboard = copy.deepcopy(self)
         tempboard.move(temppiece, move, simulation=True) # move virtually one piece
         
-        king_target = []
-        opponent_target = []
-
         for row in range(cb_rows):
             for col in range(cb_cols):
                 """check for all opponent if their potential ok_moves arrive in the team's Kings' square"""
-                
+
                 if tempboard.squares[row][col].opponent_presence(piece.color): # if current player's opponent exist on chessboard
-                    p = tempboard.squares[row][col].piece                       # get the piece of this opponent
-                    tempboard.compute_move(p, row, col, bool=False)             # calculate opponent piece's moves to retrieve its ok_moves
+                    p = tempboard.squares[row][col].piece                       # get the type of the opponent piece
+                    tempboard.compute_move(p, row, col, bool=False)             # calculate the opponent piece's moves to get its ok_moves
 
-                    if piece.type == chess.KING:
-                        #tempboard.compute_move(piece, row, col, bool=False)
-
-                        for king_player_mvmt in piece.ok_moves:
-                            king_target.append(bitboard[king_player_mvmt.target.row][king_player_mvmt.target.col]) 
-                        #print("King Player", king_target)
 
                     for mvmt in p.ok_moves:          # for each moves in ok_moves, look for opponent piece's target squares where a king exist
-                        
-                        # if p.type == chess.KING:
-                        #     opponent_target.append(bitboard[mvmt.target.row][mvmt.target.col])
-                        #     #print("King Opponent", opponent_target)
-                        #     for i in opponent_target:
-                        #         if i in king_target:
-                        #             print("COLLISION",i)
-                        #             return True
 
                         if isinstance(mvmt.target.piece, King):
-                            # print("Menace From:", mvmt.source.col,mvmt.source.row,">>",bitboard[mvmt.source.row][mvmt.source.col])
-                            # print("Menace to:", mvmt.target.col,mvmt.target.row,">>",bitboard[mvmt.target.row][mvmt.target.col])
+                            #print("Menace From %s %s to %s %s" %(mvmt.source.col,mvmt.source.row,mvmt.target.col,mvmt.target.row))
+                            #print("Menace From %s to %s" % (bitboard[mvmt.source.row][mvmt.source.col], bitboard[mvmt.target.row][mvmt.target.col]))
                             return True
+
         return False
-                
-    def king_check_sim_king(self, piece, move):
+
+    # here it simulates if King is check by OPPONENT KING, thus it blocks any movement that lead king to be checked.      
+    def check_sim_exception(self, piece, move):
 
         """"for simulation"""
         temppiece = copy.deepcopy(piece)
@@ -140,32 +124,33 @@ class Board:
         
         king_target = []
         opponent_target = []
+
         for row in range(cb_rows):
             for col in range(cb_cols):
                 """check for all opponent if their potential ok_moves arrive in the team's Kings' square"""
-                
-                if tempboard.squares[row][col].opponent_presence(piece.color): # if current player's opponent exist on chessboard
-                    p = tempboard.squares[row][col].piece                       # get the piece of this opponent
-                    tempboard.compute_move(p, row, col, bool=False)             # calculate opponent piece's moves to retrieve its ok_moves
+
+                if tempboard.squares[row][col].opponent_presence(piece.color):      # if current player's opponent exist on chessboard
                     
-                    if piece.type == chess.KING:
-                        tempboard.compute_move(piece, row, col, bool=False)
+                    if piece.type == chess.KING:                                    # when the player piece about to move is King
 
-                        for king_player_mvmt in piece.ok_moves:
-                            king_target.append(bitboard[king_player_mvmt.target.row][king_player_mvmt.target.col]) 
-                        #print("King Player", king_target)
-    
-                    #print(p.ok_moves, p.type)
-                    if p.type == chess.KING:
-                        print(p.ok_moves, p.type)
-                        for mvmt in p.ok_moves:
-                            opponent_target.append(bitboard[mvmt.target.row][mvmt.target.col])
-                            print("King Opponent", opponent_target)
-                    for i in opponent_target:
-                        if i in king_target:
-                            print("COLLISION",i)
-                            return True
+                        p = tempboard.squares[row][col].piece                       # get the type of the opponent piece
+                        tempboard.compute_move(p, row, col, bool=False)             # calculate the opponent piece's moves to get its ok_moves
 
+                
+                        for king_player_mvmt in piece.ok_moves:                     # for each moves in ok_moves, look for target squares of King's player
+                            king_target.append(bitboard[king_player_mvmt.target.row][king_player_mvmt.target.col])
+
+                        for mvmt in p.ok_moves:          # for each moves in ok_moves, look for opponent piece's target squares where a king exist
+                            
+                            if p.type == chess.KING:                                # when opponent piece is a King, get its target squares
+                                opponent_target.append(bitboard[mvmt.target.row][mvmt.target.col])
+
+                                for i in opponent_target:
+                                    """the player King and opponent King collide when they share the same target squares"""
+                                    if i in king_target:
+                                        #print("COLLISION",i)
+                                        return True
+                            
         return False
 
 
@@ -173,7 +158,6 @@ class Board:
         """adds move into ok_move list if my King is not in check"""
         if bool: # simulation is on
             if not self.king_check_sim(piece, move): # if not in check go ahead
-                print(piece,self.king_check_sim(piece, move))
                 piece.add_ok_move(move)
 
         else:   # simulation is off
@@ -361,8 +345,9 @@ class Board:
                         if bool:
 
                             if not self.king_check_sim(piece, move): # if not in check go ahead
-                                print(self.king_check_sim(piece, move))
                                 piece.add_ok_move(move)
+                            if self.check_sim_exception(piece, move):
+                                piece.pop_ok_move(move)
                             #else: break
 
                         else:
