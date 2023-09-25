@@ -23,7 +23,7 @@ class Main:
         self.game = Game()
         self.button = Button()
         self.clone_chess = Clone_Chess()
-        #self.cs_network = Network()
+        self.cs_network = Network()
         self.game_count = 0
 
 
@@ -64,7 +64,7 @@ class Main:
         board = self.game.board
         dragger = self.game.dragger
         clone_chess = self.clone_chess
-        #cs_network = self.cs_network
+        cs_network = self.cs_network
         self.game_count += 1
         print("\n--Game %s has started--\n"%self.game_count)
 
@@ -117,14 +117,17 @@ class Main:
                 Case 1: INFERENCE WITHOUT FILTER
                 Uses only the 1st tuple in listoftuplesofmoves as it supposed to be the best inferred move.
                 """
-                selected_square_row = listoftuplesofmoves[0][0][1]
-                selected_square_col = listoftuplesofmoves[0][0][0]
-                targeted_square_row = listoftuplesofmoves[0][1][1]
-                targeted_square_col = listoftuplesofmoves[0][1][0]
+                if listoftuplesofmoves is not None:
+                    selected_square_row = listoftuplesofmoves[0][0][1]
+                    selected_square_col = listoftuplesofmoves[0][0][0]
+                    targeted_square_row = listoftuplesofmoves[0][1][1]
+                    targeted_square_col = listoftuplesofmoves[0][1][0]
 
-                # apply the move
-                self.autonomous_piece(7-selected_square_row, selected_square_col, 7-targeted_square_row, targeted_square_col, board, game, clone_chess, button, screenplay)
+                    # apply the move
+                    self.autonomous_piece(7-selected_square_row, selected_square_col, 7-targeted_square_row, targeted_square_col, board, game, clone_chess, button, screenplay)
 
+                else:
+                    game.next_player()
                 """
                 Case2: INFERENCE WITH PSEUDO EVALUATION WHITE VALUE FILTER
                         ** value of white position and material **
@@ -310,7 +313,7 @@ class Main:
                 else:
                     game.next_player()
                     print("from %s, %s to %s, %s is wrong" % (source_col, source_row, target_col, target_row))
-                    game.reset()
+                    #game.reset()
 
         else:
             game.next_player()
