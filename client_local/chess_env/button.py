@@ -1,3 +1,4 @@
+import sys
 import pygame
 from PIL import ImageFont
 from base import *
@@ -15,6 +16,7 @@ class Button:
         self.click_new = None
         self.restart = restart
 
+
     # retrieve if AI Mode status
     def get_ai_mode(self):
         return self.ai_mode
@@ -23,23 +25,37 @@ class Button:
         return self.human_mode
     
     # click function
-    def click_ai(self, x, action_name):
+    def click_ai(self, x, action_name, network):
+        """
+        x: int initial pixel within width
+        action_name: string White AI or White Human
+        network: bool
+        """
         text_width = self.sizeoftext(action_name)
         mouse_pos = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()[0]
         button_rect = pygame.rect.Rect((x, self.y_pos),(text_width,30))
         
         if click and button_rect.collidepoint(mouse_pos) and self.normal:
-            # set the AI mode
-            self.name_mode = action_name
-            self.normal = False
-            self.restart = True
+            
+            if not network.connected:
+                print(network.connected)
+                network.input_ip(network.connected) # 35.234.146.233
+                self.click_ai(x, action_name, network)
+                
+        
+            else:
+                # set the AI mode
+                self.name_mode = action_name
+                self.normal = False
+                self.restart = True
 
-            if self.name_mode=="White AI ":
-                self.ai_mode = True
+                if self.name_mode=="White AI ":
+                    self.ai_mode = True
 
-            if self.new_game:
-                self.new_game = False
+                if self.new_game:
+                    self.new_game = False
+    
 
     def click_human(self, x, action_name):
         text_width = self.sizeoftext(action_name)
@@ -84,7 +100,6 @@ class Button:
 
     # draw button
     def draw(self, surface, color, text, x, y = 0):
-        mouse_pos = pygame.mouse.get_pos()
         self.text = text
         text_width = self.sizeoftext(self.text)
 
@@ -95,16 +110,10 @@ class Button:
         pygame.draw.rect(surface, 'black', button_rect, 2, 3)
         surface.blit(button_text, (x+3, self.y_pos + y +3))
 
-        """if button_rect.collidepoint(mouse_pos):
-            if pygame.mouse.get_pressed()[0] == 1 and self.click == False:
-                self.click = True
-                self.action = True
-        return self.action"""
 
-
-    def button_whiteAI(self, surface):
+    def button_whiteAI(self, surface, bool):
         self.button_name = 'White AI '
-        self.click_ai(220, self.button_name)
+        self.click_ai(220, self.button_name, bool)
         if self.normal:
             self.draw(surface,'white', self.button_name,220)
 

@@ -13,19 +13,18 @@ from move import Move
 from clone_chess import Clone_Chess
 from button import Button
 
-
 class Main:
 
     def __init__(self):
+        self.cs_network = Network()
+        self.server = self.cs_network.server # option 1: "IP_Address" (remote) or option 2: "local" (local)
         pygame.init()
         self.screenplay = pygame.display.set_mode((sp_width, sp_height))
         pygame.display.set_caption('Zama FHE.Chess App.')
         self.game = Game()
         self.button = Button()
         self.clone_chess = Clone_Chess()
-        self.cs_network = Network()
-        self.game_count = 0
-
+        self.game_count = 0        
 
     def pawn_promotion(self, source_row, source_col, target_row, target_col):
             """ this is specific to python-chess library: let pawn being promoted"""
@@ -33,10 +32,7 @@ class Main:
 
     def outcome(self):
         screenplay = self.screenplay
-        #game = self.game
         button = self.button
-        #board = self.game.board
-        #dragger = self.game.dragger
         clone_chess = self.clone_chess
 
         if clone_chess.get_board().outcome() is not None:
@@ -55,6 +51,46 @@ class Main:
                 
                 return True
 
+    def ai_server(self):
+        screenplay = self.screenplay
+        game = self.game
+        board = self.game.board
+        clone_chess = self.clone_chess
+        cs_network = self.cs_network
+
+        # get the snapshot of the board and use it as input_data to AI via server
+        # get reply from server as list of tuples of moves
+        chessboard = clone_chess.get_board()
+        listoftuplesofmoves = cs_network.send(chessboard)
+
+        """
+        Case 1: INFERENCE WITHOUT FILTER
+        Uses only the 1st tuple in listoftuplesofmoves as it supposed to be the best inferred move.
+        """
+        if listoftuplesofmoves is not None:
+            selected_square_row = listoftuplesofmoves[0][0][1]
+            selected_square_col = listoftuplesofmoves[0][0][0]
+            targeted_square_row = listoftuplesofmoves[0][1][1]
+            targeted_square_col = listoftuplesofmoves[0][1][0]
+
+            # apply the move
+            self.autonomous_piece(7-selected_square_row, selected_square_col, 7-targeted_square_row, targeted_square_col, board, game, clone_chess, screenplay)
+
+        else:
+            game.next_player()
+        """
+        Case2: INFERENCE WITH PSEUDO EVALUATION WHITE VALUE FILTER
+                ** value of white position and material **
+                Note: black values not taken into consideration
+
+        Uses autonomous_check_sim() to simulate all inferred moves from listoftuplesofmoves to return the one with the higher value of white.
+        
+        # get the move with highest white value position/material
+        # source_r, source_c, target_r, target_c = self.autonomous_check_sim(listoftuplesofmoves)
+
+        # apply the move
+        # self.autonomous_piece(source_r, source_c, target_r, target_c, board, game, clone_chess, button, screenplay)
+        """
 
     def mainloop(self):
         
@@ -65,9 +101,10 @@ class Main:
         dragger = self.game.dragger
         clone_chess = self.clone_chess
         cs_network = self.cs_network
+
         self.game_count += 1
         print("\n--Game %s has started--\n"%self.game_count)
-
+        
         while True:
 
             # display chess board
@@ -85,7 +122,7 @@ class Main:
             # display user experience hover
             game.display_hover(screenplay)
 
-            button.button_whiteAI(screenplay)
+            button.button_whiteAI(screenplay, cs_network)
             button.button_HH(screenplay)
 
             # get the outcome of game when not None
@@ -100,47 +137,12 @@ class Main:
                     print("\n^^Game %s has been reseted^^\n"%self.game_count)
                     self.game_count += 1
                     print("\n--Game %s has started--\n"%self.game_count)
-            
+
+
             # ⒶⒾ 🅐🅘 ⒶⒾ 🅐🅘 ⒶⒾ
+            #if self.server != "local": 
+            if button.get_ai_mode() and game.player_turn=="white": self.ai_server()
 
-            if button.get_ai_mode() and game.player_turn=="white":
-
-                # print the Outcome of the game
-                #if clone_chess.check_termination(): break
-
-                # get the snapshot of the board and use it as input_data to AI via server
-                # get reply from server as list of tuples of moves
-                chessboard = clone_chess.get_board()
-                listoftuplesofmoves = cs_network.send(chessboard)
-
-                """
-                Case 1: INFERENCE WITHOUT FILTER
-                Uses only the 1st tuple in listoftuplesofmoves as it supposed to be the best inferred move.
-                """
-                if listoftuplesofmoves is not None:
-                    selected_square_row = listoftuplesofmoves[0][0][1]
-                    selected_square_col = listoftuplesofmoves[0][0][0]
-                    targeted_square_row = listoftuplesofmoves[0][1][1]
-                    targeted_square_col = listoftuplesofmoves[0][1][0]
-
-                    # apply the move
-                    self.autonomous_piece(7-selected_square_row, selected_square_col, 7-targeted_square_row, targeted_square_col, board, game, clone_chess, button, screenplay)
-
-                else:
-                    game.next_player()
-                """
-                Case2: INFERENCE WITH PSEUDO EVALUATION WHITE VALUE FILTER
-                        ** value of white position and material **
-                        Note: black values not taken into consideration
-
-                Uses autonomous_check_sim() to simulate all inferred moves from listoftuplesofmoves to return the one with the higher value of white.
-                
-                # get the move with highest white value position/material
-                # source_r, source_c, target_r, target_c = self.autonomous_check_sim(listoftuplesofmoves)
-
-                # apply the move
-                # self.autonomous_piece(source_r, source_c, target_r, target_c, board, game, clone_chess, button, screenplay)
-                """
 
             # ⒽⓊⓂⒶⓃ 🅗🅤🅜🅐🅝 ⒽⓊⓂⒶⓃ
 
@@ -250,7 +252,7 @@ class Main:
             pygame.display.update()
                         
 
-    def autonomous_piece(self,source_row, source_col, target_row, target_col, board, game, clone_chess, button, surface):
+    def autonomous_piece(self,source_row, source_col, target_row, target_col, board, game, clone_chess, surface):
         """Makes the AI's move inference applied into homemade chessboard environment"""
 
         # presence of piece within selected square
@@ -291,9 +293,6 @@ class Main:
                     game.display_chessboard(surface)
                     game.display_lastmove(surface)
                     game.display_pieces(surface)
-                    
-                    # TO DELETE EVENTUALLY # print the Outcome of the game
-                    # #clone_chess.check_termination(clone_chess.get_board())
                     
                     # # get the outcome of game when not None
                     # if self.outcome():
