@@ -39,8 +39,7 @@ class Button:
         if click and button_rect.collidepoint(mouse_pos) and self.normal:
             
             if not network.connected:
-                print(network.connected)
-                network.input_ip(network.connected) # 35.234.146.233
+                network.input_ip(network.connected)
                 self.click_ai(x, action_name, network)
                 
         

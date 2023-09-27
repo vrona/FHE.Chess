@@ -132,17 +132,17 @@ class Board:
                 if tempboard.squares[row][col].opponent_presence(piece.color):      # if current player's opponent exist on chessboard
                     
                     if piece.type == chess.KING:                                    # when the player piece about to move is King
-
                         p = tempboard.squares[row][col].piece                       # get the type of the opponent piece
-                        tempboard.compute_move(p, row, col, bool=False)             # calculate the opponent piece's moves to get its ok_moves
+                        if p.type == chess.KING:
+                            
+                            tempboard.compute_move(p, row, col, bool=False)             # calculate the opponent piece's moves to get its ok_moves
 
                 
-                        for king_player_mvmt in piece.ok_moves:                     # for each moves in ok_moves, look for target squares of King's player
-                            king_target.append(bitboard[king_player_mvmt.target.row][king_player_mvmt.target.col])
+                            for king_player_mvmt in piece.ok_moves:                     # for each moves in ok_moves, look for target squares of King's player
+                                king_target.append(bitboard[king_player_mvmt.target.row][king_player_mvmt.target.col])
 
-                        for mvmt in p.ok_moves:          # for each moves in ok_moves, look for opponent piece's target squares where a king exist
-                            
-                            if p.type == chess.KING:                                # when opponent piece is a King, get its target squares
+                            for mvmt in p.ok_moves:          # for each moves in ok_moves, look for opponent piece's target squares where a king exist
+
                                 opponent_target.append(bitboard[mvmt.target.row][mvmt.target.col])
 
                                 for i in opponent_target:
