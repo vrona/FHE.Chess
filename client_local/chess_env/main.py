@@ -130,6 +130,7 @@ class Main:
                 if button.new_game:
                     game.reset()
                     button.normal = True
+                    button.ai_mode = False
                     game = self.game
                     board = self.game.board
                     dragger = self.game.dragger

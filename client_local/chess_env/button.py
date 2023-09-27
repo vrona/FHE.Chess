@@ -41,8 +41,7 @@ class Button:
             if not network.connected:
                 network.input_ip(network.connected)
                 self.click_ai(x, action_name, network)
-                
-        
+
             else:
                 # set the AI mode
                 self.name_mode = action_name
