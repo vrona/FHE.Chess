@@ -75,7 +75,7 @@ Then, run:
 NB:
 - ```--server```:
     - "IP_Address" option enables "White AI" and "White Human" modes,
-    - while "local" option, the "White Human" only,
+    - while "local" option, the "White Human" only,<br>
 You can change your mind, if you've chosen ```local```. How?<br>
 When facing the "menu" of both "White AI" and "White Human" buttons, just click "White AI" and answer to the prompt displayed by your Local Terminal.
 - ```--port```: default value is ```3389``` which is the ok firewall on GCI and AWS.
