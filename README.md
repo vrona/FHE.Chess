@@ -30,7 +30,7 @@ FHE.Chess is about an application that let you play Chess against an AI opponent
 <br>
 
 ## How to
-[Project flow](docs/Project_Flow.md) is the **IMPORTANT** document and represents your Ariadne's wire to install, run or rebuilt FHE.Chess project.<br>
+[Project flow](docs/Project_Flow.md) is the :o: **IMPORTANT** :o: document and represents your Ariadne's wire to install, run or rebuilt FHE.Chess project.<br>
 As it contains details, explanations and links to other detailed docs, follow the inner steps it explains.
 <br>
 
