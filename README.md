@@ -71,11 +71,15 @@ Then, run:
 **1st remote terminal**: ```$ python3 server/server_all.py -i (or --inference) "clear" or "simfhe" or "deepfhe"```<br>
 !! Wait until the server is connected !! (waiting time:```"clear"``` and ```"deepfhe"``` < several seconds, ```"simfhe"``` between 2 and 7 mins)<br>
 
-**2nd local terminal**: ```$ python3 client_local/chess_env/main.py --server IP_address --port PORT```<br>
-NB: default ```--port``` is 3389 which is ok on GCI and AWS.
+**2nd local terminal**: ```$ python3 client_local/chess_env/main.py --server "IP_address" or "local" --port PORT```<br>
+NB:
+- ```--server```:
+    - "IP_Address" option enables "White AI" and "White Human" modes,
+    - while "local" option, the "White Human" only,
+You can change your mind, if you've chosen ```local```. How?<br>
+When facing the "menu" of both "White AI" and "White Human" buttons, just click "White AI" and answer to the prompt displayed by your Local Terminal.
+- ```--port```: default value is ```3389``` which is the ok firewall on GCI and AWS.
 <br>
-
-
 
 ## Reset and kill
 - to reset the game: press r,
@@ -88,12 +92,12 @@ NB: default ```--port``` is 3389 which is ok on GCI and AWS.
 
 2 main modes:
 
--   WhiteAI (AI as white vs Human as black)<br>
+-   White AI (AI as white vs Human as black)<br>
     3 modes:
     - clear
     - simfhe
     - deepfhe
--   White H (Human as white vs Human as black)
+-   White Human (Human as white vs Human as black)
 <br>
 <div align="center"><img src="./images/screen_zama_vrona_chess.png" style="width:'50%'"/></div>
 

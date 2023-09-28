@@ -318,7 +318,13 @@ Then, run:
 !! Wait until the server is connected !! (waiting time:```"clear"``` and ```"deepfhe"``` < several seconds, ```"simfhe"``` between 2 and 7 mins)<br>
 
 **2nd local terminal**: ```$ python3 client_local/chess_env/main.py --server IP_address --port PORT```<br>
-NB: default ```--port``` is 3389 which is ok on GCI and AWS.
+NB:
+- ```--server```:
+    - "IP_Address" option enables "White AI" and "White Human" modes,
+    - while "local" option, the "White Human" only,
+You can change your mind, if you've chosen ```local```. How?<br>
+When facing the "menu" of both "White AI" and "White Human" buttons, just click "White AI" and answer to the prompt displayed by your Local Terminal.
+- ```--port```: default value is ```3389``` which is the ok firewall on GCI and AWS.
 <br>
 
 ## Reset and kill
