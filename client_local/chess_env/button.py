@@ -131,8 +131,8 @@ class Button:
 
     def show_result(self, surface, winner, termination):
         if self.restart:
-            self.draw(surface, '#DE3163', "%s" % winner, 1, -340) # winner or draw
-            self.draw(surface, '#DE3163', "%s" % termination, 1, -305) # reason
+            self.draw(surface, '#ededed', "%s" % winner, 98, -240) # winner or draw
+            self.draw(surface, '#ededed', "%s" % termination, 98, -205) # reason
 
     # def button_blackAI(self, surface):
     #     self.button_name = 'BLACK AI'
