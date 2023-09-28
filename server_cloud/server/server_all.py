@@ -75,8 +75,8 @@ def main():
                     if not data:
                         print("failed at data --> disconnected")
                         break
-                    elif not reply:
-                        print("input chessboard before failed at reply\n",data)
+                    # elif not reply:
+                    #     print("input chessboard before failed at reply\n",data)
                         #print("failed at reply --> disconnected")
 
                     else:
