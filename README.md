@@ -7,8 +7,8 @@ FHE.Chess is about an application that let you play Chess against an AI opponent
 <br>
 
 ## Acknowledgement
-**This repo contains large files: training dataset, mlir docs.**<br>
-**Repo is about 4 Go. Real repo is 8 Go, with private and public keys for FHE**
+**This repo contains large files: training dataset.**<br>
+
 -   FHE.Chess project answers to [Zama.ai](https://www.zama.ai)'s bounty and shows how to use Zama's [Concrete-ML](https://docs.zama.ai/concrete-ml/) open-source library,
 -   AI plays as "white" only,
 -   The FHE.Chess app can be run under 3 modes:
