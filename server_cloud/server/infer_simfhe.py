@@ -116,19 +116,31 @@ class Inference_simfhe:
        
         # from raw proposal to legal propose
         for i, (prop, values) in enumerate(dictofproposal.items()):
-        
-            if chess.Move.from_uci(prop) in input_board.legal_moves:
+            
+            try:
+                uci_format = chess.Move.from_uci(prop)
+
+            except chess.InvalidMoveError as e:
+                print(e)
+
+            if uci_format in input_board.legal_moves:
                 #print("Move %s -- %s legal" %(i,prop))
-                legal_proposal_moves.append(values)
-    
-            elif chess.Move.from_uci(prop) in input_board.pseudo_legal_moves:
+                    legal_proposal_moves.append(values)
+                
+            elif uci_format in input_board.pseudo_legal_moves:
                 pseudo_legal_propmoves.append(values)
 
+
         if len(legal_proposal_moves)== 0 and len(pseudo_legal_propmoves)>0:
-           print("pseudo legal moves available")
-           return pseudo_legal_propmoves
+            #print("pseudo legal moves available \n %s" % pseudo_legal_propmoves)
+            return pseudo_legal_propmoves
+
+        elif len(legal_proposal_moves)== 0 and len(pseudo_legal_propmoves)==0:
+            print("Server has no moves to propose.")
+            return
 
         else:
+            #print("legal moves available \n %s" % legal_proposal_moves)
             return legal_proposal_moves
 
 

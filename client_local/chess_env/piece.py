@@ -23,6 +23,10 @@ class Piece:
         """adds to each piece its ok_moves based on its behaviour"""
         self.ok_moves.append(move)
 
+    def pop_ok_move(self, move):
+        """pop to each piece an ok_moves based on exceptional moves"""
+        self.ok_moves.pop(self.ok_moves.index(move))
+
     def check_moves(self, move):
         """for test
         NB: Python_Chess legal_move() generator is different from homemade chessboard add_ok_move().

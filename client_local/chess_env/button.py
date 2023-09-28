@@ -1,72 +1,147 @@
+import sys
 import pygame
+from PIL import ImageFont
 from base import *
 
 class Button:
 	
-    def __init__(self, normal = True, y = sp_height/2 -30):
+    def __init__(self, normal = True, restart = False, y = sp_height/2 -30):
 
         self.normal = normal
         self.y_pos = y
         self.ai_mode = False
-        self.name_mode = ' White H'
+        self.human_mode = False
+        self.name_mode = None
+        self.new_game = False
+        self.click_new = None
+        self.restart = restart
+
 
     # retrieve if AI Mode status
     def get_ai_mode(self):
         return self.ai_mode
     
+    def get_human_mode(self):
+        return self.human_mode
+    
     # click function
-    def ckeck_click(self, x, action_name):
-
+    def click_ai(self, x, action_name, network):
+        """
+        x: int initial pixel within width
+        action_name: string White AI or White Human
+        network: bool
+        """
+        text_width = self.sizeoftext(action_name)
         mouse_pos = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()[0]
-        button_rect = pygame.rect.Rect((x, self.y_pos),(130,30))
+        button_rect = pygame.rect.Rect((x, self.y_pos),(text_width,30))
         
         if click and button_rect.collidepoint(mouse_pos) and self.normal:
-            # set the AI or Human mode
+            
+            if not network.connected:
+                network.input_ip(network.connected)
+                self.click_ai(x, action_name, network)
+
+            else:
+                # set the AI mode
+                self.name_mode = action_name
+                self.normal = False
+                self.restart = True
+
+                if self.name_mode=="White AI ":
+                    self.ai_mode = True
+
+                if self.new_game:
+                    self.new_game = False
+    
+
+    def click_human(self, x, action_name):
+        text_width = self.sizeoftext(action_name)
+        mouse_pos = pygame.mouse.get_pos()
+        click = pygame.mouse.get_pressed()[0]
+        button_rect = pygame.rect.Rect((x, self.y_pos),(text_width,30))
+        
+        if click and button_rect.collidepoint(mouse_pos) and self.normal:
+            # set the Human mode
             self.name_mode = action_name
             self.normal = False
+            self.restart = True
 
-            if self.name_mode=="White AI":
-                self.ai_mode = True
+            if self.name_mode=="White Human":
+                self.human_mode = True
+            
+            if self.new_game:
+                self.new_game = False
 
-        else:
-           return False
+    def click_new_game(self, x, action_name):
+        text_width = self.sizeoftext(action_name)
+        mouse_pos = pygame.mouse.get_pos()
+        click = pygame.mouse.get_pressed()[0]
+        button_rect = pygame.rect.Rect((x, self.y_pos),(text_width,30))
+        
+        if click and button_rect.collidepoint(mouse_pos) and self.restart:
+            # set the new game mode
+            self.click_new = click
+            self.restart= False
+            self.new_game = True
+        
+
+    # get in pixel the size of text
+    def sizeoftext(self, text):
+        """
+        warning:
+        ImageFont calls the same font (from client_local/content/) as PyGame (from site-packages/pygame/)
+        """
+        font = ImageFont.truetype('client_local/content/FreeSans/FreeSansBold.ttf', 30)
+        text_width = font.getlength(text)
+        return text_width
 
     # draw button
-    def draw(self, surface, color, text, x):
-
+    def draw(self, surface, color, text, x, y = 0):
         self.text = text
+        text_width = self.sizeoftext(self.text)
+
         font = pygame.font.Font('freesansbold.ttf', 26)
         button_text = font.render(self.text, True, 'black')
-        button_rect = pygame.rect.Rect((x, self.y_pos),(120,30))
+        button_rect = pygame.rect.Rect((x, self.y_pos + y),(text_width,30))
         pygame.draw.rect(surface, color, button_rect, 0, 5)
         pygame.draw.rect(surface, 'black', button_rect, 2, 3)
-        surface.blit(button_text, (x+3, self.y_pos +3))
+        surface.blit(button_text, (x+3, self.y_pos + y +3))
 
 
-    def button_whiteAI(self, surface):
-        self.button_name = 'White AI'
-        self.ckeck_click(220, self.button_name)
+    def button_whiteAI(self, surface, bool):
+        self.button_name = 'White AI '
+        self.click_ai(220, self.button_name, bool)
         if self.normal:
             self.draw(surface,'white', self.button_name,220)
 
-    
     def button_HH(self, surface):
-        self.button_name = ' White H'
-        self.ckeck_click(445, self.button_name)
+        self.button_name = 'White Human'
+        self.click_human(445, self.button_name)
         if self.normal:
             self.draw(surface,'white', self.button_name,445)
 
+    def button_restart(self, surface):
+        self.button_name = 'New Game'
+        self.click_new_game(332, self.button_name)
+        if self.restart:
+            self.draw(surface,'white', self.button_name,332)
+
+        return True
+
+    def show_result(self, surface, winner, termination):
+        if self.restart:
+            self.draw(surface, '#ededed', "%s" % winner, 98, -240) # winner or draw
+            self.draw(surface, '#ededed', "%s" % termination, 98, -205) # reason
 
     # def button_blackAI(self, surface):
     #     self.button_name = 'BLACK AI'
-    #     self.ckeck_click(332.5, self.button_name)
+    #     self.check_click(332.5, self.button_name)
     #     if self.normal:
     #         self.draw(surface, 'white', self.button_name, 332.5)
 
-
     # def button_bothAI(self, surface):
     #     self.button_name = 'AI vs AI'
-    #     self.ckeck_click(566.25, self.button_name)
+    #     self.check_click(566.25, self.button_name)
     #     if self.normal:
     #         self.draw(surface,'white', self.button_name, 566.25)

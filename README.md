@@ -17,20 +17,14 @@ FHE.Chess is about an application that let you play Chess against an AI opponent
     - deepfhe: encrypted context thanks to FHE. Very slow inferences (because model complexity + hardware)
 -   AI mainly starts its moves the same way, after several white & black moves its moves are relevant,
 -   Several minor bugs remain within the [Chess_app](docs/Chess_app/Chess_app.md) itself, such as:
-    -   false positive authorized en-passant moves,
-    -   false positive authorized move of kings even if the targeted (aka destination) square conducts to check,
-    Because of the dual chess developments: one from scratch, one from python-chess, the latter crashes the Chess app when a move is not "legal".
--   Do not download the followed large files directories:
-    -   ```server_cloud/mlir_source.txt```
-    -   ```server_cloud/mlir_target.txt```
-    -   ```server_cloud/client/source```
-    -   ```server_cloud/client/target```
-    -   ```server_cloud/server/model```
+    - potential false positive authorized en-passant moves,
+    - because of the dual chess developments: one from scratch, one from python-chess, the latter call potential "illegal" moves (this does not lead to crash the app.).
+- To download [wb_2000_300.csv](server_cloud/data/wb_2000_300.csv) training data, **[```git lfs```](https://git-lfs.com) is required**.
 
 <br>
 
 ## How to
-[Project flow](docs/Project_Flow.md) is the **IMPORTANT** document and represents your Ariadne's wire to install, run or rebuilt FHE.Chess project.<br>
+[Project flow](docs/Project_Flow.md) is the :o: **IMPORTANT** :o: document and represents your Ariadne's wire to install, run or rebuilt FHE.Chess project.<br>
 As it contains details, explanations and links to other detailed docs, follow the inner steps it explains.
 <br>
 
@@ -71,11 +65,15 @@ Then, run:
 **1st remote terminal**: ```$ python3 server/server_all.py -i (or --inference) "clear" or "simfhe" or "deepfhe"```<br>
 !! Wait until the server is connected !! (waiting time:```"clear"``` and ```"deepfhe"``` < several seconds, ```"simfhe"``` between 2 and 7 mins)<br>
 
-**2nd local terminal**: ```$ python3 client_local/chess_env/main.py --server IP_address --port PORT```<br>
-NB: default ```--port``` is 3389 which is ok on GCI and AWS.
+**2nd local terminal**: ```$ python3 client_local/chess_env/main.py --server "IP_address" or "local" --port PORT```<br>
+NB:
+- ```--server```:
+    - "IP_Address" option enables "White AI" and "White Human" modes,
+    - while "local" option, the "White Human" only,<br>
+You can change your mind, if you've chosen ```local```. How?<br>
+When facing both "White AI" and "White Human" buttons, just click "White AI" and answer to the prompt displayed by your Local Terminal.
+- ```--port```: default value is ```3389``` which is the ok firewall on GCI and AWS.
 <br>
-
-
 
 ## Reset and kill
 - to reset the game: press r,
@@ -88,12 +86,12 @@ NB: default ```--port``` is 3389 which is ok on GCI and AWS.
 
 2 main modes:
 
--   WhiteAI (AI as white vs Human as black)<br>
+-   White AI (AI as white vs Human as black)<br>
     3 modes:
     - clear
     - simfhe
     - deepfhe
--   White H (Human as white vs Human as black)
+-   White Human (Human as white vs Human as black)
 <br>
 <div align="center"><img src="./images/screen_zama_vrona_chess.png" style="width:'50%'"/></div>
 

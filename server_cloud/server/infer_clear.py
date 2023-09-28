@@ -1,6 +1,7 @@
 import sys
 import torch
 import chess
+import numpy as np
 
 sys.path.append("model_src/")
 from helper_chessset import Board_State, Move_State
@@ -42,8 +43,10 @@ class Inference_clear:
         """
         dictofproposal = {}
         legal_proposal_moves = []
+        pseudo_legal_propmoves = []
         source_model = self.source_model
         target_model = self.target_model
+        white_pieces = ["P","N","B","R","Q","K"]
 
         # defining the processor
         device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
@@ -74,12 +77,28 @@ class Inference_clear:
         # 2 topf source square
         _, source_square = torch.topk(source_output, topf)
 
-        for s in range(topf):
+        
+        # checking source_square prediction is white pieces, if not deletation
+        indices_to_remove = []
+
+        for d in range(topf):
+
+            # thanks to chess lib, provide the #number of the square and return type :P, ...
+            if str(input_board.piece_at(source_square[:,d][0])) not in white_pieces:
+                indices_to_remove.append(d)
+        
+        source_square = source_square.numpy()
+
+        square_toremove = source_square[0][indices_to_remove]
+        source_square = source_square[~np.isin(source_square,square_toremove)]
+
+        # warning source_square.shape from dim=2 to dim=1
+        for s in range(source_square.shape[0]):
 
         # Prediction of target square of each topf source square
 
             # convert source square number into 64 array
-            source_square_bit = self.move_to_tensor.source_flat_bit(source_square.data[0][s].item())
+            source_square_bit = self.move_to_tensor.source_flat_bit(source_square.data[s]) # tensor case > source_square.data[0][s].item()
 
             # convert to tensor
             chessboard, source_square_bit = torch.tensor(board).unsqueeze(0).to(torch.float).to(device), torch.tensor(source_square_bit).unsqueeze(0).to(torch.float).to(device)
@@ -92,21 +111,41 @@ class Inference_clear:
             # proposal moves without legal move filter
             for t in range(topt):
                 #proposal_moves.append(self.square_to_alpha(source_square.data[0][s].item(), target_square.data[0][t].item()))
-                keys_prop,  values_digit = self.square_to_alpha(source_square.data[0][s].item(), target_square.data[0][t].item())
+                keys_prop,  values_digit = self.square_to_alpha(source_square.data[s], target_square.data[0][t].item()) # tensor case > source_square.data[0][s].item()
 
                 #feeding the dict of proposal with uci format as keys and digit equivalent as values
                 dictofproposal[keys_prop] = values_digit
         
         
         # from raw proposal to legal propose
-        for prop, values in dictofproposal.items():
+        for i, (prop, values) in enumerate(dictofproposal.items()):
+            
+            try:
+                uci_format = chess.Move.from_uci(prop)
 
-            if chess.Move.from_uci(prop) in input_board.legal_moves:
-                legal_proposal_moves.append(values)
-        
-        #print("Legal_Proposal",legal_proposal_moves,"\n")
-        return legal_proposal_moves
+            except chess.InvalidMoveError as e:
+                print(e)
 
+            if uci_format in input_board.legal_moves:
+                #print("Move %s -- %s legal" %(i,prop))
+                    legal_proposal_moves.append(values)
+                
+            elif uci_format in input_board.pseudo_legal_moves:
+                pseudo_legal_propmoves.append(values)
+
+
+        if len(legal_proposal_moves)== 0 and len(pseudo_legal_propmoves)>0:
+            #print("pseudo legal moves available \n %s" % pseudo_legal_propmoves)
+            return pseudo_legal_propmoves
+
+        elif len(legal_proposal_moves)== 0 and len(pseudo_legal_propmoves)==0:
+            print("Server has no moves to propose.")
+            return
+
+        else:
+            #print("legal moves available \n %s" % legal_proposal_moves)
+            return legal_proposal_moves
+          
 
     def square_to_alpha(self, src_sq, trgt_sq):
         """
@@ -127,4 +166,3 @@ class Inference_clear:
         move_proposal = "".join((str(alpha_col_s),str(row_s+1),str(alpha_col_t),str(row_t+1)))
 
         return  move_proposal, ((col_s,row_s),(col_t,row_t))
-
