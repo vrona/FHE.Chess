@@ -17,10 +17,10 @@ FHE.Chess is about an application that let you play Chess against an AI opponent
     - deepfhe: encrypted context thanks to FHE. Very slow inferences (because model complexity + hardware)
 -   AI mainly starts its moves the same way, after several white & black moves its moves are relevant,
 -   Several minor bugs remain within the [Chess_app](docs/Chess_app/Chess_app.md) itself, such as:
-    -   false positive authorized en-passant moves,
-    -   false positive authorized move of kings even if the targeted (aka destination) square conducts to check,
-    Because of the dual chess developments: one from scratch, one from python-chess, the latter crashes the Chess app when a move is not "legal".
--   Do not download the followed large files directories:
+    - potential false positive authorized en-passant moves,
+    - because of the dual chess developments: one from scratch, one from python-chess, the latter call potential "illegal" moves (this does not lead to crash the app.).
+- To download [wb_2000_300.csv](server_cloud/data/wb_2000_300.csv) training data, **[```git lfs```](https://git-lfs.com) is required**.
+- :warning: Do not download the followed large files directories (this is for example only):
     -   ```server_cloud/mlir_source.txt```
     -   ```server_cloud/mlir_target.txt```
     -   ```server_cloud/client/source```
