@@ -20,12 +20,6 @@ FHE.Chess is about an application that let you play Chess against an AI opponent
     - potential false positive authorized en-passant moves,
     - because of the dual chess developments: one from scratch, one from python-chess, the latter call potential "illegal" moves (this does not lead to crash the app.).
 - To download [wb_2000_300.csv](server_cloud/data/wb_2000_300.csv) training data, **[```git lfs```](https://git-lfs.com) is required**.
-- :warning: Do not download the followed large files directories (this is for example only):
-    -   ```server_cloud/mlir_source.txt```
-    -   ```server_cloud/mlir_target.txt```
-    -   ```server_cloud/client/source```
-    -   ```server_cloud/client/target```
-    -   ```server_cloud/server/model```
 
 <br>
 
