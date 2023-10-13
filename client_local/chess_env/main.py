@@ -156,7 +156,7 @@ class Main:
                 if event.type == pygame.MOUSEBUTTONDOWN:
 
                     dragger.update_mouse(event.pos)
-                    board.piece_legal(clone_chess.get_board())
+
                     selected_square_row = dragger.mouseY // sqsize
                     selected_square_col = dragger.mouseX // sqsize
 
@@ -165,7 +165,8 @@ class Main:
                         piece = board.squares[selected_square_row][selected_square_col].piece
 
                         if piece.color == game.player_turn:
-                            
+                            board.piece_legal(clone_chess.get_board(), piece)
+                            #print("Main:",len(piece.temporary_okmove))
                             board.compute_move(piece, selected_square_row, selected_square_col, bool=True)
                             dragger.save_source(event.pos)
                             dragger.drag_piece(piece)
@@ -205,6 +206,7 @@ class Main:
                         #if board.valid_move(dragger.piece, move):
                         if board.new_valid_move(dragger.piece, move):
                             board.move(dragger.piece, move)
+
                             
                             # pawn promotion to queen
                             if dragger.piece.type == chess.PAWN and game.board.squares[released_row][released_col].piece.type == chess.QUEEN:
@@ -262,7 +264,7 @@ class Main:
 
             if piece.color == self.game.player_turn:
 
-                board.compute_move(piece, source_row, source_col, bool=True)
+                board.compute_move( piece, source_row, source_col, bool=True)
 
                 # get the squares for move
                 source = Square(source_row, source_col)

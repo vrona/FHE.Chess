@@ -18,6 +18,7 @@ class Board:
         self.clone_chess = Clone_Chess()
 
     def move(self, piece, move, simulation = False):
+
         source = move.source
         target = move.target
 
@@ -48,11 +49,21 @@ class Board:
             if self.castling(source, target) and not simulation:
                 diff = target.col - source.col
 
+                
                 if (diff < 0):
                     rook = piece.left_rook # castling queenside
-                    self.move(rook, rook.temporary_okmove[0])
+                    print(rook, len(rook.temporary_okmove))
+
+                    for mv in rook.temporary_okmove:
+                        print(Square.get_algeb_not(mv.source.col),8-mv.source.row,"-->", Square.get_algeb_not(mv.target.col), 8-mv.target.row)
+                    self.move(rook, rook.temporary_okmove[-1])
                 else :
+                    
                     rook = piece.right_rook # castling kingside
+                    print(rook, len(rook.temporary_okmove))
+
+                    for mv in rook.temporary_okmove:
+                        print(Square.get_algeb_not(mv.source.col),8-mv.source.row,"-->", Square.get_algeb_not(mv.target.col), 8-mv.target.row)
                     self.move(rook, rook.temporary_okmove[-1])
                     
         
@@ -163,7 +174,7 @@ class Board:
         return False
 
 
-    def piece_legal(self, current_board):
+    def piece_legal(self, current_board, piece):
         """
         legal: several proposal > for i in proposal, get source + target then push move(proposal) add_ok_moves
         """
@@ -182,11 +193,14 @@ class Board:
                 target = Square(8- int(target_alpha[1]), Square.convert_algeb_not(target_alpha[0]))
         
                 move = Move(source, target)
-
-                if str(current_board.piece_at(source_sq)) == self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece_type().pname:
-                    self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece.add_tempokmove(move)
-                    if self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece_type().pname == "R":
-                        print(Square.get_algeb_not(move.source.col),8-move.source.row,"-->", Square.get_algeb_not(move.target.col), 8-move.target.row)
+                
+                if self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece_type() is not None:
+                    if piece == self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece_type():
+                    #if str(current_board.piece_at(source_sq)) == self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece_type().pname:
+                        self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece.add_tempokmove(move)
+                        #if self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece_type().pname == "b":
+                        # print("Total temp_move sent:",len(self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece.temporary_okmove))
+                        # print(Square.get_algeb_not(move.source.col),8-move.source.row,"-->", Square.get_algeb_not(move.target.col), 8-move.target.row)
 
 
     def sim_kingcheck_okmoves(self, piece, move, bool):
@@ -210,6 +224,8 @@ class Board:
         """
         computes possible moves() of specific piece at a given coordinates
         """
+
+        #self.piece_legal(current_board,piece)
 
         def pawn_moves():
             
@@ -425,10 +441,10 @@ class Board:
                                 
                                 if bool:
                                     if not self.king_check_sim(left_rook, rook_move) and not self.king_check_sim(piece, king_move): # if not in check go ahead
-                                        left_rook.add_ok_move(rook_move)
+                                        left_rook.add_tempokmove(rook_move)
                                         piece.add_ok_move(king_move)
                                 else:
-                                        left_rook.add_ok_move(rook_move)
+                                        left_rook.add_tempokmove(rook_move)
                                         piece.add_ok_move(king_move) # if not in check go ahead
 
 
@@ -462,10 +478,10 @@ class Board:
                                 
                                 if bool:
                                     if not self.king_check_sim(right_rook, rook_move) and not self.king_check_sim(piece, king_move): # if not in check go ahead
-                                        right_rook.add_ok_move(rook_move)
+                                        right_rook.add_tempokmove(rook_move)
                                         piece.add_ok_move(king_move)
                                 else:
-                                        right_rook.add_ok_move(rook_move)
+                                        right_rook.add_tempokmove(rook_move)
                                         piece.add_ok_move(king_move) # if not in check go ahead
 
 
