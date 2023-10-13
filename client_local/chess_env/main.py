@@ -156,7 +156,7 @@ class Main:
                 if event.type == pygame.MOUSEBUTTONDOWN:
 
                     dragger.update_mouse(event.pos)
-
+                    board.piece_legal(clone_chess.get_board())
                     selected_square_row = dragger.mouseY // sqsize
                     selected_square_col = dragger.mouseX // sqsize
 
