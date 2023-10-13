@@ -154,6 +154,30 @@ class Board:
         return False
 
 
+    def piece_legal(self, current_board):
+        """
+        legal: several proposal > for i in proposal, get source + target then push move(proposal) add_ok_moves
+        """
+        list_legal = list(current_board.legal_moves)
+        coordinate_legal = {tuple(alphasq):[] for alphasq in alphanum_square.keys()}
+
+        for i, lv in enumerate(list_legal):
+            coordinate_legal[tuple(str(list_legal[i])[:2])].append(tuple(str(lv)[2:]))
+        print(coordinate_legal)
+        for source_alpha, target_list_tuple in coordinate_legal.items():
+
+            source = Square(8 -int(source_alpha[1]), Square.convert_algeb_not(source_alpha[0]))
+            source_sq = bitboard[8 - int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])]
+
+            for target_alpha in target_list_tuple: #('g', '1', 'f', '3')
+                target = Square(8- int(target_alpha[1]), Square.convert_algeb_not(target_alpha[0]))
+        
+                move = Move(source, target)
+
+                if str(current_board.piece_at(source_sq)) == self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece_type().pname:
+                    self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece.add_tempokmove(move)
+
+
     def sim_kingcheck_okmoves(self, piece, move, bool):
         """adds move into ok_move list if my King is not in check"""
         if bool: # simulation is on
