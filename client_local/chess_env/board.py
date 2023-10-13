@@ -374,39 +374,39 @@ class Board:
                     possible_move_col = possible_move_col + col_incr
 
         def king_moves():
-            juxtapose = [
-                (row-1, col+0), #N
-                (row-1, col+1), #NE
-                (row+0, col+1), #E
-                (row+1, col+1), #SE
-                (row+1, col+0), #S
-                (row+1, col-1), #SW
-                (row+0, col-1), #W
-                (row-1, col-1)] #NW
+            # juxtapose = [
+            #     (row-1, col+0), #N
+            #     (row-1, col+1), #NE
+            #     (row+0, col+1), #E
+            #     (row+1, col+1), #SE
+            #     (row+1, col+0), #S
+            #     (row+1, col-1), #SW
+            #     (row+0, col-1), #W
+            #     (row-1, col-1)] #NW
             
-            for ok_move in juxtapose:
-                ok_move_row, ok_move_col = ok_move # y, x
+            # for ok_move in juxtapose:
+            #     ok_move_row, ok_move_col = ok_move # y, x
                 
-                # macro location
-                if Square.in_board(ok_move_row, ok_move_col):
-                    if self.squares[ok_move_row][ok_move_col].empty_occupied(piece.color):
-                        # micro location
-                        source = Square(row, col)
-                        target = Square(ok_move_row, ok_move_col)
+            #     # macro location
+            #     if Square.in_board(ok_move_row, ok_move_col):
+            #         if self.squares[ok_move_row][ok_move_col].empty_occupied(piece.color):
+            #             # micro location
+            #             source = Square(row, col)
+            #             target = Square(ok_move_row, ok_move_col)
                         
-                        # move at micro
-                        move = Move(source, target)
+            #             # move at micro
+            #             move = Move(source, target)
 
-                        if bool:
+            #             if bool:
 
-                            if not self.king_check_sim(piece, move): # if not in check go ahead
-                                piece.add_ok_move(move)
-                            if self.check_sim_exception(piece, move):
-                                piece.pop_ok_move(move)
-                            #else: break
+            #                 if not self.king_check_sim(piece, move): # if not in check go ahead
+            #                     piece.add_ok_move(move)
+            #                 if self.check_sim_exception(piece, move):
+            #                     piece.pop_ok_move(move)
+            #                 #else: break
 
-                        else:
-                            piece.add_ok_move(move)
+            #             else:
+            #                 piece.add_ok_move(move)
 
             # castling
             if not piece.moved:
@@ -439,13 +439,14 @@ class Board:
                                 # move at micro
                                 king_move = Move(source, target)
                                 
-                                if bool:
-                                    if not self.king_check_sim(left_rook, rook_move) and not self.king_check_sim(piece, king_move): # if not in check go ahead
-                                        left_rook.add_tempokmove(rook_move)
-                                        piece.add_ok_move(king_move)
-                                else:
-                                        left_rook.add_tempokmove(rook_move)
-                                        piece.add_ok_move(king_move) # if not in check go ahead
+                                left_rook.add_tempokmove(rook_move)
+                                # if bool:
+                                #     if not self.king_check_sim(left_rook, rook_move) and not self.king_check_sim(piece, king_move): # if not in check go ahead
+                                #         left_rook.add_tempokmove(rook_move)
+                                #         piece.add_ok_move(king_move)
+                                # else:
+                                #         left_rook.add_tempokmove(rook_move)
+                                #         piece.add_ok_move(king_move) # if not in check go ahead
 
 
                 # kingside
@@ -476,48 +477,49 @@ class Board:
                                     # move at micro
                                 king_move = Move(source, target)
                                 
-                                if bool:
-                                    if not self.king_check_sim(right_rook, rook_move) and not self.king_check_sim(piece, king_move): # if not in check go ahead
-                                        right_rook.add_tempokmove(rook_move)
-                                        piece.add_ok_move(king_move)
-                                else:
-                                        right_rook.add_tempokmove(rook_move)
-                                        piece.add_ok_move(king_move) # if not in check go ahead
+                                right_rook.add_tempokmove(rook_move)
+                                # if bool:
+                                #     if not self.king_check_sim(right_rook, rook_move) and not self.king_check_sim(piece, king_move): # if not in check go ahead
+                                #         right_rook.add_tempokmove(rook_move)
+                                #         piece.add_ok_move(king_move)
+                                # else:
+                                #         right_rook.add_tempokmove(rook_move)
+                                #         piece.add_ok_move(king_move) # if not in check go ahead
 
 
-        if isinstance(piece, Pawn): pawn_moves()
+        # if isinstance(piece, Pawn): pawn_moves()
 
-        elif isinstance(piece, Knight): knight_moves()
+        # elif isinstance(piece, Knight): knight_moves()
 
-        elif isinstance(piece, Bishop):
-            straightline_move([
-                (-1,1), #to NE
-                (-1,-1),#to NW
-                (1,-1), #to SW
-                (1,1)   #to SE
-            ])
+        # elif isinstance(piece, Bishop):
+        #     straightline_move([
+        #         (-1,1), #to NE
+        #         (-1,-1),#to NW
+        #         (1,-1), #to SW
+        #         (1,1)   #to SE
+        #     ])
 
-        elif isinstance(piece, Rook):
-            straightline_move([
-                (-1,0),#N
-                (0,1), #E
-                (0,-1),#W
-                (1,0)  #S
-            ])
+        # elif isinstance(piece, Rook):
+        #     straightline_move([
+        #         (-1,0),#N
+        #         (0,1), #E
+        #         (0,-1),#W
+        #         (1,0)  #S
+        #     ])
 
-        elif isinstance(piece, Queen):
-            straightline_move([
-                (-1,0),#N
-                (0,1), #E
-                (0,-1),#W
-                (1,0), #S
-                (-1,1), #to NE
-                (-1,-1),#to NW
-                (1,-1), #to SW
-                (1,1)   #to SE
-            ])
+        # elif isinstance(piece, Queen):
+        #     straightline_move([
+        #         (-1,0),#N
+        #         (0,1), #E
+        #         (0,-1),#W
+        #         (1,0), #S
+        #         (-1,1), #to NE
+        #         (-1,-1),#to NW
+        #         (1,-1), #to SW
+        #         (1,1)   #to SE
+        #     ])
         
-        elif isinstance(piece, King): king_moves()
+        if isinstance(piece, King): king_moves()
 
 
     def _create(self):
