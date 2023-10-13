@@ -1,11 +1,9 @@
 import os
 import chess
-from clone_chess import Clone_Chess
 
 class Piece:
 
     def __init__(self, name, color, img_uri=None, rectangle=None):
-        self.clone_chess = Clone_Chess()
         self.name = name
         self.color = color
         self.ok_moves = []
@@ -34,6 +32,9 @@ class Piece:
 
     def clear_moves(self):
         self.ok_moves = []
+
+    def clear_tempmoves(self):
+        self.temporary_okmove = []
 
 
 class Pawn(Piece):

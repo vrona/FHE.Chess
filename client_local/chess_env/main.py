@@ -202,8 +202,8 @@ class Main:
                         move = Move(source, target)
 
                         # check move ok ?
-                        if board.valid_move(dragger.piece, move):
-
+                        #if board.valid_move(dragger.piece, move):
+                        if board.new_valid_move(dragger.piece, move):
                             board.move(dragger.piece, move)
                             
                             # pawn promotion to queen

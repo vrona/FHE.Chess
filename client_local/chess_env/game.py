@@ -57,7 +57,7 @@ class Game:
             white_dots = pygame.image.load("client_local/content/imgdot/white_dots.png")
 
             for move in piece.temporary_okmove: #ok_moves: #
-
+                #print(move.source.col, move.source.row,"-->", move.target.col, move.target.row)
                 img_center = move.target.col * sqsize + sqsize // 2, move.target.row * sqsize + sqsize // 2
 
                 if (move.target.row + move.target.col) % 2 == 0:

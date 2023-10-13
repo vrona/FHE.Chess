@@ -47,9 +47,14 @@ class Board:
         if isinstance(piece, King):
             if self.castling(source, target) and not simulation:
                 diff = target.col - source.col
-                rook = piece.left_rook if (diff < 0) else piece.right_rook # determine if castling queenside or kingside
 
-                self.move(rook, rook.ok_moves[-1])
+                if (diff < 0):
+                    rook = piece.left_rook # castling queenside
+                    self.move(rook, rook.temporary_okmove[0])
+                else :
+                    rook = piece.right_rook # castling kingside
+                    self.move(rook, rook.temporary_okmove[-1])
+                    
         
         #if isinstance(piece, King) and isinstance(piece.color, color) #DISTANCE BETWEEN KINGS
         
@@ -60,7 +65,8 @@ class Board:
         self.last_move = move
 
         # clear stock of ok moves
-        piece.clear_moves()
+        #piece.clear_moves()
+        piece.clear_tempmoves()
 
     
     def check_pawn_promotion(self, piece, target):
@@ -86,6 +92,9 @@ class Board:
     # check if move is valid (not based on chess lib)
     def valid_move(self, piece, move):
         return move in piece.ok_moves  
+    
+    def new_valid_move(self, piece, move):
+        return move in piece.temporary_okmove  
 
  
     # here it simulates if King is check by piece (except opponent King), thus it blocks any movement that lead king to be checked.
@@ -163,7 +172,7 @@ class Board:
 
         for i, lv in enumerate(list_legal):
             coordinate_legal[tuple(str(list_legal[i])[:2])].append(tuple(str(lv)[2:]))
-        print(coordinate_legal)
+        #print(coordinate_legal)
         for source_alpha, target_list_tuple in coordinate_legal.items():
 
             source = Square(8 -int(source_alpha[1]), Square.convert_algeb_not(source_alpha[0]))
@@ -176,6 +185,8 @@ class Board:
 
                 if str(current_board.piece_at(source_sq)) == self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece_type().pname:
                     self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece.add_tempokmove(move)
+                    if self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece_type().pname == "R":
+                        print(Square.get_algeb_not(move.source.col),8-move.source.row,"-->", Square.get_algeb_not(move.target.col), 8-move.target.row)
 
 
     def sim_kingcheck_okmoves(self, piece, move, bool):
@@ -208,7 +219,7 @@ class Board:
             # vertical movement
             start = row + piece.dir
             end = row + (piece.dir * (1 + steps))
-            for possible_move_row in range(start, end, piece.dir):
+            """for possible_move_row in range(start, end, piece.dir):
                 if Square.in_board(possible_move_row):
                     if self.squares[possible_move_row][col].empty():
 
@@ -216,10 +227,11 @@ class Board:
                         source = Square(row, col) 
                         target = Square(possible_move_row, col)
                         
-                        self.move_kingchecksim(source, target, piece, bool)
+                        Move(source, target)
+                        #self.move_kingchecksim(source, target, piece, bool)
                             
                     else: break # move done
-                else: break # outside chessboard
+                else: break # outside chessboard"""
 
             # attack movement
             possible_move_row = row + piece.dir
@@ -233,7 +245,8 @@ class Board:
                         piece_target = self.squares[possible_move_row][move_col].piece # get piece at target aka king check
                         target = Square(possible_move_row, move_col, piece_target)
                         
-                        self.move_kingchecksim(source, target, piece, bool)
+                        Move(source, target)
+                        #self.move_kingchecksim(source, target, piece, bool)
 
             # en_passant
             attacker_ini_row = 3 if piece.color == 'white' else 4
@@ -251,7 +264,8 @@ class Board:
                             source = Square(row, col)
                             target = Square(attacker_desti_row, col-1, p)
 
-                            self.move_kingchecksim(source, target, piece, bool)
+                            Move(source, target)
+                            #self.move_kingchecksim(source, target, piece, bool)
 
             # right juxtapose square
             if Square.in_board(col+1) and row == attacker_ini_row:
@@ -265,7 +279,8 @@ class Board:
                             source = Square(row, col)
                             target = Square(attacker_desti_row, col+1, p)
 
-                            self.move_kingchecksim(source, target, piece, bool)
+                            Move(source, target)
+                            #self.move_kingchecksim(source, target, piece, bool)
 
 
         def knight_moves():
