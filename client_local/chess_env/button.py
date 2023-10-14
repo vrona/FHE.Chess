@@ -134,6 +134,10 @@ class Button:
             self.draw(surface, '#ededed', "%s" % winner, 98, -240) # winner or draw
             self.draw(surface, '#ededed', "%s" % termination, 98, -205) # reason
 
+    def show_AI_givingup(self, surface, text_AI_go):
+        if self.restart:
+            self.draw(surface, '#ffa700', "%s" % text_AI_go, 240, -240) # winner or draw
+
     # def button_blackAI(self, surface):
     #     self.button_name = 'BLACK AI'
     #     self.check_click(332.5, self.button_name)

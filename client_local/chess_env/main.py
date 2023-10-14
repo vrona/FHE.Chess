@@ -26,10 +26,6 @@ class Main:
         self.clone_chess = Clone_Chess()
         self.game_count = 0        
 
-    def pawn_promotion(self, source_row, source_col, target_row, target_col):
-            """ this is specific to python-chess library: let pawn being promoted"""
-            self.clone_chess.move_clone_promotion(bitboard[source_row, source_col], bitboard[target_row, target_col], chess.QUEEN)
-
     def outcome(self):
         screenplay = self.screenplay
         button = self.button
@@ -50,6 +46,15 @@ class Main:
                     #print("Draw, no winner nor looser.")
                 
                 return True
+
+    def AI_game_over(self):
+        screenplay = self.screenplay
+        button = self.button
+
+        while button.restart:
+            button.button_restart(screenplay)                                  
+            
+            button.show_result(screenplay, "AI made a wrong move.")
 
     def ai_server(self):
         screenplay = self.screenplay
@@ -166,7 +171,7 @@ class Main:
 
                         if piece.color == game.player_turn:
                             board.piece_legal(clone_chess.get_board(), piece)
-                            #print("Main:",len(piece.temporary_okmove))
+
                             board.compute_move(piece, selected_square_row, selected_square_col, bool=True)
                             dragger.save_source(event.pos)
                             dragger.drag_piece(piece)
@@ -210,17 +215,17 @@ class Main:
                             
                             # pawn promotion to queen
                             if dragger.piece.type == chess.PAWN and game.board.squares[released_row][released_col].piece.type == chess.QUEEN:
-                                
                                 # BRIDGE HERE cloning move from app to python-chess
-                                self.pawn_promotion(dragger.source_row, dragger.source_col, released_row, released_col)
+                                clone_chess.move_clone_board(move, to_promote=True)
+                                print(clone_chess.get_board())
 
                             else:
                                 # BRIDGE HERE cloning move from app to python-chess
                                 clone_chess.move_clone_board(move)
-                                print("\nHUMAN - %s %s col:%s row:%s to col:%s row:%s" % (piece.color,piece.name,dragger.source_col, 7-dragger.source_row,released_col, 7-released_row))
-                                print("\n")
-                                print(clone_chess.get_board())
-                                print("---------------")
+                            print("\n%s %s %s%s to %s%s" % (piece.color,piece.name,Square.algebraic_notation_cols[dragger.source_col], 7-dragger.source_row,Square.algebraic_notation_cols[released_col], 7-released_row))
+                            print("\n")
+                            # print(clone_chess.get_board())
+                            print("---------------")
                             
                             board.set_true_en_passant(dragger.piece)
                             
@@ -263,7 +268,7 @@ class Main:
             piece = self.game.board.squares[source_row][source_col].piece
 
             if piece.color == self.game.player_turn:
-
+                board.piece_legal(clone_chess.get_board(), piece)
                 board.compute_move( piece, source_row, source_col, bool=True)
 
                 # get the squares for move
@@ -273,7 +278,7 @@ class Main:
                 move = Move(source, target)
 
                 #  check move ok ?
-                if game.board.valid_move(piece, move):
+                if game.board.new_valid_move(piece, move):
 
                     board.move(piece, move)
 
@@ -288,7 +293,7 @@ class Main:
 
                     board.set_true_en_passant(piece)
 
-                    print("\nAUTONOMOUS - %s %s col:%s row:%s to col:%s row:%s" % (piece.color,piece.name,source_col, 7-source_row,target_col, 7-target_row))
+                    print("\n%s %s %s%s to %s%s" % (piece.color,piece.name,Square.algebraic_notation_cols[source_col], 7-source_row,Square.algebraic_notation_cols[target_col], 7-target_row))
                     
                     # uncomment to get FEN output
                     #print("\nAUTONOMOUS FEN: ",clone_chess.get_fen())
@@ -313,12 +318,26 @@ class Main:
                     game.next_player()
                 
                 else:
-                    game.next_player()
-                    print("from %s, %s to %s, %s is wrong" % (source_col, source_row, target_col, target_row))
+                    print("AI from %s, %s to %s, %s is wrong" % (source_col, 7-source_row, target_col, 7-target_row))
+                    self.AI_game_over()
+                    if button.new_game:
+                        game.reset()
+                        button.normal = True
+                        button.ai_mode = False
+                        game = self.game
+                        board = self.game.board
+                        dragger = self.game.dragger
+                        clone_chess.reset_board()
+                        print("\n^^Game %s has been reseted^^\n"%self.game_count)
+                        self.game_count += 1
+                        print("\n--Game %s has started--\n"%self.game_count)
+                    #game.next_player()
+                    
                     #game.reset()
 
         else:
-            game.next_player()
+            self.AI_game_over()
+            #game.next_player()
             print("No piece")
 
 

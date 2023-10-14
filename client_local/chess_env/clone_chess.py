@@ -56,18 +56,18 @@ class Clone_Chess:
     # ⒶⒸⓉⒾⓄⓃⓈ 🅐🅒🅣🅘🅞🅝🅢 ⒶⒸⓉⒾⓄⓃⓈ
     
     
-    def move_clone_board(self, move):
+    def move_clone_board(self, move, to_promote=False):
         """ Makes a push of move from source to target square"""
         uci_format = self.convert_move_2_string(move)
-        try:
-            self.board.push_san(uci_format)
-        except chess.IllegalMoveError as e:
-            print(e)
-            
+        
+        if to_promote:
+           """ Push a pawn promotion of move from source to target square """
+           uci_format = uci_format+"q"
 
-    def move_clone_promotion(self, sq_s, sq_t, promotion):
-        """ Push a pawn promotion of move from source to target square """
-        chess.Move(sq_s, sq_t, promotion)
+        #try:
+        self.board.push_san(uci_format)
+        #except: # chess.IllegalMoveError as e:
+        #    print(e)
 
     def reset_board(self):
         """ reset current board"""
@@ -227,7 +227,6 @@ class Clone_Chess:
         source_row = str(8-move.source.row)
         target_col = Square.get_algeb_not(move.target.col)
         target_row = str(8-move.target.row)
-
         str_move = "".join((source_col,source_row,target_col,target_row))
 
         return str_move
@@ -235,7 +234,7 @@ class Clone_Chess:
 
     # ⓉⒺⓈⓉⓈ 🅣🅔🅢🅣🅢 ⓉⒺⓈⓉⓈ
 
-    def convert_move_2_string_bis(self, source_col, source_row, target_col, target_row):
+    def convert_move_2_string_bis(self, source_col, source_row, target_col, target_row, to_promote=False):
         """
         convert homemade (source[col][row] to target[col][row]) to string for uci format (used by Python-Chess library)
         """
@@ -246,10 +245,13 @@ class Clone_Chess:
 
         # str_source = "".join((source_col,source_row))
         # str_target = "".join((target_col,target_row))
-
-        str_move = "".join((src_col,src_row,trgt_col,trgt_row))
-        print(str_move)
-        return str_move #str_source, str_target
+        if to_promote:
+            str_move = "".join((src_col,src_row,trgt_col,trgt_row,"q"))
+            print(str_move)
+        else:
+            str_move = "".join((src_col,src_row,trgt_col,trgt_row))
+            print(str_move)
+        #return str_move #str_source, str_target
 
 
     def convert_string_2_move(self, str_move):
