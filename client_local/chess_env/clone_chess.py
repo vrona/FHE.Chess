@@ -16,6 +16,7 @@ class Clone_Chess:
     def __init__(self):
 
         self.board = chess.Board()
+        self.board_mirror = chess.Board().mirror()
 
         #piece square tables and (material) value are from Chess Programming Wiki https://www.chessprogramming.org/Simplified_Evaluation_Function
         
@@ -56,7 +57,7 @@ class Clone_Chess:
     # ⒶⒸⓉⒾⓄⓃⓈ 🅐🅒🅣🅘🅞🅝🅢 ⒶⒸⓉⒾⓄⓃⓈ
     
     
-    def move_clone_board(self, move, to_promote=False):
+    def move_clone_board(self, move, mirror=False, to_promote=False):
         """ Makes a push of move from source to target square"""
         uci_format = self.convert_move_2_string(move)
         
@@ -65,7 +66,7 @@ class Clone_Chess:
            uci_format = uci_format+"q"
 
         #try:
-        self.board.push_san(uci_format)
+        self.board_mirror.push_san(uci_format) if mirror==True else self.board.push_san(uci_format) 
         #except: # chess.IllegalMoveError as e:
         #    print(e)
 
@@ -103,10 +104,9 @@ class Clone_Chess:
     # ⒼⒺⓉⓈ 🅖🅔🅣🅢 ⒼⒺⓉⓈ
 
 
-
-    def get_board(self):
+    def get_board(self, mirror=False):
         """get current board"""
-        return self.board
+        return self.board_mirror if mirror==True else self.board
     
     def get_fen(self):
         """get the FEN representation of current move"""

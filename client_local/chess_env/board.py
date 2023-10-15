@@ -18,7 +18,6 @@ class Board:
         self.clone_chess = Clone_Chess()
 
     def move(self, piece, move, simulation = False):
-
         source = move.source
         target = move.target
 
@@ -49,22 +48,12 @@ class Board:
             if self.castling(source, target) and not simulation:
                 diff = target.col - source.col
 
-                
                 if (diff < 0):
                     rook = piece.left_rook # castling queenside
-                    print(rook, len(rook.temporary_okmove))
-
-                    for mv in rook.temporary_okmove:
-                        print(Square.get_algeb_not(mv.source.col),8-mv.source.row,"-->", Square.get_algeb_not(mv.target.col), 8-mv.target.row)
-                    self.move(rook, rook.temporary_okmove[-1])
+                    self.move(rook, rook.legal_move[0])
                 else :
-                    
                     rook = piece.right_rook # castling kingside
-                    print(rook, len(rook.temporary_okmove))
-
-                    for mv in rook.temporary_okmove:
-                        print(Square.get_algeb_not(mv.source.col),8-mv.source.row,"-->", Square.get_algeb_not(mv.target.col), 8-mv.target.row)
-                    self.move(rook, rook.temporary_okmove[-1])
+                    self.move(rook, rook.legal_move[-1])
                     
         
         #if isinstance(piece, King) and isinstance(piece.color, color) #DISTANCE BETWEEN KINGS
@@ -77,7 +66,13 @@ class Board:
 
         # clear stock of ok moves
         #piece.clear_moves()
-        piece.clear_tempmoves()
+        
+        ## clearing all the pieces legal_move
+        for row in range(cb_rows):
+            for col in range(cb_cols):
+                if self.squares[row][col].piece_presence():
+                    p = self.squares[row][col].piece
+                    p.clear_legal_move()
 
     
     def check_pawn_promotion(self, piece, target):
@@ -105,7 +100,7 @@ class Board:
         return move in piece.ok_moves  
     
     def new_valid_move(self, piece, move):
-        return move in piece.temporary_okmove  
+        return move in piece.legal_move  
 
  
     # here it simulates if King is check by piece (except opponent King), thus it blocks any movement that lead king to be checked.
@@ -174,13 +169,16 @@ class Board:
         return False
 
 
-    def piece_legal(self, current_board, piece):
+    def piece_legal(self, current_board, piece, text):
         """
         legal: several proposal > for i in proposal, get source + target then push move(proposal) add_ok_moves
         """
+        print("%s"% text,"\n")
         list_legal = list(current_board.legal_moves)
         coordinate_legal = {tuple(alphasq):[] for alphasq in alphanum_square.keys()}
 
+        #check_dict = {alphasq:[] for alphasq in alphanum_square.keys()}
+        
         for i, lv in enumerate(list_legal):
             coordinate_legal[tuple(str(list_legal[i])[:2])].append(tuple(str(lv)[2:]))
         #print(coordinate_legal)
@@ -190,18 +188,36 @@ class Board:
             source_sq = bitboard[8 - int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])]
 
             for target_alpha in target_list_tuple: #('g', '1', 'f', '3')
-                target = Square(8- int(target_alpha[1]), Square.convert_algeb_not(target_alpha[0]))
-        
-                move = Move(source, target)
-                
-                if self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece_type() is not None:
-                    if piece == self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece_type():
-                    #if str(current_board.piece_at(source_sq)) == self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece_type().pname:
-                        self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece.add_tempokmove(move)
-                        #if self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece_type().pname == "b":
-                        # print("Total temp_move sent:",len(self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece.temporary_okmove))
-                        # print(Square.get_algeb_not(move.source.col),8-move.source.row,"-->", Square.get_algeb_not(move.target.col), 8-move.target.row)
+                target = Square(8 -int(target_alpha[1]), Square.convert_algeb_not(target_alpha[0]))
 
+
+                #check_dict[square_alphanum[source_sq]].append((Square.get_algeb_not(target.col),8-target.row))
+    
+                move = Move(source, target)
+        
+    
+                if self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece_type() is not None: #and current_board.is_check() != True
+                    #print(str(current_board.piece_at(source_sq)))
+
+                    #if piece == self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece_type():
+                    self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece.add_legalmove(move)
+                    piece.dict_legal(source_sq)
+                        
+                        #if str(current_board.piece_at(source_sq)) == self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece_type().pname:
+                            
+                            #if self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece_type().pname == "k":
+                            # print("Total temp_move sent:",len(self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece.legal_move))
+                            #print(Square.get_algeb_not(move.source.col),8-move.source.row,"-->", Square.get_algeb_not(move.target.col),8-move.target.row)
+            
+                #print(Square.get_algeb_not(i.source.col),8-i.source.row,"-->", Square.get_algeb_not(i.target.col),8-i.target.row)
+
+        #for mvt in piece.show_legal_move():
+
+
+        # for p, lido in check_dict.items():
+        #     for mvt in lido:
+        #         print("\n",p,"-->",mvt[0],mvt[1])
+                #print("\n",p,"::",(Square.get_algeb_not(mvt.source.col),8-mvt.source.row,"-->", Square.get_algeb_not(mvt[].target.col),8-mvt.target.row))
 
     def sim_kingcheck_okmoves(self, piece, move, bool):
         """adds move into ok_move list if my King is not in check"""
@@ -439,13 +455,13 @@ class Board:
                                 # move at micro
                                 king_move = Move(source, target)
                                 
-                                left_rook.add_tempokmove(rook_move)
+                                left_rook.add_legalmove(rook_move)
                                 # if bool:
                                 #     if not self.king_check_sim(left_rook, rook_move) and not self.king_check_sim(piece, king_move): # if not in check go ahead
-                                #         left_rook.add_tempokmove(rook_move)
+                                #         left_rook.add_legalmove(rook_move)
                                 #         piece.add_ok_move(king_move)
                                 # else:
-                                #         left_rook.add_tempokmove(rook_move)
+                                #         left_rook.add_legalmove(rook_move)
                                 #         piece.add_ok_move(king_move) # if not in check go ahead
 
 
@@ -477,13 +493,13 @@ class Board:
                                     # move at micro
                                 king_move = Move(source, target)
                                 
-                                right_rook.add_tempokmove(rook_move)
+                                right_rook.add_legalmove(rook_move)
                                 # if bool:
                                 #     if not self.king_check_sim(right_rook, rook_move) and not self.king_check_sim(piece, king_move): # if not in check go ahead
-                                #         right_rook.add_tempokmove(rook_move)
+                                #         right_rook.add_legalmove(rook_move)
                                 #         piece.add_ok_move(king_move)
                                 # else:
-                                #         right_rook.add_tempokmove(rook_move)
+                                #         right_rook.add_legalmove(rook_move)
                                 #         piece.add_ok_move(king_move) # if not in check go ahead
 
 

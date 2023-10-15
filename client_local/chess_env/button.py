@@ -126,7 +126,6 @@ class Button:
         self.click_new_game(332, self.button_name)
         if self.restart:
             self.draw(surface,'white', self.button_name,332)
-
         return True
 
     def show_result(self, surface, winner, termination):
@@ -136,7 +135,8 @@ class Button:
 
     def show_AI_givingup(self, surface, text_AI_go):
         if self.restart:
-            self.draw(surface, '#ffa700', "%s" % text_AI_go, 240, -240) # winner or draw
+            self.draw(surface, '#ff7400', "%s" % text_AI_go, 98, -170)
+    
 
     # def button_blackAI(self, surface):
     #     self.button_name = 'BLACK AI'
