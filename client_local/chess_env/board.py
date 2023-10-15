@@ -169,11 +169,10 @@ class Board:
         return False
 
 
-    def piece_legal(self, current_board, piece, text):
+    def piece_legal(self, current_board, piece):
         """
         legal: several proposal > for i in proposal, get source + target then push move(proposal) add_ok_moves
         """
-        print("%s"% text,"\n")
         list_legal = list(current_board.legal_moves)
         coordinate_legal = {tuple(alphasq):[] for alphasq in alphanum_square.keys()}
 
