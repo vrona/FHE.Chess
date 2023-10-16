@@ -10,6 +10,8 @@ class Button:
         self.normal = normal
         self.y_pos = y
         self.ai_mode = False
+        self.white_ai = False
+        self.black_ai = False
         self.human_mode = False
         self.name_mode = None
         self.new_game = False
@@ -21,6 +23,12 @@ class Button:
     def get_ai_mode(self):
         return self.ai_mode
     
+    def is_white_ai_(self):
+        return self.white_ai
+    
+    def is_black_ai_(self):
+        return self.black_ai
+
     def get_human_mode(self):
         return self.human_mode
     
@@ -48,8 +56,10 @@ class Button:
                 self.normal = False
                 self.restart = True
 
-                if self.name_mode=="White AI ":
-                    self.ai_mode = True
+                if self.name_mode==" White AI ": self.white_ai = True
+
+                elif self.name_mode==" Black AI": self.black_ai = True
+            
 
                 if self.new_game:
                     self.new_game = False
@@ -110,10 +120,16 @@ class Button:
 
 
     def button_whiteAI(self, surface, bool):
-        self.button_name = 'White AI '
+        self.button_name = ' White AI '
         self.click_ai(220, self.button_name, bool)
         if self.normal:
             self.draw(surface,'white', self.button_name,220)
+
+    def button_blackAI(self, surface, bool):
+        self.button_name = ' Black AI'
+        self.click_ai(445, self.button_name, bool)
+        if self.normal:
+            self.draw(surface, 'white', self.button_name, 445)
 
     def button_HH(self, surface):
         self.button_name = 'White Human'
@@ -138,11 +154,7 @@ class Button:
             self.draw(surface, '#ff7400', "%s" % text_AI_go, 98, -170)
     
 
-    # def button_blackAI(self, surface):
-    #     self.button_name = 'BLACK AI'
-    #     self.check_click(332.5, self.button_name)
-    #     if self.normal:
-    #         self.draw(surface, 'white', self.button_name, 332.5)
+
 
     # def button_bothAI(self, surface):
     #     self.button_name = 'AI vs AI'

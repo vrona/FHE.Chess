@@ -250,7 +250,7 @@ class Board:
             # vertical movement
             start = row + piece.dir
             end = row + (piece.dir * (1 + steps))
-            """for possible_move_row in range(start, end, piece.dir):
+            for possible_move_row in range(start, end, piece.dir):
                 if Square.in_board(possible_move_row):
                     if self.squares[possible_move_row][col].empty():
 
@@ -262,7 +262,7 @@ class Board:
                         #self.move_kingchecksim(source, target, piece, bool)
                             
                     else: break # move done
-                else: break # outside chessboard"""
+                else: break # outside chessboard
 
             # attack movement
             possible_move_row = row + piece.dir

@@ -59,7 +59,9 @@ class Main:
     def reset_soft(self, game, button, dragger, clone_chess):
         game.reset()
         button.normal = True
-        button.ai_mode = False
+        #button.ai_mode = False
+        button.white_ai = False
+        button.black_ai = False
         game = self.game
         board = self.game.board
         dragger = self.game.dragger
@@ -148,7 +150,8 @@ class Main:
             game.display_hover(screenplay)
 
             button.button_whiteAI(screenplay, cs_network)
-            button.button_HH(screenplay)
+            button.button_blackAI(screenplay, cs_network)
+            #button.button_HH(screenplay)
 
 
             # get the outcome of game when not None
@@ -157,9 +160,10 @@ class Main:
                         game = self.reset_soft(game, button, dragger, clone_chess)
 
             # ⒶⒾ 🅐🅘 ⒶⒾ 🅐🅘 ⒶⒾ
-            #if self.server != "local": 
-            if button.get_ai_mode() and game.player_turn=="white": self.ai_server()
-            # AI vs AI if button.get_ai_mode() and game.player_turn=="black": self.ai_server(black=True)
+            #if self.server != "local":
+            #AI vs AI 
+            if button.is_white_ai_() and game.player_turn=="white": self.ai_server()
+            if button.is_black_ai_() and game.player_turn=="black": self.ai_server(black=True)
 
             # ⒽⓊⓂⒶⓃ 🅗🅤🅜🅐🅝 ⒽⓊⓂⒶⓃ
 
@@ -271,6 +275,11 @@ class Main:
 
     def autonomous_piece(self,source_row, source_col, target_row, target_col, board, game, clone_chess, dragger, button,surface,black):
         """Makes the AI's move inference applied into homemade chessboard environment"""
+        
+        # mirror chess grid for black point of view
+        if black == True:
+            source_row, source_col = 7-source_row, 7-source_col
+            target_row, target_col = 7-target_row, 7-target_col
 
         # presence of piece within selected square
         if self.game.board.squares[source_row][source_col].piece_presence():
