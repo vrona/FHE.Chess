@@ -106,8 +106,8 @@ class Clone_Chess:
 
     def get_board(self, mirror=False):
         """get current board"""
-        return self.board_mirror if mirror==True else self.board
-    
+        return self.board.mirror()if mirror==True else self.board
+        
     def get_fen(self):
         """get the FEN representation of current move"""
         return self.board.fen()

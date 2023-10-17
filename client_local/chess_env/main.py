@@ -84,7 +84,9 @@ class Main:
 
         # get the snapshot of the board and use it as input_data to AI via server
         # get reply from server as list of tuples of moves
+
         chessboard = clone_chess.get_board(mirror=True) if black == True else clone_chess.get_board()
+
         listoftuplesofmoves = cs_network.send(chessboard)
 
         """
@@ -151,7 +153,7 @@ class Main:
 
             button.button_whiteAI(screenplay, cs_network)
             button.button_blackAI(screenplay, cs_network)
-            #button.button_HH(screenplay)
+            button.button_HH(screenplay)
 
 
             # get the outcome of game when not None
@@ -162,8 +164,9 @@ class Main:
             # ⒶⒾ 🅐🅘 ⒶⒾ 🅐🅘 ⒶⒾ
             #if self.server != "local":
             #AI vs AI 
-            if button.is_white_ai_() and game.player_turn=="white": self.ai_server()
-            if button.is_black_ai_() and game.player_turn=="black": self.ai_server(black=True)
+            #if button.is_white_ai_() and game.player_turn=="white": self.ai_server()
+
+            if button.is_white_ai_() and game.player_turn=="black": self.ai_server(black=True)
 
             # ⒽⓊⓂⒶⓃ 🅗🅤🅜🅐🅝 ⒽⓊⓂⒶⓃ
 
@@ -277,10 +280,11 @@ class Main:
         """Makes the AI's move inference applied into homemade chessboard environment"""
         
         # mirror chess grid for black point of view
+        #print("INSIDE AUTO:")#,clone_chess.get_board(), piece)
         if black == True:
             source_row, source_col = 7-source_row, 7-source_col
             target_row, target_col = 7-target_row, 7-target_col
-
+            #print("Autonomous: STARTS HERE")
         # presence of piece within selected square
         if self.game.board.squares[source_row][source_col].piece_presence():
             piece = self.game.board.squares[source_row][source_col].piece
@@ -296,22 +300,28 @@ class Main:
                 move = Move(source, target)
 
                 #  check move ok ?
-                board.piece_legal(clone_chess.get_board(mirror=True) if black == True else clone_chess.get_board(), piece)
+  
+                board.piece_legal(clone_chess.get_board(),piece)# if black == True else clone_chess.get_board(), piece)
+                # #print(piece.legal_move)
+                # for i in piece.legal_move:
+                #     print("\n",piece,"::",(Square.get_algeb_not(i.source.col),8-i.source.row,"-->", Square.get_algeb_not(i.target.col),8-i.target.row))
+
                 if game.board.new_valid_move(piece, move):
                     board.move(piece, move)
 
                     if piece.type == chess.PAWN and game.board.squares[target_row][target_col].piece.type == chess.QUEEN:
 
                             # BRIDGE HERE cloning move from app to python-chess
-                        clone_chess.move_clone_board(move, mirror=True, to_promote=True) if black==True else clone_chess.move_clone_board(move, to_promote=True)
-
+                        #clone_chess.move_clone_board(move, mirror=True, to_promote=True) if black==True else clone_chess.move_clone_board(move, to_promote=True)
+                        clone_chess.move_clone_board(move, to_promote=True)# if black==True else clone_chess.move_clone_board(move, to_promote=True)
                     else:
                             # BRIDGE HERE cloning move from app to python-chess"""
-                        clone_chess.move_clone_board(move, mirror=True) if black==True else clone_chess.move_clone_board(move)
+                        #clone_chess.move_clone_board(move, mirror=True) if black==True else clone_chess.move_clone_board(move)
+                        clone_chess.move_clone_board(move)# if black==True else clone_chess.move_clone_board(move)
 
                     board.set_true_en_passant(piece)
 
-                    print("\n%s %s %s%s to %s%s" % (piece.color,piece.name,Square.algebraic_notation_cols[source_col], 7-source_row,Square.algebraic_notation_cols[target_col], 7-target_row))
+                    print("\n%s %s %s%s to %s%s" % (piece.color,piece.name,Square.algebraic_notation_cols[source_col], 8-source_row,Square.algebraic_notation_cols[target_col], 8-target_row))
                         
                     # uncomment to get FEN output
                     print("\nAUTONOMOUS FEN: ",clone_chess.get_fen())
@@ -324,13 +334,13 @@ class Main:
                     game.next_player()
                 
                 else:
-                    if self.AI_game_over("AI wrongly inferred: %s%s %s%s" % (Square.algebraic_notation_cols[source_col], 7-source_row, Square.algebraic_notation_cols[target_col], 7-target_row)) or self.outcome() == True:
+                    if self.AI_game_over("AI wrongly inferred: %s%s %s%s" % (Square.algebraic_notation_cols[source_col], 8-source_row, Square.algebraic_notation_cols[target_col], 8-target_row)) or self.outcome() == True:
                         if button.new_game:
                             game = self.reset_soft(game, button, dragger, clone_chess)
 
                     
         else:
-            if self.AI_game_over("AI wrongly inferred: %s%s %s%s" % (Square.algebraic_notation_cols[source_col], 7-source_row, Square.algebraic_notation_cols[target_col], 7-target_row)):
+            if self.AI_game_over("AI wrongly inferred: %s%s %s%s" % (Square.algebraic_notation_cols[source_col], 8-source_row, Square.algebraic_notation_cols[target_col], 8-target_row)):
                 if button.new_game:
                             game = self.reset_soft(game, button, dragger, clone_chess)
 

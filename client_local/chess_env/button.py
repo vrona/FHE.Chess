@@ -58,7 +58,7 @@ class Button:
 
                 if self.name_mode==" White AI ": self.white_ai = True
 
-                elif self.name_mode==" Black AI": self.black_ai = True
+                #if self.name_mode==" Black AI": self.black_ai = True
             
 
                 if self.new_game:
@@ -132,10 +132,10 @@ class Button:
             self.draw(surface, 'white', self.button_name, 445)
 
     def button_HH(self, surface):
-        self.button_name = 'White Human'
-        self.click_human(445, self.button_name)
+        self.button_name = 'H vs H'
+        self.click_human(0, self.button_name)
         if self.normal:
-            self.draw(surface,'white', self.button_name,445)
+            self.draw(surface,'white', self.button_name,0)
 
     def button_restart(self, surface):
         self.button_name = 'New Game'
