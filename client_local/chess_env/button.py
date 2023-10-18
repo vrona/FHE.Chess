@@ -1,15 +1,13 @@
-import sys
 import pygame
 from PIL import ImageFont
 from base import *
 
 class Button:
-	
+
     def __init__(self, normal = True, restart = False, y = sp_height/2 -30):
 
         self.normal = normal
         self.y_pos = y
-        self.ai_mode = False
         self.white_ai = False
         self.black_ai = False
         self.human_mode = False
@@ -18,11 +16,7 @@ class Button:
         self.click_new = None
         self.restart = restart
 
-
-    # retrieve if AI Mode status
-    def get_ai_mode(self):
-        return self.ai_mode
-    
+    # retrieve if AI Mode status   
     def is_white_ai_(self):
         return self.white_ai
     
@@ -58,13 +52,15 @@ class Button:
 
                 if self.name_mode==" White AI ": self.white_ai = True
 
-                #if self.name_mode==" Black AI": self.black_ai = True
-            
+                if self.name_mode==" Black AI": self.black_ai = True
 
+                if self.name_mode=="AI vs AI":
+                    self.white_ai = True
+                    self.black_ai = True
+            
                 if self.new_game:
                     self.new_game = False
     
-
     def click_human(self, x, action_name):
         text_width = self.sizeoftext(action_name)
         mouse_pos = pygame.mouse.get_pos()
@@ -79,7 +75,7 @@ class Button:
 
             if self.name_mode=="White Human":
                 self.human_mode = True
-            
+
             if self.new_game:
                 self.new_game = False
 
@@ -94,7 +90,6 @@ class Button:
             self.click_new = click
             self.restart= False
             self.new_game = True
-        
 
     # get in pixel the size of text
     def sizeoftext(self, text):
@@ -118,7 +113,6 @@ class Button:
         pygame.draw.rect(surface, 'black', button_rect, 2, 3)
         surface.blit(button_text, (x+3, self.y_pos + y +3))
 
-
     def button_whiteAI(self, surface, bool):
         self.button_name = ' White AI '
         self.click_ai(220, self.button_name, bool)
@@ -131,7 +125,13 @@ class Button:
         if self.normal:
             self.draw(surface, 'white', self.button_name, 445)
 
-    def button_HH(self, surface):
+    def button_bothAI(self, surface, bool):
+        self.button_name = 'AI vs AI'
+        self.click_ai(691, self.button_name,bool)
+        if self.normal:
+            self.draw(surface,'white', self.button_name, 691)
+
+    def button_dev(self, surface):
         self.button_name = 'H vs H'
         self.click_human(0, self.button_name)
         if self.normal:
@@ -152,12 +152,3 @@ class Button:
     def show_AI_givingup(self, surface, text_AI_go):
         if self.restart:
             self.draw(surface, '#ff7400', "%s" % text_AI_go, 98, -170)
-    
-
-
-
-    # def button_bothAI(self, surface):
-    #     self.button_name = 'AI vs AI'
-    #     self.check_click(566.25, self.button_name)
-    #     if self.normal:
-    #         self.draw(surface,'white', self.button_name, 566.25)
