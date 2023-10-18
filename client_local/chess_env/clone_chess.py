@@ -65,10 +65,7 @@ class Clone_Chess:
            """ Push a pawn promotion of move from source to target square """
            uci_format = uci_format+"q"
 
-        #try:
         self.board_mirror.push_san(uci_format) if mirror==True else self.board.push_san(uci_format) 
-        #except: # chess.IllegalMoveError as e:
-        #    print(e)
 
     def reset_board(self):
         """ reset current board"""
@@ -103,7 +100,6 @@ class Clone_Chess:
 
     # ⒼⒺⓉⓈ 🅖🅔🅣🅢 ⒼⒺⓉⓈ
 
-
     def get_board(self, mirror=False):
         """get current board"""
         return self.board.mirror()if mirror==True else self.board
@@ -112,108 +108,11 @@ class Clone_Chess:
         """get the FEN representation of current move"""
         return self.board.fen()
 
-    def legal_moves(self):
-        """get legal moves generator"""
-        return self.board.legal_moves
-
-    def pseudo_legal_moves(self):
-        """get pseudo legal moves generator (might leave or put the King in check)"""
-        return self.board.pseudo_legal_moves
-
-    def legal_moves_count(self):
-        """get the number of legal moves"""
-        return self.board.legal_moves.count()
-
-    def outcome(self, board):
-        """get game outcome"""
-        return board.outcome()
-
 
     # ⒸⒽⒺⒸⓀⓈ 🅒🅗🅔🅒🅚🅢 ⒸⒽⒺⒸⓀⓈ
 
 
-    def check_legal_move(self, move):
-        """checks if move within legal moves"""
-        uci_format = self.convert_move_2_string(move)
-        return chess.Move.from_uci(uci_format) in self.legal_moves()
-
-    def check_pseudo_legal_move(self, move):
-        """checks if move within pseudo legal moves"""
-        uci_format = self.convert_move_2_string(move)
-        return chess.Move.from_uci(uci_format) in self.pseudo_legal_moves()
-
-    def checkmate_check(self):
-        """checks checkmate?"""
-        return self.board.is_checkmate()
-    
-    def check_stalemate(self):
-        """checks stalemate?"""
-        return self.board.is_stalemate()
-    
-    def check_insuffisant_material(self):
-        """checks enough material?"""
-        return self.board.is_insufficient_material()
-    
-    def check_gameover(self):
-        """checks game_over?"""
-        return self.board.is_game_over()
-    
-    def check_repetitions(self):
-        """checks once fiveold repetition or 75 moves without pawn push or capture?"""
-        return (self.board.is_fivefold_repetition(), self.board.is_seventyfive_moves())
-
-    def check_termination(self, current_board):
-        """checks all checks"""
-
-        if current_board.outcome():
-            if current_board.outcome().winner == chess.WHITE:
-                print("White wins by %s" % current_board.outcome().termination)
-            elif current_board.outcome().winner == chess.BLACK:
-                print("Black wins %s" % current_board.outcome().termination)
-            else:
-                print("Draw, no winner nor looser.")
-        print("Game %s" % current_board.outcome())
-
-
-
-        """
-        elif self.board.is_checkmate():
-            print("is Check: %s" % current_board.is_checkmate())
-            return True
-        
-        elif current_board.is_stalemate():
-            print("is Stalemate: %s" % current_board.is_stalemate())
-            return True
-
-        elif current_board.is_insufficient_material():
-            print("Insufficient_material: %s" % current_board.is_insufficient_material())
-            return True
-        
-        elif current_board.is_game_over():
-            print("Game_over: %s" % current_board.is_game_over())
-            return True
-
-        elif current_board.is_fivefold_repetition():
-            print("Repetition 5: %s" % current_board.is_fivefold_repetition())
-            return True
-        
-        elif current_board.is_seventyfive_moves():
-            print("Repetition 75: %s" % current_board.is_seventyfive_moves())
-            return True
-        """
-
-
-    #  ⒸⓁⒶⒾⓂⓈ 🅒🅛🅐🅘🅜🅢 ⒸⓁⒶⒾⓂⓈ
-
-    def claim_repetitions(self):
-        if self.board.can_claim_threefold_repetition():
-            return self.board.can_claim_threefold_repetition()
-        
-        if self.board.can_claim_fifty_moves():
-            return self.board.can_claim_fifty_moves()
-    
-    def claim_draw(self):
-        return self.board.can_claim_draw()
+    # ⒸⓁⒶⒾⓂⓈ 🅒🅛🅐🅘🅜🅢 ⒸⓁⒶⒾⓂⓈ
     
     
     # ⒽⒺⓁⓅⒺⓇⓈ 🅗🅔🅛🅟🅔🅡🅢 ⒽⒺⓁⓅⒺⓇⓈ

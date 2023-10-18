@@ -3,7 +3,6 @@ from piece import *
 from move import *
 from square import Square
 from clone_chess import Clone_Chess
-import chess
 
 class Board:
 
@@ -93,9 +92,6 @@ class Board:
         piece.en_passant = True 
 
     # check if move is valid (not based on chess lib)
-    def valid_move(self, piece, move):
-        return move in piece.ok_moves  
-    
     def new_valid_move(self, piece, move):
         return move in piece.legal_move  
 
@@ -116,7 +112,6 @@ class Board:
         for source_alpha, target_list_tuple in coordinate_legal.items():
 
             source = Square(8 -int(source_alpha[1]), Square.convert_algeb_not(source_alpha[0]))
-            source_sq = bitboard[8 - int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])]
 
             for target_alpha in target_list_tuple: #('g', '1', 'f', '3')
                 target = Square(8 -int(target_alpha[1]), Square.convert_algeb_not(target_alpha[0]))
@@ -126,8 +121,6 @@ class Board:
                 if self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece_type() is not None: #and current_board.is_check() != True
 
                     self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece.add_legalmove(move)
-                    piece.dict_legal(source_sq)
-                                
 
     def compute_move(self, piece, row, col, bool=True):
         """

@@ -6,9 +6,7 @@ class Piece:
     def __init__(self, name, color, img_uri=None, rectangle=None):
         self.name = name
         self.color = color
-        self.ok_moves = []
         self.legal_move = []
-        self.dictofmove = {}
         self.moved = False
         self.img_uri = img_uri
         self.set_texture()
@@ -18,29 +16,12 @@ class Piece:
         self.img_uri = os.path.join(
             f'client_local/content/pieces/pieces_{size}px/{self.color}_{self.name}.png')
 
-    def add_ok_move(self, move):
-        """adds to each piece its ok_moves based on its behaviour"""
-        self.ok_moves.append(move)
-
-    def pop_ok_move(self, move):
-        """pop to each piece an ok_moves based on exceptional moves"""
-        self.ok_moves.pop(self.ok_moves.index(move))
-
     def add_legalmove(self, move):
         """adds to each piece its ok_moves based on its behaviour"""
         self.legal_move.append(move)
 
-    def dict_legal(self, source_sq):
-        self.dictofmove[source_sq] = self.legal_move
-
-    def clear_moves(self):
-        self.ok_moves = []
-
     def clear_legal_move(self):
         self.legal_move = []
-
-    def show_legal_move(self):
-        return self.legal_move
 
 
 class Pawn(Piece):

@@ -320,7 +320,7 @@ class Main:
                 move = Move(source, target)
 
                 #  check move ok ?
-                board.piece_legal(clone_chess.get_board(),piece)# if black == True else clone_chess.get_board(), piece)
+                board.piece_legal(clone_chess.get_board(),piece)
 
                 if game.board.new_valid_move(piece, move):
                     board.move(piece, move)
@@ -328,12 +328,10 @@ class Main:
                     if piece.type == chess.PAWN and game.board.squares[target_row][target_col].piece.type == chess.QUEEN:
 
                             # BRIDGE HERE cloning move from app to python-chess
-                        #clone_chess.move_clone_board(move, mirror=True, to_promote=True) if black==True else clone_chess.move_clone_board(move, to_promote=True)
-                        clone_chess.move_clone_board(move, to_promote=True)# if black==True else clone_chess.move_clone_board(move, to_promote=True)
+                        clone_chess.move_clone_board(move, to_promote=True)
                     else:
                             # BRIDGE HERE cloning move from app to python-chess"""
-                        #clone_chess.move_clone_board(move, mirror=True) if black==True else clone_chess.move_clone_board(move)
-                        clone_chess.move_clone_board(move)# if black==True else clone_chess.move_clone_board(move)
+                        clone_chess.move_clone_board(move)
 
                     board.set_true_en_passant(piece)
 
