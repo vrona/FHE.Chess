@@ -1,7 +1,6 @@
 from base import *
 from piece import *
 from move import *
-import copy
 from square import Square
 from clone_chess import Clone_Chess
 import chess
@@ -54,9 +53,7 @@ class Board:
                 else :
                     rook = piece.right_rook # castling kingside
                     self.move(rook, rook.legal_move[-1])
-                    
-        
-        #if isinstance(piece, King) and isinstance(piece.color, color) #DISTANCE BETWEEN KINGS
+
         
         # move
         piece.moved = True
@@ -102,85 +99,20 @@ class Board:
     def new_valid_move(self, piece, move):
         return move in piece.legal_move  
 
- 
-    # here it simulates if King is check by piece (except opponent King), thus it blocks any movement that lead king to be checked.
-    def king_check_sim(self, piece, move):
-
-        """"for simulation"""
-        temppiece = copy.deepcopy(piece)
-        tempboard = copy.deepcopy(self)
-        tempboard.move(temppiece, move, simulation=True) # move virtually one piece
-        
-        for row in range(cb_rows):
-            for col in range(cb_cols):
-                """check for all opponent if their potential ok_moves arrive in the team's Kings' square"""
-
-                if tempboard.squares[row][col].opponent_presence(piece.color): # if current player's opponent exist on chessboard
-                    p = tempboard.squares[row][col].piece                       # get the type of the opponent piece
-                    tempboard.compute_move(p, row, col, bool=False)             # calculate the opponent piece's moves to get its ok_moves
-
-
-                    for mvmt in p.ok_moves:          # for each moves in ok_moves, look for opponent piece's target squares where a king exist
-
-                        if isinstance(mvmt.target.piece, King):
-                            #print("Menace From %s %s to %s %s" %(mvmt.source.col,mvmt.source.row,mvmt.target.col,mvmt.target.row))
-                            #print("Menace From %s to %s" % (bitboard[mvmt.source.row][mvmt.source.col], bitboard[mvmt.target.row][mvmt.target.col]))
-                            return True
-
-        return False
-
-    # here it simulates if King is check by OPPONENT KING, thus it blocks any movement that lead king to be checked.      
-    def check_sim_exception(self, piece, move):
-
-        """"for simulation"""
-        temppiece = copy.deepcopy(piece)
-        tempboard = copy.deepcopy(self)
-        tempboard.move(temppiece, move, simulation=True) # move virtually one piece
-        
-        king_target = []
-        opponent_target = []
-
-        for row in range(cb_rows):
-            for col in range(cb_cols):
-                """check for all opponent if their potential ok_moves arrive in the team's Kings' square"""
-
-                if tempboard.squares[row][col].opponent_presence(piece.color):      # if current player's opponent exist on chessboard
-                    
-                    if piece.type == chess.KING:                                    # when the player piece about to move is King
-                        p = tempboard.squares[row][col].piece                       # get the type of the opponent piece
-                        if p.type == chess.KING:
-                            
-                            tempboard.compute_move(p, row, col, bool=False)             # calculate the opponent piece's moves to get its ok_moves
-
-                
-                            for king_player_mvmt in piece.ok_moves:                     # for each moves in ok_moves, look for target squares of King's player
-                                king_target.append(bitboard[king_player_mvmt.target.row][king_player_mvmt.target.col])
-
-                            for mvmt in p.ok_moves:          # for each moves in ok_moves, look for opponent piece's target squares where a king exist
-
-                                opponent_target.append(bitboard[mvmt.target.row][mvmt.target.col])
-
-                                for i in opponent_target:
-                                    """the player King and opponent King collide when they share the same target squares"""
-                                    if i in king_target:
-                                        #print("COLLISION",i)
-                                        return True
-                            
-        return False
-
 
     def piece_legal(self, current_board, piece):
         """
         legal: several proposal > for i in proposal, get source + target then push move(proposal) add_ok_moves
         """
+        # make a list of legal moves from python-chess
         list_legal = list(current_board.legal_moves)
-        coordinate_legal = {tuple(alphasq):[] for alphasq in alphanum_square.keys()}
 
-        #check_dict = {alphasq:[] for alphasq in alphanum_square.keys()}
+        # make a dict of legal moves where keys is a tuple of splitted sprint from keys
+        coordinate_legal = {tuple(alphasq):[] for alphasq in alphanum_square.keys()}
         
         for i, lv in enumerate(list_legal):
             coordinate_legal[tuple(str(list_legal[i])[:2])].append(tuple(str(lv)[2:]))
-        #print(coordinate_legal)
+
         for source_alpha, target_list_tuple in coordinate_legal.items():
 
             source = Square(8 -int(source_alpha[1]), Square.convert_algeb_not(source_alpha[0]))
@@ -188,240 +120,22 @@ class Board:
 
             for target_alpha in target_list_tuple: #('g', '1', 'f', '3')
                 target = Square(8 -int(target_alpha[1]), Square.convert_algeb_not(target_alpha[0]))
-
-
-                #check_dict[square_alphanum[source_sq]].append((Square.get_algeb_not(target.col),8-target.row))
     
                 move = Move(source, target)
         
-    
                 if self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece_type() is not None: #and current_board.is_check() != True
-                    #print(str(current_board.piece_at(source_sq)))
 
-                    #if piece == self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece_type():
                     self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece.add_legalmove(move)
                     piece.dict_legal(source_sq)
-                        
-                        #if str(current_board.piece_at(source_sq)) == self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece_type().pname:
-                            
-                            #if self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece_type().pname == "k":
-                            # print("Total temp_move sent:",len(self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece.legal_move))
-                            #print(Square.get_algeb_not(move.source.col),8-move.source.row,"-->", Square.get_algeb_not(move.target.col),8-move.target.row)
-            
-                #print(Square.get_algeb_not(i.source.col),8-i.source.row,"-->", Square.get_algeb_not(i.target.col),8-i.target.row)
-
-        #for mvt in piece.show_legal_move():
-
-
-        # for p, lido in check_dict.items():
-        #     for mvt in lido:
-        #         print("\n",p,"-->",mvt[0],mvt[1])
-                #print("\n",p,"::",(Square.get_algeb_not(mvt.source.col),8-mvt.source.row,"-->", Square.get_algeb_not(mvt[].target.col),8-mvt.target.row))
-
-    def sim_kingcheck_okmoves(self, piece, move, bool):
-        """adds move into ok_move list if my King is not in check"""
-        if bool: # simulation is on
-            if not self.king_check_sim(piece, move): # if not in check go ahead
-                piece.add_ok_move(move)
-
-        else:   # simulation is off
-            piece.add_ok_move(move) # if not in check go ahead
-
-
-    def move_kingchecksim(self, source, target, piece, bool):
-        """integrates move into sim_kingcheck_okmoves()"""
-        # move at micro
-        move = Move(source, target)
-        self.sim_kingcheck_okmoves(piece, move, bool)
-        
+                                
 
     def compute_move(self, piece, row, col, bool=True):
         """
         computes possible moves() of specific piece at a given coordinates
         """
-
-        #self.piece_legal(current_board,piece)
-
-        def pawn_moves():
-            
-            #check source movement of 2 steps
-            steps = 1 if piece.moved else 2
-
-            # vertical movement
-            start = row + piece.dir
-            end = row + (piece.dir * (1 + steps))
-            for possible_move_row in range(start, end, piece.dir):
-                if Square.in_board(possible_move_row):
-                    if self.squares[possible_move_row][col].empty():
-
-                        # micro location
-                        source = Square(row, col) 
-                        target = Square(possible_move_row, col)
-                        
-                        Move(source, target)
-                        #self.move_kingchecksim(source, target, piece, bool)
-                            
-                    else: break # move done
-                else: break # outside chessboard
-
-            # attack movement
-            possible_move_row = row + piece.dir
-            possible_move_col = [col-1, col+1]
-            for move_col in possible_move_col:
-                if Square.in_board(move_col):
-                    if self.squares[possible_move_row][move_col].opponent_presence(piece.color):
-
-                        # micro location
-                        source = Square(row, col)
-                        piece_target = self.squares[possible_move_row][move_col].piece # get piece at target aka king check
-                        target = Square(possible_move_row, move_col, piece_target)
-                        
-                        Move(source, target)
-                        #self.move_kingchecksim(source, target, piece, bool)
-
-            # en_passant
-            attacker_ini_row = 3 if piece.color == 'white' else 4
-            attacker_desti_row = 2 if piece.color == 'white' else 5
-
-            # left juxtapose square
-            if Square.in_board(col-1) and row == attacker_ini_row:
-                if self.squares[row][col-1].opponent_presence(piece.color):
-                    p = self.squares[row][col-1].piece
-                    
-                    if isinstance(p, Pawn):
-
-                        if p.en_passant:
-
-                            source = Square(row, col)
-                            target = Square(attacker_desti_row, col-1, p)
-
-                            Move(source, target)
-                            #self.move_kingchecksim(source, target, piece, bool)
-
-            # right juxtapose square
-            if Square.in_board(col+1) and row == attacker_ini_row:
-                if self.squares[row][col+1].opponent_presence(piece.color):
-                    p = self.squares[row][col+1].piece
-                    
-                    if isinstance(p, Pawn):
-
-                        if p.en_passant:
-
-                            source = Square(row, col)
-                            target = Square(attacker_desti_row, col+1, p)
-
-                            Move(source, target)
-                            #self.move_kingchecksim(source, target, piece, bool)
-
-
-        def knight_moves():
-            possible_moves = [
-                (row-2, col+1),
-                (row-1, col+2),
-                (row+1, col+2),
-                (row+2, col+1),
-                (row+2, col-1),
-                (row+1, col-2),
-                (row-1, col-2),
-                (row-2, col-1)
-            ]
-            for ok_move in possible_moves:
-                ok_move_row, ok_move_col = ok_move # y, x
-
-                # macro location
-                if Square.in_board(ok_move_row, ok_move_col):
-                    if self.squares[ok_move_row][ok_move_col].empty_occupied(piece.color):
-                        
-                        source = Square(row, col)
-                        piece_target = self.squares[ok_move_row][ok_move_col].piece # get piece at target aka king check
-                        target = Square(ok_move_row, ok_move_col, piece_target)
-
-                        #self.move_kingchecksim(source, target, piece, bool)
-
-                        # move at micro
-                        move = Move(source, target)
-                        
-                        if bool: # simulation is on
-                            if not self.king_check_sim(piece, move): # if not in check go ahead
-                                piece.add_ok_move(move)
-                            else: break
-
-                        else:   # simulation is off
-                            piece.add_ok_move(move) # if not in check go ahead
-
-
-        def straightline_move(increments):
-            for incr in increments:
-                row_incr, col_incr = incr
-                possible_move_row = row + row_incr
-                possible_move_col = col + col_incr
-
-                while True:
-                    if Square.in_board(possible_move_row, possible_move_col):
-                        
-                        # micro location
-                        source = Square(row, col)
-                        piece_target = self.squares[possible_move_row][possible_move_col].piece # get piece at target aka king check
-                        target = Square(possible_move_row, possible_move_col, piece_target)
-                            
-                        # move at micro
-                        move = Move(source, target)
-                        
-                        # empty square
-                        if self.squares[possible_move_row][possible_move_col].empty():
-                            
-                            self.sim_kingcheck_okmoves(piece,move,bool)
-
-                        # opponent presence
-                        elif self.squares[possible_move_row][possible_move_col].opponent_presence(piece.color):
-                            
-                            self.sim_kingcheck_okmoves(piece,move,bool)
-
-                            break
-                    
-                        # player presence
-                        elif self.squares[possible_move_row][possible_move_col].player_presence(piece.color):
-                            break
-
-                    else: break 
-                    # incrementing_incrs
-                    possible_move_row = possible_move_row + row_incr
-                    possible_move_col = possible_move_col + col_incr
-
+    
         def king_moves():
-            # juxtapose = [
-            #     (row-1, col+0), #N
-            #     (row-1, col+1), #NE
-            #     (row+0, col+1), #E
-            #     (row+1, col+1), #SE
-            #     (row+1, col+0), #S
-            #     (row+1, col-1), #SW
-            #     (row+0, col-1), #W
-            #     (row-1, col-1)] #NW
-            
-            # for ok_move in juxtapose:
-            #     ok_move_row, ok_move_col = ok_move # y, x
-                
-            #     # macro location
-            #     if Square.in_board(ok_move_row, ok_move_col):
-            #         if self.squares[ok_move_row][ok_move_col].empty_occupied(piece.color):
-            #             # micro location
-            #             source = Square(row, col)
-            #             target = Square(ok_move_row, ok_move_col)
-                        
-            #             # move at micro
-            #             move = Move(source, target)
 
-            #             if bool:
-
-            #                 if not self.king_check_sim(piece, move): # if not in check go ahead
-            #                     piece.add_ok_move(move)
-            #                 if self.check_sim_exception(piece, move):
-            #                     piece.pop_ok_move(move)
-            #                 #else: break
-
-            #             else:
-            #                 piece.add_ok_move(move)
 
             # castling
             if not piece.moved:
@@ -451,17 +165,8 @@ class Board:
                                 source = Square(row, col)
                                 target = Square(row, 2)
 
-                                # move at micro
-                                king_move = Move(source, target)
-                                
+                                # move at micro                                
                                 left_rook.add_legalmove(rook_move)
-                                # if bool:
-                                #     if not self.king_check_sim(left_rook, rook_move) and not self.king_check_sim(piece, king_move): # if not in check go ahead
-                                #         left_rook.add_legalmove(rook_move)
-                                #         piece.add_ok_move(king_move)
-                                # else:
-                                #         left_rook.add_legalmove(rook_move)
-                                #         piece.add_ok_move(king_move) # if not in check go ahead
 
 
                 # kingside
@@ -490,49 +195,8 @@ class Board:
                                 target = Square(row, 6)
                                 
                                     # move at micro
-                                king_move = Move(source, target)
-                                
                                 right_rook.add_legalmove(rook_move)
-                                # if bool:
-                                #     if not self.king_check_sim(right_rook, rook_move) and not self.king_check_sim(piece, king_move): # if not in check go ahead
-                                #         right_rook.add_legalmove(rook_move)
-                                #         piece.add_ok_move(king_move)
-                                # else:
-                                #         right_rook.add_legalmove(rook_move)
-                                #         piece.add_ok_move(king_move) # if not in check go ahead
 
-
-        # if isinstance(piece, Pawn): pawn_moves()
-
-        # elif isinstance(piece, Knight): knight_moves()
-
-        # elif isinstance(piece, Bishop):
-        #     straightline_move([
-        #         (-1,1), #to NE
-        #         (-1,-1),#to NW
-        #         (1,-1), #to SW
-        #         (1,1)   #to SE
-        #     ])
-
-        # elif isinstance(piece, Rook):
-        #     straightline_move([
-        #         (-1,0),#N
-        #         (0,1), #E
-        #         (0,-1),#W
-        #         (1,0)  #S
-        #     ])
-
-        # elif isinstance(piece, Queen):
-        #     straightline_move([
-        #         (-1,0),#N
-        #         (0,1), #E
-        #         (0,-1),#W
-        #         (1,0), #S
-        #         (-1,1), #to NE
-        #         (-1,-1),#to NW
-        #         (1,-1), #to SW
-        #         (1,1)   #to SE
-        #     ])
         
         if isinstance(piece, King): king_moves()
 

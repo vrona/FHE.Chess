@@ -59,7 +59,7 @@ square_alphanum = {}
 
 for ic in np.ndenumerate(bitboard):
     square_alphanum[ic[1]] = "%s%s" %(col[ic[0][1]],row[7-ic[0][0]])
-"""
+
 
 square_alphanum = {56: 'a8', 57: 'b8', 58: 'c8', 59: 'd8', 60: 'e8', 61: 'f8', 62: 'g8', 63: 'h8',
                    48: 'a7', 49: 'b7', 50: 'c7', 51: 'd7', 52: 'e7', 53: 'f7', 54: 'g7', 55: 'h7',
@@ -71,7 +71,7 @@ square_alphanum = {56: 'a8', 57: 'b8', 58: 'c8', 59: 'd8', 60: 'e8', 61: 'f8', 6
                    0: 'a1', 1: 'b1', 2: 'c1', 3: 'd1', 4: 'e1', 5: 'f1', 6: 'g1', 7: 'h1',}
 
 # alphanum_square = {v: k for k, v in square_alphanum.items()}
-
+"""
 alphanum_square = {'a8': 56, 'b8': 57, 'c8': 58, 'd8': 59, 'e8': 60, 'f8': 61, 'g8': 62, 'h8': 63,
                    'a7': 48, 'b7': 49, 'c7': 50, 'd7': 51, 'e7': 52, 'f7': 53, 'g7': 54, 'h7': 55,
                    'a6': 40, 'b6': 41, 'c6': 42, 'd6': 43, 'e6': 44, 'f6': 45, 'g6': 46, 'h6': 47,
