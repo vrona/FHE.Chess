@@ -6,7 +6,7 @@ import chess
 sys.path.append("client_local/")
 from chess_network import Network
 
-from base import sp_width, sp_height, sqsize, bitboard
+from base import sp_width, sp_height, sqsize
 from game import Game
 from square import Square
 from move import Move
@@ -24,6 +24,7 @@ class Main:
         self.game = Game()
         self.button = Button()
         self.clone_chess = Clone_Chess()
+        self.game_over = False
         self.game_count = 0        
 
     def outcome(self):
@@ -60,20 +61,22 @@ class Main:
     
     def reset_soft(self, game, button, dragger, clone_chess):
         game.reset()
-        button.normal = True
-        #button.ai_mode = False
-        button.white_ai = False
-        button.black_ai = False
         game = self.game
         board = self.game.board
         dragger = self.game.dragger
         clone_chess.reset_board()
+        button.normal = True
+        button.white_ai = False
+        button.black_ai = False
+        button.white_human = False
+        button.black_human = False
+        self.game_over = False
+        print("Game Over Init:",self.game_over)
         print("\n^^Game %s has been reseted^^\n"%self.game_count)
         self.game_count += 1
         print("\n--Game %s has started--\n"%self.game_count)
 
         return game
-
 
     def ai_server(self, black=False):
         screenplay = self.screenplay
@@ -107,8 +110,7 @@ class Main:
 
         else:
             if self.AI_game_over("%s AI cannot infer any proposals." % ai_name ):
-                if button.new_game:
-                    game = self.reset_soft(game, button, dragger, clone_chess)
+                self.game_over = True
 
         """
         Case2: INFERENCE WITH PSEUDO EVALUATION WHITE VALUE FILTER
@@ -116,7 +118,7 @@ class Main:
                 Note: black values not taken into consideration
 
         Uses autonomous_check_sim() to simulate all inferred moves from listoftuplesofmoves to return the one with the higher value of white.
-        
+
         # get the move with highest white value position/material
         # source_r, source_c, target_r, target_c = self.autonomous_check_sim(listoftuplesofmoves)
 
@@ -163,17 +165,26 @@ class Main:
             #if self.server != "local":
             #AI vs AI 
             if button.is_white_ai_() and game.player_turn=="white": self.ai_server()
-
             if button.is_black_ai_() and game.player_turn=="black": self.ai_server(black=True)
 
             # get the outcome of game when not None
-            if self.outcome():
+            if self.outcome() or self.game_over:
                 if button.new_game:
-                        game = self.reset_soft(game, button, dragger, clone_chess)
 
+                    game.reset()
+                    game = self.game
+                    board = self.game.board
+                    dragger = self.game.dragger
+                    clone_chess.reset_board()
+                    button.normal = True
+                    button.white_ai = False
+                    button.black_ai = False
+                    self.game_over = False
+                    print("\n^^Game %s has been reseted^^\n"%self.game_count)
+                    self.game_count += 1
+                    print("\n--Game %s has started--\n"%self.game_count)
 
             # ⒽⓊⓂⒶⓃ 🅗🅤🅜🅐🅝 ⒽⓊⓂⒶⓃ
-
             if dragger.dragging:
                 dragger.update_blit(screenplay)
             
@@ -191,7 +202,7 @@ class Main:
                     if board.squares[selected_square_row][selected_square_col].piece_presence():
                         piece = board.squares[selected_square_row][selected_square_col].piece
 
-                        if piece.color == game.player_turn:
+                        if piece.color == game.player_turn: #and button.is_color_human_(game.player_turn)
 
                             board.compute_move(piece, selected_square_row, selected_square_col, bool=True)
                             dragger.save_source(event.pos)
@@ -242,14 +253,15 @@ class Main:
                                 # BRIDGE HERE cloning move from app to python-chess
                                 clone_chess.move_clone_board(move)
                             print("\n%s %s %s%s to %s%s" % (piece.color,piece.name,Square.algebraic_notation_cols[dragger.source_col], 7-dragger.source_row,Square.algebraic_notation_cols[released_col], 7-released_row))
-                            print("\n")
                             # print(clone_chess.get_board())
+                            
+                            # uncomment to get FEN output
+                            print("\n%s (Human) FEN: "% game.player_turn, clone_chess.get_fen())
                             print("---------------")
                             
                             board.set_true_en_passant(dragger.piece)
                             
-                            # uncomment to get FEN output
-                            print("\nHUMAN FEN: ",clone_chess.get_fen())
+
                             game.display_chessboard(screenplay)
                             game.display_lastmove(screenplay)
                             game.display_pieces(screenplay)
@@ -266,6 +278,12 @@ class Main:
                         board = self.game.board
                         dragger = self.game.dragger
                         clone_chess.reset_board()
+                        button.normal = True
+                        button.white_ai = False
+                        button.black_ai = False
+                        # button.white_human = False
+                        # button.black_human = False
+                        self.game_over = False
                         print("\n^^Game %s has been reseted^^\n"%self.game_count)
                         self.game_count += 1
                         print("\n--Game %s has started--\n"%self.game_count)
@@ -278,7 +296,7 @@ class Main:
                     sys.exit()
 
             pygame.display.update()
-                        
+            
 
     def autonomous_piece(self,ai_name, source_row, source_col, target_row, target_col, board, game, clone_chess, dragger, button,surface,black):
         """Makes the AI's move inference applied into homemade chessboard environment"""
@@ -322,24 +340,24 @@ class Main:
                     print("\n%s %s %s%s to %s%s" % (piece.color,piece.name,Square.get_algeb_not(source_col), 8-source_row,Square.get_algeb_not(target_col), 8-target_row))
                         
                     # uncomment to get FEN output
-                    print("\n%s AI FEN: "% ai_name,clone_chess.get_fen())
+                    print("\n%s (AI) FEN: "% ai_name,clone_chess.get_fen())
 
                     game.display_chessboard(surface)
                     game.display_lastmove(surface)
                     game.display_pieces(surface)
-                    
-                    #piece.clear_moves()
                     game.next_player()
                 
                 else:
-                    if self.AI_game_over("%s AI wrongly inferred: %s%s %s%s" % (ai_name,Square.algebraic_notation_cols[source_col], 8-source_row, Square.algebraic_notation_cols[target_col], 8-target_row)): #or self.outcome() == True
-                        if button.new_game:
-                            game = self.reset_soft(game, button, dragger, clone_chess)
+                    if self.AI_game_over("%s AI wrongly inferred: %s%s %s%s" % (ai_name,Square.algebraic_notation_cols[source_col], 8-source_row, Square.algebraic_notation_cols[target_col], 8-target_row)):
+                        self.game_over = True
+                        print(self.game_over)
+
                                                 
         else:
             if self.AI_game_over("Dear %s AI, you've missed it: no piece here %s%s %s%s" % (ai_name,Square.algebraic_notation_cols[source_col], 8-source_row, Square.algebraic_notation_cols[target_col], 8-target_row)):
-                if button.new_game:
-                            game = self.reset_soft(game, button, dragger, clone_chess)
+                self.game_over = True
+                print(self.game_over)
+
 
 
     def autonomous_check_sim(self, listofmove):

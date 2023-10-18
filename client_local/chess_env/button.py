@@ -10,7 +10,8 @@ class Button:
         self.y_pos = y
         self.white_ai = False
         self.black_ai = False
-        self.human_mode = False
+        self.white_human = False
+        self.black_human = False
         self.name_mode = None
         self.new_game = False
         self.click_new = None
@@ -23,8 +24,11 @@ class Button:
     def is_black_ai_(self):
         return self.black_ai
 
-    def get_human_mode(self):
-        return self.human_mode
+    def is_color_human_(self, color):
+        if color=="white":
+            return self.white_human
+        if color=="black":
+            return self.black_human
     
     # click function
     def click_ai(self, x, action_name, network):
@@ -50,9 +54,13 @@ class Button:
                 self.normal = False
                 self.restart = True
 
-                if self.name_mode==" White AI ": self.white_ai = True
+                if self.name_mode==" White AI ":
+                    self.white_ai = True
+                    self.black_human = True
 
-                if self.name_mode==" Black AI": self.black_ai = True
+                if self.name_mode==" Black AI":
+                    self.black_ai = True
+                    self.white_human = True
 
                 if self.name_mode=="AI vs AI":
                     self.white_ai = True
@@ -73,8 +81,9 @@ class Button:
             self.normal = False
             self.restart = True
 
-            if self.name_mode=="White Human":
-                self.human_mode = True
+            if self.name_mode=="H vs H":
+                self.white_human = True
+                self.black_human = True
 
             if self.new_game:
                 self.new_game = False
