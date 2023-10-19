@@ -7,11 +7,14 @@ class Network:
     def __init__(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-        parser = argparse.ArgumentParser(description='provide Server IP_Address, port, local HvsH')
+        parser = argparse.ArgumentParser(description='provide DevMode, Server IP_Address, port')
+        parser.add_argument('--devmode', type=bool, help="bool. if True gives access to HvsH and AIvsAI", default=False)
         parser.add_argument('--server', type=str, help="2 options: IP_Address for remote or local", required=True)
         parser.add_argument('--port', type=int, help="the remote server\'s port. default is 3389", default=3389)
 
         self.args = parser.parse_args()
+        self.devmode = self.args.devmode
+
         self.server = str(self.args.server)
         self.port = int(self.args.port) # 3389 Google Cloud Instance and AWS' ok firewall ports
 

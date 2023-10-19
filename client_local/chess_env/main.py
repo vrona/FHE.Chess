@@ -2,6 +2,7 @@ import pygame
 import sys
 import copy
 import chess
+import argparse
 
 sys.path.append("client_local/")
 from chess_network import Network
@@ -16,13 +17,14 @@ from button import Button
 class Main:
 
     def __init__(self):
-        self.cs_network = Network()
-        self.server = self.cs_network.server # option 1: "IP_Address" (remote) or option 2: "local" (local)
+
+        self.cs_network = Network()    
         pygame.init()
         self.screenplay = pygame.display.set_mode((sp_width, sp_height))
         pygame.display.set_caption('Zama FHE.Chess App.')
+
         self.game = Game()
-        self.button = Button()
+        self.button = Button(self.cs_network.devmode)
         self.clone_chess = Clone_Chess()
         self.game_over = False
         self.game_count = 0        
@@ -31,6 +33,7 @@ class Main:
         screenplay = self.screenplay
         button = self.button
         clone_chess = self.clone_chess
+        cs_network = self.cs_network 
 
         if clone_chess.get_board().outcome() is not None:
             button.white_ai = False
@@ -53,6 +56,7 @@ class Main:
     def AI_game_over(self, text):
         screenplay = self.screenplay
         button = self.button
+
         while button.restart:
             button.button_restart(screenplay)                                              
             button.show_AI_givingup(screenplay, text) #"AI made a wrong move."
@@ -68,8 +72,6 @@ class Main:
         button.normal = True
         button.white_ai = False
         button.black_ai = False
-        button.white_human = False
-        button.black_human = False
         self.game_over = False
         print("Game Over Init:",self.game_over)
         print("\n^^Game %s has been reseted^^\n"%self.game_count)
@@ -96,7 +98,6 @@ class Main:
         listoftuplesofmoves = cs_network.send(chessboard)
 
         """
-        Case 1: INFERENCE WITHOUT FILTER
         Uses only the 1st tuple in listoftuplesofmoves as it supposed to be the best inferred move.
         """
         if listoftuplesofmoves is not None:
@@ -111,20 +112,6 @@ class Main:
         else:
             if self.AI_game_over("%s AI cannot infer any proposals." % ai_name ):
                 self.game_over = True
-
-        """
-        Case2: INFERENCE WITH PSEUDO EVALUATION WHITE VALUE FILTER
-                ** value of white position and material **
-                Note: black values not taken into consideration
-
-        Uses autonomous_check_sim() to simulate all inferred moves from listoftuplesofmoves to return the one with the higher value of white.
-
-        # get the move with highest white value position/material
-        # source_r, source_c, target_r, target_c = self.autonomous_check_sim(listoftuplesofmoves)
-
-        # apply the move
-        # self.autonomous_piece(source_r, source_c, target_r, target_c, board, game, clone_chess, button, screenplay)
-        """
 
     def mainloop(self):
         
@@ -156,13 +143,15 @@ class Main:
             # display user experience hover
             game.display_hover(screenplay)
 
+            # button.get_thedevmode(cs_network.devmode)
             button.button_whiteAI(screenplay, cs_network)
             button.button_blackAI(screenplay, cs_network)
-            button.button_bothAI(screenplay, cs_network)
-            button.button_dev(screenplay)
+            
+            button.button_AIvAI(screenplay, cs_network)
+            button.button_HvH(screenplay)
 
-             # ⒶⒾ 🅐🅘 ⒶⒾ 🅐🅘 ⒶⒾ
-            #if self.server != "local":
+            # ⒶⒾ 🅐🅘 ⒶⒾ 🅐🅘 ⒶⒾ
+
             #AI vs AI 
             if button.is_white_ai_() and game.player_turn=="white": self.ai_server()
             if button.is_black_ai_() and game.player_turn=="black": self.ai_server(black=True)
@@ -281,8 +270,6 @@ class Main:
                         button.normal = True
                         button.white_ai = False
                         button.black_ai = False
-                        # button.white_human = False
-                        # button.black_human = False
                         self.game_over = False
                         print("\n^^Game %s has been reseted^^\n"%self.game_count)
                         self.game_count += 1
@@ -355,66 +342,6 @@ class Main:
             if self.AI_game_over("Dear %s AI, you've missed it: no piece here %s%s %s%s" % (ai_name,Square.algebraic_notation_cols[source_col], 8-source_row, Square.algebraic_notation_cols[target_col], 8-target_row)):
                 self.game_over = True
                 print(self.game_over)
-
-
-
-    def autonomous_check_sim(self, listofmove):
-        """
-        Checks all the AI's moves inferences and return the one with the higher value of white piece position + material value
-        DOES NOT TAKE blacks INTO CONSIDERATION
-        """
-        move_eval = {}
-
-        for i in range(len(listofmove)):
-            """"for simulation"""
-
-            # copy current homemade chessboard with current pieces
-            tempboard = copy.deepcopy(self.game.board)
-            
-            # copy current Python-Chess chess.Board() with current pieces
-            temp_cloneboard = self.clone_chess.copy_board()
-            
-            self.clone_chess.piece_square_eval(temp_cloneboard)
-
-            move = listofmove[i]
-
-            source_row = 7 - move[0][1]
-            source_col = move[0][0]
-            target_row = 7 - move[1][1]
-            target_col = move[1][0]
-
-            if tempboard.squares[source_row][source_col].piece_presence():
-                piece = tempboard.squares[source_row][source_col].piece
-
-                if piece.color == self.game.player_turn:    
-                    tempboard.compute_move(piece, source_row, source_col, bool=False)
-
-                    # get the squares for move
-                    source = Square(source_row, source_col)
-                    target = Square(target_row, target_col)
-
-                    move = Move(source, target)
-
-                    #  check move ok ?
-                    if not tempboard.valid_move(piece, move):
-                        listofmove.pop(listofmove.index(listofmove[i]))
-                        print("%s poped out" % self.clone_chess.convert_move_2_string(move))
-                    
-                    else:
-                        self.clone_chess.move_into_copy(move,temp_cloneboard)
-                        print("find move", self.clone_chess.convert_move_2_string(move))
-
-                        move_eval[source_row, source_col, target_row, target_col] = self.clone_chess.piece_square_eval(temp_cloneboard)
-                        #self.clone_chess.clear_copy_board(temp_cloneboard)
-
-        vlist = []
-        klist = []
-        while len(move_eval) > 0:
-            vlist.append(max(move_eval.values()))
-            klist.append(max(move_eval,key=move_eval.get))
-            move_eval.pop(max(move_eval,key=move_eval.get))
-
-        return klist[0][0], klist[0][1], klist[0][2], klist[0][3]
 
 main = Main()
 main.mainloop()

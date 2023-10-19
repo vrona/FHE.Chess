@@ -2,11 +2,20 @@ import pygame
 from PIL import ImageFont
 from base import *
 
-class Button:
+# class Devmode:
 
-    def __init__(self, normal = True, restart = False, y = sp_height/2 -30):
+#     def __init__(self, devmode):
+        
+#         
 
+class Button():
+
+    def __init__(self, devmode, normal = True, restart = False, y = sp_height/2 -30):
+
+        self.state_dev = self.state_mode(devmode)
         self.normal = normal
+        # self.devmode = devmode
+        # self.devnormal = False
         self.y_pos = y
         self.white_ai = False
         self.black_ai = False
@@ -17,6 +26,12 @@ class Button:
         self.click_new = None
         self.restart = restart
 
+        
+
+    def state_mode(self, devmode):
+        self.state = "devmode" if devmode == True else "playmode"
+        return self.state
+    
     # retrieve if AI Mode status   
     def is_white_ai_(self):
         return self.white_ai
@@ -29,7 +44,7 @@ class Button:
             return self.white_human
         if color=="black":
             return self.black_human
-    
+
     # click function
     def click_ai(self, x, action_name, network):
         """
@@ -62,14 +77,17 @@ class Button:
                     self.black_ai = True
                     self.white_human = True
 
-                if self.name_mode=="AI vs AI":
+                if self.name_mode=="AI vs AI": #and self.dev_state == "devmode"
                     self.white_ai = True
                     self.black_ai = True
             
                 if self.new_game:
                     self.new_game = False
     
+
     def click_human(self, x, action_name):
+        
+        #if self.state_dev == "devmode":
         text_width = self.sizeoftext(action_name)
         mouse_pos = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()[0]
@@ -125,32 +143,27 @@ class Button:
     def button_whiteAI(self, surface, bool):
         self.button_name = ' White AI '
         self.click_ai(220, self.button_name, bool)
-        if self.normal:
-            self.draw(surface,'white', self.button_name,220)
+        if self.normal: self.draw(surface,'white', self.button_name,220)
 
     def button_blackAI(self, surface, bool):
         self.button_name = ' Black AI'
         self.click_ai(445, self.button_name, bool)
-        if self.normal:
-            self.draw(surface, 'white', self.button_name, 445)
+        if self.normal: self.draw(surface, 'white', self.button_name, 445)
 
-    def button_bothAI(self, surface, bool):
+    def button_AIvAI(self, surface, bool):
         self.button_name = 'AI vs AI'
         self.click_ai(691, self.button_name,bool)
-        if self.normal:
-            self.draw(surface,'white', self.button_name, 691)
-
-    def button_dev(self, surface):
-        self.button_name = 'H vs H'
+        if self.normal and self.state_dev == "devmode": self.draw(surface,'white', self.button_name, 691)
+        
+    def button_HvH(self, surface):
+        self.button_name = "H vs H"
         self.click_human(0, self.button_name)
-        if self.normal:
-            self.draw(surface,'white', self.button_name,0)
-
+        if self.normal and self.state_dev == "devmode": self.draw(surface,'white', self.button_name,0)
+        
     def button_restart(self, surface):
         self.button_name = 'New Game'
         self.click_new_game(332, self.button_name)
-        if self.restart:
-            self.draw(surface,'white', self.button_name,332)
+        if self.restart: self.draw(surface,'white', self.button_name,332)
         return True
 
     def show_result(self, surface, winner, termination):

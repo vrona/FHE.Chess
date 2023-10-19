@@ -167,9 +167,3 @@ class Clone_Chess:
         
         # move at micro
         return source, target
-    
-
-    def stockfish_evaluation(board, time_limit = 0.01):
-        engine = chess.engine.SimpleEngine.popen_uci("/usr/local/Cellar/stockfish/16/bin/stockfish")
-        result = engine.analyse(board, chess.engine.Limit(time=time_limit))
-        return result['score']
