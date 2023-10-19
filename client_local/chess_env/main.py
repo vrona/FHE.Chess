@@ -63,23 +63,6 @@ class Main:
         
             return True
     
-    def reset_soft(self, game, button, dragger, clone_chess):
-        game.reset()
-        game = self.game
-        board = self.game.board
-        dragger = self.game.dragger
-        clone_chess.reset_board()
-        button.normal = True
-        button.white_ai = False
-        button.black_ai = False
-        self.game_over = False
-        print("Game Over Init:",self.game_over)
-        print("\n^^Game %s has been reseted^^\n"%self.game_count)
-        self.game_count += 1
-        print("\n--Game %s has started--\n"%self.game_count)
-
-        return game
-
     def ai_server(self, black=False):
         screenplay = self.screenplay
         game = self.game
@@ -121,7 +104,6 @@ class Main:
         board = self.game.board
         dragger = self.game.dragger
         clone_chess = self.clone_chess
-        cs_network = self.cs_network
 
         self.game_count += 1
         print("\n--Game %s has started--\n"%self.game_count)
@@ -143,11 +125,10 @@ class Main:
             # display user experience hover
             game.display_hover(screenplay)
 
-            # button.get_thedevmode(cs_network.devmode)
-            button.button_whiteAI(screenplay) #cs_network)
-            button.button_blackAI(screenplay) #cs_network)
-            
-            button.button_AIvAI(screenplay) #cs_network)
+            # display buttons
+            button.button_whiteAI(screenplay)
+            button.button_blackAI(screenplay)
+            button.button_AIvAI(screenplay)
             button.button_HvH(screenplay)
 
             # ⒶⒾ 🅐🅘 ⒶⒾ 🅐🅘 ⒶⒾ

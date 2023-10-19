@@ -24,8 +24,6 @@ class Button():
         self.click_new = None
         self.restart = restart
 
-        
-
     def state_mode(self, devmode):
         self.state = "devmode" if devmode == True else "playmode"
         return self.state
