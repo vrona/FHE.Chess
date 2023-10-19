@@ -13,7 +13,7 @@ class Network:
         parser.add_argument('--port', type=int, help="the remote server\'s port. default is 3389", default=3389)
 
         self.args = parser.parse_args()
-        self.devmode = True if self.args.devmode == "True" else False
+        self.devmode = True if self.args.devmode == "True" else False # developer mode which enable testing the Human vs Human or AIvsAI
 
         self.server = str(self.args.server)
         self.port = int(self.args.port) # 3389 Google Cloud Instance and AWS' ok firewall ports
