@@ -14,8 +14,6 @@ class Button():
 
         self.state_dev = self.state_mode(devmode)
         self.normal = normal
-        # self.devmode = devmode
-        # self.devnormal = False
         self.y_pos = y
         self.white_ai = False
         self.black_ai = False
@@ -46,7 +44,7 @@ class Button():
             return self.black_human
 
     # click function
-    def click_ai(self, x, action_name, network):
+    def click_ai(self, x, action_name): #network
         """
         x: int initial pixel within width
         action_name: string White AI or White Human
@@ -58,31 +56,25 @@ class Button():
         button_rect = pygame.rect.Rect((x, self.y_pos),(text_width,30))
         
         if click and button_rect.collidepoint(mouse_pos) and self.normal:
-            
-            if not network.connected:
-                network.input_ip(network.connected)
-                self.click_ai(x, action_name, network)
 
-            else:
-                # set the AI mode
-                self.name_mode = action_name
-                self.normal = False
-                self.restart = True
+            self.name_mode = action_name
+            self.normal = False
+            self.restart = True
 
-                if self.name_mode==" White AI ":
-                    self.white_ai = True
-                    self.black_human = True
+            if self.name_mode==" White AI ":
+                self.white_ai = True
+                self.black_human = True
 
-                if self.name_mode==" Black AI":
-                    self.black_ai = True
-                    self.white_human = True
+            if self.name_mode==" Black AI":
+                self.black_ai = True
+                self.white_human = True
 
-                if self.name_mode=="AI vs AI": #and self.dev_state == "devmode"
-                    self.white_ai = True
-                    self.black_ai = True
-            
-                if self.new_game:
-                    self.new_game = False
+            if self.name_mode=="AI vs AI":
+                self.white_ai = True
+                self.black_ai = True
+        
+            if self.new_game:
+                self.new_game = False
     
 
     def click_human(self, x, action_name):
@@ -140,19 +132,19 @@ class Button():
         pygame.draw.rect(surface, 'black', button_rect, 2, 3)
         surface.blit(button_text, (x+3, self.y_pos + y +3))
 
-    def button_whiteAI(self, surface, bool):
+    def button_whiteAI(self, surface): #, bool:
         self.button_name = ' White AI '
-        self.click_ai(220, self.button_name, bool)
+        self.click_ai(220, self.button_name) #, bool
         if self.normal: self.draw(surface,'white', self.button_name,220)
 
-    def button_blackAI(self, surface, bool):
+    def button_blackAI(self, surface): #, bool:
         self.button_name = ' Black AI'
-        self.click_ai(445, self.button_name, bool)
+        self.click_ai(445, self.button_name) #, bool
         if self.normal: self.draw(surface, 'white', self.button_name, 445)
 
-    def button_AIvAI(self, surface, bool):
+    def button_AIvAI(self, surface): #, bool:
         self.button_name = 'AI vs AI'
-        self.click_ai(691, self.button_name,bool)
+        self.click_ai(691, self.button_name) #, bool
         if self.normal and self.state_dev == "devmode": self.draw(surface,'white', self.button_name, 691)
         
     def button_HvH(self, surface):

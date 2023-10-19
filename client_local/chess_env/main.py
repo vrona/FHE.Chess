@@ -144,10 +144,10 @@ class Main:
             game.display_hover(screenplay)
 
             # button.get_thedevmode(cs_network.devmode)
-            button.button_whiteAI(screenplay, cs_network)
-            button.button_blackAI(screenplay, cs_network)
+            button.button_whiteAI(screenplay) #cs_network)
+            button.button_blackAI(screenplay) #cs_network)
             
-            button.button_AIvAI(screenplay, cs_network)
+            button.button_AIvAI(screenplay) #cs_network)
             button.button_HvH(screenplay)
 
             # ⒶⒾ 🅐🅘 ⒶⒾ 🅐🅘 ⒶⒾ
@@ -335,13 +335,11 @@ class Main:
                 else:
                     if self.AI_game_over("%s AI wrongly inferred: %s%s %s%s" % (ai_name,Square.algebraic_notation_cols[source_col], 8-source_row, Square.algebraic_notation_cols[target_col], 8-target_row)):
                         self.game_over = True
-                        print(self.game_over)
 
                                                 
         else:
             if self.AI_game_over("Dear %s AI, you've missed it: no piece here %s%s %s%s" % (ai_name,Square.algebraic_notation_cols[source_col], 8-source_row, Square.algebraic_notation_cols[target_col], 8-target_row)):
                 self.game_over = True
-                print(self.game_over)
 
 main = Main()
 main.mainloop()
