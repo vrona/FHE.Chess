@@ -8,12 +8,12 @@ class Network:
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         parser = argparse.ArgumentParser(description='provide DevMode, Server IP_Address, port')
-        parser.add_argument('--devmode', type=bool, help="bool. if True gives access to HvsH and AIvsAI", default=False)
+        parser.add_argument('--devmode', type=str, help="bool. if True gives access to HvsH and AIvsAI", choices=("True","False"))#,default=False)
         parser.add_argument('--server', type=str, help="2 options: IP_Address for remote or local", required=True)
         parser.add_argument('--port', type=int, help="the remote server\'s port. default is 3389", default=3389)
 
         self.args = parser.parse_args()
-        self.devmode = self.args.devmode
+        self.devmode = True if self.args.devmode == "True" else False
 
         self.server = str(self.args.server)
         self.port = int(self.args.port) # 3389 Google Cloud Instance and AWS' ok firewall ports
@@ -41,7 +41,6 @@ class Network:
             if e.errno == 61: #"Connection refused":
                 print("\n%s because your remote server may not running." % e)
                 print("No worries: just choose between White AI and White Human modes and follow the requirements.")
-            
             else:
                 print(e)        
 
@@ -70,7 +69,6 @@ class Network:
                 if self.server == "local":
                     print("Now, please provide the remote server ip_address:")
                     self.server = str(input())
-
                 else:
                     self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 self.new_addr = (self.server, self.port)
