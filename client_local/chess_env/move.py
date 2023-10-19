@@ -22,4 +22,3 @@ class Move:
     #     # move at micro
     #     move = Move(source, target)
     #     return move
-    #     #piece.add_ok_move(move)

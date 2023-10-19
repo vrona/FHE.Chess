@@ -16,6 +16,7 @@ class Clone_Chess:
     def __init__(self):
 
         self.board = chess.Board()
+        self.board_mirror = chess.Board().mirror()
 
         #piece square tables and (material) value are from Chess Programming Wiki https://www.chessprogramming.org/Simplified_Evaluation_Function
         
@@ -56,18 +57,15 @@ class Clone_Chess:
     # ⒶⒸⓉⒾⓄⓃⓈ 🅐🅒🅣🅘🅞🅝🅢 ⒶⒸⓉⒾⓄⓃⓈ
     
     
-    def move_clone_board(self, move):
+    def move_clone_board(self, move, mirror=False, to_promote=False):
         """ Makes a push of move from source to target square"""
         uci_format = self.convert_move_2_string(move)
-        try:
-            self.board.push_san(uci_format)
-        except chess.IllegalMoveError as e:
-            print(e)
-            
+        
+        if to_promote:
+           """ Push a pawn promotion of move from source to target square """
+           uci_format = uci_format+"q"
 
-    def move_clone_promotion(self, sq_s, sq_t, promotion):
-        """ Push a pawn promotion of move from source to target square """
-        chess.Move(sq_s, sq_t, promotion)
+        self.board_mirror.push_san(uci_format) if mirror==True else self.board.push_san(uci_format) 
 
     def reset_board(self):
         """ reset current board"""
@@ -102,118 +100,19 @@ class Clone_Chess:
 
     # ⒼⒺⓉⓈ 🅖🅔🅣🅢 ⒼⒺⓉⓈ
 
-
-
-    def get_board(self):
+    def get_board(self, mirror=False):
         """get current board"""
-        return self.board
-    
+        return self.board.mirror()if mirror==True else self.board
+        
     def get_fen(self):
         """get the FEN representation of current move"""
         return self.board.fen()
-
-    def legal_moves(self):
-        """get legal moves generator"""
-        return self.board.legal_moves
-
-    def pseudo_legal_moves(self):
-        """get pseudo legal moves generator (might leave or put the King in check)"""
-        return self.board.pseudo_legal_moves
-
-    def legal_moves_count(self):
-        """get the number of legal moves"""
-        return self.board.legal_moves.count()
-
-    def outcome(self, board):
-        """get game outcome"""
-        return board.outcome()
 
 
     # ⒸⒽⒺⒸⓀⓈ 🅒🅗🅔🅒🅚🅢 ⒸⒽⒺⒸⓀⓈ
 
 
-    def check_legal_move(self, move):
-        """checks if move within legal moves"""
-        uci_format = self.convert_move_2_string(move)
-        return chess.Move.from_uci(uci_format) in self.legal_moves()
-
-    def check_pseudo_legal_move(self, move):
-        """checks if move within pseudo legal moves"""
-        uci_format = self.convert_move_2_string(move)
-        return chess.Move.from_uci(uci_format) in self.pseudo_legal_moves()
-
-    def checkmate_check(self):
-        """checks checkmate?"""
-        return self.board.is_checkmate()
-    
-    def check_stalemate(self):
-        """checks stalemate?"""
-        return self.board.is_stalemate()
-    
-    def check_insuffisant_material(self):
-        """checks enough material?"""
-        return self.board.is_insufficient_material()
-    
-    def check_gameover(self):
-        """checks game_over?"""
-        return self.board.is_game_over()
-    
-    def check_repetitions(self):
-        """checks once fiveold repetition or 75 moves without pawn push or capture?"""
-        return (self.board.is_fivefold_repetition(), self.board.is_seventyfive_moves())
-
-    def check_termination(self, current_board):
-        """checks all checks"""
-
-        if current_board.outcome():
-            if current_board.outcome().winner == chess.WHITE:
-                print("White wins by %s" % current_board.outcome().termination)
-            elif current_board.outcome().winner == chess.BLACK:
-                print("Black wins %s" % current_board.outcome().termination)
-            else:
-                print("Draw, no winner nor looser.")
-        print("Game %s" % current_board.outcome())
-
-
-
-        """
-        elif self.board.is_checkmate():
-            print("is Check: %s" % current_board.is_checkmate())
-            return True
-        
-        elif current_board.is_stalemate():
-            print("is Stalemate: %s" % current_board.is_stalemate())
-            return True
-
-        elif current_board.is_insufficient_material():
-            print("Insufficient_material: %s" % current_board.is_insufficient_material())
-            return True
-        
-        elif current_board.is_game_over():
-            print("Game_over: %s" % current_board.is_game_over())
-            return True
-
-        elif current_board.is_fivefold_repetition():
-            print("Repetition 5: %s" % current_board.is_fivefold_repetition())
-            return True
-        
-        elif current_board.is_seventyfive_moves():
-            print("Repetition 75: %s" % current_board.is_seventyfive_moves())
-            return True
-        """
-
-
-    #  ⒸⓁⒶⒾⓂⓈ 🅒🅛🅐🅘🅜🅢 ⒸⓁⒶⒾⓂⓈ
-
-    def claim_repetitions(self):
-        if self.board.can_claim_threefold_repetition():
-            return self.board.can_claim_threefold_repetition()
-        
-        if self.board.can_claim_fifty_moves():
-            return self.board.can_claim_fifty_moves()
-    
-    def claim_draw(self):
-        return self.board.can_claim_draw()
+    # ⒸⓁⒶⒾⓂⓈ 🅒🅛🅐🅘🅜🅢 ⒸⓁⒶⒾⓂⓈ
     
     
     # ⒽⒺⓁⓅⒺⓇⓈ 🅗🅔🅛🅟🅔🅡🅢 ⒽⒺⓁⓅⒺⓇⓈ
@@ -227,7 +126,6 @@ class Clone_Chess:
         source_row = str(8-move.source.row)
         target_col = Square.get_algeb_not(move.target.col)
         target_row = str(8-move.target.row)
-
         str_move = "".join((source_col,source_row,target_col,target_row))
 
         return str_move
@@ -235,7 +133,7 @@ class Clone_Chess:
 
     # ⓉⒺⓈⓉⓈ 🅣🅔🅢🅣🅢 ⓉⒺⓈⓉⓈ
 
-    def convert_move_2_string_bis(self, source_col, source_row, target_col, target_row):
+    def convert_move_2_string_bis(self, source_col, source_row, target_col, target_row, to_promote=False):
         """
         convert homemade (source[col][row] to target[col][row]) to string for uci format (used by Python-Chess library)
         """
@@ -246,10 +144,13 @@ class Clone_Chess:
 
         # str_source = "".join((source_col,source_row))
         # str_target = "".join((target_col,target_row))
-
-        str_move = "".join((src_col,src_row,trgt_col,trgt_row))
-        print(str_move)
-        return str_move #str_source, str_target
+        if to_promote:
+            str_move = "".join((src_col,src_row,trgt_col,trgt_row,"q"))
+            print(str_move)
+        else:
+            str_move = "".join((src_col,src_row,trgt_col,trgt_row))
+            print(str_move)
+        #return str_move #str_source, str_target
 
 
     def convert_string_2_move(self, str_move):
@@ -266,9 +167,3 @@ class Clone_Chess:
         
         # move at micro
         return source, target
-    
-
-    def stockfish_evaluation(board, time_limit = 0.01):
-        engine = chess.engine.SimpleEngine.popen_uci("/usr/local/Cellar/stockfish/16/bin/stockfish")
-        result = engine.analyse(board, chess.engine.Limit(time=time_limit))
-        return result['score']
