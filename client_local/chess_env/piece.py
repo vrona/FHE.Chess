@@ -1,36 +1,27 @@
 import os
 import chess
-from clone_chess import Clone_Chess
 
 class Piece:
 
     def __init__(self, name, color, img_uri=None, rectangle=None):
-        self.clone_chess = Clone_Chess()
         self.name = name
         self.color = color
-        self.ok_moves = []
+        self.legal_move = []
         self.moved = False
         self.img_uri = img_uri
         self.set_texture()
         self.rectangle = rectangle
 
-
     def set_texture(self, size=80):
         self.img_uri = os.path.join(
             f'client_local/content/pieces/pieces_{size}px/{self.color}_{self.name}.png')
 
-    def add_ok_move(self, move):
+    def add_legalmove(self, move):
         """adds to each piece its ok_moves based on its behaviour"""
-        self.ok_moves.append(move)
+        self.legal_move.append(move)
 
-    def check_moves(self, move):
-        """for test
-        NB: Python_Chess legal_move() generator is different from homemade chessboard add_ok_move().
-        """
-        print("OK MOVES: ", self.clone_chess.check_legal_move(move))
-
-    def clear_moves(self):
-        self.ok_moves = []
+    def clear_legal_move(self):
+        self.legal_move = []
 
 
 class Pawn(Piece):
@@ -39,7 +30,7 @@ class Pawn(Piece):
         self.dir = -1 if color == 'white' else 1
         self.en_passant = False
         self.promoted = False
-        self.pname = chess.WHITE if color == 'white' else chess.BLACK
+        self.pname = "P" if color == 'white' else "p"
         self.type = chess.PAWN
         super().__init__('pawn', color)
 
@@ -47,7 +38,7 @@ class Pawn(Piece):
 class Knight(Piece):
 
     def __init__(self, color):
-        self.pname = chess.WHITE if color == 'white' else chess.BLACK
+        self.pname = "N" if color == 'white' else "n"
         self.type = chess.KNIGHT
         super().__init__('knight', color)
 
@@ -55,7 +46,7 @@ class Knight(Piece):
 class Bishop(Piece):
 
     def __init__(self, color):
-        self.pname = chess.WHITE if color == 'white' else chess.BLACK
+        self.pname = "B" if color == 'white' else "b"
         self.type = chess.BISHOP
         super().__init__('bishop', color)
 
@@ -63,7 +54,7 @@ class Bishop(Piece):
 class Rook(Piece):
 
     def __init__(self, color):
-        self.pname = chess.WHITE if color == 'white' else chess.BLACK
+        self.pname = "R" if color == 'white' else "r"
         self.type = chess.ROOK
         super().__init__('rook', color)
 
@@ -71,7 +62,7 @@ class Rook(Piece):
 class Queen(Piece):
 
     def __init__(self, color):
-        self.pname = chess.WHITE if color == 'white' else chess.BLACK
+        self.pname = "Q" if color == 'white' else "q"
         self.type = chess.QUEEN
         self.is_promotion = False
         super().__init__('queen', color)
@@ -80,7 +71,7 @@ class Queen(Piece):
 class King(Piece):
 
     def __init__(self, color):
-        self.pname = chess.WHITE if color == 'white' else chess.BLACK
+        self.pname = "K" if color == 'white' else "k"
         self.type = chess.KING
         self.left_rook = None
         self.right_rook = None

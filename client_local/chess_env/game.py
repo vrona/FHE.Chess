@@ -56,8 +56,8 @@ class Game:
             black_dots = pygame.image.load("client_local/content/imgdot/black_dots.png")
             white_dots = pygame.image.load("client_local/content/imgdot/white_dots.png")
 
-            for move in piece.ok_moves:
-
+            for move in piece.legal_move:
+                
                 img_center = move.target.col * sqsize + sqsize // 2, move.target.row * sqsize + sqsize // 2
 
                 if (move.target.row + move.target.col) % 2 == 0:
@@ -69,7 +69,7 @@ class Game:
                     surface.blit(white_dots, piece.rectangle)
                 
                 # ok moves show as color self.display_rect('#ffeac8', '#ffebc6', move.target.col, move.target.row, surface, stroke=10)
-    
+
     # this enable players to see where the move is from light grey
     def display_lastmove(self, surface):
         if self.board.last_move:
