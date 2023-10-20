@@ -65,14 +65,18 @@ Then, run:
 **1st remote terminal**: ```$ python3 server/server_all.py -i (or --inference) "clear" or "simfhe" or "deepfhe"```<br>
 !! Wait until the server is connected !! (waiting time:```"clear"``` and ```"deepfhe"``` < several seconds, ```"simfhe"``` between 2 and 7 mins)<br>
 
-**2nd local terminal**: ```$ python3 client_local/chess_env/main.py --server "IP_address" or "local" --port PORT```<br>
+**2nd local terminal**: ```$ python3 client_local/chess_env/main.py --server "IP_address" --port PORT```<br>
 NB:
-- ```--server```:
-    - "IP_Address" option enables "White AI" and "White Human" modes,
-    - while "local" option, the "White Human" only,<br>
-You can change your mind, if you've chosen ```local```. How?<br>
-When facing both "White AI" and "White Human" buttons, just click "White AI" and answer to the prompt displayed by your Local Terminal.
-- ```--port```: default value is ```3389``` which is the ok firewall on GCI and AWS.
+- ```--server```: **Required option** and it enables "White AI" and "Black AI" modes,
+If you have mistyped your IP_Address or if you forgot to run your remote server, please answer to the prompt displayed by your Local Terminal.
+- ```--port```: **Facultative** if your value is the default value:```3389```. This is the ok firewall on GCI and AWS.
+<br>
+
+There is a "developer mode" called ```--devmode```. **Facultative** if you are not interesting in:
+- "Human vs Human" game,
+- "AI vs AI"game.<br><br>
+Its default value: ```False```.<br>
+To activate it, run ```$ python3 client_local/chess_env/main.py --devmode True --server "IP_address" --port PORT```
 <br>
 
 ## Reset and kill
@@ -86,15 +90,25 @@ When facing both "White AI" and "White Human" buttons, just click "White AI" and
 
 2 main modes:
 
--   White AI (AI as white vs Human as black)<br>
+-   **Game** <br>
+    <br>
+    White or Black AI (vs Human as Black or White)<br>
     3 modes:
     - clear
     - simfhe
     - deepfhe
--   White Human (Human as white vs Human as black)
 <br>
-<div align="center"><img src="./images/screen_zama_vrona_chess.png" style="width:'50%'"/></div>
+<div align="center"><img src="./images/W_B_AI_menu.png" style="width:'50%'"/></div>
+<br>
 
+- **Developer Mode**<br>
+    <br>
+    2 more choices added to the Game mode:<br>
+    - Human vs Human
+    - AI vs AI (here to watch different type of behavior, you can play with the top best answers of each models. In your remote machine, then into [server_all.py](server_cloud/server/server_all.py), change the parameters 5 and 3 of <br>```python reply = inference.predict(data, 5, 3)```. Recall that 5 is the 5 top answers of Source model. And for each of them, Target model keep the 3 top answers).
+
+<br>
+<div align="center"><img src="./images/Devmode_menu.png" style="width:'50%'"/></div>
 <br>
 
 [^1]: if needed, main steps to create ssh connection with GCI on Linux/Mac:

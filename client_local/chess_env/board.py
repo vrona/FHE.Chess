@@ -98,7 +98,7 @@ class Board:
 
     def piece_legal(self, current_board, piece):
         """
-        legal: several proposal > for i in proposal, get source + target then push move(proposal) add_ok_moves
+        legal move form python-chess, algebraic format of SOURCE square >> algebraic format of TARGET squares  >  push moves to piece.legal_move list.
         """
         # make a list of legal moves from python-chess
         list_legal = list(current_board.legal_moves)
@@ -122,13 +122,12 @@ class Board:
 
                     self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece.add_legalmove(move)
 
-    def compute_move(self, piece, row, col, bool=True):
+    def compute_move(self, piece, row, col):
         """
-        computes possible moves() of specific piece at a given coordinates
+        focused on King castling.
         """
     
         def king_moves():
-
 
             # castling
             if not piece.moved:

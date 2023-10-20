@@ -324,12 +324,16 @@ Then, run:
 
 **2nd local terminal**: ```$ python3 client_local/chess_env/main.py --server IP_address --port PORT```<br>
 NB:
-- ```--server```:
-    - "IP_Address" option enables "White AI" and "White Human" modes,
-    - while "local" option, the "White Human" only,<br>
-You can change your mind, if you've chosen ```local```. How?<br>
-When facing both "White AI" and "White Human" buttons, just click "White AI" and answer to the prompt displayed by your Local Terminal.
-- ```--port```: default value is ```3389``` which is the ok firewall on GCI and AWS.
+- ```--server```: **Required option** and it enables "White AI" and "Black AI" modes,
+If you have mistyped your IP_Address or if you forgot to run your remote server, please answer to the prompt displayed by your Local Terminal.
+- ```--port```: **Facultative** if your value is the default value:```3389```. This is the ok firewall on GCI and AWS.
+<br>
+
+There is a "developer mode" called ```--devmode```. **Facultative** if you are not interesting in:
+- "Human vs Human" game,
+- "AI vs AI"game.<br>
+Its default value: ```False```.<br>
+To activate it, run ```$ python3 client_local/chess_env/main.py --devmode True --server "IP_address" --port PORT```
 <br>
 
 ## Reset and kill

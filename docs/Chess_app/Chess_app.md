@@ -1,5 +1,5 @@
 # Chess App
-
+**In this version [Python-Chess library](https://python-chess.readthedocs.io/en) is at the core mechanism of the app.**
 The Chess environment has been developed from scratch thanks to the "Coding a Complete Chess Game" tutorial and wiki (see [bibliography](../bibliography.md)).
 It integrates [Python-Chess library](https://python-chess.readthedocs.io/en) via the ```Clone_chess``` class (see [clone_chess.py](../../client_local/chess_env/clone_chess.py))
 
@@ -48,32 +48,42 @@ There are several methods that are notable:
 <br>
 
 - Core methods:
-    - defining the piece behavior:
+    - defining the pieces' legal moves (moves which avoid to put King in check.):
         ```python
-        def compute_move(piece, row, col, bool=True)
-        ```
-        A piece behavior is define by a dedicated internal method inside ```compute_move()``` method.<br>
-        For eg.: King behavior is defined by ```king_moves()```.
+        def piece_legal(self, current_board, piece):
+        """
+        legal move form python-chess, algebraic format of SOURCE square >> algebraic format of TARGET squares  >  push moves to piece.legal_move list.
+        """
+        # make a list of legal moves from python-chess
+        list_legal = list(current_board.legal_moves)
 
-    - simulation of any opponent's movements over the other King:
-        ```python
-        def king_check_sim(piece, move)
+        # make a dict of legal moves where keys is a tuple of splitted sprint from keys
+        coordinate_legal = {tuple(alphasq):[] for alphasq in alphanum_square.keys()}
+        
+        for i, lv in enumerate(list_legal):
+            coordinate_legal[tuple(str(list_legal[i])[:2])].append(tuple(str(lv)[2:]))
+
+        for source_alpha, target_list_tuple in coordinate_legal.items():
+
+            source = Square(8 -int(source_alpha[1]), Square.convert_algeb_not(source_alpha[0]))
+
+            for target_alpha in target_list_tuple: #('g', '1', 'f', '3')
+                target = Square(8 -int(target_alpha[1]), Square.convert_algeb_not(target_alpha[0]))
+    
+                move = Move(source, target)
+        
+                if self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece_type() is not None: #and current_board.is_check() != True
+
+                    self.squares[8 -int(source_alpha[1])][Square.convert_algeb_not(source_alpha[0])].piece.add_legalmove(move)
         ```
-        (detailed here [check_simulation](check_simulation.md))
 
 - Common methods:
     - ```python
         def move(piece, move, simulation = False)
         ```
-    - for refactoring purpose:
-        ```python
-        def move_kingchecksim()
-        ```
-        ```python
-        def sim_kingcheck_okmoves()
-        ```
+    
 
-- Some pieces have exceptional movements:
+- Pieces have exceptional movements:
 
     - Pawn:
         - Promotion:
@@ -84,7 +94,7 @@ There are several methods that are notable:
             ```python
             def set_true_en_passant(piece)
             ```
-    - King: castling
+    - King: see [castling doc](docs/Chess_app/castling_move.md)
         ```python
         def castling(source, target)
         ```

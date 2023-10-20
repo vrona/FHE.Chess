@@ -1,8 +1,6 @@
 import pygame
 import sys
-import copy
 import chess
-import argparse
 
 sys.path.append("client_local/")
 from chess_network import Network
@@ -174,7 +172,7 @@ class Main:
 
                         if piece.color == game.player_turn: #and button.is_color_human_(game.player_turn)
 
-                            board.compute_move(piece, selected_square_row, selected_square_col, bool=True)
+                            board.compute_move(piece, selected_square_row, selected_square_col)
                             dragger.save_source(event.pos)
                             dragger.drag_piece(piece)
                             game.display_chessboard(screenplay)
@@ -279,7 +277,7 @@ class Main:
 
             if piece.color == self.game.player_turn:
                 
-                board.compute_move(piece, source_row, source_col, bool=True)
+                board.compute_move(piece, source_row, source_col)
 
                 # get the squares for move
                 source = Square(source_row, source_col)
@@ -316,8 +314,7 @@ class Main:
                 else:
                     if self.AI_game_over("%s AI wrongly inferred: %s%s %s%s" % (ai_name,Square.algebraic_notation_cols[source_col], 8-source_row, Square.algebraic_notation_cols[target_col], 8-target_row)):
                         self.game_over = True
-
-                                                
+                                  
         else:
             if self.AI_game_over("Dear %s AI, you've missed it: no piece here %s%s %s%s" % (ai_name,Square.algebraic_notation_cols[source_col], 8-source_row, Square.algebraic_notation_cols[target_col], 8-target_row)):
                 self.game_over = True

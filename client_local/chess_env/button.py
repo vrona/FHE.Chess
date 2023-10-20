@@ -1,12 +1,6 @@
 import pygame
 from PIL import ImageFont
-from base import *
-
-# class Devmode:
-
-#     def __init__(self, devmode):
-        
-#         
+from base import *    
 
 class Button():
 
