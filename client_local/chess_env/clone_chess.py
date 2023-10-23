@@ -17,6 +17,7 @@ class Clone_Chess:
 
         self.board = chess.Board()
         self.board_mirror = chess.Board().mirror()
+        self.engine = chess.engine.SimpleEngine.popen_uci("/usr/local/Cellar/stockfish/16/bin/stockfish")
 
         #piece square tables and (material) value are from Chess Programming Wiki https://www.chessprogramming.org/Simplified_Evaluation_Function
         
@@ -108,6 +109,11 @@ class Clone_Chess:
         """get the FEN representation of current move"""
         return self.board.fen()
 
+    def stockfish_evaluation(self,board):
+        
+        result = self.engine.analyse(board, chess.engine.Limit(depth=3))
+        print(result)
+        #return result['score']
 
     # ⒸⒽⒺⒸⓀⓈ 🅒🅗🅔🅒🅚🅢 ⒸⒽⒺⒸⓀⓈ
 

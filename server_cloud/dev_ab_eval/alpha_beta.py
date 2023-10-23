@@ -1,3 +1,25 @@
+import numpy as np
+from gamestate import gamestate
+
+
+class Engine():
+    
+    def __init__(self):
+        self.game_over = False
+        self.heuristic_model = None
+
+    def minimax(self, node: gamestate, depth: int, maximizer: bool):
+        
+        if depth == 0 or node.is_terminal():
+            return node.score(), None #self.heuristic_model
+        
+        if maximizer:
+            value = float('inf')
+            moves = node.get_possible_moves()
+            
+        
+        
+
 """
 Analysis chosen move in 1st place
 
@@ -35,5 +57,5 @@ Alpha-beta(board):
     recursive(simulated.board(move for moves in depth) -> evaluation
     -> best eval, best move
 
-
 """
+

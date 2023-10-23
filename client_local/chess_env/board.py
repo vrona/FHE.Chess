@@ -192,6 +192,9 @@ class Board:
         
         if isinstance(piece, King): king_moves()
 
+    def geteval(self, current_board):
+        self.clone_chess.stockfish_evaluation(current_board)
+        #print("Score %s" % s)
 
     def _create(self):
         """At step 0 (beginning or reset), board is created"""
