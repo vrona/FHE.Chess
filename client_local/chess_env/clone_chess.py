@@ -109,12 +109,6 @@ class Clone_Chess:
         """get the FEN representation of current move"""
         return self.board.fen()
 
-    def stockfish_evaluation(self,board):
-        
-        result = self.engine.analyse(board, chess.engine.Limit(depth=3))
-        print(result)
-        #return result['score']
-
     # ⒸⒽⒺⒸⓀⓈ 🅒🅗🅔🅒🅚🅢 ⒸⒽⒺⒸⓀⓈ
 
 

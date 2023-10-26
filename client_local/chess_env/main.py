@@ -225,7 +225,6 @@ class Main:
                             
                             # uncomment to get FEN output
                             print("\n%s (Human) FEN: "% game.player_turn, clone_chess.get_fen())
-                            board.geteval(clone_chess.get_board())
                             print("---------------")
                             
                             board.set_true_en_passant(dragger.piece)
